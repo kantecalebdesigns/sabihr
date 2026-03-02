@@ -23,11 +23,6 @@ export function LoginForm({ mode = "admin" }: LoginFormProps) {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
-      setError("Please enter your email and password");
-      return;
-    }
-
     setIsLoading(true);
     // Mock login — simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
