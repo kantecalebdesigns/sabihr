@@ -1,0 +1,25 @@
+import { cn } from "@/lib/utils";
+
+interface LogoProps {
+  className?: string;
+  size?: "sm" | "md" | "lg";
+}
+
+export function Logo({ className, size = "md" }: LogoProps) {
+  const sizes = {
+    sm: "text-xl",
+    md: "text-2xl",
+    lg: "text-3xl",
+  };
+
+  return (
+    <div className={cn("flex items-center gap-2", className)}>
+      <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary">
+        <span className="text-sm font-bold text-primary-foreground">S</span>
+      </div>
+      <span className={cn("font-semibold tracking-tight text-foreground", sizes[size])}>
+        Sabi<span className="text-primary">HR</span>
+      </span>
+    </div>
+  );
+}
