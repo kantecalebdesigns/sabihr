@@ -62,7 +62,7 @@ export function WorkScheduleStep({
                   className={cn(
                     "flex flex-col items-center gap-1.5 py-3 rounded-lg border cursor-pointer transition-all duration-150",
                     isChecked
-                      ? "border-primary bg-primary/5 shadow-sm"
+                      ? "border-primary bg-background shadow-sm"
                       : "border-border hover:border-primary/40"
                   )}
                 >

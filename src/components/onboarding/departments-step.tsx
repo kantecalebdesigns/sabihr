@@ -63,7 +63,7 @@ export function DepartmentsStep({ data, errors, onAdd, onRemove, onUpdate }: Dep
                 className={cn(
                   "flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg border transition-all duration-150",
                   isAdded
-                    ? "bg-primary/5 text-primary border-primary/20 cursor-default shadow-sm"
+                    ? "bg-background text-primary border-primary cursor-default shadow-sm"
                     : "bg-card text-foreground border-border hover:border-primary/40 hover:shadow-sm"
                 )}
               >

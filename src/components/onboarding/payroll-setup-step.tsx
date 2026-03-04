@@ -46,16 +46,16 @@ export function PayrollSetupStep({ data, errors, onChange }: PayrollSetupStepPro
                 type="button"
                 onClick={() => onChange("paySchedule", schedule.value as PaySchedule)}
                 className={cn(
-                  "relative w-full text-left rounded-lg border-2 p-4 pl-10 transition-all duration-150",
+                  "relative w-full text-left rounded-lg border p-4 pl-10 transition-all duration-150",
                   "hover:border-primary/50",
                   isSelected
-                    ? "border-primary bg-primary/[0.03] shadow-sm"
+                    ? "border-primary bg-background shadow-sm"
                     : "border-border bg-background"
                 )}
               >
                 <div
                   className={cn(
-                    "absolute top-4 left-3.5 w-4 h-4 rounded-full border-2 transition-all flex items-center justify-center",
+                    "absolute top-1/2 -translate-y-1/2 left-3.5 w-4 h-4 rounded-full border transition-all flex items-center justify-center",
                     isSelected
                       ? "border-primary bg-primary"
                       : "border-border bg-background"
@@ -87,9 +87,9 @@ export function PayrollSetupStep({ data, errors, onChange }: PayrollSetupStepPro
                   type="button"
                   onClick={() => onChange("paymentMethod", method.value as PaymentMethod)}
                   className={cn(
-                    "flex-1 rounded-lg border-2 px-4 py-3 text-sm font-medium transition-all",
+                    "flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-all",
                     isSelected
-                      ? "border-primary bg-primary/[0.03] text-foreground shadow-sm"
+                      ? "border-primary bg-background text-foreground shadow-sm"
                       : "border-border bg-background text-muted-foreground hover:border-primary/50"
                   )}
                 >

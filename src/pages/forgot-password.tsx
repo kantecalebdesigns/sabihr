@@ -209,7 +209,7 @@ export default function ForgotPasswordPage() {
                     value={digit}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                    className="w-12 h-14 text-center text-xl font-semibold rounded-md border border-input bg-background shadow-xs transition-colors focus:border-ring focus:ring-ring/50 focus:ring-[3px] focus:outline-none placeholder:text-muted-foreground"
+                    className="w-12 h-14 text-center text-xl font-semibold rounded-md border border-input bg-background shadow-xs transition-colors focus:border-ring focus:ring-0 focus:outline-none placeholder:text-muted-foreground"
                     aria-label={`Digit ${index + 1}`}
                   />
                 ))}

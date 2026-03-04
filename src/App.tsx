@@ -4,6 +4,7 @@ import RegisterPage from "@/pages/register";
 import ForgotPasswordPage from "@/pages/forgot-password";
 import ResetPasswordPage from "@/pages/reset-password";
 import DashboardPage from "@/pages/dashboard";
+import EmployeeDetailPage from "@/pages/employee-detail";
 import OnboardingPage from "@/pages/onboarding";
 import EmployeeOnboardingPage from "@/pages/employee-onboarding";
 import EmployeeDashboardPage from "@/pages/employee-dashboard";
@@ -26,6 +27,7 @@ function App() {
         {/* Admin app shell */}
         <Route element={<AppLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/employees/:id" element={<EmployeeDetailPage />} />
         </Route>
 
         {/* Employee onboarding (standalone, no layout) */}

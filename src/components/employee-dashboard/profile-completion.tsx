@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, Circle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { MOCK_EMPLOYEE_PROFILE } from "@/lib/employee-mock-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,7 @@ export function ProfileCompletion() {
 
   return (
     <Card>
-      <CardHeader className="pb-3">
+      <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-medium">Profile Completion</CardTitle>
           <span className="text-lg font-bold text-primary">{completion}%</span>
@@ -39,11 +39,7 @@ export function ProfileCompletion() {
           <div className="space-y-1.5 pt-1">
             {CHECKLIST.map((item) => (
               <div key={item.label} className="flex items-center gap-2">
-                {item.complete ? (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0" />
-                ) : (
-                  <Circle className="w-3.5 h-3.5 text-muted-foreground/40 shrink-0" />
-                )}
+                <div className="w-[13px] h-[13px] rounded border border-primary shrink-0" />
                 <span className={`text-xs ${item.complete ? "text-muted-foreground line-through" : "text-foreground font-medium"}`}>
                   {item.label}
                 </span>

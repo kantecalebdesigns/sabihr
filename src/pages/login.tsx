@@ -29,14 +29,14 @@ export default function LoginPage() {
           </div>
 
           {/* Login mode toggle */}
-          <div className="flex rounded-lg border border-border p-1 bg-muted/50">
+          <div className="flex rounded-lg border border-border pt-[5px] pb-px px-[13px] bg-muted/50">
             <button
               type="button"
               className={cn(
-                "flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all duration-200",
+                "flex-1 py-2 text-sm font-medium transition-all duration-200",
                 loginMode === "admin"
-                  ? "bg-card shadow-sm text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-white border-b-2 border-primary text-foreground"
+                  : "text-muted-foreground hover:text-foreground rounded-md"
               )}
               onClick={() => setLoginMode("admin")}
             >
@@ -45,10 +45,10 @@ export default function LoginPage() {
             <button
               type="button"
               className={cn(
-                "flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all duration-200",
+                "flex-1 py-2 text-sm font-medium transition-all duration-200",
                 loginMode === "employee"
-                  ? "bg-card shadow-sm text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-white border-b-2 border-primary text-foreground"
+                  : "text-muted-foreground hover:text-foreground rounded-md"
               )}
               onClick={() => setLoginMode("employee")}
             >

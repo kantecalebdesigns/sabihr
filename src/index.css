@@ -67,7 +67,7 @@
   --accent-foreground: #0f172a;
   --destructive: #ef4444;
   --border: #e2e8f0;
-  --input: #e2e8f0;
+  --input: #efefef;
   --ring: #2563eb;
   --chart-1: #2563eb;
   --chart-2: #10b981;
@@ -132,5 +132,12 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: inherit !important;
   }
 }

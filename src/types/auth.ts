@@ -44,4 +44,4 @@ export interface SubscriptionPlan {
   popular?: boolean;
 }
 
-export type RegistrationStep = 1 | 2 | 3;
+export type RegistrationStep = 1 | 2 | 3 | 4;

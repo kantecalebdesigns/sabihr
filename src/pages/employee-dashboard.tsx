@@ -10,19 +10,21 @@ export default function EmployeeDashboardPage() {
       {/* Welcome */}
       <WelcomeBanner />
 
-      {/* Main grid */}
+      {/* Row 1: Employment Info + Profile Completion */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left - Employment info (takes 2 cols) */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2">
           <EmploymentInfoCard />
         </div>
-
-        {/* Right sidebar */}
-        <div className="space-y-6">
+        <div>
           <ProfileCompletion />
-          <QuickActions />
-          <UpcomingEvents />
         </div>
+      </div>
+
+      {/* Row 2: Quick Actions + Quick Actions + Upcoming */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <QuickActions />
+        <QuickActions />
+        <UpcomingEvents />
       </div>
     </div>
   );

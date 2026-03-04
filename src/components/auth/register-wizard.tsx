@@ -7,6 +7,7 @@ import { StepIndicator } from "./step-indicator";
 import { CompanyInfoStep } from "./company-info-step";
 import { AdminUserStep } from "./admin-user-step";
 import { PlanSelectionStep } from "./plan-selection-step";
+import { PaystackPaymentStep } from "./paystack-payment-step";
 import type {
   RegistrationStep,
   CompanyInfoData,
@@ -25,6 +26,7 @@ const STEPS = [
   { label: "Company" },
   { label: "Admin" },
   { label: "Plan" },
+  { label: "Payment" },
 ];
 
 const INITIAL_COMPANY: CompanyInfoData = {
@@ -114,17 +116,21 @@ export function RegisterWizard() {
         setPlanErrors(errors);
         return !hasErrors(errors);
       }
+      default:
+        return true;
     }
   }
 
   function handleNext() {
     if (!validateCurrentStep()) return;
 
-    if (currentStep < 3) {
+    if (currentStep < 4) {
       setCurrentStep((prev) => (prev + 1) as RegistrationStep);
-    } else {
-      handleSubmit();
     }
+  }
+
+  function handlePaymentComplete() {
+    handleSubmit();
   }
 
   function handleBack() {
@@ -212,41 +218,48 @@ export function RegisterWizard() {
             onChange={updatePlanField}
           />
         )}
-      </div>
-
-      <Separator />
-
-      <div className="flex items-center justify-between">
-        {currentStep > 1 ? (
-          <Button variant="ghost" onClick={handleBack} disabled={isSubmitting}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
-          </Button>
-        ) : (
-          <Link to="/login">
-            <Button variant="ghost">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Sign in instead
-            </Button>
-          </Link>
+        {currentStep === 4 && (
+          <PaystackPaymentStep
+            planData={planData}
+            companyEmail={companyData.email}
+            onComplete={handlePaymentComplete}
+            onCancel={handleBack}
+          />
         )}
-
-        <Button onClick={handleNext} disabled={isSubmitting}>
-          {isSubmitting ? (
-            <span className="flex items-center gap-2">
-              <Loader2 className="w-4 h-4 animate-spin" />
-              Creating account...
-            </span>
-          ) : currentStep === 3 ? (
-            "Complete Registration"
-          ) : (
-            <span className="flex items-center gap-2">
-              Continue
-              <ArrowRight className="w-4 h-4" />
-            </span>
-          )}
-        </Button>
       </div>
+
+      {currentStep !== 4 && (
+        <>
+          <Separator />
+
+          <div className="flex items-center justify-between">
+            {currentStep > 1 ? (
+              <Button variant="ghost" onClick={handleBack} disabled={isSubmitting}>
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+            ) : (
+              <Link to="/login">
+                <Button variant="ghost">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Sign in instead
+                </Button>
+              </Link>
+            )}
+
+            <Button onClick={handleNext} disabled={isSubmitting}>
+              {currentStep === 3 ? (
+                "Continue to Payment"
+              ) : (
+                <span className="flex items-center gap-2">
+                  Continue
+                  <ArrowRight className="w-4 h-4" />
+                </span>
+              )}
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

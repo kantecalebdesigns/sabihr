@@ -32,7 +32,7 @@ const ACTIONS = [
 export function QuickActions() {
   return (
     <Card>
-      <CardHeader className="pb-3">
+      <CardHeader>
         <CardTitle className="text-sm font-medium">Quick Actions</CardTitle>
       </CardHeader>
       <CardContent>

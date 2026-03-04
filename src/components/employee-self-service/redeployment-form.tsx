@@ -124,7 +124,7 @@ export function RedeploymentForm({ open, onClose }: RedeploymentFormProps) {
                     setData((prev) => ({ ...prev, reason: e.target.value }));
                     if (errors.reason) setErrors((prev) => ({ ...prev, reason: undefined }));
                   }}
-                  className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+                  className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-0"
                 />
                 {errors.reason && (
                   <p className="text-xs text-destructive">{errors.reason}</p>
@@ -155,7 +155,7 @@ export function RedeploymentForm({ open, onClose }: RedeploymentFormProps) {
                   placeholder="Any additional information..."
                   value={data.additionalNotes}
                   onChange={(e) => setData((prev) => ({ ...prev, additionalNotes: e.target.value }))}
-                  className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+                  className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-0"
                 />
               </div>
 

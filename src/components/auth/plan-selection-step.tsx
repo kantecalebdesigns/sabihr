@@ -87,10 +87,10 @@ export function PlanSelectionStep({ data, errors, onChange }: PlanSelectionStepP
               type="button"
               onClick={() => onChange("planId", plan.id)}
               className={cn(
-                "relative overflow-visible w-full text-left rounded-lg border-2 p-5 pl-10 transition-all duration-150",
+                "relative overflow-visible w-full text-left rounded-lg border p-5 pl-10 transition-all duration-150",
                 "hover:border-primary/50 hover:shadow-sm",
                 isSelected
-                  ? "border-primary bg-primary/[0.02] shadow-sm"
+                  ? "border-primary bg-background shadow-sm"
                   : "border-border bg-card"
               )}
             >
@@ -103,7 +103,7 @@ export function PlanSelectionStep({ data, errors, onChange }: PlanSelectionStepP
               {/* Radio indicator */}
               <div
                 className={cn(
-                  "absolute top-5 left-4 w-4 h-4 rounded-full border-2 transition-all flex items-center justify-center",
+                  "absolute top-5 left-4 w-4 h-4 rounded-full border transition-all flex items-center justify-center",
                   isSelected
                     ? "border-primary bg-primary"
                     : "border-border bg-background"
