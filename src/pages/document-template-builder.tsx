@@ -776,9 +776,9 @@ export default function DocumentTemplateBuilderPage() {
                                 "inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity",
                                 VARIABLE_CATEGORY_STYLES[v.category]
                               )}
-                              title={`{{${v.key}}} — Sample: ${v.sampleValue}`}
+                              title={`Sample: ${v.sampleValue}`}
                             >
-                              {`{{${v.key}}}`}
+                              {v.label}
                             </button>
                           ))}
                         </div>

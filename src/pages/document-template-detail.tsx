@@ -249,13 +249,16 @@ function renderContentWithVariableChips(content: string) {
   const regex = /(\{\{[^}]+\}\})/g;
   const parts = content.split(regex);
   return parts.map((part, i) => {
-    if (part.match(regex)) {
+    const varMatch = part.match(/^\{\{([^}]+)\}\}$/);
+    if (varMatch) {
+      const key = varMatch[1].trim();
+      const variable = TEMPLATE_VARIABLES.find((v) => v.key === key);
       return (
         <span
           key={i}
           className="inline-flex items-center rounded-full bg-primary/10 text-primary px-1.5 py-0 text-xs font-medium mx-0.5"
         >
-          {part}
+          {variable?.label || key}
         </span>
       );
     }
