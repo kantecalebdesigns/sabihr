@@ -136,3 +136,45 @@ export interface EmploymentHistoryEntry {
   endDate: string | null;
   type: "promotion" | "transfer" | "hire" | "role-change";
 }
+
+// Redeployment tracker
+export type RedeploymentStatus = "pending" | "under-review" | "approved" | "rejected";
+
+export interface RedeploymentRequestRecord {
+  id: string;
+  targetDepartment: string;
+  reason: string;
+  preferredDate: string;
+  additionalNotes: string;
+  submittedDate: string;
+  status: RedeploymentStatus;
+  statusHistory: {
+    status: RedeploymentStatus;
+    date: string;
+    note?: string;
+  }[];
+}
+
+// Notifications
+export type NotificationType =
+  | "leave-approved"
+  | "leave-rejected"
+  | "document-expiry"
+  | "profile-update"
+  | "payslip-available"
+  | "redeployment-update"
+  | "announcement"
+  | "event-reminder";
+
+export type NotificationPriority = "low" | "medium" | "high";
+
+export interface EmployeeNotification {
+  id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+  priority: NotificationPriority;
+  actionUrl?: string;
+}

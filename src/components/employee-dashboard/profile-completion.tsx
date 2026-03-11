@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check, Circle } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { MOCK_EMPLOYEE_PROFILE } from "@/lib/employee-mock-data";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardAction } from "@/components/ui/card";
 
 const CHECKLIST = [
   { label: "Basic details", complete: true },
@@ -17,50 +17,61 @@ export function ProfileCompletion() {
   const completion = MOCK_EMPLOYEE_PROFILE.profileCompletion;
   const completedCount = CHECKLIST.filter((item) => item.complete).length;
 
+  if (completion >= 100) return null;
+
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-sm font-medium">Profile Completion</CardTitle>
+        <CardTitle className="text-sm font-medium">Profile Completion</CardTitle>
+        <CardAction>
           <span className="text-lg font-bold text-primary">{completion}%</span>
-        </div>
+        </CardAction>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          {/* Progress bar */}
-          <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-            <div
-              className="h-full bg-primary rounded-full transition-all duration-500"
-              style={{ width: `${completion}%` }}
-            />
-          </div>
+      <CardContent className="space-y-4">
+        {/* Progress bar */}
+        <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+          <div
+            className="h-full bg-primary rounded-full transition-all duration-500"
+            style={{ width: `${completion}%` }}
+          />
+        </div>
 
-          {/* Checklist */}
-          <div className="space-y-1.5 pt-1">
-            {CHECKLIST.map((item) => (
-              <div key={item.label} className="flex items-center gap-2">
-                <div className="w-[13px] h-[13px] rounded border border-primary shrink-0" />
-                <span className={`text-xs ${item.complete ? "text-muted-foreground line-through" : "text-foreground font-medium"}`}>
-                  {item.label}
-                </span>
-              </div>
-            ))}
-          </div>
+        {/* Checklist */}
+        <div className="space-y-2">
+          {CHECKLIST.map((item) => (
+            <div key={item.label} className="flex items-center gap-2.5">
+              {item.complete ? (
+                <div className="w-4 h-4 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <Check className="w-2.5 h-2.5 text-primary" />
+                </div>
+              ) : (
+                <Circle className="w-4 h-4 text-border shrink-0" />
+              )}
+              <span
+                className={cn(
+                  "text-xs",
+                  item.complete
+                    ? "text-muted-foreground line-through"
+                    : "text-foreground font-medium"
+                )}
+              >
+                {item.label}
+              </span>
+            </div>
+          ))}
+        </div>
 
+        <div className="flex items-center justify-between pt-1">
           <p className="text-[11px] text-muted-foreground">
             {completedCount} of {CHECKLIST.length} completed
           </p>
-
-          {completion < 100 && (
-            <Button asChild className="w-full" size="sm">
-              <Link to="/employee/profile">
-                <span className="flex items-center gap-2">
-                  Complete Profile
-                  <ArrowRight className="w-4 h-4" />
-                </span>
-              </Link>
-            </Button>
-          )}
+          <Link
+            to="/employee/profile"
+            className="flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+          >
+            Complete
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </CardContent>
     </Card>

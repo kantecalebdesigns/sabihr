@@ -1,4 +1,4 @@
-import { LayoutDashboard, UserCircle, Users } from "lucide-react";
+import { LayoutDashboard, Bell, UserCircle, Users, ArrowRightLeft } from "lucide-react";
 import type { NavSection } from "@/types/dashboard";
 
 export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
@@ -6,6 +6,7 @@ export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
     title: "Main",
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/employee/dashboard" },
+      { label: "Notifications", icon: Bell, path: "/employee/notifications" },
     ],
   },
   {
@@ -18,6 +19,12 @@ export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
     title: "Company",
     items: [
       { label: "Colleagues", icon: Users, path: "/employee/directory" },
+    ],
+  },
+  {
+    title: "Self Service",
+    items: [
+      { label: "Redeployment", icon: ArrowRightLeft, path: "/employee/redeployment" },
     ],
   },
 ];

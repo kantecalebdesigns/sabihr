@@ -3,6 +3,8 @@ import type {
   ColleagueProfile,
   OrgChartNode,
   EmploymentHistoryEntry,
+  RedeploymentRequestRecord,
+  EmployeeNotification,
   DocumentType,
   Gender,
   MaritalStatus,
@@ -330,23 +332,205 @@ export const MOCK_EMPLOYMENT_HISTORY: EmploymentHistoryEntry[] = [
 export const UPCOMING_EVENTS = [
   {
     id: "evt-1",
-    title: "Annual Leave Balance",
-    description: "15 days remaining out of 20",
-    date: "2026-12-31",
-    type: "info" as const,
-  },
-  {
-    id: "evt-2",
     title: "Public Holiday — Workers' Day",
     description: "Office closed",
     date: "2026-05-01",
     type: "info" as const,
   },
   {
-    id: "evt-3",
+    id: "evt-2",
     title: "Performance Review",
     description: "Mid-year review with your manager",
     date: "2026-03-15",
     type: "warning" as const,
+  },
+  {
+    id: "evt-3",
+    title: "Team Offsite",
+    description: "Engineering team quarterly offsite",
+    date: "2026-04-10",
+    type: "info" as const,
+  },
+];
+
+// ── Dashboard Data ──────────────────────────────────────────────────
+
+export const LEAVE_BALANCE = {
+  annual: { total: 20, used: 5, pending: 2 },
+  sick: { total: 10, used: 3, pending: 0 },
+  casual: { total: 5, used: 1, pending: 0 },
+  compassionate: { total: 5, used: 0, pending: 0 },
+};
+
+export const RECENT_LEAVE_REQUESTS = [
+  {
+    id: "lr-1",
+    type: "Annual Leave",
+    startDate: "2026-03-20",
+    endDate: "2026-03-22",
+    days: 2,
+    status: "pending" as const,
+    appliedOn: "2026-03-01",
+  },
+  {
+    id: "lr-2",
+    type: "Sick Leave",
+    startDate: "2026-02-10",
+    endDate: "2026-02-12",
+    days: 3,
+    status: "approved" as const,
+    appliedOn: "2026-02-10",
+  },
+  {
+    id: "lr-3",
+    type: "Annual Leave",
+    startDate: "2026-01-06",
+    endDate: "2026-01-10",
+    days: 5,
+    status: "approved" as const,
+    appliedOn: "2025-12-20",
+  },
+];
+
+export const ATTENDANCE_SUMMARY = {
+  month: "March 2026",
+  workingDays: 22,
+  daysPresent: 18,
+  daysAbsent: 0,
+  daysRemaining: 4,
+  lateArrivals: 1,
+  earlyDepartures: 0,
+  recentLogs: [
+    { date: "2026-03-04", clockIn: "08:52", clockOut: "17:05", status: "present" as const },
+    { date: "2026-03-03", clockIn: "09:15", clockOut: "17:30", status: "late" as const },
+    { date: "2026-03-02", clockIn: "08:45", clockOut: "17:00", status: "present" as const },
+    { date: "2026-02-28", clockIn: "08:30", clockOut: "17:10", status: "present" as const },
+    { date: "2026-02-27", clockIn: "08:48", clockOut: "17:00", status: "present" as const },
+  ],
+};
+
+export const PAYSLIP_SUMMARY = {
+  nextPayday: "2026-03-28",
+  lastPaid: "2026-02-28",
+  netPay: 850000,
+  grossPay: 1200000,
+  currency: "NGN",
+  recentPayslips: [
+    { id: "ps-1", month: "February 2026", grossPay: 1200000, netPay: 850000, status: "paid" as const },
+    { id: "ps-2", month: "January 2026", grossPay: 1200000, netPay: 850000, status: "paid" as const },
+    { id: "ps-3", month: "December 2025", grossPay: 1200000, netPay: 920000, status: "paid" as const },
+  ],
+};
+
+export const PENDING_REQUESTS = {
+  leave: 1,
+  documents: 1,
+  profileEdits: 0,
+  total: 2,
+};
+
+// ── Redeployment Tracker ────────────────────────────────────────────
+
+export const MOCK_REDEPLOYMENT_REQUESTS: RedeploymentRequestRecord[] = [
+  {
+    id: "rdp-1",
+    targetDepartment: "Marketing",
+    reason: "Interested in transitioning to a growth-focused role leveraging my technical background.",
+    preferredDate: "2026-04-01",
+    additionalNotes: "Happy to do a phased transition.",
+    submittedDate: "2026-02-15",
+    status: "under-review",
+    statusHistory: [
+      { status: "pending", date: "2026-02-15", note: "Request submitted" },
+      { status: "under-review", date: "2026-02-20", note: "HR reviewing with department heads" },
+    ],
+  },
+  {
+    id: "rdp-2",
+    targetDepartment: "Sales",
+    reason: "Previous experience in client-facing roles; better alignment with career goals.",
+    preferredDate: "2025-11-01",
+    additionalNotes: "",
+    submittedDate: "2025-10-05",
+    status: "rejected",
+    statusHistory: [
+      { status: "pending", date: "2025-10-05", note: "Request submitted" },
+      { status: "under-review", date: "2025-10-10", note: "Under departmental review" },
+      { status: "rejected", date: "2025-10-20", note: "No openings in target department at this time" },
+    ],
+  },
+];
+
+// ── Notifications ───────────────────────────────────────────────────
+
+export const MOCK_NOTIFICATIONS: EmployeeNotification[] = [
+  {
+    id: "notif-1",
+    type: "leave-approved",
+    title: "Leave Request Approved",
+    message: "Your annual leave request for Mar 20-22 has been approved by Chiamaka Eze.",
+    timestamp: "2026-03-05T09:30:00",
+    read: false,
+    priority: "medium",
+    actionUrl: "/employee/dashboard",
+  },
+  {
+    id: "notif-2",
+    type: "document-expiry",
+    title: "Passport Expiring Soon",
+    message: "Your International Passport expires on Apr 20, 2026. Please upload a renewed copy.",
+    timestamp: "2026-03-04T14:00:00",
+    read: false,
+    priority: "high",
+    actionUrl: "/employee/profile",
+  },
+  {
+    id: "notif-3",
+    type: "payslip-available",
+    title: "February Payslip Available",
+    message: "Your payslip for February 2026 is now available for download.",
+    timestamp: "2026-03-01T08:00:00",
+    read: false,
+    priority: "low",
+    actionUrl: "/employee/dashboard",
+  },
+  {
+    id: "notif-4",
+    type: "event-reminder",
+    title: "Performance Review in 10 Days",
+    message: "Your mid-year performance review with Chiamaka Eze is scheduled for Mar 15.",
+    timestamp: "2026-03-05T07:00:00",
+    read: false,
+    priority: "high",
+    actionUrl: "/employee/dashboard",
+  },
+  {
+    id: "notif-5",
+    type: "redeployment-update",
+    title: "Redeployment Under Review",
+    message: "Your redeployment request to Marketing is now being reviewed by HR.",
+    timestamp: "2026-02-20T11:15:00",
+    read: true,
+    priority: "medium",
+    actionUrl: "/employee/redeployment",
+  },
+  {
+    id: "notif-6",
+    type: "announcement",
+    title: "Office Closure — Workers' Day",
+    message: "The office will be closed on May 1, 2026 for Workers' Day.",
+    timestamp: "2026-02-18T09:00:00",
+    read: true,
+    priority: "low",
+  },
+  {
+    id: "notif-7",
+    type: "profile-update",
+    title: "Profile Update Approved",
+    message: "Your request to update Contact Information has been approved by HR.",
+    timestamp: "2026-02-10T16:45:00",
+    read: true,
+    priority: "low",
+    actionUrl: "/employee/profile",
   },
 ];

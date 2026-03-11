@@ -4,10 +4,23 @@ import { UPCOMING_EVENTS } from "@/lib/employee-mock-data";
 
 const EVENT_CONFIG = {
   info: { icon: Info, color: "text-primary", bg: "bg-primary/10" },
-  warning: { icon: AlertCircle, color: "text-amber-600", bg: "bg-amber-100" },
+  warning: { icon: AlertCircle, color: "text-amber-600", bg: "bg-amber-50" },
 };
 
+function getDaysUntil(dateStr: string) {
+  const now = new Date();
+  const target = new Date(dateStr);
+  const days = Math.ceil((target.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  if (days === 0) return "Today";
+  if (days === 1) return "Tomorrow";
+  return `In ${days} days`;
+}
+
 export function UpcomingEvents() {
+  const sorted = [...UPCOMING_EVENTS].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+
   return (
     <Card>
       <CardHeader>
@@ -18,25 +31,23 @@ export function UpcomingEvents() {
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          {UPCOMING_EVENTS.map((event) => {
+          {sorted.map((event) => {
             const config = EVENT_CONFIG[event.type];
             const Icon = config.icon;
             return (
               <div key={event.id} className="flex items-start gap-3">
-                <div className={`w-8 h-8 rounded-lg ${config.bg} flex items-center justify-center shrink-0 mt-0.5`}>
-                  <Icon className={`w-3.5 h-3.5 ${config.color}`} />
+                <div
+                  className={`w-9 h-9 rounded-lg ${config.bg} flex items-center justify-center shrink-0`}
+                >
+                  <Icon className={`w-4 h-4 ${config.color}`} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium">{event.title}</p>
                   <p className="text-xs text-muted-foreground">{event.description}</p>
-                  <p className="text-xs text-muted-foreground/60 mt-0.5">
-                    {new Date(event.date).toLocaleDateString("en-NG", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </p>
                 </div>
+                <span className="text-[10px] font-medium text-muted-foreground whitespace-nowrap mt-0.5">
+                  {getDaysUntil(event.date)}
+                </span>
               </div>
             );
           })}

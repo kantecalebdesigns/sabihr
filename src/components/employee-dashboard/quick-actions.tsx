@@ -1,31 +1,56 @@
 import { Link } from "react-router-dom";
-import { UserCircle, Users, GitBranch } from "lucide-react";
+import {
+  CalendarPlus,
+  FileText,
+  UserCircle,
+  Users,
+  Receipt,
+  Send,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const ACTIONS = [
   {
-    label: "Edit Profile",
-    description: "Update your personal information",
-    icon: UserCircle,
-    path: "/employee/profile",
+    label: "Request Leave",
+    icon: CalendarPlus,
+    path: "/employee/leave",
     color: "text-primary",
     bg: "bg-primary/10",
   },
   {
-    label: "View Colleagues",
-    description: "Browse the employee directory",
-    icon: Users,
-    path: "/employee/directory",
-    color: "text-violet-600",
-    bg: "bg-violet-100",
+    label: "View Payslips",
+    icon: Receipt,
+    path: "/employee/payslips",
+    color: "text-emerald-600",
+    bg: "bg-emerald-50",
   },
   {
-    label: "Org Chart",
-    description: "View reporting structure",
-    icon: GitBranch,
+    label: "Edit Profile",
+    icon: UserCircle,
+    path: "/employee/profile",
+    color: "text-violet-600",
+    bg: "bg-violet-50",
+  },
+  {
+    label: "Colleagues",
+    icon: Users,
     path: "/employee/directory",
     color: "text-amber-600",
-    bg: "bg-amber-100",
+    bg: "bg-amber-50",
+  },
+  {
+    label: "Documents",
+    icon: FileText,
+    path: "/employee/profile",
+    color: "text-cyan-600",
+    bg: "bg-cyan-50",
+  },
+  {
+    label: "Redeployment",
+    icon: Send,
+    path: "/employee/redeployment",
+    color: "text-rose-600",
+    bg: "bg-rose-50",
   },
 ];
 
@@ -36,22 +61,21 @@ export function QuickActions() {
         <CardTitle className="text-sm font-medium">Quick Actions</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
+        <div className="grid grid-cols-3 gap-2">
           {ACTIONS.map((action) => (
             <Link
               key={action.label}
               to={action.path}
-              className="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-muted/50 transition-colors group"
+              className="flex flex-col items-center gap-2 rounded-lg p-3 hover:bg-muted/50 transition-colors group"
             >
-              <div className={`w-9 h-9 rounded-lg ${action.bg} flex items-center justify-center shrink-0`}>
-                <action.icon className={`w-4 h-4 ${action.color}`} />
+              <div
+                className={`w-10 h-10 rounded-xl ${action.bg} flex items-center justify-center group-hover:scale-105 transition-transform`}
+              >
+                <action.icon className={`w-5 h-5 ${action.color}`} />
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium group-hover:text-primary transition-colors">
-                  {action.label}
-                </p>
-                <p className="text-xs text-muted-foreground">{action.description}</p>
-              </div>
+              <span className="text-[11px] font-medium text-center leading-tight">
+                {action.label}
+              </span>
             </Link>
           ))}
         </div>

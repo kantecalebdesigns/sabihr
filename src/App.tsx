@@ -10,6 +10,11 @@ import EmployeeOnboardingPage from "@/pages/employee-onboarding";
 import EmployeeDashboardPage from "@/pages/employee-dashboard";
 import EmployeeProfilePage from "@/pages/employee-profile";
 import EmployeeDirectoryPage from "@/pages/employee-directory";
+import EmployeeRedeploymentPage from "@/pages/employee-redeployment";
+import EmployeeNotificationsPage from "@/pages/employee-notifications";
+import DocumentsPage from "@/pages/documents";
+import DocumentTemplateBuilderPage from "@/pages/document-template-builder";
+import DocumentTemplateDetailPage from "@/pages/document-template-detail";
 import { AppLayout } from "@/components/layout/app-layout";
 import { EmployeeLayout } from "@/components/layout/employee-layout";
 
@@ -28,6 +33,10 @@ function App() {
         <Route element={<AppLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/employees/:id" element={<EmployeeDetailPage />} />
+          <Route path="/documents" element={<DocumentsPage />} />
+          <Route path="/documents/templates/new" element={<DocumentTemplateBuilderPage />} />
+          <Route path="/documents/templates/:id" element={<DocumentTemplateBuilderPage />} />
+          <Route path="/documents/templates/:id/view" element={<DocumentTemplateDetailPage />} />
         </Route>
 
         {/* Employee onboarding (standalone, no layout) */}
@@ -38,6 +47,8 @@ function App() {
           <Route path="/employee/dashboard" element={<EmployeeDashboardPage />} />
           <Route path="/employee/profile" element={<EmployeeProfilePage />} />
           <Route path="/employee/directory" element={<EmployeeDirectoryPage />} />
+          <Route path="/employee/redeployment" element={<EmployeeRedeploymentPage />} />
+          <Route path="/employee/notifications" element={<EmployeeNotificationsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -2,7 +2,9 @@ import { Menu, Bell, LogOut, User, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { MOCK_EMPLOYEE_PROFILE } from "@/lib/employee-mock-data";
+import { MOCK_EMPLOYEE_PROFILE, MOCK_NOTIFICATIONS } from "@/lib/employee-mock-data";
+import { NotificationDropdown } from "./notification-dropdown";
+import type { EmployeeNotification } from "@/types/employee";
 
 interface EmployeeTopbarProps {
   onMenuToggle: () => void;
@@ -12,15 +14,22 @@ interface EmployeeTopbarProps {
 export function EmployeeTopbar({ onMenuToggle, pageTitle = "Dashboard" }: EmployeeTopbarProps) {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifications, setNotifications] = useState<EmployeeNotification[]>(MOCK_NOTIFICATIONS);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
 
   const employee = MOCK_EMPLOYEE_PROFILE;
   const initials = `${employee.basicDetails.firstName[0]}${employee.basicDetails.lastName[0]}`;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setDropdownOpen(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClick);
@@ -31,6 +40,10 @@ export function EmployeeTopbar({ onMenuToggle, pageTitle = "Dashboard" }: Employ
     localStorage.removeItem("employeeOnboardingComplete");
     localStorage.removeItem("userRole");
     navigate("/login");
+  }
+
+  function handleMarkAllRead() {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   }
 
   return (
@@ -49,10 +62,23 @@ export function EmployeeTopbar({ onMenuToggle, pageTitle = "Dashboard" }: Employ
       {/* Right */}
       <div className="flex items-center gap-2">
         {/* Notification bell */}
-        <button className="relative w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
-          <Bell className="w-4.5 h-4.5" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-destructive" />
-        </button>
+        <div ref={notifRef} className="relative">
+          <button
+            onClick={() => setNotifOpen(!notifOpen)}
+            className="relative w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+          >
+            <Bell className="w-4.5 h-4.5" />
+            {unreadCount > 0 && (
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-destructive" />
+            )}
+          </button>
+          <NotificationDropdown
+            open={notifOpen}
+            onClose={() => setNotifOpen(false)}
+            notifications={notifications}
+            onMarkAllRead={handleMarkAllRead}
+          />
+        </div>
 
         {/* User menu */}
         <div ref={dropdownRef} className="relative">
