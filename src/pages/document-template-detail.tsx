@@ -12,7 +12,6 @@ import {
 } from "@/lib/document-mock-data";
 import type {
   TemplateBlock,
-  TemplateVariable,
   UploadStatus,
   FileUploadError,
 } from "@/types/document";

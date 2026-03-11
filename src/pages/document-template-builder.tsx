@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -48,7 +48,6 @@ import {
   Variable,
   Lock,
   History,
-  CheckCircle2,
   Sparkles,
 } from "lucide-react";
 
@@ -134,7 +133,7 @@ export default function DocumentTemplateBuilderPage() {
   const [templateType, setTemplateType] = useState<DocumentTemplateType>(
     existingTemplate?.type || "CUSTOM"
   );
-  const [templateStatus, setTemplateStatus] = useState<TemplateStatus>(
+  const [templateStatus] = useState<TemplateStatus>(
     existingTemplate?.status || "draft"
   );
   const [templateTags, setTemplateTags] = useState<string[]>(
@@ -159,7 +158,7 @@ export default function DocumentTemplateBuilderPage() {
     custom: true,
   });
 
-  const [permissionLevel, setPermissionLevel] = useState(
+  const [permissionLevel, setPermissionLevel] = useState<string>(
     existingTemplate?.permissions.level || "all"
   );
   const [canGenerate, setCanGenerate] = useState<string[]>(
@@ -298,7 +297,7 @@ export default function DocumentTemplateBuilderPage() {
   }
 
   function toggleRole(
-    list: string[],
+    _list: string[],
     setList: React.Dispatch<React.SetStateAction<string[]>>,
     role: string
   ) {

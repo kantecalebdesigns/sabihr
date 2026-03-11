@@ -34,7 +34,6 @@ import {
   Archive,
   RotateCcw,
   FileSignature,
-  CheckCircle2,
   Filter,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
