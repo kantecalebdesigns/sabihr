@@ -1,4 +1,5 @@
 import { WelcomeBanner } from "@/components/employee-dashboard/welcome-banner";
+import { CompleteProfileSection } from "@/components/employee-dashboard/complete-profile-section";
 import { StatCards } from "@/components/employee-dashboard/stat-cards";
 import { LeaveSummary } from "@/components/employee-dashboard/leave-summary";
 import { AttendanceOverview } from "@/components/employee-dashboard/attendance-overview";
@@ -12,6 +13,9 @@ export default function EmployeeDashboardPage() {
     <div className="max-w-[1200px] mx-auto space-y-6">
       {/* Welcome */}
       <WelcomeBanner />
+
+      {/* Complete your profile */}
+      <CompleteProfileSection />
 
       {/* Key metrics */}
       <StatCards />

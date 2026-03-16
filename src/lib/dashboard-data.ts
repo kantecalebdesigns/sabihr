@@ -11,6 +11,7 @@ import {
   Palmtree,
   DollarSign,
   FileText,
+  FolderOpen,
   Package,
   BarChart3,
   Megaphone,
@@ -204,6 +205,7 @@ export const NAV_SECTIONS: NavSection[] = [
     title: "Operations",
     items: [
       { label: "Documents", icon: FileText, path: "/documents" },
+      { label: "Document Library", icon: FolderOpen, path: "/documents/library" },
       { label: "Assets", icon: Package, path: "/assets" },
       { label: "Performance", icon: Target, path: "/performance" },
     ],

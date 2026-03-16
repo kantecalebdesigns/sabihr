@@ -1,3 +1,4 @@
+import { CompleteSetupSection } from "@/components/dashboard/complete-setup-section";
 import { KpiCards } from "@/components/dashboard/kpi-cards";
 import { HeadcountChart } from "@/components/dashboard/headcount-chart";
 import { DepartmentChart } from "@/components/dashboard/department-chart";
@@ -36,6 +37,9 @@ export default function DashboardPage() {
         </div>
         <p className="text-sm text-muted-foreground">{formatDate()}</p>
       </div>
+
+      {/* Complete account setup prompt */}
+      <CompleteSetupSection />
 
       {/* KPI Cards */}
       <KpiCards />

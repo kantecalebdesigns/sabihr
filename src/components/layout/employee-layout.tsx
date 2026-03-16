@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { EmployeeSidebar } from "./employee-sidebar";
 import { EmployeeTopbar } from "./employee-topbar";
 import { cn } from "@/lib/utils";
@@ -7,11 +7,6 @@ import { cn } from "@/lib/utils";
 export function EmployeeLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  const onboardingDone = localStorage.getItem("employeeOnboardingComplete");
-  if (!onboardingDone) {
-    return <Navigate to="/employee/onboarding" replace />;
-  }
 
   return (
     <div className="min-h-screen bg-muted/30">

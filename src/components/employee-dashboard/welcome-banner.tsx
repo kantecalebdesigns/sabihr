@@ -1,4 +1,5 @@
-import { AlertTriangle, MapPin } from "lucide-react";
+import { useState } from "react";
+import { AlertTriangle, MapPin, X } from "lucide-react";
 import { MOCK_EMPLOYEE_PROFILE } from "@/lib/employee-mock-data";
 
 function getGreeting(): string {
@@ -21,15 +22,16 @@ function getExpiringDocCount(): number {
 export function WelcomeBanner() {
   const employee = MOCK_EMPLOYEE_PROFILE;
   const expiringDocs = getExpiringDocCount();
+  const [bannerDismissed, setBannerDismissed] = useState(false);
 
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-4">
         <div className="flex-1 min-w-0">
-          <h1 className="text-xl font-semibold tracking-tight">
+          <h1 className="text-2xl font-bold tracking-tight">
             {getGreeting()}, {employee.basicDetails.firstName}
           </h1>
-          <div className="flex items-center gap-3 mt-0.5">
+          <div className="flex items-center gap-3 mt-1">
             <p className="text-sm text-muted-foreground">
               {employee.employment.jobTitle} · {employee.employment.department}
             </p>
@@ -53,13 +55,21 @@ export function WelcomeBanner() {
         </div>
       </div>
 
-      {expiringDocs > 0 && (
+      {expiringDocs > 0 && !bannerDismissed && (
         <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-amber-50 border border-amber-200">
           <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-          <p className="text-sm text-amber-700">
+          <p className="text-sm text-amber-700 flex-1">
             <span className="font-medium">{expiringDocs} document{expiringDocs > 1 ? "s" : ""}</span>{" "}
             expiring within 90 days. Update them from your profile.
           </p>
+          <button
+            type="button"
+            onClick={() => setBannerDismissed(true)}
+            className="p-1 rounded text-amber-600 hover:text-amber-800 hover:bg-amber-100 transition-colors shrink-0"
+            aria-label="Dismiss"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
     </div>

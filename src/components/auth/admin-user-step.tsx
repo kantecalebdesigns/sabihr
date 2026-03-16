@@ -61,6 +61,7 @@ export function AdminUserStep({ data, errors, onChange }: AdminUserStepProps) {
           </div>
         </div>
 
+        {/* Email is pre-filled and read-only (verified earlier) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <Label htmlFor="adminEmail">
@@ -69,13 +70,11 @@ export function AdminUserStep({ data, errors, onChange }: AdminUserStepProps) {
             <Input
               id="adminEmail"
               type="email"
-              placeholder="john@company.com"
               value={data.email}
-              onChange={(e) => onChange("email", e.target.value)}
+              readOnly
+              className="bg-muted/50 text-muted-foreground cursor-not-allowed"
             />
-            {errors.email && (
-              <p className="text-xs text-destructive">{errors.email}</p>
-            )}
+            <p className="text-xs text-green-600 font-medium">Verified</p>
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="adminPhone">

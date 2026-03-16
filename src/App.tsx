@@ -15,6 +15,30 @@ import EmployeeNotificationsPage from "@/pages/employee-notifications";
 import DocumentsPage from "@/pages/documents";
 import DocumentTemplateBuilderPage from "@/pages/document-template-builder";
 import DocumentTemplateDetailPage from "@/pages/document-template-detail";
+import DocumentLibraryPage from "@/pages/document-library";
+import EmployeeDocumentsPage from "@/pages/employee-documents";
+// Asset Management - Admin
+import AssetListPage from "@/pages/asset-list";
+import AssetCreatePage from "@/pages/asset-create";
+import AssetBulkUploadPage from "@/pages/asset-bulk-upload";
+import AssetDetailPage from "@/pages/asset-detail";
+import AssetAssignPage from "@/pages/asset-assign";
+import AssetApprovalQueuePage from "@/pages/asset-approval-queue";
+import AssetEmployeePortfolioPage from "@/pages/asset-employee-portfolio";
+import AssetReturnQueuePage from "@/pages/asset-return-queue";
+import AssetMaintenancePage from "@/pages/asset-maintenance";
+import AssetDisposalPage from "@/pages/asset-disposal";
+import AssetInventoryDashboardPage from "@/pages/asset-inventory-dashboard";
+import AssetAssignmentReportPage from "@/pages/asset-assignment-report";
+import AssetUtilizationPage from "@/pages/asset-utilization";
+import AssetMissingReportPage from "@/pages/asset-missing-report";
+import AssetDepreciationReportPage from "@/pages/asset-depreciation-report";
+// Asset Management - Employee
+import EmployeeAssetsPage from "@/pages/employee-assets";
+import EmployeeAssetDetailPage from "@/pages/employee-asset-detail";
+import EmployeeAssetRequestPage from "@/pages/employee-asset-request";
+import EmployeeAssetReportIssuePage from "@/pages/employee-asset-report-issue";
+import EmployeeAssetReturnPage from "@/pages/employee-asset-return";
 import { AppLayout } from "@/components/layout/app-layout";
 import { EmployeeLayout } from "@/components/layout/employee-layout";
 
@@ -37,6 +61,23 @@ function App() {
           <Route path="/documents/templates/new" element={<DocumentTemplateBuilderPage />} />
           <Route path="/documents/templates/:id" element={<DocumentTemplateBuilderPage />} />
           <Route path="/documents/templates/:id/view" element={<DocumentTemplateDetailPage />} />
+          <Route path="/documents/library" element={<DocumentLibraryPage />} />
+          {/* Asset Management */}
+          <Route path="/assets" element={<AssetListPage />} />
+          <Route path="/assets/create" element={<AssetCreatePage />} />
+          <Route path="/assets/bulk-upload" element={<AssetBulkUploadPage />} />
+          <Route path="/assets/:id" element={<AssetDetailPage />} />
+          <Route path="/assets/assign" element={<AssetAssignPage />} />
+          <Route path="/assets/approvals" element={<AssetApprovalQueuePage />} />
+          <Route path="/assets/employee-portfolio/:id" element={<AssetEmployeePortfolioPage />} />
+          <Route path="/assets/returns" element={<AssetReturnQueuePage />} />
+          <Route path="/assets/maintenance" element={<AssetMaintenancePage />} />
+          <Route path="/assets/disposal" element={<AssetDisposalPage />} />
+          <Route path="/assets/reports/inventory" element={<AssetInventoryDashboardPage />} />
+          <Route path="/assets/reports/assignments" element={<AssetAssignmentReportPage />} />
+          <Route path="/assets/reports/utilization" element={<AssetUtilizationPage />} />
+          <Route path="/assets/reports/missing" element={<AssetMissingReportPage />} />
+          <Route path="/assets/reports/depreciation" element={<AssetDepreciationReportPage />} />
         </Route>
 
         {/* Employee onboarding (standalone, no layout) */}
@@ -49,6 +90,13 @@ function App() {
           <Route path="/employee/directory" element={<EmployeeDirectoryPage />} />
           <Route path="/employee/redeployment" element={<EmployeeRedeploymentPage />} />
           <Route path="/employee/notifications" element={<EmployeeNotificationsPage />} />
+          <Route path="/employee/documents" element={<EmployeeDocumentsPage />} />
+          {/* Employee Assets */}
+          <Route path="/employee/assets" element={<EmployeeAssetsPage />} />
+          <Route path="/employee/assets/:id" element={<EmployeeAssetDetailPage />} />
+          <Route path="/employee/assets/request" element={<EmployeeAssetRequestPage />} />
+          <Route path="/employee/assets/report-issue" element={<EmployeeAssetReportIssuePage />} />
+          <Route path="/employee/assets/return" element={<EmployeeAssetReturnPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

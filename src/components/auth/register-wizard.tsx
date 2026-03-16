@@ -4,19 +4,17 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { StepIndicator } from "./step-indicator";
+import { EmailVerificationStep } from "./email-verification-step";
 import { CompanyInfoStep } from "./company-info-step";
-import { AdminUserStep } from "./admin-user-step";
 import { PlanSelectionStep } from "./plan-selection-step";
 import { PaystackPaymentStep } from "./paystack-payment-step";
 import type {
   RegistrationStep,
   CompanyInfoData,
-  AdminUserData,
   PlanSelectionData,
 } from "@/types/auth";
 import {
   validateCompanyInfo,
-  validateAdminUser,
   validatePlanSelection,
   hasErrors,
 } from "@/lib/validators";
@@ -24,7 +22,6 @@ import type { ValidationErrors } from "@/lib/validators";
 
 const STEPS = [
   { label: "Company" },
-  { label: "Admin" },
   { label: "Plan" },
   { label: "Payment" },
 ];
@@ -44,15 +41,6 @@ const INITIAL_COMPANY: CompanyInfoData = {
   logoPreview: "",
 };
 
-const INITIAL_ADMIN: AdminUserData = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  password: "",
-  confirmPassword: "",
-};
-
 const INITIAL_PLAN: PlanSelectionData = {
   planId: "",
   billingCycle: "quarterly",
@@ -60,17 +48,21 @@ const INITIAL_PLAN: PlanSelectionData = {
 
 export function RegisterWizard() {
   const navigate = useNavigate();
+  const [verifiedEmail, setVerifiedEmail] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<RegistrationStep>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
   const [companyData, setCompanyData] = useState<CompanyInfoData>(INITIAL_COMPANY);
-  const [adminData, setAdminData] = useState<AdminUserData>(INITIAL_ADMIN);
   const [planData, setPlanData] = useState<PlanSelectionData>(INITIAL_PLAN);
 
   const [companyErrors, setCompanyErrors] = useState<ValidationErrors<CompanyInfoData>>({});
-  const [adminErrors, setAdminErrors] = useState<ValidationErrors<AdminUserData>>({});
   const [planErrors, setPlanErrors] = useState<ValidationErrors<PlanSelectionData>>({});
+
+  function handleEmailVerified(email: string, companyName: string) {
+    setVerifiedEmail(email);
+    setCompanyData((prev) => ({ ...prev, companyName, email }));
+  }
 
   function updateCompanyField(field: keyof CompanyInfoData, value: string) {
     setCompanyData((prev) => ({ ...prev, [field]: value }));
@@ -89,11 +81,6 @@ export function RegisterWizard() {
     }
   }
 
-  function updateAdminField(field: keyof AdminUserData, value: string) {
-    setAdminData((prev) => ({ ...prev, [field]: value }));
-    setAdminErrors((prev) => ({ ...prev, [field]: undefined }));
-  }
-
   function updatePlanField(field: keyof PlanSelectionData, value: string) {
     setPlanData((prev) => ({ ...prev, [field]: value }));
     setPlanErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -107,11 +94,6 @@ export function RegisterWizard() {
         return !hasErrors(errors);
       }
       case 2: {
-        const errors = validateAdminUser(adminData);
-        setAdminErrors(errors);
-        return !hasErrors(errors);
-      }
-      case 3: {
         const errors = validatePlanSelection(planData);
         setPlanErrors(errors);
         return !hasErrors(errors);
@@ -124,7 +106,7 @@ export function RegisterWizard() {
   function handleNext() {
     if (!validateCurrentStep()) return;
 
-    if (currentStep < 4) {
+    if (currentStep < 3) {
       setCurrentStep((prev) => (prev + 1) as RegistrationStep);
     }
   }
@@ -150,6 +132,11 @@ export function RegisterWizard() {
 
     setIsSubmitting(false);
     setIsComplete(true);
+  }
+
+  // Gate: verify email before showing the wizard
+  if (!verifiedEmail) {
+    return <EmailVerificationStep onVerified={handleEmailVerified} />;
   }
 
   if (isComplete) {
@@ -182,7 +169,7 @@ export function RegisterWizard() {
           </button>
           <p className="text-xs text-muted-foreground">
             A confirmation email has been sent to{" "}
-            <strong>{adminData.email}</strong>
+            <strong>{verifiedEmail}</strong>
           </p>
         </div>
       </div>
@@ -205,20 +192,13 @@ export function RegisterWizard() {
           />
         )}
         {currentStep === 2 && (
-          <AdminUserStep
-            data={adminData}
-            errors={adminErrors}
-            onChange={updateAdminField}
-          />
-        )}
-        {currentStep === 3 && (
           <PlanSelectionStep
             data={planData}
             errors={planErrors}
             onChange={updatePlanField}
           />
         )}
-        {currentStep === 4 && (
+        {currentStep === 3 && (
           <PaystackPaymentStep
             planData={planData}
             companyEmail={companyData.email}
@@ -228,7 +208,7 @@ export function RegisterWizard() {
         )}
       </div>
 
-      {currentStep !== 4 && (
+      {currentStep !== 3 && (
         <>
           <Separator />
 
@@ -248,7 +228,7 @@ export function RegisterWizard() {
             )}
 
             <Button onClick={handleNext} disabled={isSubmitting}>
-              {currentStep === 3 ? (
+              {currentStep === 2 ? (
                 "Continue to Payment"
               ) : (
                 <span className="flex items-center gap-2">

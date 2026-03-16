@@ -1,4 +1,4 @@
-import { LayoutDashboard, Bell, UserCircle, Users, ArrowRightLeft } from "lucide-react";
+import { LayoutDashboard, Bell, UserCircle, Users, ArrowRightLeft, FileText, Package } from "lucide-react";
 import type { NavSection } from "@/types/dashboard";
 
 export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
@@ -13,6 +13,7 @@ export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
     title: "My Profile",
     items: [
       { label: "Personal Info", icon: UserCircle, path: "/employee/profile" },
+      { label: "My Documents", icon: FileText, path: "/employee/documents" },
     ],
   },
   {
@@ -24,6 +25,7 @@ export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
   {
     title: "Self Service",
     items: [
+      { label: "My Assets", icon: Package, path: "/employee/assets" },
       { label: "Redeployment", icon: ArrowRightLeft, path: "/employee/redeployment" },
     ],
   },
