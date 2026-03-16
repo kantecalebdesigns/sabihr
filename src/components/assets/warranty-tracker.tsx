@@ -10,7 +10,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import {
   ShieldCheck,
-  Clock,
   AlertTriangle,
   Phone,
   Calendar,
@@ -20,7 +19,6 @@ import {
   FileText,
 } from "lucide-react";
 import { MOCK_WARRANTIES } from "@/lib/asset-mock-data";
-import type { WarrantyInfo, WarrantyClaim } from "@/types/asset";
 
 function daysUntilExpiry(endDate: string): number {
   return Math.ceil((new Date(endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));

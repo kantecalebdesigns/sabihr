@@ -169,7 +169,7 @@ export default function ReturnInspectionForm({
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-3">
-            {damagePhotos.map((photo, i) => (
+            {damagePhotos.map((_photo, i) => (
               <div
                 key={i}
                 className="w-24 h-24 rounded-xl border border-border bg-muted flex items-center justify-center text-xs text-muted-foreground"

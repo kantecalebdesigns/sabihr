@@ -1,8 +1,6 @@
 import { cn } from "@/lib/utils";
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   Download,
   Mail,
-  Printer,
   FileCheck,
 } from "lucide-react";
 import { ASSET_CONDITION_STYLES } from "@/lib/asset-mock-data";

@@ -2,10 +2,8 @@ import { useState } from "react";
 import {
   ChevronDown,
   ChevronUp,
-  Clock,
   CheckCircle2,
   XCircle,
-  Loader2,
   Package,
   MessageSquare,
   CalendarDays,

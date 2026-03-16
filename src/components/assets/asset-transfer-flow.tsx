@@ -22,7 +22,7 @@ import {
   ASSET_CONDITION_STYLES,
   formatCurrency,
 } from "@/lib/asset-mock-data";
-import type { Asset, AssetCondition } from "@/types/asset";
+import type { AssetCondition } from "@/types/asset";
 
 // Derive employees from assignments
 const EMPLOYEES = (() => {
@@ -59,8 +59,6 @@ const STEPS = [
   { key: "condition", label: "Condition", icon: ClipboardCheck },
   { key: "review", label: "Approval", icon: Route },
 ] as const;
-
-type StepKey = (typeof STEPS)[number]["key"];
 
 const CONDITIONS: AssetCondition[] = [
   "new",

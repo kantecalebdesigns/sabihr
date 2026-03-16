@@ -29,7 +29,6 @@ interface ConditionUpdateFormProps {
 }
 
 export default function ConditionUpdateForm({
-  assetId,
   currentCondition,
   history,
 }: ConditionUpdateFormProps) {
@@ -145,7 +144,7 @@ export default function ConditionUpdateForm({
         </div>
         {photos.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-2">
-            {photos.map((p, i) => (
+            {photos.map((_p, i) => (
               <div
                 key={i}
                 className="relative w-16 h-16 rounded-lg border border-border bg-muted flex items-center justify-center"
