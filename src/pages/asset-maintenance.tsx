@@ -5,7 +5,6 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-  CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +28,6 @@ import {
   AlertTriangle,
   Clock,
   CheckCircle2,
-  Settings,
   RefreshCw,
 } from "lucide-react";
 import { MOCK_MAINTENANCE_RECORDS, formatCurrency } from "@/lib/asset-mock-data";

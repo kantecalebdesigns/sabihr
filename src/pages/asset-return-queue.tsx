@@ -2,10 +2,7 @@ import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
-  CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,13 +20,11 @@ import {
   CalendarClock,
   PackageCheck,
   XCircle,
-  Filter,
   Clock,
   AlertTriangle,
   RotateCcw,
 } from "lucide-react";
 import { MOCK_RETURN_REQUESTS } from "@/lib/asset-mock-data";
-import type { ReturnRequest } from "@/types/asset";
 
 const RETURN_REASON_LABELS: Record<string, string> = {
   "no-longer-needed": "No Longer Needed",

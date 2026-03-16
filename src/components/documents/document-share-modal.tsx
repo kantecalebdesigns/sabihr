@@ -34,12 +34,6 @@ interface DocumentShareModalProps {
   documentName: string;
 }
 
-const PERMISSION_LABELS: Record<Permission, string> = {
-  view: "View Only",
-  download: "Download",
-  full: "Full Access",
-};
-
 export function DocumentShareModal({
   isOpen,
   onClose,

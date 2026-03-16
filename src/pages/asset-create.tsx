@@ -422,7 +422,7 @@ export default function AssetCreatePage() {
           </div>
           {photos.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {photos.map((p, i) => (
+              {photos.map((_p, i) => (
                 <div
                   key={i}
                   className="relative w-20 h-20 rounded-lg border border-border bg-muted flex items-center justify-center text-xs text-muted-foreground"

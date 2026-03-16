@@ -3,7 +3,6 @@ import {
   FileText,
   Upload,
   AlertCircle,
-  CheckCircle2,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
@@ -38,7 +37,7 @@ export function DocumentUploadPrompt() {
   // All done — remove the whole card from the dashboard
   if (remainingCount === 0) return null;
 
-  async function handleFileSelect(type: DocumentType, file: File) {
+  async function handleFileSelect(type: DocumentType, _file: File) {
     setSubmittingType(type);
 
     // Mock API upload
