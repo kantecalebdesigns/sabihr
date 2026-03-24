@@ -5,7 +5,6 @@ import {
   Download,
   Play,
   Eye,
-  ChevronDown,
   Users,
   TrendingUp,
   Banknote,
