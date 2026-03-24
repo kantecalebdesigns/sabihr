@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   UserCircle,
   Building2,
-  UserPlus,
   CalendarDays,
   Palmtree,
   DollarSign,
@@ -190,7 +189,6 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: "Employees", icon: UserCircle, path: "/employees" },
       { label: "Departments", icon: Building2, path: "/departments" },
-      { label: "Onboarding", icon: UserPlus, path: "/onboarding-mgmt" },
     ],
   },
   {

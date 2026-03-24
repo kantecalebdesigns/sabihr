@@ -110,21 +110,6 @@ export function CompanyInfoStep({ data, errors, onChange, onLogoChange }: Compan
           />
         </div>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="companyName">
-            Company name <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="companyName"
-            placeholder="e.g. Acme Technologies Ltd"
-            value={data.companyName}
-            onChange={(e) => onChange("companyName", e.target.value)}
-          />
-          {errors.companyName && (
-            <p className="text-xs text-destructive">{errors.companyName}</p>
-          )}
-        </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <Label htmlFor="rcNumber">RC number</Label>

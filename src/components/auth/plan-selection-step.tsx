@@ -27,7 +27,6 @@ function getCyclePrice(monthlyPrice: number, cycle: BillingCycle) {
 }
 
 export function PlanSelectionStep({ data, errors, onChange }: PlanSelectionStepProps) {
-  const activeCycle = BILLING_CYCLES.find((c) => c.value === data.billingCycle)!;
 
   return (
     <div className="space-y-5">
@@ -122,16 +121,6 @@ export function PlanSelectionStep({ data, errors, onChange }: PlanSelectionStepP
                   </div>
                   <div className="text-right shrink-0">
                     <div className="text-xl font-bold">{formatCurrency(pricing.total)}</div>
-                    <div className="text-[11px] text-muted-foreground">
-                      {activeCycle.discount > 0 ? (
-                        <>
-                          {formatCurrency(pricing.perMonth)}/emp/mo
-                        </>
-                      ) : (
-                        <>{formatCurrency(plan.monthlyPrice)}/emp/mo</>
-                      )}
-                      {" "}&middot; {activeCycle.label.toLowerCase()}
-                    </div>
                   </div>
                 </div>
 

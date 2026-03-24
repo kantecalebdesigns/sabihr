@@ -4,7 +4,13 @@ import RegisterPage from "@/pages/register";
 import ForgotPasswordPage from "@/pages/forgot-password";
 import ResetPasswordPage from "@/pages/reset-password";
 import DashboardPage from "@/pages/dashboard";
+import EmployeeListPage from "@/pages/employee-list";
+import EmployeeCreatePage from "@/pages/employee-create";
 import EmployeeDetailPage from "@/pages/employee-detail";
+import DepartmentListPage from "@/pages/department-list";
+import AttendancePage from "@/pages/attendance";
+import LeavePage from "@/pages/leave";
+import PayrollPage from "@/pages/payroll";
 import OnboardingPage from "@/pages/onboarding";
 import EmployeeOnboardingPage from "@/pages/employee-onboarding";
 import EmployeeDashboardPage from "@/pages/employee-dashboard";
@@ -56,7 +62,13 @@ function App() {
         {/* Admin app shell */}
         <Route element={<AppLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/employees" element={<EmployeeListPage />} />
+          <Route path="/employees/create" element={<EmployeeCreatePage />} />
           <Route path="/employees/:id" element={<EmployeeDetailPage />} />
+          <Route path="/departments" element={<DepartmentListPage />} />
+          <Route path="/attendance" element={<AttendancePage />} />
+          <Route path="/leave" element={<LeavePage />} />
+          <Route path="/payroll" element={<PayrollPage />} />
           <Route path="/documents" element={<DocumentsPage />} />
           <Route path="/documents/templates/new" element={<DocumentTemplateBuilderPage />} />
           <Route path="/documents/templates/:id" element={<DocumentTemplateBuilderPage />} />
