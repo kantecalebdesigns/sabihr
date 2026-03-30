@@ -59,6 +59,7 @@ export interface NavItem {
   label: string;
   icon: LucideIcon;
   path: string;
+  children?: NavItem[];
 }
 
 export interface NavSection {

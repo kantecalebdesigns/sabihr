@@ -16,6 +16,13 @@ import {
   Megaphone,
   Settings,
   Target,
+  Settings2,
+  Shield,
+  CreditCard,
+  Landmark,
+  Globe,
+  ClipboardList,
+  History,
 } from "lucide-react";
 import type {
   KpiCardData,
@@ -196,7 +203,22 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: "Attendance", icon: CalendarDays, path: "/attendance" },
       { label: "Leave", icon: Palmtree, path: "/leave" },
-      { label: "Payroll", icon: DollarSign, path: "/payroll" },
+      {
+        label: "Payroll",
+        icon: DollarSign,
+        path: "/payroll",
+        children: [
+          { label: "Processing", icon: DollarSign, path: "/payroll" },
+          { label: "Configuration", icon: Settings2, path: "/payroll/config" },
+          { label: "Compliance", icon: Shield, path: "/payroll/compliance" },
+          { label: "Payslips", icon: FileText, path: "/payroll/payslips" },
+          { label: "Disbursement", icon: CreditCard, path: "/payroll/disbursement" },
+          { label: "Remittance", icon: Landmark, path: "/payroll/remittance" },
+          { label: "Global", icon: Globe, path: "/payroll/global" },
+          { label: "Reports", icon: ClipboardList, path: "/payroll/reports" },
+          { label: "Audit", icon: History, path: "/payroll/audit" },
+        ],
+      },
     ],
   },
   {

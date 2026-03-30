@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
 import { cn } from "@/lib/utils";
 import { NAV_SECTIONS } from "@/lib/dashboard-data";
+import type { NavItem } from "@/types/dashboard";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -13,6 +15,102 @@ interface SidebarProps {
 
 export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: SidebarProps) {
   const location = useLocation();
+  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>(() => {
+    // Auto-expand the group that contains the current path
+    const expanded: Record<string, boolean> = {};
+    for (const section of NAV_SECTIONS) {
+      for (const item of section.items) {
+        if (item.children) {
+          const isChildActive = item.children.some((child) => location.pathname === child.path);
+          if (isChildActive || location.pathname === item.path) {
+            expanded[item.label] = true;
+          }
+        }
+      }
+    }
+    return expanded;
+  });
+
+  const toggleExpand = (label: string) => {
+    setExpandedItems((prev) => ({ ...prev, [label]: !prev[label] }));
+  };
+
+  const renderNavItem = (item: NavItem) => {
+    const hasChildren = item.children && item.children.length > 0;
+    const isExpanded = expandedItems[item.label];
+    const isActive = location.pathname === item.path;
+    const isChildActive = hasChildren && item.children!.some((child) => location.pathname === child.path);
+    const Icon = item.icon;
+
+    if (hasChildren) {
+      return (
+        <div key={item.label}>
+          <button
+            onClick={() => toggleExpand(item.label)}
+            className={cn(
+              "w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              collapsed && "justify-center px-2",
+              isChildActive
+                ? "text-sidebar-primary"
+                : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+            )}
+            title={collapsed ? item.label : undefined}
+          >
+            <Icon className="w-4.5 h-4.5 shrink-0" />
+            {!collapsed && (
+              <>
+                <span className="flex-1 text-left">{item.label}</span>
+                <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", isExpanded && "rotate-180")} />
+              </>
+            )}
+          </button>
+          {!collapsed && isExpanded && (
+            <div className="ml-4 pl-3 border-l border-sidebar-border/50 space-y-0.5 mt-0.5">
+              {item.children!.map((child) => {
+                const childActive = location.pathname === child.path;
+                const ChildIcon = child.icon;
+                return (
+                  <Link
+                    key={child.path}
+                    to={child.path}
+                    onClick={onMobileClose}
+                    className={cn(
+                      "flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-[13px] font-medium transition-colors",
+                      childActive
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-sm"
+                        : "text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                    )}
+                  >
+                    <ChildIcon className="w-3.5 h-3.5 shrink-0" />
+                    <span>{child.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <Link
+        key={item.path}
+        to={item.path}
+        onClick={onMobileClose}
+        className={cn(
+          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+          collapsed && "justify-center px-2",
+          isActive
+            ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-sm"
+            : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+        )}
+        title={collapsed ? item.label : undefined}
+      >
+        <Icon className="w-4.5 h-4.5 shrink-0" />
+        {!collapsed && <span>{item.label}</span>}
+      </Link>
+    );
+  };
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
@@ -40,28 +138,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
               </p>
             )}
             <div className="space-y-0.5">
-              {section.items.map((item) => {
-                const isActive = location.pathname === item.path;
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    onClick={onMobileClose}
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                      collapsed && "justify-center px-2",
-                      isActive
-                        ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-sm"
-                        : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-                    )}
-                    title={collapsed ? item.label : undefined}
-                  >
-                    <Icon className="w-4.5 h-4.5 shrink-0" />
-                    {!collapsed && <span>{item.label}</span>}
-                  </Link>
-                );
-              })}
+              {section.items.map(renderNavItem)}
             </div>
           </div>
         ))}

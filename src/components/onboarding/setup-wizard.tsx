@@ -5,34 +5,26 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { StepIndicator } from "@/components/auth/step-indicator";
 import { DepartmentsStep } from "./departments-step";
-import { WorkScheduleStep } from "./work-schedule-step";
 import { InviteEmployeesStep } from "./invite-employees-step";
-import { PayrollSetupStep } from "./payroll-setup-step";
-import { DEFAULT_LEAVE_TYPES } from "@/lib/mock-data";
+import { HrAdminStep } from "./hr-admin-step";
+import type { HrAdminData } from "./hr-admin-step";
 import {
   validateDepartments,
-  validateWorkSchedule,
   validateInviteEmployees,
-  validatePayrollSetup,
   hasErrors,
 } from "@/lib/validators";
 import type { ValidationErrors } from "@/lib/validators";
 import type {
-  OnboardingStep,
   DepartmentsData,
-  WorkScheduleData,
   InviteEmployeesData,
-  PayrollSetupData,
   Department,
-  LeaveType,
   EmployeeInvite,
 } from "@/types/onboarding";
 
 const STEPS = [
   { label: "Departments" },
-  { label: "Schedule" },
-  { label: "Invite" },
-  { label: "Payroll" },
+  { label: "Employees" },
+  { label: "HR Admin" },
 ];
 
 function generateId(): string {
@@ -43,44 +35,31 @@ const INITIAL_DEPARTMENTS: DepartmentsData = {
   departments: [],
 };
 
-const INITIAL_SCHEDULE: WorkScheduleData = {
-  workDays: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-  startTime: "09:00",
-  endTime: "17:00",
-  leaveTypes: DEFAULT_LEAVE_TYPES.map((lt) => ({
-    id: generateId(),
-    ...lt,
-  })),
-};
-
 const INITIAL_INVITES: InviteEmployeesData = {
   invites: [],
 };
 
-const INITIAL_PAYROLL: PayrollSetupData = {
-  paySchedule: "monthly",
-  paymentMethod: "bank-transfer",
-  pensionEnabled: true,
-  employerPensionPercent: 10,
-  employeePensionPercent: 8,
-  payeEnabled: true,
+const INITIAL_HR_ADMIN: HrAdminData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  department: "",
 };
 
 export function SetupWizard() {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState<OnboardingStep>(1);
+  const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
   const [deptData, setDeptData] = useState<DepartmentsData>(INITIAL_DEPARTMENTS);
-  const [scheduleData, setScheduleData] = useState<WorkScheduleData>(INITIAL_SCHEDULE);
   const [inviteData, setInviteData] = useState<InviteEmployeesData>(INITIAL_INVITES);
-  const [payrollData, setPayrollData] = useState<PayrollSetupData>(INITIAL_PAYROLL);
+  const [hrAdminData, setHrAdminData] = useState<HrAdminData>(INITIAL_HR_ADMIN);
 
   const [deptErrors, setDeptErrors] = useState<ValidationErrors<DepartmentsData>>({});
-  const [scheduleErrors, setScheduleErrors] = useState<ValidationErrors<WorkScheduleData>>({});
   const [inviteErrors, setInviteErrors] = useState<ValidationErrors<InviteEmployeesData>>({});
-  const [payrollErrors, setPayrollErrors] = useState<ValidationErrors<PayrollSetupData>>({});
+  const [hrAdminErrors, setHrAdminErrors] = useState<Partial<Record<keyof HrAdminData, string>>>({});
 
   // --- Department handlers ---
   function addDepartment(name: string) {
@@ -102,47 +81,6 @@ export function SetupWizard() {
       ),
     }));
     setDeptErrors({});
-  }
-
-  // --- Schedule handlers ---
-  function toggleWorkDay(day: WorkScheduleData["workDays"][number]) {
-    setScheduleData((prev) => ({
-      ...prev,
-      workDays: prev.workDays.includes(day)
-        ? prev.workDays.filter((d) => d !== day)
-        : [...prev.workDays, day],
-    }));
-    setScheduleErrors((prev) => ({ ...prev, workDays: undefined }));
-  }
-
-  function updateScheduleField(field: "startTime" | "endTime", value: string) {
-    setScheduleData((prev) => ({ ...prev, [field]: value }));
-    setScheduleErrors((prev) => ({ ...prev, [field]: undefined }));
-  }
-
-  function addLeaveType() {
-    const lt: LeaveType = { id: generateId(), name: "", annualAllowance: 0 };
-    setScheduleData((prev) => ({
-      ...prev,
-      leaveTypes: [...prev.leaveTypes, lt],
-    }));
-  }
-
-  function removeLeaveType(id: string) {
-    setScheduleData((prev) => ({
-      ...prev,
-      leaveTypes: prev.leaveTypes.filter((lt) => lt.id !== id),
-    }));
-  }
-
-  function updateLeaveType(id: string, field: keyof LeaveType, value: string | number) {
-    setScheduleData((prev) => ({
-      ...prev,
-      leaveTypes: prev.leaveTypes.map((lt) =>
-        lt.id === id ? { ...lt, [field]: value } : lt
-      ),
-    }));
-    setScheduleErrors((prev) => ({ ...prev, leaveTypes: undefined }));
   }
 
   // --- Invite handlers ---
@@ -182,10 +120,10 @@ export function SetupWizard() {
     setInviteErrors({});
   }
 
-  // --- Payroll handlers ---
-  function updatePayrollField(field: keyof PayrollSetupData, value: string | boolean | number) {
-    setPayrollData((prev) => ({ ...prev, [field]: value }));
-    setPayrollErrors((prev) => ({ ...prev, [field]: undefined }));
+  // --- HR Admin handlers ---
+  function updateHrAdmin(field: keyof HrAdminData, value: string) {
+    setHrAdminData((prev) => ({ ...prev, [field]: value }));
+    setHrAdminErrors((prev) => ({ ...prev, [field]: undefined }));
   }
 
   // --- Navigation ---
@@ -197,19 +135,12 @@ export function SetupWizard() {
         return !hasErrors(errors);
       }
       case 2: {
-        const errors = validateWorkSchedule(scheduleData);
-        setScheduleErrors(errors);
-        return !hasErrors(errors);
-      }
-      case 3: {
         const errors = validateInviteEmployees(inviteData);
         setInviteErrors(errors);
         return !hasErrors(errors);
       }
-      case 4: {
-        const errors = validatePayrollSetup(payrollData);
-        setPayrollErrors(errors);
-        return !hasErrors(errors);
+      case 3: {
+        return true;
       }
     }
   }
@@ -217,8 +148,8 @@ export function SetupWizard() {
   function handleNext() {
     if (!validateCurrentStep()) return;
 
-    if (currentStep < 4) {
-      setCurrentStep((prev) => (prev + 1) as OnboardingStep);
+    if (currentStep < 3) {
+      setCurrentStep((prev) => (prev + 1) as 1 | 2 | 3);
     } else {
       handleSubmit();
     }
@@ -226,15 +157,7 @@ export function SetupWizard() {
 
   function handleBack() {
     if (currentStep > 1) {
-      setCurrentStep((prev) => (prev - 1) as OnboardingStep);
-    }
-  }
-
-  function handleSkipStep() {
-    if (currentStep < 4) {
-      setCurrentStep((prev) => (prev + 1) as OnboardingStep);
-    } else {
-      handleComplete();
+      setCurrentStep((prev) => (prev - 1) as 1 | 2 | 3);
     }
   }
 
@@ -281,15 +204,13 @@ export function SetupWizard() {
           {inviteData.invites.length > 0 && (
             <div className="flex flex-col items-center gap-1 px-4">
               <span className="text-lg font-bold text-foreground">{inviteData.invites.length}</span>
-              <span className="text-[11px] text-muted-foreground">Invites</span>
+              <span className="text-[11px] text-muted-foreground">Employees</span>
             </div>
           )}
-          {scheduleData.leaveTypes.length > 0 && (
-            <div className="flex flex-col items-center gap-1 px-4">
-              <span className="text-lg font-bold text-foreground">{scheduleData.leaveTypes.length}</span>
-              <span className="text-[11px] text-muted-foreground">Leave Types</span>
-            </div>
-          )}
+          <div className="flex flex-col items-center gap-1 px-4">
+            <span className="text-lg font-bold text-foreground">1</span>
+            <span className="text-[11px] text-muted-foreground">HR Admin</span>
+          </div>
         </div>
 
         <Button onClick={handleComplete} className="w-full max-w-xs">
@@ -304,16 +225,6 @@ export function SetupWizard() {
     <div className="space-y-6">
       <StepIndicator steps={STEPS} currentStep={currentStep} />
 
-      <div className="text-center">
-        <button
-          type="button"
-          onClick={handleComplete}
-          className="text-xs text-muted-foreground hover:text-foreground transition-colors underline"
-        >
-          I&apos;ll do this later
-        </button>
-      </div>
-
       <Separator />
 
       <div className="min-h-[420px]">
@@ -327,17 +238,6 @@ export function SetupWizard() {
           />
         )}
         {currentStep === 2 && (
-          <WorkScheduleStep
-            data={scheduleData}
-            errors={scheduleErrors}
-            onToggleDay={toggleWorkDay}
-            onChangeField={updateScheduleField}
-            onAddLeaveType={addLeaveType}
-            onRemoveLeaveType={removeLeaveType}
-            onUpdateLeaveType={updateLeaveType}
-          />
-        )}
-        {currentStep === 3 && (
           <InviteEmployeesStep
             data={inviteData}
             departments={deptData.departments}
@@ -348,11 +248,12 @@ export function SetupWizard() {
             onBulkAdd={bulkAddInvites}
           />
         )}
-        {currentStep === 4 && (
-          <PayrollSetupStep
-            data={payrollData}
-            errors={payrollErrors}
-            onChange={updatePayrollField}
+        {currentStep === 3 && (
+          <HrAdminStep
+            data={hrAdminData}
+            departments={deptData.departments}
+            errors={hrAdminErrors}
+            onChange={updateHrAdmin}
           />
         )}
       </div>
@@ -370,16 +271,13 @@ export function SetupWizard() {
         )}
 
         <div className="flex items-center gap-3">
-          <Button variant="ghost" onClick={handleSkipStep} disabled={isSubmitting}>
-            Skip for now
-          </Button>
           <Button onClick={handleNext} disabled={isSubmitting}>
             {isSubmitting ? (
               <span className="flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Saving...
               </span>
-            ) : currentStep === 4 ? (
+            ) : currentStep === 3 ? (
               "Complete Setup"
             ) : (
               <span className="flex items-center gap-2">

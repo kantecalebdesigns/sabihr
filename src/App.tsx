@@ -11,6 +11,14 @@ import DepartmentListPage from "@/pages/department-list";
 import AttendancePage from "@/pages/attendance";
 import LeavePage from "@/pages/leave";
 import PayrollPage from "@/pages/payroll";
+import PayrollConfigPage from "@/pages/payroll-config";
+import StatutoryCompliancePage from "@/pages/statutory-compliance";
+import PayslipManagementPage from "@/pages/payslip-management";
+import PaymentDisbursementPage from "@/pages/payment-disbursement";
+import StatutoryRemittancePage from "@/pages/statutory-remittance";
+import CrossBorderPayrollPage from "@/pages/cross-border-payroll";
+import PayrollReportsPage from "@/pages/payroll-reports";
+import PayrollAuditPage from "@/pages/payroll-audit";
 import OnboardingPage from "@/pages/onboarding";
 import EmployeeOnboardingPage from "@/pages/employee-onboarding";
 import EmployeeDashboardPage from "@/pages/employee-dashboard";
@@ -18,6 +26,14 @@ import EmployeeProfilePage from "@/pages/employee-profile";
 import EmployeeDirectoryPage from "@/pages/employee-directory";
 import EmployeeRedeploymentPage from "@/pages/employee-redeployment";
 import EmployeeNotificationsPage from "@/pages/employee-notifications";
+import EmployeePayslipsPage from "@/pages/employee-payslips";
+import EmployeeTaxPage from "@/pages/employee-tax";
+import EmployeePaymentsPage from "@/pages/employee-payments";
+import EmployeeLoansPage from "@/pages/employee-loans";
+import EmployeeWalletPage from "@/pages/employee-wallet";
+import EmployeeMobilePayslipPage from "@/pages/employee-mobile-payslip";
+import EmployeeMobileSalaryPage from "@/pages/employee-mobile-salary";
+import EmployeeMobileWalletPage from "@/pages/employee-mobile-wallet";
 import DocumentsPage from "@/pages/documents";
 import DocumentTemplateBuilderPage from "@/pages/document-template-builder";
 import DocumentTemplateDetailPage from "@/pages/document-template-detail";
@@ -69,6 +85,14 @@ function App() {
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/leave" element={<LeavePage />} />
           <Route path="/payroll" element={<PayrollPage />} />
+          <Route path="/payroll/config" element={<PayrollConfigPage />} />
+          <Route path="/payroll/compliance" element={<StatutoryCompliancePage />} />
+          <Route path="/payroll/payslips" element={<PayslipManagementPage />} />
+          <Route path="/payroll/disbursement" element={<PaymentDisbursementPage />} />
+          <Route path="/payroll/remittance" element={<StatutoryRemittancePage />} />
+          <Route path="/payroll/global" element={<CrossBorderPayrollPage />} />
+          <Route path="/payroll/reports" element={<PayrollReportsPage />} />
+          <Route path="/payroll/audit" element={<PayrollAuditPage />} />
           <Route path="/documents" element={<DocumentsPage />} />
           <Route path="/documents/templates/new" element={<DocumentTemplateBuilderPage />} />
           <Route path="/documents/templates/:id" element={<DocumentTemplateBuilderPage />} />
@@ -102,6 +126,14 @@ function App() {
           <Route path="/employee/directory" element={<EmployeeDirectoryPage />} />
           <Route path="/employee/redeployment" element={<EmployeeRedeploymentPage />} />
           <Route path="/employee/notifications" element={<EmployeeNotificationsPage />} />
+          <Route path="/employee/payslips" element={<EmployeePayslipsPage />} />
+          <Route path="/employee/tax" element={<EmployeeTaxPage />} />
+          <Route path="/employee/payments" element={<EmployeePaymentsPage />} />
+          <Route path="/employee/loans" element={<EmployeeLoansPage />} />
+          <Route path="/employee/wallet" element={<EmployeeWalletPage />} />
+          <Route path="/employee/mobile/payslip" element={<EmployeeMobilePayslipPage />} />
+          <Route path="/employee/mobile/salary" element={<EmployeeMobileSalaryPage />} />
+          <Route path="/employee/mobile/wallet" element={<EmployeeMobileWalletPage />} />
           <Route path="/employee/documents" element={<EmployeeDocumentsPage />} />
           {/* Employee Assets */}
           <Route path="/employee/assets" element={<EmployeeAssetsPage />} />
