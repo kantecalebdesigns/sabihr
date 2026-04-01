@@ -121,22 +121,22 @@ export function EmailVerificationStep({ onVerified }: EmailVerificationStepProps
 
   if (step === "email") {
     return (
-      <div className="space-y-6 py-4">
-        <div className="space-y-1 text-center">
-          <h2 className="text-lg font-semibold">Get started</h2>
-          <p className="text-sm text-muted-foreground">
+      <div className="py-4">
+        <div className="flex flex-col gap-1 text-center mb-[20px]">
+          <h2 className="text-lg font-semibold text-slate-900 leading-7">Get started</h2>
+          <p className="text-sm text-slate-500 leading-5">
             Enter your company name and email address. We'll send you a verification code.
           </p>
         </div>
 
-        <form onSubmit={handleEmailSubmit} className="space-y-5 max-w-sm mx-auto">
+        <form onSubmit={handleEmailSubmit} className="flex flex-col gap-5 max-w-[384px] mx-auto">
           {error && (
             <div className="px-3 py-2.5 text-sm text-destructive bg-destructive/10 rounded-md border border-destructive/20">
               {error}
             </div>
           )}
 
-          <div className="space-y-1.5">
+          <div className="flex flex-col gap-1.5">
             <Label htmlFor="companyName">Company name</Label>
             <Input
               id="companyName"
@@ -147,10 +147,11 @@ export function EmailVerificationStep({ onVerified }: EmailVerificationStepProps
                 if (error) setError("");
               }}
               autoFocus
+              className="h-9"
             />
           </div>
 
-          <div className="space-y-1.5">
+          <div className="flex flex-col gap-1.5">
             <Label htmlFor="verifyEmail">Email address</Label>
             <Input
               id="verifyEmail"
@@ -162,13 +163,14 @@ export function EmailVerificationStep({ onVerified }: EmailVerificationStepProps
                 if (error) setError("");
               }}
               autoComplete="email"
+              className="h-9"
             />
           </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
+          <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-md h-9 text-sm font-medium" disabled={isLoading}>
             {isLoading ? (
               <span className="flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Sending code...
               </span>
             ) : (
@@ -182,7 +184,7 @@ export function EmailVerificationStep({ onVerified }: EmailVerificationStepProps
           <div className="flex justify-center">
             <Link
               to="/login"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to login
@@ -194,21 +196,21 @@ export function EmailVerificationStep({ onVerified }: EmailVerificationStepProps
   }
 
   return (
-    <div className="space-y-6 py-4">
-      <div className="flex flex-col items-center text-center space-y-3">
-        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
-          <ShieldCheck className="w-7 h-7 text-primary" />
+    <div className="py-4">
+      <div className="flex flex-col items-center text-center gap-3 mb-[20px]">
+        <div className="w-14 h-14 rounded-full bg-blue-600/10 flex items-center justify-center">
+          <ShieldCheck className="w-7 h-7 text-blue-600" />
         </div>
-        <div className="space-y-1">
-          <h2 className="text-lg font-semibold">Enter verification code</h2>
-          <p className="text-sm text-muted-foreground">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-lg font-semibold text-slate-900 leading-7">Enter verification code</h2>
+          <p className="text-sm text-slate-500 leading-5">
             We sent a 6-digit code to{" "}
-            <span className="font-medium text-foreground">{email}</span>
+            <span className="font-medium text-slate-900">{email}</span>
           </p>
         </div>
       </div>
 
-      <form onSubmit={handleOtpSubmit} className="space-y-5 max-w-sm mx-auto">
+      <form onSubmit={handleOtpSubmit} className="flex flex-col gap-5 max-w-[384px] mx-auto">
         {error && (
           <div className="px-3 py-2.5 text-sm text-destructive bg-destructive/10 rounded-md border border-destructive/20">
             {error}
@@ -228,16 +230,16 @@ export function EmailVerificationStep({ onVerified }: EmailVerificationStepProps
               value={digit}
               onChange={(e) => handleOtpChange(index, e.target.value)}
               onKeyDown={(e) => handleOtpKeyDown(index, e)}
-              className="w-12 h-14 text-center text-xl font-semibold rounded-md border border-input bg-background shadow-xs transition-colors focus:border-ring focus:ring-0 focus:outline-none placeholder:text-muted-foreground"
+              className="w-12 h-14 text-center text-xl font-semibold rounded-md border border-input bg-background transition-colors focus:border-ring focus:ring-0 focus:outline-none placeholder:text-muted-foreground"
               aria-label={`Digit ${index + 1}`}
             />
           ))}
         </div>
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-md h-9 text-sm font-medium" disabled={isLoading}>
           {isLoading ? (
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+              <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               Verifying...
             </span>
           ) : (
@@ -248,17 +250,17 @@ export function EmailVerificationStep({ onVerified }: EmailVerificationStepProps
           )}
         </Button>
 
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-center text-sm text-slate-500">
           Didn't receive the code?{" "}
           {cooldown > 0 ? (
-            <span className="text-muted-foreground/60">
+            <span className="text-slate-400">
               Resend in {cooldown}s
             </span>
           ) : (
             <button
               type="button"
               onClick={handleResend}
-              className="font-medium text-primary hover:text-primary/80 transition-colors"
+              className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
             >
               Click to resend
             </button>
@@ -273,7 +275,7 @@ export function EmailVerificationStep({ onVerified }: EmailVerificationStepProps
               setOtp(Array(OTP_LENGTH).fill(""));
               setError("");
             }}
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Use a different email

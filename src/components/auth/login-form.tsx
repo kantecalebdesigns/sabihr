@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -63,7 +63,7 @@ export function LoginForm({ mode = "admin" }: LoginFormProps) {
           <Label htmlFor="password">Password</Label>
           <Link
             to="/forgot-password"
-            className="text-xs text-primary hover:text-primary/80 transition-colors"
+            className="text-xs text-blue-600 hover:text-blue-500 transition-colors"
           >
             Forgot password?
           </Link>
@@ -100,17 +100,14 @@ export function LoginForm({ mode = "admin" }: LoginFormProps) {
         </Label>
       </div>
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
+      <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-md h-10 text-sm font-medium" disabled={isLoading}>
         {isLoading ? (
           <span className="flex items-center gap-2">
-            <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             Signing in...
           </span>
         ) : (
-          <span className="flex items-center gap-2">
-            Sign in
-            <ArrowRight className="w-4 h-4" />
-          </span>
+          "Sign in \u2192"
         )}
       </Button>
     </form>

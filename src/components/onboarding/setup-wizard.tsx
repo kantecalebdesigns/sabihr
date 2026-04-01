@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Loader2, CheckCircle2, Building2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { StepIndicator } from "@/components/auth/step-indicator";
 import { DepartmentsStep } from "./departments-step";
 import { InviteEmployeesStep } from "./invite-employees-step";
-import { HrAdminStep } from "./hr-admin-step";
-import type { HrAdminData } from "./hr-admin-step";
 import {
   validateDepartments,
   validateInviteEmployees,
@@ -24,7 +21,6 @@ import type {
 const STEPS = [
   { label: "Departments" },
   { label: "Employees" },
-  { label: "HR Admin" },
 ];
 
 function generateId(): string {
@@ -39,27 +35,17 @@ const INITIAL_INVITES: InviteEmployeesData = {
   invites: [],
 };
 
-const INITIAL_HR_ADMIN: HrAdminData = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  department: "",
-};
-
 export function SetupWizard() {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
+  const [currentStep, setCurrentStep] = useState<1 | 2>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
   const [deptData, setDeptData] = useState<DepartmentsData>(INITIAL_DEPARTMENTS);
   const [inviteData, setInviteData] = useState<InviteEmployeesData>(INITIAL_INVITES);
-  const [hrAdminData, setHrAdminData] = useState<HrAdminData>(INITIAL_HR_ADMIN);
 
   const [deptErrors, setDeptErrors] = useState<ValidationErrors<DepartmentsData>>({});
   const [inviteErrors, setInviteErrors] = useState<ValidationErrors<InviteEmployeesData>>({});
-  const [hrAdminErrors, setHrAdminErrors] = useState<Partial<Record<keyof HrAdminData, string>>>({});
 
   // --- Department handlers ---
   function addDepartment(name: string) {
@@ -120,12 +106,6 @@ export function SetupWizard() {
     setInviteErrors({});
   }
 
-  // --- HR Admin handlers ---
-  function updateHrAdmin(field: keyof HrAdminData, value: string) {
-    setHrAdminData((prev) => ({ ...prev, [field]: value }));
-    setHrAdminErrors((prev) => ({ ...prev, [field]: undefined }));
-  }
-
   // --- Navigation ---
   function validateCurrentStep(): boolean {
     switch (currentStep) {
@@ -139,17 +119,14 @@ export function SetupWizard() {
         setInviteErrors(errors);
         return !hasErrors(errors);
       }
-      case 3: {
-        return true;
-      }
     }
   }
 
   function handleNext() {
     if (!validateCurrentStep()) return;
 
-    if (currentStep < 3) {
-      setCurrentStep((prev) => (prev + 1) as 1 | 2 | 3);
+    if (currentStep < 2) {
+      setCurrentStep(2);
     } else {
       handleSubmit();
     }
@@ -157,7 +134,7 @@ export function SetupWizard() {
 
   function handleBack() {
     if (currentStep > 1) {
-      setCurrentStep((prev) => (prev - 1) as 1 | 2 | 3);
+      setCurrentStep(1);
     }
   }
 
@@ -176,108 +153,85 @@ export function SetupWizard() {
 
   if (isComplete) {
     return (
-      <div className="flex flex-col items-center text-center space-y-6 py-10">
-        <div className="relative">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center">
-            <CheckCircle2 className="w-10 h-10 text-emerald-600" />
-          </div>
-          <div className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
-            <Building2 className="w-3.5 h-3.5 text-blue-600" />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold">Your workspace is ready!</h2>
-          <p className="text-sm text-muted-foreground max-w-sm">
-            You&apos;ve successfully configured your HR workspace.
-            You can always adjust these settings later from the admin panel.
-          </p>
-        </div>
+      <div className="flex flex-col items-center">
+        <div className="w-full h-px bg-slate-200" />
 
-        {/* Quick stats */}
-        <div className="flex gap-4 py-2">
-          {deptData.departments.length > 0 && (
-            <div className="flex flex-col items-center gap-1 px-4">
-              <span className="text-lg font-bold text-foreground">{deptData.departments.length}</span>
-              <span className="text-[11px] text-muted-foreground">Departments</span>
+        <div className="flex flex-col items-center gap-10 py-[22px] w-[384px]">
+          <div className="flex flex-col items-center gap-[18px]">
+            <div className="w-10 h-10 rounded-full bg-[#f4fcf1] flex items-center justify-center">
+              <CheckCircle2 className="w-6 h-6 text-green-600" />
             </div>
-          )}
-          {inviteData.invites.length > 0 && (
-            <div className="flex flex-col items-center gap-1 px-4">
-              <span className="text-lg font-bold text-foreground">{inviteData.invites.length}</span>
-              <span className="text-[11px] text-muted-foreground">Employees</span>
+            <div className="flex flex-col items-center gap-2">
+              <h2 className="text-2xl font-semibold text-slate-900 text-center">
+                Your workspace is ready!
+              </h2>
+              <p className="text-sm text-slate-500 text-center leading-5 max-w-[362px]">
+                You&apos;ve successfully configured your HR workspace.
+                You can always adjust these settings later from the admin panel.
+              </p>
             </div>
-          )}
-          <div className="flex flex-col items-center gap-1 px-4">
-            <span className="text-lg font-bold text-foreground">1</span>
-            <span className="text-[11px] text-muted-foreground">HR Admin</span>
           </div>
-        </div>
 
-        <Button onClick={handleComplete} className="w-full max-w-xs">
-          <Building2 className="w-4 h-4 mr-2" />
-          Go to Dashboard
-        </Button>
+          <Button
+            onClick={handleComplete}
+            className="w-[362px] bg-blue-600 hover:bg-blue-700 text-white rounded-md py-2 text-sm font-medium"
+          >
+            Go to Dashboard
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-6">
       <StepIndicator steps={STEPS} currentStep={currentStep} />
 
-      <Separator />
+      <div className="w-full h-px bg-slate-200" />
 
-      <div className="min-h-[420px]">
-        {currentStep === 1 && (
-          <DepartmentsStep
-            data={deptData}
-            errors={deptErrors}
-            onAdd={addDepartment}
-            onRemove={removeDepartment}
-            onUpdate={updateDepartment}
-          />
-        )}
-        {currentStep === 2 && (
-          <InviteEmployeesStep
-            data={inviteData}
-            departments={deptData.departments}
-            errors={inviteErrors}
-            onAdd={addInvite}
-            onRemove={removeInvite}
-            onUpdate={updateInvite}
-            onBulkAdd={bulkAddInvites}
-          />
-        )}
-        {currentStep === 3 && (
-          <HrAdminStep
-            data={hrAdminData}
-            departments={deptData.departments}
-            errors={hrAdminErrors}
-            onChange={updateHrAdmin}
-          />
-        )}
-      </div>
+      <div className="px-[76px] flex flex-col gap-6 items-end">
+        <div className="w-full">
+          {currentStep === 1 && (
+            <DepartmentsStep
+              data={deptData}
+              errors={deptErrors}
+              onAdd={addDepartment}
+              onRemove={removeDepartment}
+              onUpdate={updateDepartment}
+            />
+          )}
+          {currentStep === 2 && (
+            <InviteEmployeesStep
+              data={inviteData}
+              departments={deptData.departments}
+              errors={inviteErrors}
+              onAdd={addInvite}
+              onRemove={removeInvite}
+              onUpdate={updateInvite}
+              onBulkAdd={bulkAddInvites}
+            />
+          )}
+        </div>
 
-      <Separator />
+        <div className="flex items-center w-full">
+          {currentStep > 1 && (
+            <Button variant="ghost" onClick={handleBack} disabled={isSubmitting} className="mr-auto">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+          )}
 
-      <div className="flex items-center justify-between">
-        {currentStep > 1 ? (
-          <Button variant="ghost" onClick={handleBack} disabled={isSubmitting}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
-          </Button>
-        ) : (
-          <div />
-        )}
-
-        <div className="flex items-center gap-3">
-          <Button onClick={handleNext} disabled={isSubmitting}>
+          <Button
+            onClick={handleNext}
+            disabled={isSubmitting}
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-9 text-sm font-medium ml-auto"
+          >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Saving...
               </span>
-            ) : currentStep === 3 ? (
+            ) : currentStep === 2 ? (
               "Complete Setup"
             ) : (
               <span className="flex items-center gap-2">
