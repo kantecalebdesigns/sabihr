@@ -272,16 +272,16 @@ export default function EmployeeDocumentsPage() {
     <div className="max-w-[1200px] mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold text-foreground">
+        <h1 className="text-2xl font-semibold text-slate-900">
           My Documents
         </h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-sm text-slate-500 mt-1">
           View and manage your documents
         </p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-border">
+      <div className="flex gap-1 border-b border-[#efefef]">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -289,13 +289,13 @@ export default function EmployeeDocumentsPage() {
             className={cn(
               "px-4 py-2.5 text-sm font-medium transition-colors relative",
               activeTab === tab
-                ? "text-primary"
-                : "text-muted-foreground hover:text-foreground"
+                ? "text-blue-600"
+                : "text-slate-500 hover:text-slate-900"
             )}
           >
             {tab}
             {activeTab === tab && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t" />
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-t" />
             )}
           </button>
         ))}
@@ -307,23 +307,23 @@ export default function EmployeeDocumentsPage() {
           {myDocuments.map((doc) => (
             <div
               key={doc.id}
-              className="rounded-xl border border-border bg-card p-4 space-y-3"
+              className="rounded-xl border border-[#efefef] bg-white p-4 space-y-3"
             >
               {/* Top row: icon + name */}
               <div className="flex items-start gap-3">
-                <div className="rounded-lg bg-muted p-2 shrink-0">
+                <div className="rounded-lg bg-[#f8fafc] p-2 shrink-0">
                   {fileIcon(doc.fileType)}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-foreground truncate">
+                  <p className="text-sm font-medium text-slate-900 truncate">
                     {doc.name}
                   </p>
-                  <p className="text-xs text-muted-foreground">{doc.type}</p>
+                  <p className="text-xs text-slate-500">{doc.type}</p>
                 </div>
               </div>
 
               {/* Dates */}
-              <div className="space-y-1 text-xs text-muted-foreground">
+              <div className="space-y-1 text-xs text-slate-500">
                 <div className="flex items-center gap-1.5">
                   <CalendarDays className="size-3.5" />
                   Uploaded: {formatDate(doc.uploadDate)}
@@ -367,23 +367,23 @@ export default function EmployeeDocumentsPage() {
           {companyDocuments.map((doc) => (
             <div
               key={doc.id}
-              className="rounded-xl border border-border bg-card p-4 space-y-3"
+              className="rounded-xl border border-[#efefef] bg-white p-4 space-y-3"
             >
               {/* Top */}
               <div className="flex items-start gap-3">
-                <div className="rounded-lg bg-muted p-2 shrink-0">
-                  <FileText className="size-5 text-primary" />
+                <div className="rounded-lg bg-[#f8fafc] p-2 shrink-0">
+                  <FileText className="size-5 text-blue-600" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-foreground truncate">
+                  <p className="text-sm font-medium text-slate-900 truncate">
                     {doc.name}
                   </p>
-                  <p className="text-xs text-muted-foreground">{doc.type}</p>
+                  <p className="text-xs text-slate-500">{doc.type}</p>
                 </div>
               </div>
 
               {/* Meta */}
-              <div className="space-y-1 text-xs text-muted-foreground">
+              <div className="space-y-1 text-xs text-slate-500">
                 <div className="flex items-center gap-1.5">
                   <User className="size-3.5" />
                   Sent by: {doc.sentBy}
@@ -424,17 +424,17 @@ export default function EmployeeDocumentsPage() {
           {pendingDocuments.map((doc) => (
             <div
               key={doc.id}
-              className="rounded-xl border border-border bg-card p-5 space-y-3"
+              className="rounded-xl border border-[#efefef] bg-white p-5 space-y-3"
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div className="space-y-1 min-w-0 flex-1">
-                  <p className="text-sm font-medium text-foreground">
+                  <p className="text-sm font-medium text-slate-900">
                     {doc.requiredType}
                   </p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-xs text-slate-500 leading-relaxed">
                     {doc.description}
                   </p>
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground pt-1">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 pt-1">
                     <Clock className="size-3.5" />
                     Deadline: {formatDate(doc.deadline)}
                   </div>

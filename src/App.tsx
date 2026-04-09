@@ -8,6 +8,8 @@ import EmployeeListPage from "@/pages/employee-list";
 import EmployeeCreatePage from "@/pages/employee-create";
 import EmployeeDetailPage from "@/pages/employee-detail";
 import DepartmentListPage from "@/pages/department-list";
+import DepartmentCreatePage from "@/pages/department-create";
+import DepartmentDetailPage from "@/pages/department-detail";
 import AttendancePage from "@/pages/attendance";
 import LeavePage from "@/pages/leave";
 import PayrollPage from "@/pages/payroll";
@@ -39,6 +41,12 @@ import DocumentTemplateBuilderPage from "@/pages/document-template-builder";
 import DocumentTemplateDetailPage from "@/pages/document-template-detail";
 import DocumentLibraryPage from "@/pages/document-library";
 import EmployeeDocumentsPage from "@/pages/employee-documents";
+import EmployeeAttendancePage from "@/pages/employee-attendance";
+import EmployeeLeavePage from "@/pages/employee-leave";
+import EmployeeAnnouncementsPage from "@/pages/employee-announcements";
+import EmployeeSurveysPage from "@/pages/employee-surveys";
+import EmployeeRequisitionsPage from "@/pages/employee-requisitions";
+import EmployeeDisciplinaryPage from "@/pages/employee-disciplinary";
 // Asset Management - Admin
 import AssetListPage from "@/pages/asset-list";
 import AssetCreatePage from "@/pages/asset-create";
@@ -61,6 +69,38 @@ import EmployeeAssetDetailPage from "@/pages/employee-asset-detail";
 import EmployeeAssetRequestPage from "@/pages/employee-asset-request";
 import EmployeeAssetReportIssuePage from "@/pages/employee-asset-report-issue";
 import EmployeeAssetReturnPage from "@/pages/employee-asset-return";
+// Loans
+import LoansPage from "@/pages/loans";
+import LoanApplyPage from "@/pages/loan-apply";
+import LoanDetailPage from "@/pages/loan-detail";
+// Benefits
+import BenefitsPage from "@/pages/benefits";
+import BenefitsEnrollmentsPage from "@/pages/benefits-enrollments";
+import EmployeeBenefitsPage from "@/pages/employee-benefits";
+// Performance Management
+import PerformancePage from "@/pages/performance";
+import PerformanceGoalsPage from "@/pages/performance-goals";
+import PerformanceReviewsPage from "@/pages/performance-reviews";
+import PerformanceReviewDetailPage from "@/pages/performance-review-detail";
+import Performance360Page from "@/pages/performance-360";
+import EmployeePerformancePage from "@/pages/employee-performance";
+// Announcements & Surveys
+import AnnouncementsPage from "@/pages/announcements";
+import AnnouncementCreatePage from "@/pages/announcement-create";
+import AnnouncementDetailPage from "@/pages/announcement-detail";
+import SurveysPage from "@/pages/surveys";
+import SurveyResultsPage from "@/pages/survey-results";
+import SurveyCreatePage from "@/pages/survey-create";
+// Requisitions
+import RequisitionsPage from "@/pages/requisitions";
+import RequisitionDetailPage from "@/pages/requisition-detail";
+// Disciplinary
+import DisciplinaryPage from "@/pages/disciplinary";
+import DisciplinaryCaseDetailPage from "@/pages/disciplinary-case-detail";
+// Exit Management
+import ExitPage from "@/pages/exit";
+import ExitDetailPage from "@/pages/exit-detail";
+import ExitInitiatePage from "@/pages/exit-initiate";
 import { AppLayout } from "@/components/layout/app-layout";
 import { EmployeeLayout } from "@/components/layout/employee-layout";
 
@@ -82,6 +122,8 @@ function App() {
           <Route path="/employees/create" element={<EmployeeCreatePage />} />
           <Route path="/employees/:id" element={<EmployeeDetailPage />} />
           <Route path="/departments" element={<DepartmentListPage />} />
+          <Route path="/departments/create" element={<DepartmentCreatePage />} />
+          <Route path="/departments/:id" element={<DepartmentDetailPage />} />
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/leave" element={<LeavePage />} />
           <Route path="/payroll" element={<PayrollPage />} />
@@ -93,6 +135,19 @@ function App() {
           <Route path="/payroll/global" element={<CrossBorderPayrollPage />} />
           <Route path="/payroll/reports" element={<PayrollReportsPage />} />
           <Route path="/payroll/audit" element={<PayrollAuditPage />} />
+          {/* Loans */}
+          <Route path="/loans" element={<LoansPage />} />
+          <Route path="/loans/apply" element={<LoanApplyPage />} />
+          <Route path="/loans/:id" element={<LoanDetailPage />} />
+          {/* Benefits */}
+          <Route path="/benefits" element={<BenefitsPage />} />
+          <Route path="/benefits/enrollments" element={<BenefitsEnrollmentsPage />} />
+          {/* Performance Management */}
+          <Route path="/performance" element={<PerformancePage />} />
+          <Route path="/performance/goals" element={<PerformanceGoalsPage />} />
+          <Route path="/performance/reviews" element={<PerformanceReviewsPage />} />
+          <Route path="/performance/reviews/:id" element={<PerformanceReviewDetailPage />} />
+          <Route path="/performance/360/:id" element={<Performance360Page />} />
           <Route path="/documents" element={<DocumentsPage />} />
           <Route path="/documents/templates/new" element={<DocumentTemplateBuilderPage />} />
           <Route path="/documents/templates/:id" element={<DocumentTemplateBuilderPage />} />
@@ -114,6 +169,24 @@ function App() {
           <Route path="/assets/reports/utilization" element={<AssetUtilizationPage />} />
           <Route path="/assets/reports/missing" element={<AssetMissingReportPage />} />
           <Route path="/assets/reports/depreciation" element={<AssetDepreciationReportPage />} />
+          {/* Announcements */}
+          <Route path="/announcements" element={<AnnouncementsPage />} />
+          <Route path="/announcements/create" element={<AnnouncementCreatePage />} />
+          <Route path="/announcements/:id" element={<AnnouncementDetailPage />} />
+          {/* Surveys */}
+          <Route path="/surveys" element={<SurveysPage />} />
+          <Route path="/surveys/create" element={<SurveyCreatePage />} />
+          <Route path="/surveys/:id/results" element={<SurveyResultsPage />} />
+          {/* Requisitions */}
+          <Route path="/requisitions" element={<RequisitionsPage />} />
+          <Route path="/requisitions/:id" element={<RequisitionDetailPage />} />
+          {/* Disciplinary */}
+          <Route path="/disciplinary" element={<DisciplinaryPage />} />
+          <Route path="/disciplinary/cases/:id" element={<DisciplinaryCaseDetailPage />} />
+          {/* Exit Management */}
+          <Route path="/exit" element={<ExitPage />} />
+          <Route path="/exit/:id" element={<ExitDetailPage />} />
+          <Route path="/exit/initiate" element={<ExitInitiatePage />} />
         </Route>
 
         {/* Employee onboarding (standalone, no layout) */}
@@ -135,6 +208,14 @@ function App() {
           <Route path="/employee/mobile/salary" element={<EmployeeMobileSalaryPage />} />
           <Route path="/employee/mobile/wallet" element={<EmployeeMobileWalletPage />} />
           <Route path="/employee/documents" element={<EmployeeDocumentsPage />} />
+          <Route path="/employee/attendance" element={<EmployeeAttendancePage />} />
+          <Route path="/employee/leave" element={<EmployeeLeavePage />} />
+          <Route path="/employee/announcements" element={<EmployeeAnnouncementsPage />} />
+          <Route path="/employee/surveys" element={<EmployeeSurveysPage />} />
+          <Route path="/employee/requisitions" element={<EmployeeRequisitionsPage />} />
+          <Route path="/employee/disciplinary" element={<EmployeeDisciplinaryPage />} />
+          <Route path="/employee/performance" element={<EmployeePerformancePage />} />
+          <Route path="/employee/benefits" element={<EmployeeBenefitsPage />} />
           {/* Employee Assets */}
           <Route path="/employee/assets" element={<EmployeeAssetsPage />} />
           <Route path="/employee/assets/:id" element={<EmployeeAssetDetailPage />} />

@@ -171,7 +171,7 @@ export default function DocumentsPage() {
           <h1 className="text-xl font-semibold tracking-tight">
             Document Management
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Manage templates, generate documents, and track activity
           </p>
         </div>
@@ -188,7 +188,7 @@ export default function DocumentsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-border">
+      <div className="flex items-center gap-1 border-b border-[#efefef]">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -196,8 +196,8 @@ export default function DocumentsPage() {
             className={cn(
               "flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors -mb-px",
               activeTab === tab.key
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-slate-500 hover:text-slate-900"
             )}
           >
             {tab.label}
@@ -266,7 +266,7 @@ function TemplatesTab({
       {/* Filters row */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
         <div className="relative flex-1 w-full sm:max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <Input
             placeholder="Search templates..."
             value={filter.search}
@@ -314,14 +314,14 @@ function TemplatesTab({
           </SelectContent>
         </Select>
 
-        <div className="flex items-center gap-1 ml-auto border border-border rounded-lg p-0.5">
+        <div className="flex items-center gap-1 ml-auto border border-[#efefef] rounded-lg p-0.5">
           <button
             onClick={() => setViewMode("grid")}
             className={cn(
               "p-1.5 rounded-md transition-colors",
               viewMode === "grid"
                 ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                : "text-slate-500 hover:text-slate-900"
             )}
           >
             <Grid3X3 className="w-4 h-4" />
@@ -332,7 +332,7 @@ function TemplatesTab({
               "p-1.5 rounded-md transition-colors",
               viewMode === "list"
                 ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                : "text-slate-500 hover:text-slate-900"
             )}
           >
             <List className="w-4 h-4" />
@@ -341,7 +341,7 @@ function TemplatesTab({
       </div>
 
       {/* Results count */}
-      <p className="text-sm text-muted-foreground">
+      <p className="text-sm text-slate-500">
         {templates.length} template{templates.length !== 1 ? "s" : ""} found
       </p>
 
@@ -389,14 +389,14 @@ function TemplatesTab({
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0 space-y-3">
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <div className="flex items-center justify-between text-xs text-slate-500">
                     <span>v{tpl.version}</span>
                     <span className="flex items-center gap-1">
                       <FileText className="w-3 h-3" />
                       {tpl.usageCount} uses
                     </span>
                   </div>
-                  <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                  <div className="flex items-center gap-1 text-[11px] text-slate-500">
                     <Clock className="w-3 h-3" />
                     Last used: {formatDate(tpl.lastUsed)}
                   </div>
@@ -422,29 +422,29 @@ function TemplatesTab({
 
       {/* List View */}
       {viewMode === "list" && (
-        <div className="border border-border rounded-xl overflow-hidden">
+        <div className="border border-[#efefef] rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-muted/50 text-left">
-                <th className="px-4 py-3 font-medium text-muted-foreground">
+              <tr className="bg-[#f8fafc] text-left">
+                <th className="px-4 py-3 text-xs font-medium text-slate-500">
                   Name
                 </th>
-                <th className="px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">
+                <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden md:table-cell">
                   Type
                 </th>
-                <th className="px-4 py-3 font-medium text-muted-foreground">
+                <th className="px-4 py-3 text-xs font-medium text-slate-500">
                   Status
                 </th>
-                <th className="px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">
+                <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden lg:table-cell">
                   Version
                 </th>
-                <th className="px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">
+                <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden lg:table-cell">
                   Usage
                 </th>
-                <th className="px-4 py-3 font-medium text-muted-foreground hidden xl:table-cell">
+                <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden xl:table-cell">
                   Last Used
                 </th>
-                <th className="px-4 py-3 font-medium text-muted-foreground text-right">
+                <th className="px-4 py-3 text-xs font-medium text-slate-500 text-right">
                   Actions
                 </th>
               </tr>
@@ -458,7 +458,7 @@ function TemplatesTab({
                 return (
                   <tr
                     key={tpl.id}
-                    className="border-t border-border hover:bg-muted/30 cursor-pointer transition-colors"
+                    className="border-t border-[#efefef] hover:bg-[#f8fafc] cursor-pointer transition-colors"
                     onClick={() => navigate(`/documents/templates/${tpl.id}`)}
                   >
                     <td className="px-4 py-3">
@@ -478,13 +478,13 @@ function TemplatesTab({
                         </div>
                         <div>
                           <p className="font-medium text-sm">{tpl.name}</p>
-                          <p className="text-xs text-muted-foreground line-clamp-1">
+                          <p className="text-xs text-slate-500 line-clamp-1">
                             {tpl.description}
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 hidden md:table-cell text-sm text-muted-foreground">
+                    <td className="px-4 py-3 hidden md:table-cell text-sm text-slate-500">
                       {typeConfig?.label ?? tpl.type}
                     </td>
                     <td className="px-4 py-3">
@@ -495,13 +495,13 @@ function TemplatesTab({
                         {statusStyle.label}
                       </Badge>
                     </td>
-                    <td className="px-4 py-3 hidden lg:table-cell text-sm text-muted-foreground">
+                    <td className="px-4 py-3 hidden lg:table-cell text-sm text-slate-500">
                       v{tpl.version}
                     </td>
-                    <td className="px-4 py-3 hidden lg:table-cell text-sm text-muted-foreground">
+                    <td className="px-4 py-3 hidden lg:table-cell text-sm text-slate-500">
                       {tpl.usageCount}
                     </td>
-                    <td className="px-4 py-3 hidden xl:table-cell text-sm text-muted-foreground">
+                    <td className="px-4 py-3 hidden xl:table-cell text-sm text-slate-500">
                       {formatDate(tpl.lastUsed)}
                     </td>
                     <td className="px-4 py-3 text-right">
@@ -527,8 +527,8 @@ function TemplatesTab({
       {/* Empty state */}
       {templates.length === 0 && (
         <div className="flex flex-col items-center py-16">
-          <FileText className="w-10 h-10 text-muted-foreground/30 mb-3" />
-          <p className="text-sm text-muted-foreground">
+          <FileText className="w-10 h-10 text-slate-500/30 mb-3" />
+          <p className="text-sm text-slate-500">
             No templates match your filters
           </p>
         </div>
@@ -548,34 +548,34 @@ function GeneratedDocumentsTab({
 }) {
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">
+      <p className="text-sm text-slate-500">
         {documents.length} generated document
         {documents.length !== 1 ? "s" : ""}
       </p>
 
-      <div className="border border-border rounded-xl overflow-hidden">
+      <div className="border border-[#efefef] rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-muted/50 text-left">
-              <th className="px-4 py-3 font-medium text-muted-foreground">
+            <tr className="bg-[#f8fafc] text-left">
+              <th className="px-4 py-3 text-xs font-medium text-slate-500">
                 Employee
               </th>
-              <th className="px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden md:table-cell">
                 Template
               </th>
-              <th className="px-4 py-3 font-medium text-muted-foreground">
+              <th className="px-4 py-3 text-xs font-medium text-slate-500">
                 Status
               </th>
-              <th className="px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden lg:table-cell">
                 Generated By
               </th>
-              <th className="px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden lg:table-cell">
                 Date
               </th>
-              <th className="px-4 py-3 font-medium text-muted-foreground hidden xl:table-cell">
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden xl:table-cell">
                 File Size
               </th>
-              <th className="px-4 py-3 font-medium text-muted-foreground text-right">
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 text-right">
                 Actions
               </th>
             </tr>
@@ -587,17 +587,17 @@ function GeneratedDocumentsTab({
               return (
                 <tr
                   key={doc.id}
-                  className="border-t border-border hover:bg-muted/30 transition-colors"
+                  className="border-t border-[#efefef] hover:bg-[#f8fafc] transition-colors"
                 >
                   <td className="px-4 py-3">
                     <div>
                       <p className="font-medium text-sm">{doc.employeeName}</p>
-                      <p className="text-xs text-muted-foreground md:hidden">
+                      <p className="text-xs text-slate-500 md:hidden">
                         {doc.templateName}
                       </p>
                     </div>
                   </td>
-                  <td className="px-4 py-3 hidden md:table-cell text-sm text-muted-foreground">
+                  <td className="px-4 py-3 hidden md:table-cell text-sm text-slate-500">
                     {doc.templateName}
                   </td>
                   <td className="px-4 py-3">
@@ -608,13 +608,13 @@ function GeneratedDocumentsTab({
                       {statusStyle.label}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3 hidden lg:table-cell text-sm text-muted-foreground">
+                  <td className="px-4 py-3 hidden lg:table-cell text-sm text-slate-500">
                     {doc.generatedBy}
                   </td>
-                  <td className="px-4 py-3 hidden lg:table-cell text-sm text-muted-foreground">
+                  <td className="px-4 py-3 hidden lg:table-cell text-sm text-slate-500">
                     {formatDate(doc.generatedAt)}
                   </td>
-                  <td className="px-4 py-3 hidden xl:table-cell text-sm text-muted-foreground">
+                  <td className="px-4 py-3 hidden xl:table-cell text-sm text-slate-500">
                     {doc.fileSize}
                   </td>
                   <td className="px-4 py-3 text-right">
@@ -656,8 +656,8 @@ function GeneratedDocumentsTab({
 
       {documents.length === 0 && (
         <div className="flex flex-col items-center py-16">
-          <FileText className="w-10 h-10 text-muted-foreground/30 mb-3" />
-          <p className="text-sm text-muted-foreground">
+          <FileText className="w-10 h-10 text-slate-500/30 mb-3" />
+          <p className="text-sm text-slate-500">
             No documents generated yet
           </p>
         </div>
@@ -696,7 +696,7 @@ function ActivityLogTab({
     <div className="space-y-4">
       {/* Filter */}
       <div className="flex items-center gap-3">
-        <Filter className="w-4 h-4 text-muted-foreground" />
+        <Filter className="w-4 h-4 text-slate-500" />
         <Select
           value={activityTypeFilter}
           onValueChange={(val) =>
@@ -714,7 +714,7 @@ function ActivityLogTab({
             ))}
           </SelectContent>
         </Select>
-        <p className="text-sm text-muted-foreground ml-auto">
+        <p className="text-sm text-slate-500 ml-auto">
           {activities.length} activit{activities.length !== 1 ? "ies" : "y"}
         </p>
       </div>
@@ -728,7 +728,7 @@ function ActivityLogTab({
           return (
             <div
               key={activity.id}
-              className="flex items-start gap-4 p-4 rounded-xl border border-border hover:shadow-sm transition-all"
+              className="flex items-start gap-4 p-4 rounded-xl border border-[#efefef] hover:shadow-sm transition-all"
             >
               <div
                 className={cn(
@@ -740,23 +740,23 @@ function ActivityLogTab({
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium">{activity.description}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="text-xs text-slate-500 mt-0.5">
                   {activity.fileName}
                 </p>
                 <div className="flex items-center gap-3 mt-1.5">
-                  <p className="text-[11px] text-muted-foreground/60">
+                  <p className="text-[11px] text-slate-500/60">
                     {activity.performedBy}
                   </p>
-                  <span className="text-[11px] text-muted-foreground/40">
+                  <span className="text-[11px] text-slate-500/40">
                     |
                   </span>
-                  <p className="text-[11px] text-muted-foreground/60">
+                  <p className="text-[11px] text-slate-500/60">
                     {formatDateTime(activity.performedAt)}
                   </p>
-                  <span className="text-[11px] text-muted-foreground/40">
+                  <span className="text-[11px] text-slate-500/40">
                     |
                   </span>
-                  <p className="text-[11px] text-muted-foreground/60">
+                  <p className="text-[11px] text-slate-500/60">
                     {activity.fileSize}
                   </p>
                 </div>
@@ -768,8 +768,8 @@ function ActivityLogTab({
 
       {activities.length === 0 && (
         <div className="flex flex-col items-center py-16">
-          <Clock className="w-10 h-10 text-muted-foreground/30 mb-3" />
-          <p className="text-sm text-muted-foreground">
+          <Clock className="w-10 h-10 text-slate-500/30 mb-3" />
+          <p className="text-sm text-slate-500">
             No activity to show
           </p>
         </div>

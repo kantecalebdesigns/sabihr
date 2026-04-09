@@ -46,7 +46,7 @@ const TABS: { key: TabKey; label: string; icon: typeof FileText }[] = [
 function StatusBadge({ status, styles }: { status: string; styles: Record<string, { label: string; bg: string; color: string }> }) {
   const s = styles[status] ?? { label: status, bg: "bg-gray-50 border-gray-200", color: "text-gray-700" };
   return (
-    <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border", s.bg, s.color)}>
+    <span className={cn("text-sm font-medium", s.color)}>
       {s.label}
     </span>
   );
@@ -60,37 +60,37 @@ function SummaryCards({ records, label }: { records: RemittanceRecord[]; label: 
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-      <div className="rounded-xl border border-border bg-card p-4">
-        <div className="flex items-center gap-2 text-muted-foreground mb-1">
+      <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="flex items-center gap-2 text-slate-500 mb-1">
           <DollarSign className="w-4 h-4" />
           <span className="text-xs font-medium">Total Due</span>
         </div>
         <p className="text-xl font-semibold">{formatNaira(totalDue)}</p>
-        <p className="text-[10px] text-muted-foreground mt-0.5">{label}</p>
+        <p className="text-[10px] text-slate-500 mt-0.5">{label}</p>
       </div>
-      <div className="rounded-xl border border-border bg-card p-4">
-        <div className="flex items-center gap-2 text-muted-foreground mb-1">
+      <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="flex items-center gap-2 text-slate-500 mb-1">
           <CheckCircle2 className="w-4 h-4" />
           <span className="text-xs font-medium">Total Paid</span>
         </div>
         <p className="text-xl font-semibold">{formatNaira(totalPaid)}</p>
-        <p className="text-[10px] text-muted-foreground mt-0.5">{label}</p>
+        <p className="text-[10px] text-slate-500 mt-0.5">{label}</p>
       </div>
-      <div className="rounded-xl border border-border bg-card p-4">
-        <div className="flex items-center gap-2 text-muted-foreground mb-1">
+      <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="flex items-center gap-2 text-slate-500 mb-1">
           <AlertTriangle className="w-4 h-4" />
           <span className="text-xs font-medium">Outstanding Balance</span>
         </div>
         <p className="text-xl font-semibold">{formatNaira(totalBalance)}</p>
-        <p className="text-[10px] text-muted-foreground mt-0.5">{label}</p>
+        <p className="text-[10px] text-slate-500 mt-0.5">{label}</p>
       </div>
-      <div className="rounded-xl border border-border bg-card p-4">
-        <div className="flex items-center gap-2 text-muted-foreground mb-1">
+      <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="flex items-center gap-2 text-slate-500 mb-1">
           <Clock className="w-4 h-4" />
           <span className="text-xs font-medium">Pending Actions</span>
         </div>
         <p className="text-xl font-semibold">{pendingCount}</p>
-        <p className="text-[10px] text-muted-foreground mt-0.5">Awaiting filing/payment</p>
+        <p className="text-[10px] text-slate-500 mt-0.5">Awaiting filing/payment</p>
       </div>
     </div>
   );
@@ -110,35 +110,35 @@ function RemittanceTable({
   onRecordPayment?: (id: string) => void;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-card overflow-x-auto">
+    <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-border bg-muted/40">
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">Period</th>
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">Due Date</th>
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">Employees</th>
-            <th className="text-right px-4 py-3 font-medium text-muted-foreground">Amount Due</th>
-            <th className="text-right px-4 py-3 font-medium text-muted-foreground">Amount Paid</th>
-            <th className="text-right px-4 py-3 font-medium text-muted-foreground">Balance</th>
+          <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Period</th>
+            <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Due Date</th>
+            <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Employees</th>
+            <th className="text-right px-4 py-3 text-xs font-medium text-slate-500">Amount Due</th>
+            <th className="text-right px-4 py-3 text-xs font-medium text-slate-500">Amount Paid</th>
+            <th className="text-right px-4 py-3 text-xs font-medium text-slate-500">Balance</th>
             {showFiling && (
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Filing Ref</th>
+              <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Filing Ref</th>
             )}
             {showPenCom && (
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">PenCom Ref</th>
+              <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">PenCom Ref</th>
             )}
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">Authority</th>
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">Actions</th>
+            <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Authority</th>
+            <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Status</th>
+            <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Actions</th>
           </tr>
         </thead>
         <tbody>
           {records.map((r) => (
-            <tr key={r.id} className="border-b border-border last:border-b-0 hover:bg-muted/20 transition-colors">
+            <tr key={r.id} className="border-b border-[#efefef] last:border-b-0 hover:bg-[#f8fafc] transition-colors">
               <td className="px-4 py-3 font-medium">{r.period}</td>
-              <td className="px-4 py-3 text-muted-foreground">{r.dueDate}</td>
-              <td className="px-4 py-3 text-muted-foreground">{r.employeeCount}</td>
+              <td className="px-4 py-3 text-slate-500">{r.dueDate}</td>
+              <td className="px-4 py-3 text-slate-500">{r.employeeCount}</td>
               <td className="px-4 py-3 text-right font-medium">{formatNaira(r.amountDue)}</td>
-              <td className="px-4 py-3 text-right text-muted-foreground">{formatNaira(r.amountPaid)}</td>
+              <td className="px-4 py-3 text-right text-slate-500">{formatNaira(r.amountPaid)}</td>
               <td className="px-4 py-3 text-right font-medium">
                 {r.balance > 0 ? (
                   <span className="text-red-600">{formatNaira(r.balance)}</span>
@@ -147,12 +147,12 @@ function RemittanceTable({
                 )}
               </td>
               {showFiling && (
-                <td className="px-4 py-3 text-muted-foreground text-xs">{r.filingReference ?? "---"}</td>
+                <td className="px-4 py-3 text-slate-500 text-xs">{r.filingReference ?? "---"}</td>
               )}
               {showPenCom && (
-                <td className="px-4 py-3 text-muted-foreground text-xs">{r.paymentReference ?? "---"}</td>
+                <td className="px-4 py-3 text-slate-500 text-xs">{r.paymentReference ?? "---"}</td>
               )}
-              <td className="px-4 py-3 text-muted-foreground text-xs">{r.taxAuthority}</td>
+              <td className="px-4 py-3 text-slate-500 text-xs">{r.taxAuthority}</td>
               <td className="px-4 py-3">
                 <StatusBadge status={r.status} styles={REMITTANCE_STATUS_STYLES} />
               </td>
@@ -174,7 +174,7 @@ function RemittanceTable({
           ))}
           {records.length === 0 && (
             <tr>
-              <td colSpan={showFiling || showPenCom ? 11 : 10} className="px-4 py-8 text-center text-muted-foreground">
+              <td colSpan={showFiling || showPenCom ? 11 : 10} className="px-4 py-8 text-center text-slate-500">
                 No remittance records found.
               </td>
             </tr>
@@ -256,12 +256,12 @@ export default function StatutoryRemittancePage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Statutory Remittance</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Manage PAYE, pension, and other statutory remittances to regulatory authorities
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => alert("Remittance data exported successfully.")}>
+          <Button variant="outline" size="sm" onClick={() => {}}>
             <Download className="w-4 h-4 mr-2" />
             Export
           </Button>
@@ -269,7 +269,7 @@ export default function StatutoryRemittancePage() {
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex items-center gap-1 border-b border-border overflow-x-auto">
+      <div className="flex items-center gap-1 border-b border-[#efefef] overflow-x-auto">
         {TABS.map((t) => {
           const Icon = t.icon;
           return (
@@ -279,8 +279,8 @@ export default function StatutoryRemittancePage() {
               className={cn(
                 "flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap",
                 tab === t.key
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-500 hover:text-slate-900"
               )}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -297,7 +297,7 @@ export default function StatutoryRemittancePage() {
 
           <div className="flex items-center gap-3">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <Input
                 placeholder="Search by period..."
                 value={search}
@@ -318,7 +318,7 @@ export default function StatutoryRemittancePage() {
 
           <div className="flex items-center gap-3">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <Input
                 placeholder="Search by period..."
                 value={search}
@@ -339,7 +339,7 @@ export default function StatutoryRemittancePage() {
 
           <div className="flex items-center gap-3">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <Input
                 placeholder="Search by period or type..."
                 value={search}
@@ -361,31 +361,31 @@ export default function StatutoryRemittancePage() {
             </Select>
           </div>
 
-          <div className="rounded-xl border border-border bg-card overflow-x-auto">
+          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border bg-muted/40">
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Type</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Period</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Due Date</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Employees</th>
-                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Amount Due</th>
-                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Amount Paid</th>
-                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Balance</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Authority</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Actions</th>
+                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Type</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Period</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Due Date</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Employees</th>
+                  <th className="text-right px-4 py-3 text-xs font-medium text-slate-500">Amount Due</th>
+                  <th className="text-right px-4 py-3 text-xs font-medium text-slate-500">Amount Paid</th>
+                  <th className="text-right px-4 py-3 text-xs font-medium text-slate-500">Balance</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Authority</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Status</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredOther.map((r) => (
-                  <tr key={r.id} className="border-b border-border last:border-b-0 hover:bg-muted/20 transition-colors">
+                  <tr key={r.id} className="border-b border-[#efefef] last:border-b-0 hover:bg-[#f8fafc] transition-colors">
                     <td className="px-4 py-3 font-medium">{r.typeName}</td>
                     <td className="px-4 py-3">{r.period}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{r.dueDate}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{r.employeeCount}</td>
+                    <td className="px-4 py-3 text-slate-500">{r.dueDate}</td>
+                    <td className="px-4 py-3 text-slate-500">{r.employeeCount}</td>
                     <td className="px-4 py-3 text-right font-medium">{formatNaira(r.amountDue)}</td>
-                    <td className="px-4 py-3 text-right text-muted-foreground">{formatNaira(r.amountPaid)}</td>
+                    <td className="px-4 py-3 text-right text-slate-500">{formatNaira(r.amountPaid)}</td>
                     <td className="px-4 py-3 text-right font-medium">
                       {r.balance > 0 ? (
                         <span className="text-red-600">{formatNaira(r.balance)}</span>
@@ -393,7 +393,7 @@ export default function StatutoryRemittancePage() {
                         <span className="text-emerald-600">{formatNaira(0)}</span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-muted-foreground text-xs">{r.taxAuthority}</td>
+                    <td className="px-4 py-3 text-slate-500 text-xs">{r.taxAuthority}</td>
                     <td className="px-4 py-3">
                       <StatusBadge status={r.status} styles={REMITTANCE_STATUS_STYLES} />
                     </td>
@@ -409,7 +409,7 @@ export default function StatutoryRemittancePage() {
                 ))}
                 {filteredOther.length === 0 && (
                   <tr>
-                    <td colSpan={10} className="px-4 py-8 text-center text-muted-foreground">
+                    <td colSpan={10} className="px-4 py-8 text-center text-slate-500">
                       No remittance records found.
                     </td>
                   </tr>
@@ -425,37 +425,37 @@ export default function StatutoryRemittancePage() {
         <div className="space-y-6">
           {/* Calendar Summary */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="rounded-xl border border-border bg-card p-4">
-              <div className="flex items-center gap-2 text-muted-foreground mb-1">
+            <div className="rounded-xl border border-[#efefef] bg-white p-4">
+              <div className="flex items-center gap-2 text-slate-500 mb-1">
                 <Calendar className="w-4 h-4" />
                 <span className="text-xs font-medium">Upcoming Remittances</span>
               </div>
               <p className="text-xl font-semibold">{MOCK_REMITTANCE_CALENDAR.length}</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">Next 30 days</p>
+              <p className="text-[10px] text-slate-500 mt-0.5">Next 30 days</p>
             </div>
-            <div className="rounded-xl border border-border bg-card p-4">
-              <div className="flex items-center gap-2 text-muted-foreground mb-1">
+            <div className="rounded-xl border border-[#efefef] bg-white p-4">
+              <div className="flex items-center gap-2 text-slate-500 mb-1">
                 <DollarSign className="w-4 h-4" />
                 <span className="text-xs font-medium">Total Amount Due</span>
               </div>
               <p className="text-xl font-semibold">{formatNaira(calendarTotalDue)}</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">All upcoming</p>
+              <p className="text-[10px] text-slate-500 mt-0.5">All upcoming</p>
             </div>
-            <div className="rounded-xl border border-border bg-card p-4">
-              <div className="flex items-center gap-2 text-muted-foreground mb-1">
+            <div className="rounded-xl border border-[#efefef] bg-white p-4">
+              <div className="flex items-center gap-2 text-slate-500 mb-1">
                 <AlertTriangle className="w-4 h-4" />
                 <span className="text-xs font-medium">Overdue</span>
               </div>
               <p className="text-xl font-semibold text-red-600">{overdueCount}</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">Requires attention</p>
+              <p className="text-[10px] text-slate-500 mt-0.5">Requires attention</p>
             </div>
-            <div className="rounded-xl border border-border bg-card p-4">
-              <div className="flex items-center gap-2 text-muted-foreground mb-1">
+            <div className="rounded-xl border border-[#efefef] bg-white p-4">
+              <div className="flex items-center gap-2 text-slate-500 mb-1">
                 <Users className="w-4 h-4" />
                 <span className="text-xs font-medium">Regulatory Bodies</span>
               </div>
               <p className="text-xl font-semibold">6</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">Active authorities</p>
+              <p className="text-[10px] text-slate-500 mt-0.5">Active authorities</p>
             </div>
           </div>
 
@@ -470,24 +470,24 @@ export default function StatutoryRemittancePage() {
                     key={item.id}
                     className={cn(
                       "rounded-xl border-2 p-5 transition-colors",
-                      statusStyle?.bg ?? "bg-card border-border"
+                      statusStyle?.bg ?? "bg-white border-[#efefef]"
                     )}
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <h3 className="font-semibold text-sm">{item.typeName}</h3>
-                        <p className="text-xs text-muted-foreground">{item.period}</p>
+                        <p className="text-xs text-slate-500">{item.period}</p>
                       </div>
                       <StatusBadge status={item.status} styles={CALENDAR_STATUS_STYLES} />
                     </div>
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground">Due Date</span>
+                        <span className="text-xs text-slate-500">Due Date</span>
                         <span className="text-sm font-medium">{item.dueDate}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground">Days Until Due</span>
+                        <span className="text-xs text-slate-500">Days Until Due</span>
                         <span
                           className={cn(
                             "text-sm font-semibold",
@@ -506,14 +506,14 @@ export default function StatutoryRemittancePage() {
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground">Amount Due</span>
+                        <span className="text-xs text-slate-500">Amount Due</span>
                         <span className="text-sm font-semibold">{formatNaira(item.amountDue)}</span>
                       </div>
                     </div>
 
                     {item.status !== "completed" && (
                       <div className="mt-4">
-                        <Button size="sm" variant="outline" className="w-full h-8 text-xs" onClick={() => alert("Processing remittance for " + item.typeName + " - " + item.period)}>
+                        <Button size="sm" variant="outline" className="w-full h-8 text-xs" onClick={() => {}}>
                           <FileText className="w-3 h-3 mr-1" />
                           Process Remittance
                         </Button>

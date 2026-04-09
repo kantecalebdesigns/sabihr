@@ -48,12 +48,12 @@ export default function PayrollAuditPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Payroll History & Audit</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Review payroll archives, audit trail, and year-end closures
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => alert("Audit data exported successfully.")}>
+          <Button variant="outline" size="sm" onClick={() => {}}>
             <Download className="w-4 h-4 mr-2" />
             Export
           </Button>
@@ -61,7 +61,7 @@ export default function PayrollAuditPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-border overflow-x-auto">
+      <div className="flex items-center gap-1 border-b border-[#efefef] overflow-x-auto">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -71,8 +71,8 @@ export default function PayrollAuditPage() {
               className={cn(
                 "flex items-center gap-2 px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap",
                 activeTab === tab.key
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-500 hover:text-slate-900"
               )}
             >
               <Icon className="w-4 h-4" />
@@ -123,7 +123,7 @@ function HistoryTab({ search, setSearch }: { search: string; setSearch: (v: stri
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <Input
             placeholder="Search archives..."
             value={search}
@@ -145,45 +145,43 @@ function HistoryTab({ search, setSearch }: { search: string; setSearch: (v: stri
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Period</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Year</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Gross Pay</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Net Pay</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Deductions</th>
-              <th className="p-3 text-center font-medium text-muted-foreground">Employees</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Processed</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Approved By</th>
-              <th className="p-3 text-center font-medium text-muted-foreground">Status</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Year</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Gross Pay</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Net Pay</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Deductions</th>
+              <th className="p-3 text-center text-xs font-medium text-slate-500">Employees</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Processed</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Approved By</th>
+              <th className="p-3 text-center text-xs font-medium text-slate-500">Status</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((a) => {
               const style = ARCHIVE_STATUS_STYLES[a.status];
               return (
-                <tr key={a.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                <tr key={a.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
                   <td className="p-3 font-medium">{a.period}</td>
-                  <td className="p-3 text-muted-foreground">{a.year}</td>
+                  <td className="p-3 text-slate-500">{a.year}</td>
                   <td className="p-3 text-right">{formatNaira(a.totalGross)}</td>
                   <td className="p-3 text-right">{formatNaira(a.totalNet)}</td>
-                  <td className="p-3 text-right text-muted-foreground">{formatNaira(a.totalDeductions)}</td>
+                  <td className="p-3 text-right text-slate-500">{formatNaira(a.totalDeductions)}</td>
                   <td className="p-3 text-center">{a.employeeCount}</td>
-                  <td className="p-3 text-muted-foreground">{a.processedDate}</td>
+                  <td className="p-3 text-slate-500">{a.processedDate}</td>
                   <td className="p-3">{a.approvedBy}</td>
-                  <td className="p-3 text-center">
-                    <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border", style.bg, style.color)}>
-                      {style.label}
-                    </span>
+                  <td className={cn("p-3 text-center text-sm font-medium", style.color)}>
+                    {style.label}
                   </td>
                 </tr>
               );
             })}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={9} className="p-8 text-center text-muted-foreground">No archives found.</td>
+                <td colSpan={9} className="p-8 text-center text-slate-500">No archives found.</td>
               </tr>
             )}
           </tbody>
@@ -239,7 +237,7 @@ function AuditTrailTab({ search, setSearch }: { search: string; setSearch: (v: s
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <Input
             placeholder="Search audit trail..."
             value={search}
@@ -261,45 +259,43 @@ function AuditTrailTab({ search, setSearch }: { search: string; setSearch: (v: s
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Timestamp</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Action</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Module</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Description</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Performed By</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Entity</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Old Value</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">New Value</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">IP Address</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Timestamp</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Action</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Module</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Description</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Performed By</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Entity</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Old Value</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">New Value</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">IP Address</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((e) => {
               const actionStyle = AUDIT_ACTION_STYLES[e.action] ?? { label: e.actionLabel, bg: "bg-gray-50 border-gray-200", color: "text-gray-700" };
               return (
-                <tr key={e.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
-                  <td className="p-3 text-muted-foreground whitespace-nowrap">{formatTimestamp(e.timestamp)}</td>
-                  <td className="p-3">
-                    <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border", actionStyle.bg, actionStyle.color)}>
-                      {actionStyle.label}
-                    </span>
+                <tr key={e.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                  <td className="p-3 text-slate-500 whitespace-nowrap">{formatTimestamp(e.timestamp)}</td>
+                  <td className={cn("p-3 text-sm font-medium", actionStyle.color)}>
+                    {actionStyle.label}
                   </td>
                   <td className="p-3 whitespace-nowrap">{e.module}</td>
                   <td className="p-3 max-w-[280px] truncate" title={e.description}>{e.description}</td>
                   <td className="p-3 whitespace-nowrap">{e.performedBy}</td>
                   <td className="p-3 font-mono text-xs">{e.affectedEntity}</td>
-                  <td className="p-3 text-muted-foreground text-xs">{e.oldValue ?? "—"}</td>
+                  <td className="p-3 text-slate-500 text-xs">{e.oldValue ?? "—"}</td>
                   <td className="p-3 text-xs">{e.newValue ?? "—"}</td>
-                  <td className="p-3 font-mono text-xs text-muted-foreground">{e.ipAddress}</td>
+                  <td className="p-3 font-mono text-xs text-slate-500">{e.ipAddress}</td>
                 </tr>
               );
             })}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={9} className="p-8 text-center text-muted-foreground">No audit entries found.</td>
+                <td colSpan={9} className="p-8 text-center text-slate-500">No audit entries found.</td>
               </tr>
             )}
           </tbody>
@@ -338,12 +334,12 @@ function YearEndTab() {
         {yearEndReports.map((report) => {
           const style = YEAR_END_STATUS_STYLES[report.status];
           return (
-            <div key={report.id} className="rounded-xl border border-border bg-card p-6 space-y-4">
+            <div key={report.id} className="rounded-xl border border-[#efefef] bg-white p-6 space-y-4">
               {/* Card Header */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <h3 className="text-lg font-semibold">Fiscal Year {report.year}</h3>
-                  <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border", style.bg, style.color)}>
+                  <span className={cn("text-sm font-medium", style.color)}>
                     {style.label}
                   </span>
                 </div>
@@ -365,7 +361,7 @@ function YearEndTab() {
               </div>
 
               {/* Meta */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground border-t border-border pt-4">
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-500 border-t border-[#efefef] pt-4">
                 <span className="flex items-center gap-1.5">
                   <Users className="w-4 h-4" />
                   {report.employeeCount} employees
@@ -398,12 +394,12 @@ function YearEndTab() {
 /* ── Shared Components ── */
 function SummaryCard({ icon: Icon, label, value }: { icon: typeof Archive; label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-border bg-card p-4 flex items-center gap-3">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+    <div className="rounded-xl border border-[#efefef] bg-white p-4 flex items-center gap-3">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#f8fafc] text-blue-600">
         <Icon className="w-5 h-5" />
       </div>
       <div className="min-w-0">
-        <p className="text-xs text-muted-foreground">{label}</p>
+        <p className="text-xs text-slate-500">{label}</p>
         <p className="text-sm font-semibold truncate">{value}</p>
       </div>
     </div>
@@ -413,7 +409,7 @@ function SummaryCard({ icon: Icon, label, value }: { icon: typeof Archive; label
 function StatItem({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="text-xs text-slate-500">{label}</p>
       <p className="text-sm font-semibold">{value}</p>
     </div>
   );

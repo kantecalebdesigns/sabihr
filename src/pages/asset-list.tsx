@@ -125,7 +125,7 @@ export default function AssetListPage() {
           <h1 className="text-xl font-semibold tracking-tight">
             Asset Register
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             {MOCK_ASSETS.length} total assets &middot; {filtered.length} shown
           </p>
         </div>
@@ -139,7 +139,7 @@ export default function AssetListPage() {
       <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
         <div className="flex items-center gap-3 flex-1 w-full sm:w-auto">
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <Input
               placeholder="Search assets..."
               value={search}
@@ -169,31 +169,31 @@ export default function AssetListPage() {
                 <ChevronDown className="w-4 h-4 ml-1" />
               </Button>
               {batchOpen && (
-                <div className="absolute right-0 top-full mt-1 z-20 w-48 rounded-xl border border-border bg-card shadow-lg py-1">
-                  <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-muted transition-colors">
+                <div className="absolute right-0 top-full mt-1 z-20 w-48 rounded-xl border border-[#efefef] bg-white shadow-lg py-1">
+                  <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-[#f8fafc] transition-colors">
                     <UserPlus className="w-4 h-4" /> Assign
                   </button>
-                  <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-muted transition-colors">
+                  <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-[#f8fafc] transition-colors">
                     <ArrowRightLeft className="w-4 h-4" /> Transfer
                   </button>
-                  <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-muted transition-colors">
+                  <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-[#f8fafc] transition-colors">
                     <Trash2 className="w-4 h-4" /> Dispose
                   </button>
-                  <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-muted transition-colors">
+                  <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-[#f8fafc] transition-colors">
                     <Download className="w-4 h-4" /> Export
                   </button>
                 </div>
               )}
             </div>
           )}
-          <div className="flex items-center border border-border rounded-lg overflow-hidden">
+          <div className="flex items-center border border-[#efefef] rounded-lg overflow-hidden">
             <button
               onClick={() => setView("table")}
               className={cn(
                 "p-2 transition-colors",
                 view === "table"
                   ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted text-muted-foreground"
+                  : "hover:bg-[#f8fafc] text-slate-500"
               )}
             >
               <List className="w-4 h-4" />
@@ -204,7 +204,7 @@ export default function AssetListPage() {
                 "p-2 transition-colors",
                 view === "grid"
                   ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted text-muted-foreground"
+                  : "hover:bg-[#f8fafc] text-slate-500"
               )}
             >
               <LayoutGrid className="w-4 h-4" />
@@ -215,9 +215,9 @@ export default function AssetListPage() {
 
       {/* Filter Panel */}
       {filterOpen && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 rounded-xl border border-border bg-card p-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 rounded-xl border border-[#efefef] bg-white p-4">
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">
+            <label className="text-xs font-medium text-slate-500">
               Category
             </label>
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
@@ -235,7 +235,7 @@ export default function AssetListPage() {
             </Select>
           </div>
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">
+            <label className="text-xs font-medium text-slate-500">
               Status
             </label>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -253,7 +253,7 @@ export default function AssetListPage() {
             </Select>
           </div>
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">
+            <label className="text-xs font-medium text-slate-500">
               Location
             </label>
             <Select value={locationFilter} onValueChange={setLocationFilter}>
@@ -271,7 +271,7 @@ export default function AssetListPage() {
             </Select>
           </div>
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">
+            <label className="text-xs font-medium text-slate-500">
               Condition
             </label>
             <Select value={conditionFilter} onValueChange={setConditionFilter}>
@@ -293,10 +293,10 @@ export default function AssetListPage() {
 
       {/* Table View */}
       {view === "table" && (
-        <div className="rounded-xl border border-border bg-card overflow-x-auto">
+        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border bg-muted/50">
+              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
                 <th className="p-3 text-left w-10">
                   <input
                     type="checkbox"
@@ -307,28 +307,28 @@ export default function AssetListPage() {
                     className="rounded"
                   />
                 </th>
-                <th className="p-3 text-left font-medium text-muted-foreground">
+                <th className="p-3 text-left text-xs font-medium text-slate-500">
                   Asset Tag
                 </th>
-                <th className="p-3 text-left font-medium text-muted-foreground">
+                <th className="p-3 text-left text-xs font-medium text-slate-500">
                   Name
                 </th>
-                <th className="p-3 text-left font-medium text-muted-foreground">
+                <th className="p-3 text-left text-xs font-medium text-slate-500">
                   Category
                 </th>
-                <th className="p-3 text-left font-medium text-muted-foreground">
+                <th className="p-3 text-left text-xs font-medium text-slate-500">
                   Status
                 </th>
-                <th className="p-3 text-left font-medium text-muted-foreground">
+                <th className="p-3 text-left text-xs font-medium text-slate-500">
                   Condition
                 </th>
-                <th className="p-3 text-left font-medium text-muted-foreground">
+                <th className="p-3 text-left text-xs font-medium text-slate-500">
                   Location
                 </th>
-                <th className="p-3 text-left font-medium text-muted-foreground">
+                <th className="p-3 text-left text-xs font-medium text-slate-500">
                   Assigned To
                 </th>
-                <th className="p-3 text-right font-medium text-muted-foreground">
+                <th className="p-3 text-right text-xs font-medium text-slate-500">
                   Book Value
                 </th>
                 <th className="p-3 w-10"></th>
@@ -341,7 +341,7 @@ export default function AssetListPage() {
                 return (
                   <tr
                     key={asset.id}
-                    className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors cursor-pointer"
+                    className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors cursor-pointer"
                     onClick={() => navigate(`/assets/${asset.id}`)}
                   >
                     <td className="p-3" onClick={(e) => e.stopPropagation()}>
@@ -360,42 +360,26 @@ export default function AssetListPage() {
                         {asset.categoryName}
                       </span>
                     </td>
-                    <td className="p-3">
-                      <span
-                        className={cn(
-                          "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border",
-                          statusStyle?.bg,
-                          statusStyle?.color
-                        )}
-                      >
-                        {statusStyle?.label}
-                      </span>
+                    <td className={cn("p-3 text-sm font-medium", statusStyle?.color)}>
+                      {statusStyle?.label}
                     </td>
-                    <td className="p-3">
-                      <span
-                        className={cn(
-                          "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border",
-                          condStyle?.bg,
-                          condStyle?.color
-                        )}
-                      >
-                        {condStyle?.label}
-                      </span>
+                    <td className={cn("p-3 text-sm font-medium", condStyle?.color)}>
+                      {condStyle?.label}
                     </td>
-                    <td className="p-3 text-muted-foreground">
+                    <td className="p-3 text-slate-500">
                       {asset.location}
                     </td>
                     <td className="p-3">
                       {asset.assignedToName ?? (
-                        <span className="text-muted-foreground">--</span>
+                        <span className="text-slate-500">--</span>
                       )}
                     </td>
                     <td className="p-3 text-right font-medium">
                       {formatCurrency(asset.currentBookValue)}
                     </td>
                     <td className="p-3" onClick={(e) => e.stopPropagation()}>
-                      <button className="p-1 rounded hover:bg-muted transition-colors">
-                        <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                      <button className="p-1 rounded hover:bg-[#f8fafc] transition-colors">
+                        <MoreHorizontal className="w-4 h-4 text-slate-500" />
                       </button>
                     </td>
                   </tr>
@@ -405,7 +389,7 @@ export default function AssetListPage() {
                 <tr>
                   <td
                     colSpan={10}
-                    className="p-8 text-center text-muted-foreground"
+                    className="p-8 text-center text-slate-500"
                   >
                     No assets match your filters
                   </td>
@@ -426,8 +410,8 @@ export default function AssetListPage() {
               <div
                 key={asset.id}
                 className={cn(
-                  "rounded-xl border bg-card p-4 space-y-3 transition-shadow hover:shadow-md cursor-pointer",
-                  selected.has(asset.id) ? "border-primary ring-1 ring-primary/20" : "border-border"
+                  "rounded-xl border bg-white p-4 space-y-3 transition-colors hover:border-slate-300 cursor-pointer",
+                  selected.has(asset.id) ? "border-primary ring-1 ring-primary/20" : "border-[#efefef]"
                 )}
                 onClick={() => navigate(`/assets/${asset.id}`)}
               >
@@ -441,38 +425,26 @@ export default function AssetListPage() {
                     />
                     <div>
                       <p className="text-sm font-medium">{asset.name}</p>
-                      <p className="text-xs text-muted-foreground font-mono">
+                      <p className="text-xs text-slate-500 font-mono">
                         {asset.tag}
                       </p>
                     </div>
                   </div>
-                  <span
-                    className={cn(
-                      "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border",
-                      statusStyle?.bg,
-                      statusStyle?.color
-                    )}
-                  >
+                  <span className={cn("text-xs font-medium", statusStyle?.color)}>
                     {statusStyle?.label}
                   </span>
                 </div>
-                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex items-center gap-4 text-xs text-slate-500">
                   <span className="inline-flex items-center gap-1">
                     {getCategoryIcon(asset.categoryId)}
                     {asset.categoryName}
                   </span>
-                  <span
-                    className={cn(
-                      "inline-flex items-center px-1.5 py-0.5 rounded text-xs border",
-                      condStyle?.bg,
-                      condStyle?.color
-                    )}
-                  >
+                  <span className={cn("text-xs font-medium", condStyle?.color)}>
                     {condStyle?.label}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-xs pt-2 border-t border-border">
-                  <span className="text-muted-foreground">
+                <div className="flex items-center justify-between text-xs pt-2 border-t border-[#efefef]">
+                  <span className="text-slate-500">
                     {asset.assignedToName ?? "Unassigned"}
                   </span>
                   <span className="font-medium">
@@ -483,7 +455,7 @@ export default function AssetListPage() {
             );
           })}
           {filtered.length === 0 && (
-            <div className="col-span-full text-center p-8 text-muted-foreground">
+            <div className="col-span-full text-center p-8 text-slate-500">
               No assets match your filters
             </div>
           )}

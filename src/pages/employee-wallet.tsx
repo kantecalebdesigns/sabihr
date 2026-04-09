@@ -28,14 +28,14 @@ export default function EmployeeWalletPage() {
     <div className="max-w-[1000px] mx-auto space-y-6">
       <div>
         <h1 className="text-xl font-semibold tracking-tight">My Wallet</h1>
-        <p className="text-sm text-muted-foreground">Manage your multi-currency wallet, fund and spend</p>
+        <p className="text-sm text-slate-500">Manage your multi-currency wallet, fund and spend</p>
       </div>
 
-      <div className="flex items-center gap-1 border-b border-border">
+      <div className="flex items-center gap-1 border-b border-[#efefef]">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
-            <button key={tab.key} onClick={() => setActiveTab(tab.key)} className={cn("flex items-center gap-2 px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap", activeTab === tab.key ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground")}>
+            <button key={tab.key} onClick={() => setActiveTab(tab.key)} className={cn("flex items-center gap-2 px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap", activeTab === tab.key ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900")}>
               <Icon className="w-4 h-4" />{tab.label}
             </button>
           );
@@ -55,25 +55,25 @@ function WalletDashboard() {
     <>
       {/* Total Balance Card */}
       <div className="rounded-xl border-2 border-primary/20 bg-primary/5 p-6 text-center">
-        <p className="text-sm text-muted-foreground mb-1">Total Wallet Balance</p>
+        <p className="text-sm text-slate-500 mb-1">Total Wallet Balance</p>
         <p className="text-3xl font-bold">{formatNaira(wallet.totalBalanceNGN)}</p>
-        <p className="text-xs text-muted-foreground mt-1">{wallet.wallets.length} currencies</p>
+        <p className="text-xs text-slate-500 mt-1">{wallet.wallets.length} currencies</p>
       </div>
 
       {/* Currency Wallets */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {wallet.wallets.map((w, i) => (
-          <div key={i} className="rounded-xl border border-border bg-card p-5">
+          <div key={i} className="rounded-xl border border-[#efefef] bg-white p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-bold">
+                <div className="w-8 h-8 rounded-full bg-[#f8fafc] flex items-center justify-center text-blue-600 text-sm font-bold">
                   {w.symbol}
                 </div>
                 <span className="font-medium">{w.currency}</span>
               </div>
             </div>
             <p className="text-2xl font-semibold">{w.symbol}{w.balance.toLocaleString()}</p>
-            <p className="text-xs text-muted-foreground mt-1">~ {formatNaira(w.ngnEquivalent)}</p>
+            <p className="text-xs text-slate-500 mt-1">~ {formatNaira(w.ngnEquivalent)}</p>
             <div className="flex gap-2 mt-4">
               <Button variant="outline" size="sm" className="flex-1 text-xs" onClick={() => alert("Fund wallet would open here.")}><Plus className="w-3.5 h-3.5 mr-1" />Fund</Button>
               <Button variant="outline" size="sm" className="flex-1 text-xs" onClick={() => alert("Send funds would open here.")}><Send className="w-3.5 h-3.5 mr-1" />Send</Button>
@@ -84,13 +84,13 @@ function WalletDashboard() {
       </div>
 
       {/* Recent Transactions */}
-      <div className="rounded-xl border border-border bg-card">
-        <div className="p-4 border-b border-border">
+      <div className="rounded-xl border border-[#efefef] bg-white">
+        <div className="p-4 border-b border-[#efefef]">
           <h3 className="font-medium">Recent Transactions</h3>
         </div>
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-[#efefef]">
           {wallet.recentTransactions.map((txn) => (
-            <div key={txn.id} className="p-4 flex items-center justify-between hover:bg-muted/30 transition-colors">
+            <div key={txn.id} className="p-4 flex items-center justify-between hover:bg-[#f8fafc] transition-colors">
               <div className="flex items-center gap-3">
                 <div className={cn("w-8 h-8 rounded-full flex items-center justify-center",
                   txn.type === "credit" ? "bg-emerald-100" : txn.type === "debit" ? "bg-red-100" : "bg-blue-100"
@@ -101,7 +101,7 @@ function WalletDashboard() {
                 </div>
                 <div>
                   <p className="text-sm font-medium">{txn.description}</p>
-                  <p className="text-xs text-muted-foreground">{txn.date}</p>
+                  <p className="text-xs text-slate-500">{txn.date}</p>
                 </div>
               </div>
               <div className="text-right">
@@ -142,12 +142,12 @@ function FundingTab() {
           {fundingMethods.map((method, i) => {
             const Icon = method.icon;
             return (
-              <div key={i} className="rounded-xl border border-border bg-card p-5 text-center">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                  <Icon className="w-6 h-6 text-primary" />
+              <div key={i} className="rounded-xl border border-[#efefef] bg-white p-5 text-center">
+                <div className="w-12 h-12 rounded-full bg-[#f8fafc] flex items-center justify-center mx-auto mb-3">
+                  <Icon className="w-6 h-6 text-blue-600" />
                 </div>
                 <h4 className="font-medium mb-1">{method.title}</h4>
-                <p className="text-xs text-muted-foreground mb-3">{method.description}</p>
+                <p className="text-xs text-slate-500 mb-3">{method.description}</p>
                 <Button variant="outline" size="sm" className="w-full" onClick={() => alert(method.title + " would open here.")}>{method.action}</Button>
               </div>
             );
@@ -161,12 +161,12 @@ function FundingTab() {
           {spendingOptions.map((option, i) => {
             const Icon = option.icon;
             return (
-              <div key={i} className="rounded-xl border border-border bg-card p-5 text-center">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                  <Icon className="w-6 h-6 text-primary" />
+              <div key={i} className="rounded-xl border border-[#efefef] bg-white p-5 text-center">
+                <div className="w-12 h-12 rounded-full bg-[#f8fafc] flex items-center justify-center mx-auto mb-3">
+                  <Icon className="w-6 h-6 text-blue-600" />
                 </div>
                 <h4 className="font-medium mb-1">{option.title}</h4>
-                <p className="text-xs text-muted-foreground mb-3">{option.description}</p>
+                <p className="text-xs text-slate-500 mb-3">{option.description}</p>
                 <Button variant="outline" size="sm" className="w-full" onClick={() => alert(option.title + " would open here.")}>{option.action}</Button>
               </div>
             );

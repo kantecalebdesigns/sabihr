@@ -20,12 +20,12 @@ export default function EmployeeProfilePage() {
   return (
     <div className="max-w-[1000px] mx-auto space-y-6">
       {/* Header with photo */}
-      <div className="bg-card border border-border rounded-xl p-6">
+      <div className="bg-white border border-[#efefef] rounded-xl p-6">
         <ProfilePhoto />
       </div>
 
       {/* Tab navigation */}
-      <div className="flex items-center gap-1 border-b border-border">
+      <div className="flex items-center gap-1 border-b border-[#efefef]">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -35,8 +35,8 @@ export default function EmployeeProfilePage() {
               className={cn(
                 "flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors -mb-px",
                 activeTab === tab.key
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-500 hover:text-slate-900"
               )}
             >
               <Icon className="w-4 h-4" />

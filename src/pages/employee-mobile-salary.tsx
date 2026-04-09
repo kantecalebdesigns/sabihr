@@ -20,32 +20,32 @@ export default function EmployeeMobileSalaryPage() {
     <div className="max-w-[500px] mx-auto space-y-4">
       <div>
         <h1 className="text-xl font-semibold tracking-tight">Salary & Payments</h1>
-        <p className="text-sm text-muted-foreground">Your salary details and payment history</p>
+        <p className="text-sm text-slate-500">Your salary details and payment history</p>
       </div>
 
       {/* Net Pay Card */}
       <div className="rounded-xl border-2 border-emerald-200 bg-emerald-50 p-5 text-center">
         <p className="text-sm text-emerald-700">Monthly Net Pay</p>
         <p className="text-3xl font-bold text-emerald-700">{formatNaira(b.netPay)}</p>
-        <p className="text-xs text-muted-foreground mt-1">{b.payGrade} - {b.salaryStructure}</p>
+        <p className="text-xs text-slate-500 mt-1">{b.payGrade} - {b.salaryStructure}</p>
       </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-xl border border-border bg-card p-3 text-center">
-          <Banknote className="w-5 h-5 mx-auto text-muted-foreground mb-1" />
-          <p className="text-xs text-muted-foreground">Gross</p>
+        <div className="rounded-xl border border-[#efefef] bg-white p-3 text-center">
+          <Banknote className="w-5 h-5 mx-auto text-slate-500 mb-1" />
+          <p className="text-xs text-slate-500">Gross</p>
           <p className="font-semibold">{formatNaira(b.grossPay)}</p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-3 text-center">
-          <TrendingUp className="w-5 h-5 mx-auto text-muted-foreground mb-1" />
-          <p className="text-xs text-muted-foreground">Deductions</p>
+        <div className="rounded-xl border border-[#efefef] bg-white p-3 text-center">
+          <TrendingUp className="w-5 h-5 mx-auto text-slate-500 mb-1" />
+          <p className="text-xs text-slate-500">Deductions</p>
           <p className="font-semibold text-red-600">{formatNaira(b.totalDeductions)}</p>
         </div>
       </div>
 
       {/* Earnings Breakdown */}
-      <div className="rounded-xl border border-border bg-card p-4">
+      <div className="rounded-xl border border-[#efefef] bg-white p-4">
         <h3 className="text-sm font-medium mb-3">Earnings</h3>
         <div className="space-y-2">
           {[
@@ -56,7 +56,7 @@ export default function EmployeeMobileSalaryPage() {
             { name: "Other", amount: b.otherAllowances },
           ].map((item, i) => (
             <div key={i} className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{item.name}</span>
+              <span className="text-slate-500">{item.name}</span>
               <span className="font-medium">{formatNaira(item.amount)}</span>
             </div>
           ))}
@@ -64,7 +64,7 @@ export default function EmployeeMobileSalaryPage() {
       </div>
 
       {/* Deductions Breakdown */}
-      <div className="rounded-xl border border-border bg-card p-4">
+      <div className="rounded-xl border border-[#efefef] bg-white p-4">
         <h3 className="text-sm font-medium mb-3">Deductions</h3>
         <div className="space-y-2">
           {[
@@ -74,7 +74,7 @@ export default function EmployeeMobileSalaryPage() {
             { name: "Health Insurance", amount: b.healthInsurance },
           ].map((item, i) => (
             <div key={i} className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{item.name}</span>
+              <span className="text-slate-500">{item.name}</span>
               <span className="font-medium text-red-600">-{formatNaira(item.amount)}</span>
             </div>
           ))}
@@ -83,14 +83,14 @@ export default function EmployeeMobileSalaryPage() {
 
       {/* Recent Salary Revisions */}
       {MOCK_SALARY_REVISIONS.length > 0 && (
-        <div className="rounded-xl border border-border bg-card p-4">
+        <div className="rounded-xl border border-[#efefef] bg-white p-4">
           <h3 className="text-sm font-medium mb-3">Salary Revisions</h3>
           <div className="space-y-3">
             {MOCK_SALARY_REVISIONS.slice(0, 2).map((rev) => (
-              <div key={rev.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+              <div key={rev.id} className="flex items-center justify-between py-2 border-b border-[#efefef] last:border-0">
                 <div>
                   <p className="text-sm font-medium">{rev.effectiveDate}</p>
-                  <p className="text-xs text-muted-foreground">{rev.reason}</p>
+                  <p className="text-xs text-slate-500">{rev.reason}</p>
                 </div>
                 <span className={cn("text-sm font-semibold", rev.changePercent > 0 ? "text-emerald-600" : "text-red-600")}>
                   {rev.changePercent > 0 ? "+" : ""}{rev.changePercent}%
@@ -102,11 +102,11 @@ export default function EmployeeMobileSalaryPage() {
       )}
 
       {/* Recent Payments */}
-      <div className="rounded-xl border border-border bg-card">
-        <div className="p-4 border-b border-border">
+      <div className="rounded-xl border border-[#efefef] bg-white">
+        <div className="p-4 border-b border-[#efefef]">
           <h3 className="text-sm font-medium">Recent Payments</h3>
         </div>
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-[#efefef]">
           {MOCK_PAYMENT_RECORDS.slice(0, 4).map((p) => {
             const style = PAYMENT_RECORD_STATUS_STYLES[p.status];
             return (
@@ -117,7 +117,7 @@ export default function EmployeeMobileSalaryPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium">{p.period}</p>
-                    <p className="text-xs text-muted-foreground">{p.payDate}</p>
+                    <p className="text-xs text-slate-500">{p.payDate}</p>
                   </div>
                 </div>
                 <div className="text-right">

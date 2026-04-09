@@ -28,28 +28,28 @@ export function WelcomeBanner() {
     <div className="space-y-3">
       <div className="flex items-center gap-4">
         <div className="flex-1 min-w-0">
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
             {getGreeting()}, {employee.basicDetails.firstName}
           </h1>
           <div className="flex items-center gap-3 mt-1">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-500">
               {employee.employment.jobTitle} · {employee.employment.department}
             </p>
-            <span className="hidden sm:flex items-center gap-1 text-xs text-muted-foreground/70">
+            <span className="hidden sm:flex items-center gap-1 text-xs text-slate-400">
               <MapPin className="w-3 h-3" />
               {employee.employment.workLocation}
             </span>
           </div>
         </div>
         <div className="hidden sm:block text-right">
-          <p className="text-sm font-medium">
+          <p className="text-sm font-medium text-slate-900">
             {new Date().toLocaleDateString("en-NG", {
               weekday: "long",
               day: "numeric",
               month: "long",
             })}
           </p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-slate-500">
             {employee.employment.employeeId}
           </p>
         </div>

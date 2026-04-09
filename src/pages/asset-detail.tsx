@@ -126,40 +126,29 @@ export default function AssetDetailPage() {
       {/* Back Link */}
       <button
         onClick={() => navigate("/assets")}
-        className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Asset Register
       </button>
 
       {/* Header */}
-      <div className="rounded-xl border border-border bg-card p-5">
+      <div className="rounded-xl border border-[#efefef] bg-white p-5">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <h1 className="text-xl font-semibold tracking-tight">
                 {asset.name}
               </h1>
-              <span
-                className={cn(
-                  "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border",
-                  statusStyle?.bg,
-                  statusStyle?.color
-                )}
-              >
+              <span className={cn("text-sm font-medium", statusStyle?.color)}>
                 {statusStyle?.label}
               </span>
-              <span
-                className={cn(
-                  "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border",
-                  condStyle?.bg,
-                  condStyle?.color
-                )}
-              >
+              <span className="text-slate-300">&middot;</span>
+              <span className={cn("text-sm font-medium", condStyle?.color)}>
                 {condStyle?.label}
               </span>
             </div>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-4 text-sm text-slate-500">
               <span className="font-mono">{asset.tag}</span>
               <span>&middot;</span>
               <span>{asset.categoryName}</span>
@@ -212,7 +201,7 @@ export default function AssetDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 overflow-x-auto border-b border-border">
+      <div className="flex items-center gap-1 overflow-x-auto border-b border-[#efefef]">
         {TABS.map((tab) => (
           <button
             key={tab.key}
@@ -220,8 +209,8 @@ export default function AssetDetailPage() {
             className={cn(
               "flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap",
               activeTab === tab.key
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-slate-500 hover:text-slate-900"
             )}
           >
             {tab.icon}
@@ -234,11 +223,11 @@ export default function AssetDetailPage() {
       {activeTab === "overview" && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Specifications */}
-          <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+          <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
             <h3 className="text-sm font-semibold">Specifications</h3>
             <div className="space-y-2.5">
               <div className="flex justify-between items-center text-sm">
-                <span className="text-muted-foreground">Model</span>
+                <span className="text-slate-500">Model</span>
                 {editMode ? (
                   <Input
                     value={editForm.model}
@@ -250,13 +239,13 @@ export default function AssetDetailPage() {
                 )}
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-muted-foreground">Serial Number</span>
+                <span className="text-slate-500">Serial Number</span>
                 <span className="font-medium font-mono text-xs">
                   {asset.serialNumber}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-muted-foreground">Location</span>
+                <span className="text-slate-500">Location</span>
                 {editMode ? (
                   <Input
                     value={editForm.location}
@@ -269,7 +258,7 @@ export default function AssetDetailPage() {
               </div>
               {Object.entries(asset.specifications).map(([key, value]) => (
                 <div key={key} className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">{key}</span>
+                  <span className="text-slate-500">{key}</span>
                   <span className="font-medium">{value}</span>
                 </div>
               ))}
@@ -277,21 +266,21 @@ export default function AssetDetailPage() {
           </div>
 
           {/* Purchase Details */}
-          <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+          <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
             <h3 className="text-sm font-semibold">Purchase Details</h3>
             <div className="space-y-2.5">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Purchase Date</span>
+                <span className="text-slate-500">Purchase Date</span>
                 <span className="font-medium">{asset.purchaseDate}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Purchase Price</span>
+                <span className="text-slate-500">Purchase Price</span>
                 <span className="font-medium">
                   {formatCurrency(asset.purchasePrice)}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-muted-foreground">Vendor</span>
+                <span className="text-slate-500">Vendor</span>
                 {editMode ? (
                   <Input
                     value={editForm.vendor}
@@ -303,13 +292,13 @@ export default function AssetDetailPage() {
                 )}
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Warranty Expiry</span>
+                <span className="text-slate-500">Warranty Expiry</span>
                 <span className="font-medium">
                   {asset.warrantyExpiry ?? "N/A"}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-muted-foreground">
+                <span className="text-slate-500">
                   Warranty Provider
                 </span>
                 {editMode ? (
@@ -326,36 +315,36 @@ export default function AssetDetailPage() {
           </div>
 
           {/* Current Value */}
-          <div className="rounded-xl border border-border bg-card p-5 space-y-4 lg:col-span-2">
+          <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4 lg:col-span-2">
             <h3 className="text-sm font-semibold">Current Value</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="rounded-lg bg-muted/50 p-3 text-center">
+              <div className="rounded-lg bg-[#f8fafc] p-3 text-center">
                 <p className="text-lg font-bold">
                   {formatCurrency(asset.purchasePrice)}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-500">
                   Purchase Price
                 </p>
               </div>
-              <div className="rounded-lg bg-muted/50 p-3 text-center">
+              <div className="rounded-lg bg-[#f8fafc] p-3 text-center">
                 <p className="text-lg font-bold">
                   {formatCurrency(asset.currentBookValue)}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-500">
                   Current Book Value
                 </p>
               </div>
-              <div className="rounded-lg bg-muted/50 p-3 text-center">
+              <div className="rounded-lg bg-[#f8fafc] p-3 text-center">
                 <p className="text-lg font-bold">
                   {formatCurrency(totalDepreciated)}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-500">
                   Total Depreciated
                 </p>
               </div>
-              <div className="rounded-lg bg-muted/50 p-3 text-center">
+              <div className="rounded-lg bg-[#f8fafc] p-3 text-center">
                 <p className="text-lg font-bold">{remainingMonths}m</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-500">
                   Remaining Life
                 </p>
               </div>
@@ -369,7 +358,7 @@ export default function AssetDetailPage() {
         <div className="space-y-4">
           <h3 className="text-sm font-semibold">Assignment History</h3>
           {assetAssignments.length === 0 ? (
-            <p className="text-sm text-muted-foreground p-4">
+            <p className="text-sm text-slate-500 p-4">
               No assignment records
             </p>
           ) : (
@@ -377,10 +366,10 @@ export default function AssetDetailPage() {
               {assetAssignments.map((record) => (
                 <div
                   key={record.id}
-                  className="rounded-xl border border-border bg-card p-4 flex items-start gap-4"
+                  className="rounded-xl border border-[#efefef] bg-white p-4 flex items-start gap-4"
                 >
-                  <div className="mt-0.5 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <UserPlus className="w-4 h-4 text-primary" />
+                  <div className="mt-0.5 w-8 h-8 rounded-full bg-[#f8fafc] flex items-center justify-center shrink-0">
+                    <UserPlus className="w-4 h-4 text-blue-600" />
                   </div>
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center justify-between">
@@ -400,11 +389,11 @@ export default function AssetDetailPage() {
                         {record.status}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-slate-500">
                       {record.department} &middot; Assigned by{" "}
                       {record.assignedBy}
                     </p>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-4 text-xs text-slate-500">
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {record.assignedDate}
@@ -417,7 +406,7 @@ export default function AssetDetailPage() {
                       )}
                     </div>
                     {record.notes && (
-                      <p className="text-xs text-muted-foreground italic">
+                      <p className="text-xs text-slate-500 italic">
                         {record.notes}
                       </p>
                     )}
@@ -433,26 +422,26 @@ export default function AssetDetailPage() {
       {activeTab === "maintenance" && (
         <div className="space-y-4">
           <h3 className="text-sm font-semibold">Maintenance Log</h3>
-          <div className="rounded-xl border border-border bg-card overflow-x-auto">
+          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border bg-muted/50">
-                  <th className="p-3 text-left font-medium text-muted-foreground">
+                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                  <th className="p-3 text-left text-xs font-medium text-slate-500">
                     Date
                   </th>
-                  <th className="p-3 text-left font-medium text-muted-foreground">
+                  <th className="p-3 text-left text-xs font-medium text-slate-500">
                     Type
                   </th>
-                  <th className="p-3 text-left font-medium text-muted-foreground">
+                  <th className="p-3 text-left text-xs font-medium text-slate-500">
                     Description
                   </th>
-                  <th className="p-3 text-left font-medium text-muted-foreground">
+                  <th className="p-3 text-left text-xs font-medium text-slate-500">
                     Vendor
                   </th>
-                  <th className="p-3 text-right font-medium text-muted-foreground">
+                  <th className="p-3 text-right text-xs font-medium text-slate-500">
                     Cost
                   </th>
-                  <th className="p-3 text-left font-medium text-muted-foreground">
+                  <th className="p-3 text-left text-xs font-medium text-slate-500">
                     Status
                   </th>
                 </tr>
@@ -461,7 +450,7 @@ export default function AssetDetailPage() {
                 {assetMaintenance.map((m) => (
                   <tr
                     key={m.id}
-                    className="border-b border-border last:border-0"
+                    className="border-b border-[#efefef] last:border-0"
                   >
                     <td className="p-3">{m.date}</td>
                     <td className="p-3">
@@ -496,7 +485,7 @@ export default function AssetDetailPage() {
                   <tr>
                     <td
                       colSpan={6}
-                      className="p-8 text-center text-muted-foreground"
+                      className="p-8 text-center text-slate-500"
                     >
                       No maintenance records
                     </td>
@@ -513,39 +502,39 @@ export default function AssetDetailPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-semibold">Depreciation Schedule</h3>
-            <span className="text-xs px-2 py-1 rounded-lg bg-muted text-muted-foreground font-medium capitalize">
+            <span className="text-xs px-2 py-1 rounded-lg bg-[#f8fafc] text-slate-500 font-medium capitalize">
               {asset.depreciationMethod} method
             </span>
           </div>
 
           {/* Chart placeholder */}
-          <div className="rounded-xl border border-border bg-card p-6 flex items-center justify-center h-48">
+          <div className="rounded-xl border border-[#efefef] bg-white p-6 flex items-center justify-center h-48">
             <div className="text-center space-y-2">
-              <BarChart3 className="w-10 h-10 mx-auto text-muted-foreground/50" />
-              <p className="text-sm text-muted-foreground">
+              <BarChart3 className="w-10 h-10 mx-auto text-slate-500/50" />
+              <p className="text-sm text-slate-500">
                 Depreciation chart visualization
               </p>
             </div>
           </div>
 
           {/* Table */}
-          <div className="rounded-xl border border-border bg-card overflow-x-auto">
+          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border bg-muted/50">
-                  <th className="p-3 text-left font-medium text-muted-foreground">
+                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                  <th className="p-3 text-left text-xs font-medium text-slate-500">
                     Period
                   </th>
-                  <th className="p-3 text-right font-medium text-muted-foreground">
+                  <th className="p-3 text-right text-xs font-medium text-slate-500">
                     Opening Value
                   </th>
-                  <th className="p-3 text-right font-medium text-muted-foreground">
+                  <th className="p-3 text-right text-xs font-medium text-slate-500">
                     Charge
                   </th>
-                  <th className="p-3 text-right font-medium text-muted-foreground">
+                  <th className="p-3 text-right text-xs font-medium text-slate-500">
                     Accumulated
                   </th>
-                  <th className="p-3 text-right font-medium text-muted-foreground">
+                  <th className="p-3 text-right text-xs font-medium text-slate-500">
                     Closing Value
                   </th>
                 </tr>
@@ -554,7 +543,7 @@ export default function AssetDetailPage() {
                 {MOCK_DEPRECIATION_SCHEDULE.map((entry) => (
                   <tr
                     key={entry.period}
-                    className="border-b border-border last:border-0"
+                    className="border-b border-[#efefef] last:border-0"
                   >
                     <td className="p-3 font-medium">{entry.period}</td>
                     <td className="p-3 text-right">
@@ -563,7 +552,7 @@ export default function AssetDetailPage() {
                     <td className="p-3 text-right text-red-600">
                       -{formatCurrency(entry.charge)}
                     </td>
-                    <td className="p-3 text-right text-muted-foreground">
+                    <td className="p-3 text-right text-slate-500">
                       {formatCurrency(entry.accumulated)}
                     </td>
                     <td className="p-3 text-right font-medium">
@@ -582,7 +571,7 @@ export default function AssetDetailPage() {
         <div className="space-y-4">
           <h3 className="text-sm font-semibold">Documents</h3>
           {asset.documents.length === 0 ? (
-            <div className="rounded-xl border border-border bg-card p-8 text-center text-muted-foreground text-sm">
+            <div className="rounded-xl border border-[#efefef] bg-white p-8 text-center text-slate-500 text-sm">
               No documents attached
             </div>
           ) : (
@@ -590,12 +579,12 @@ export default function AssetDetailPage() {
               {asset.documents.map((doc) => (
                 <div
                   key={doc.id}
-                  className="rounded-xl border border-border bg-card p-4 flex items-center gap-3"
+                  className="rounded-xl border border-[#efefef] bg-white p-4 flex items-center gap-3"
                 >
                   <FileText className="w-5 h-5 text-red-500 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium">{doc.name}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-slate-500">
                       {doc.fileName} &middot; {doc.size} &middot;{" "}
                       {doc.uploadDate}
                     </p>
@@ -615,7 +604,7 @@ export default function AssetDetailPage() {
         <div className="space-y-4">
           <h3 className="text-sm font-semibold">Condition History</h3>
           {assetConditions.length === 0 ? (
-            <div className="rounded-xl border border-border bg-card p-8 text-center text-muted-foreground text-sm">
+            <div className="rounded-xl border border-[#efefef] bg-white p-8 text-center text-slate-500 text-sm">
               No condition change records
             </div>
           ) : (
@@ -626,7 +615,7 @@ export default function AssetDetailPage() {
                 return (
                   <div
                     key={entry.id}
-                    className="rounded-xl border border-border bg-card p-4 space-y-2"
+                    className="rounded-xl border border-[#efefef] bg-white p-4 space-y-2"
                   >
                     <div className="flex items-center gap-2 text-sm">
                       <span
@@ -638,7 +627,7 @@ export default function AssetDetailPage() {
                       >
                         {prevStyle?.label}
                       </span>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                      <ChevronRight className="w-4 h-4 text-slate-500" />
                       <span
                         className={cn(
                           "px-2 py-0.5 rounded-full text-xs border font-medium",
@@ -649,10 +638,10 @@ export default function AssetDetailPage() {
                         {newStyle?.label}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-slate-500">
                       {entry.notes}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-slate-500">
                       Assessed by {entry.assessedBy} on {entry.assessedDate}
                     </p>
                   </div>
@@ -676,15 +665,15 @@ export default function AssetDetailPage() {
             ].map((entry, i) => (
               <div
                 key={i}
-                className="flex items-start gap-3 rounded-xl border border-border bg-card p-4"
+                className="flex items-start gap-3 rounded-xl border border-[#efefef] bg-white p-4"
               >
                 <div className="mt-0.5 w-2 h-2 rounded-full bg-primary shrink-0" />
                 <div className="flex-1 space-y-0.5">
                   <p className="text-sm font-medium">{entry.action}</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-500">
                     {entry.detail}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-500">
                     {entry.by} &middot; {entry.date}
                   </p>
                 </div>
@@ -697,7 +686,7 @@ export default function AssetDetailPage() {
       {/* Action Modals */}
       {activeModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setActiveModal(null)}>
-          <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-xl mx-4 space-y-5" onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-md rounded-xl border border-[#efefef] bg-white p-6 shadow-xl mx-4 space-y-5" onClick={(e) => e.stopPropagation()}>
             {/* Assign Modal */}
             {activeModal === "assign" && (
               <AssignModal
@@ -737,7 +726,7 @@ export default function AssetDetailPage() {
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-3 shadow-lg text-sm font-medium animate-in slide-in-from-bottom-4 fade-in">
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg border border-[#efefef] bg-white px-4 py-3 shadow-lg text-sm font-medium animate-in slide-in-from-bottom-4 fade-in">
           <Check className="w-4 h-4 text-green-600" />
           {toast}
         </div>
@@ -762,9 +751,9 @@ function AssignModal({ assetName, onClose, onSubmit }: { assetName: string; onCl
     <>
       <div className="flex items-center justify-between">
         <h2 className="text-base font-semibold">Assign Asset</h2>
-        <button onClick={onClose} className="p-1 rounded hover:bg-muted"><X className="w-4 h-4" /></button>
+        <button onClick={onClose} className="p-1 rounded hover:bg-[#f8fafc]"><X className="w-4 h-4" /></button>
       </div>
-      <p className="text-sm text-muted-foreground">Assign <span className="font-medium text-foreground">{assetName}</span> to an employee</p>
+      <p className="text-sm text-slate-500">Assign <span className="font-medium text-slate-900">{assetName}</span> to an employee</p>
       <div className="space-y-4">
         <div className="space-y-1.5">
           <Label>Employee</Label>
@@ -786,7 +775,7 @@ function AssignModal({ assetName, onClose, onSubmit }: { assetName: string; onCl
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Assignment notes..."
-            className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring"
+            className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring"
           />
         </div>
       </div>
@@ -817,12 +806,12 @@ function TransferModal({ assetName, currentAssignee, onClose, onSubmit }: { asse
     <>
       <div className="flex items-center justify-between">
         <h2 className="text-base font-semibold">Transfer Asset</h2>
-        <button onClick={onClose} className="p-1 rounded hover:bg-muted"><X className="w-4 h-4" /></button>
+        <button onClick={onClose} className="p-1 rounded hover:bg-[#f8fafc]"><X className="w-4 h-4" /></button>
       </div>
-      <p className="text-sm text-muted-foreground">Transfer <span className="font-medium text-foreground">{assetName}</span> to another employee</p>
+      <p className="text-sm text-slate-500">Transfer <span className="font-medium text-slate-900">{assetName}</span> to another employee</p>
       {currentAssignee && (
-        <div className="rounded-lg bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
-          Currently assigned to: <span className="font-medium text-foreground">{currentAssignee}</span>
+        <div className="rounded-lg bg-[#f8fafc] px-3 py-2 text-xs text-slate-500">
+          Currently assigned to: <span className="font-medium text-slate-900">{currentAssignee}</span>
         </div>
       )}
       <div className="space-y-4">
@@ -846,7 +835,7 @@ function TransferModal({ assetName, currentAssignee, onClose, onSubmit }: { asse
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="Reason for transfer..."
-            className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring"
+            className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring"
           />
         </div>
       </div>
@@ -879,9 +868,9 @@ function MaintenanceModal({ assetName, onClose, onSubmit }: { assetName: string;
     <>
       <div className="flex items-center justify-between">
         <h2 className="text-base font-semibold">Schedule Maintenance</h2>
-        <button onClick={onClose} className="p-1 rounded hover:bg-muted"><X className="w-4 h-4" /></button>
+        <button onClick={onClose} className="p-1 rounded hover:bg-[#f8fafc]"><X className="w-4 h-4" /></button>
       </div>
-      <p className="text-sm text-muted-foreground">Add maintenance record for <span className="font-medium text-foreground">{assetName}</span></p>
+      <p className="text-sm text-slate-500">Add maintenance record for <span className="font-medium text-slate-900">{assetName}</span></p>
       <div className="space-y-4">
         <div className="space-y-1.5">
           <Label>Type</Label>
@@ -902,7 +891,7 @@ function MaintenanceModal({ assetName, onClose, onSubmit }: { assetName: string;
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe the maintenance needed..."
-            className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring"
+            className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring"
           />
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -943,9 +932,9 @@ function DisposeModal({ assetName, onClose, onSubmit }: { assetName: string; onC
     <>
       <div className="flex items-center justify-between">
         <h2 className="text-base font-semibold">Dispose Asset</h2>
-        <button onClick={onClose} className="p-1 rounded hover:bg-muted"><X className="w-4 h-4" /></button>
+        <button onClick={onClose} className="p-1 rounded hover:bg-[#f8fafc]"><X className="w-4 h-4" /></button>
       </div>
-      <p className="text-sm text-muted-foreground">Request disposal of <span className="font-medium text-foreground">{assetName}</span></p>
+      <p className="text-sm text-slate-500">Request disposal of <span className="font-medium text-slate-900">{assetName}</span></p>
       <div className="space-y-4">
         <div className="space-y-1.5">
           <Label>Disposal Method</Label>
@@ -966,7 +955,7 @@ function DisposeModal({ assetName, onClose, onSubmit }: { assetName: string; onC
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="Why is this asset being disposed?"
-            className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring"
+            className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring"
           />
         </div>
       </div>

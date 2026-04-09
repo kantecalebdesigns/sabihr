@@ -72,23 +72,23 @@ export default function EmployeeAssetRequestPage() {
     <div className="max-w-[900px] mx-auto space-y-8">
       <div>
         <h1 className="text-2xl font-semibold">Request New Asset</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-sm text-slate-500 mt-1">
           Select a category, explain your need, and submit your request.
         </p>
       </div>
 
       {submitted ? (
-        <Card className="rounded-xl border-border bg-card">
+        <Card className="rounded-xl border-[#efefef] bg-white">
           <CardContent className="text-center py-10 space-y-4">
             <CheckCircle2 className="size-16 mx-auto text-green-600" />
             <h2 className="text-xl font-semibold">Request Submitted</h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-500">
               Your request number is{" "}
-              <span className="font-mono font-semibold text-foreground">
+              <span className="font-mono font-semibold text-slate-900">
                 {requestNumber}
               </span>
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-500">
               Your manager will review this request. You can track the status
               below.
             </p>
@@ -110,13 +110,13 @@ export default function EmployeeAssetRequestPage() {
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.id)}
                     className={cn(
-                      "flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 text-sm transition-colors hover:bg-accent",
+                      "flex flex-col items-center gap-2 rounded-xl border border-[#efefef] bg-white p-4 text-sm transition-colors hover:bg-[#f8fafc]",
                       selected && "border-primary bg-primary/5 ring-1 ring-primary"
                     )}
                   >
-                    <cat.icon className={cn("size-6", selected ? "text-primary" : "text-muted-foreground")} />
+                    <cat.icon className={cn("size-6", selected ? "text-blue-600" : "text-slate-500")} />
                     <span className="font-medium">{cat.name}</span>
-                    <span className="text-xs text-muted-foreground text-center leading-tight">
+                    <span className="text-xs text-slate-500 text-center leading-tight">
                       {cat.description}
                     </span>
                   </button>
@@ -136,7 +136,7 @@ export default function EmployeeAssetRequestPage() {
               placeholder="Explain why you need this asset..."
               value={justification}
               onChange={(e) => setJustification(e.target.value)}
-              className="flex w-full rounded-xl border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring resize-none"
+              className="flex w-full rounded-xl border border-[#efefef] bg-white px-3 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring resize-none"
             />
           </div>
 
@@ -149,11 +149,11 @@ export default function EmployeeAssetRequestPage() {
                   key={u}
                   onClick={() => setUrgency(u)}
                   className={cn(
-                    "flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm transition-colors hover:bg-accent",
+                    "flex items-center gap-2 rounded-xl border border-[#efefef] bg-white px-4 py-2.5 text-sm transition-colors hover:bg-[#f8fafc]",
                     urgency === u && "border-primary bg-primary/5 ring-1 ring-primary"
                   )}
                 >
-                  <Clock className={cn("size-4", urgency === u ? "text-primary" : "text-muted-foreground")} />
+                  <Clock className={cn("size-4", urgency === u ? "text-blue-600" : "text-slate-500")} />
                   <span className="font-medium capitalize">{u}</span>
                 </button>
               ))}
@@ -164,7 +164,7 @@ export default function EmployeeAssetRequestPage() {
           <div className="space-y-2">
             <Label htmlFor="specs" className="text-sm">
               Preferred Specifications{" "}
-              <span className="text-muted-foreground font-normal">(optional)</span>
+              <span className="text-slate-500 font-normal">(optional)</span>
             </Label>
             <textarea
               id="specs"
@@ -172,14 +172,14 @@ export default function EmployeeAssetRequestPage() {
               placeholder="E.g., 16GB RAM, 27-inch screen..."
               value={specs}
               onChange={(e) => setSpecs(e.target.value)}
-              className="flex w-full rounded-xl border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring resize-none"
+              className="flex w-full rounded-xl border border-[#efefef] bg-white px-3 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring resize-none"
             />
           </div>
 
           {/* Manager */}
           <div className="space-y-2">
             <Label className="text-sm">Approving Manager</Label>
-            <div className="rounded-xl border border-border bg-muted/50 px-4 py-2.5 text-sm">
+            <div className="rounded-xl border border-[#efefef] bg-[#f8fafc] px-4 py-2.5 text-sm">
               Chiamaka Eze
             </div>
           </div>
@@ -200,7 +200,7 @@ export default function EmployeeAssetRequestPage() {
       <div className="space-y-4">
         <h2 className="text-lg font-semibold">My Requests</h2>
         {myRequests.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             You have no asset requests yet.
           </p>
         ) : (
@@ -208,18 +208,18 @@ export default function EmployeeAssetRequestPage() {
             {myRequests.map((req) => {
               const style = REQUEST_STATUS_STYLES[req.status];
               return (
-                <Card key={req.id} className="rounded-xl border-border bg-card">
+                <Card key={req.id} className="rounded-xl border-[#efefef] bg-white">
                   <CardContent className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-medium">
                           {req.categoryName}
                         </span>
-                        <span className="text-xs text-muted-foreground font-mono">
+                        <span className="text-xs text-slate-500 font-mono">
                           {req.requestNumber}
                         </span>
                       </div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-slate-500">
                         Requested on{" "}
                         {new Date(req.requestDate).toLocaleDateString("en-NG", {
                           day: "numeric",

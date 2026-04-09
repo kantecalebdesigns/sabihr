@@ -76,11 +76,11 @@ export default function EmployeeAssetDetailPage() {
       </Button>
 
       {/* Header card */}
-      <Card className="rounded-xl border-border bg-card">
+      <Card className="rounded-xl border-[#efefef] bg-white">
         <CardContent className="flex flex-col sm:flex-row gap-6">
           {/* Icon placeholder */}
-          <div className="flex size-20 shrink-0 items-center justify-center rounded-xl bg-muted">
-            <IconComp className="size-10 text-muted-foreground" />
+          <div className="flex size-20 shrink-0 items-center justify-center rounded-xl bg-[#f8fafc]">
+            <IconComp className="size-10 text-slate-500" />
           </div>
           <div className="flex-1 space-y-2">
             <div className="flex flex-wrap items-center gap-3">
@@ -98,7 +98,7 @@ export default function EmployeeAssetDetailPage() {
                 </Badge>
               )}
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-500">
               {asset.description}
             </p>
           </div>
@@ -106,7 +106,7 @@ export default function EmployeeAssetDetailPage() {
       </Card>
 
       {/* Details */}
-      <Card className="rounded-xl border-border bg-card">
+      <Card className="rounded-xl border-[#efefef] bg-white">
         <CardHeader>
           <CardTitle className="text-sm">Asset Details</CardTitle>
         </CardHeader>
@@ -114,11 +114,11 @@ export default function EmployeeAssetDetailPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {details.map((d) => (
               <div key={d.label} className="flex items-start gap-3">
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
-                  <d.icon className="size-4 text-muted-foreground" />
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-[#f8fafc]">
+                  <d.icon className="size-4 text-slate-500" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">{d.label}</p>
+                  <p className="text-xs text-slate-500">{d.label}</p>
                   <p className="text-sm font-medium">{d.value}</p>
                 </div>
               </div>
@@ -129,7 +129,7 @@ export default function EmployeeAssetDetailPage() {
 
       {/* Specifications */}
       {Object.keys(asset.specifications).length > 0 && (
-        <Card className="rounded-xl border-border bg-card">
+        <Card className="rounded-xl border-[#efefef] bg-white">
           <CardHeader>
             <CardTitle className="text-sm">Specifications</CardTitle>
           </CardHeader>
@@ -138,9 +138,9 @@ export default function EmployeeAssetDetailPage() {
               {Object.entries(asset.specifications).map(([key, val]) => (
                 <div
                   key={key}
-                  className="flex justify-between rounded-lg bg-muted/50 px-3 py-2"
+                  className="flex justify-between rounded-lg bg-[#f8fafc] px-3 py-2"
                 >
-                  <span className="text-sm text-muted-foreground">{key}</span>
+                  <span className="text-sm text-slate-500">{key}</span>
                   <span className="text-sm font-medium">{val}</span>
                 </div>
               ))}

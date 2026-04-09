@@ -51,9 +51,9 @@ export default function EmployeeAssetsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold">My Assets</h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-slate-500 mt-1">
             You have{" "}
-            <span className="font-medium text-foreground">
+            <span className="font-medium text-slate-900">
               {myAssets.length}
             </span>{" "}
             asset{myAssets.length !== 1 ? "s" : ""} assigned to you
@@ -87,7 +87,7 @@ export default function EmployeeAssetsPage() {
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-12 text-muted-foreground">
+        <div className="text-center py-12 text-slate-500">
           <Package className="size-12 mx-auto mb-3 opacity-40" />
           <p className="text-sm">No assets found in this category.</p>
         </div>
@@ -101,29 +101,29 @@ function AssetCard({ asset }: { asset: Asset }) {
   const conditionStyle = ASSET_CONDITION_STYLES[asset.condition];
 
   return (
-    <Card className="rounded-xl border-border bg-card">
+    <Card className="rounded-xl border-[#efefef] bg-white">
       <CardContent className="space-y-4">
         {/* Icon + Name */}
         <div className="flex items-start gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-            <IconComp className="size-5 text-muted-foreground" />
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-[#f8fafc]">
+            <IconComp className="size-5 text-slate-500" />
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-sm font-medium leading-tight truncate">
               {asset.name}
             </p>
-            <p className="text-xs text-muted-foreground mt-0.5">{asset.tag}</p>
+            <p className="text-xs text-slate-500 mt-0.5">{asset.tag}</p>
           </div>
         </div>
 
         {/* Details */}
         <div className="grid grid-cols-2 gap-y-2 text-sm">
           <div>
-            <p className="text-xs text-muted-foreground">Category</p>
+            <p className="text-xs text-slate-500">Category</p>
             <p className="font-medium">{asset.categoryName}</p>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground">Assigned</p>
+            <p className="text-xs text-slate-500">Assigned</p>
             <p className="font-medium">
               {asset.assignedDate
                 ? new Date(asset.assignedDate).toLocaleDateString("en-NG", {
@@ -151,7 +151,7 @@ function AssetCard({ asset }: { asset: Asset }) {
         )}
 
         {/* Quick Actions */}
-        <div className="flex gap-2 pt-1 border-t border-border">
+        <div className="flex gap-2 pt-1 border-t border-[#efefef]">
           <Button variant="ghost" size="sm" className="flex-1 text-xs">
             <AlertTriangle className="size-3.5" />
             Report Issue

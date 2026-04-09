@@ -11,6 +11,8 @@ import {
   Banknote,
   Percent,
   ToggleLeft,
+  Check,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,9 +47,32 @@ const TABS: { key: ConfigTab; label: string; icon: typeof Settings2 }[] = [
   { key: "assignments", label: "Assignments", icon: UserCheck },
 ];
 
+const TAB_LABELS: Record<ConfigTab, string> = {
+  "pay-grades": "Pay Grade",
+  "salary-structures": "Salary Structure",
+  "templates": "Template",
+  "calendar": "Calendar",
+  "assignments": "Assignment",
+};
+
 export default function PayrollConfigPage() {
   const [activeTab, setActiveTab] = useState<ConfigTab>("pay-grades");
   const [search, setSearch] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [formSaved, setFormSaved] = useState(false);
+
+  const handleAddNew = () => {
+    setShowForm(true);
+    setFormSaved(false);
+  };
+
+  const handleSaveForm = () => {
+    setFormSaved(true);
+    setTimeout(() => {
+      setShowForm(false);
+      setFormSaved(false);
+    }, 1500);
+  };
 
   return (
     <div className="max-w-[1400px] mx-auto space-y-6">
@@ -55,35 +80,46 @@ export default function PayrollConfigPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Payroll Configuration</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Manage pay grades, salary structures, and payroll schedules
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => alert("Payroll configuration exported successfully.")}>
+          <Button variant="outline" size="sm" onClick={() => {}}>
             <Download className="w-4 h-4 mr-2" />
             Export
           </Button>
-          <Button size="sm" onClick={() => alert("Add new " + activeTab.replace("-", " ") + " form would open here.")}>
+          <Button size="sm" onClick={handleAddNew}>
             <Plus className="w-4 h-4 mr-2" />
             Add New
           </Button>
         </div>
       </div>
 
+      {/* Inline Add Form */}
+      {showForm && (
+        <AddNewForm
+          tab={activeTab}
+          label={TAB_LABELS[activeTab]}
+          saved={formSaved}
+          onSave={handleSaveForm}
+          onCancel={() => setShowForm(false)}
+        />
+      )}
+
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-border overflow-x-auto">
+      <div className="flex items-center gap-1 border-b border-[#efefef] overflow-x-auto">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
             <button
               key={tab.key}
-              onClick={() => { setActiveTab(tab.key); setSearch(""); }}
+              onClick={() => { setActiveTab(tab.key); setSearch(""); setShowForm(false); }}
               className={cn(
                 "flex items-center gap-2 px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap",
                 activeTab === tab.key
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-500 hover:text-slate-900"
               )}
             >
               <Icon className="w-4 h-4" />
@@ -124,26 +160,26 @@ function PayGradesTab({ search, setSearch }: { search: string; setSearch: (v: st
 
       <SearchBar value={search} onChange={setSearch} placeholder="Search pay grades..." />
 
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Grade</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Level</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Min Salary</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Mid Salary</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Max Salary</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Employees</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Grade</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Level</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Min Salary</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Mid Salary</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Max Salary</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Employees</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((g) => {
               const style = PAY_GRADE_STATUS_STYLES[g.status];
               return (
-                <tr key={g.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                <tr key={g.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
                   <td className="p-3 font-medium">{g.name}</td>
-                  <td className="p-3 text-muted-foreground">{g.level}</td>
+                  <td className="p-3 text-slate-500">{g.level}</td>
                   <td className="p-3">{formatNaira(g.minSalary)}</td>
                   <td className="p-3">{formatNaira(g.midSalary)}</td>
                   <td className="p-3">{formatNaira(g.maxSalary)}</td>
@@ -199,35 +235,35 @@ function SalaryStructuresTab({ search, setSearch }: { search: string; setSearch:
         </Select>
       </div>
 
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Structure Name</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Pay Grade</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Total Earnings</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Deductions</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Net Pay</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Employees</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Effective From</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Structure Name</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Pay Grade</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Total Earnings</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Deductions</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Net Pay</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Employees</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Effective From</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((s) => {
               const style = STRUCTURE_STATUS_STYLES[s.status];
               return (
-                <tr key={s.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                <tr key={s.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
                   <td className="p-3">
                     <div className="font-medium">{s.name}</div>
-                    <div className="text-xs text-muted-foreground">{s.description}</div>
+                    <div className="text-xs text-slate-500">{s.description}</div>
                   </td>
                   <td className="p-3">{s.payGradeName}</td>
                   <td className="p-3">{formatNaira(s.totalEarnings)}</td>
                   <td className="p-3 text-red-600">{formatNaira(s.totalDeductions)}</td>
                   <td className="p-3 font-medium">{formatNaira(s.netPay)}</td>
                   <td className="p-3">{s.employeeCount}</td>
-                  <td className="p-3 text-muted-foreground">{s.effectiveFrom}</td>
+                  <td className="p-3 text-slate-500">{s.effectiveFrom}</td>
                   <td className="p-3"><StatusBadge style={style} /></td>
                 </tr>
               );
@@ -279,42 +315,37 @@ function TemplatesTab({ search, setSearch }: { search: string; setSearch: (v: st
         </Select>
       </div>
 
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Name</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Type</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Category</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Calculation</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Default Value</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Taxable</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Statutory</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Applies To</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Name</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Type</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Category</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Calculation</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Default Value</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Taxable</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Statutory</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Applies To</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((t) => (
-              <tr key={t.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+              <tr key={t.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
                 <td className="p-3">
                   <div className="font-medium">{t.name}</div>
-                  <div className="text-xs text-muted-foreground">{t.description}</div>
+                  <div className="text-xs text-slate-500">{t.description}</div>
                 </td>
-                <td className="p-3">
-                  <span className={cn(
-                    "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border",
-                    t.type === "allowance" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-700"
-                  )}>
-                    {t.type === "allowance" ? "Allowance" : "Deduction"}
-                  </span>
+                <td className={cn("p-3 text-sm font-medium", t.type === "allowance" ? "text-emerald-700" : "text-red-600")}>
+                  {t.type === "allowance" ? "Allowance" : "Deduction"}
                 </td>
-                <td className="p-3 text-muted-foreground">{t.category}</td>
-                <td className="p-3 text-muted-foreground capitalize">{t.calculationType}</td>
+                <td className="p-3 text-slate-500">{t.category}</td>
+                <td className="p-3 text-slate-500 capitalize">{t.calculationType}</td>
                 <td className="p-3">{t.calculationType === "fixed" ? formatNaira(t.defaultValue) : `${t.defaultValue}%`}{t.percentageOf ? ` of ${t.percentageOf}` : ""}</td>
-                <td className="p-3">{t.taxable ? <span className="text-amber-600">Yes</span> : <span className="text-muted-foreground">No</span>}</td>
-                <td className="p-3">{t.statutory ? <span className="text-blue-600">Yes</span> : <span className="text-muted-foreground">No</span>}</td>
-                <td className="p-3 text-muted-foreground capitalize">{t.applicableTo.replace("-", " ")}</td>
+                <td className="p-3">{t.taxable ? <span className="text-amber-600">Yes</span> : <span className="text-slate-500">No</span>}</td>
+                <td className="p-3">{t.statutory ? <span className="text-blue-600">Yes</span> : <span className="text-slate-500">No</span>}</td>
+                <td className="p-3 text-slate-500 capitalize">{t.applicableTo.replace("-", " ")}</td>
                 <td className="p-3"><StatusBadge style={PAY_GRADE_STATUS_STYLES[t.status]} /></td>
               </tr>
             ))}
@@ -341,48 +372,44 @@ function PayrollCalendarTab() {
         <SummaryCard icon={ToggleLeft} label="Open Periods" value={String(open)} />
       </div>
 
-      <div className="rounded-xl border border-border bg-card p-4">
+      <div className="rounded-xl border border-[#efefef] bg-white p-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-medium">Calendar: {cal.name}</h3>
-          <span className={cn(
-            "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border",
-            PAY_GRADE_STATUS_STYLES[cal.status]?.bg,
-            PAY_GRADE_STATUS_STYLES[cal.status]?.color,
-          )}>
+          <span className={cn("text-sm font-medium", PAY_GRADE_STATUS_STYLES[cal.status]?.color)}>
             {PAY_GRADE_STATUS_STYLES[cal.status]?.label}
           </span>
         </div>
         <div className="grid grid-cols-3 gap-3 text-sm mb-4">
-          <div><span className="text-muted-foreground">Cutoff Day:</span> <span className="font-medium">{cal.cutoffDay}th</span></div>
-          <div><span className="text-muted-foreground">Processing Day:</span> <span className="font-medium">{cal.processingDay}nd</span></div>
-          <div><span className="text-muted-foreground">Pay Day:</span> <span className="font-medium">{cal.payDay}th</span></div>
+          <div><span className="text-slate-500">Cutoff Day:</span> <span className="font-medium">{cal.cutoffDay}th</span></div>
+          <div><span className="text-slate-500">Processing Day:</span> <span className="font-medium">{cal.processingDay}nd</span></div>
+          <div><span className="text-slate-500">Pay Day:</span> <span className="font-medium">{cal.payDay}th</span></div>
         </div>
       </div>
 
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Period</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Start Date</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">End Date</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Cutoff</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Processing</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Pay Date</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Start Date</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">End Date</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Cutoff</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Processing</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Pay Date</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
             </tr>
           </thead>
           <tbody>
             {cal.periods.map((p) => {
               const style = PERIOD_STATUS_STYLES[p.status];
               return (
-                <tr key={p.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                <tr key={p.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
                   <td className="p-3 font-medium">{p.periodName}</td>
-                  <td className="p-3 text-muted-foreground">{p.startDate}</td>
-                  <td className="p-3 text-muted-foreground">{p.endDate}</td>
-                  <td className="p-3 text-muted-foreground">{p.cutoffDate}</td>
-                  <td className="p-3 text-muted-foreground">{p.processingDate}</td>
-                  <td className="p-3 text-muted-foreground">{p.payDate}</td>
+                  <td className="p-3 text-slate-500">{p.startDate}</td>
+                  <td className="p-3 text-slate-500">{p.endDate}</td>
+                  <td className="p-3 text-slate-500">{p.cutoffDate}</td>
+                  <td className="p-3 text-slate-500">{p.processingDate}</td>
+                  <td className="p-3 text-slate-500">{p.payDate}</td>
                   <td className="p-3"><StatusBadge style={style} /></td>
                 </tr>
               );
@@ -431,35 +458,35 @@ function AssignmentsTab({ search, setSearch }: { search: string; setSearch: (v: 
         </Select>
       </div>
 
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Employee</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Department</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Structure</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Pay Grade</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Basic Salary</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Gross Pay</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Effective From</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Department</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Structure</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Pay Grade</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Basic Salary</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Gross Pay</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Effective From</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((a) => {
               const style = ASSIGNMENT_STATUS_STYLES[a.status];
               return (
-                <tr key={a.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                <tr key={a.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
                   <td className="p-3">
                     <div className="font-medium">{a.employeeName}</div>
-                    <div className="text-xs text-muted-foreground">{a.employeeId}</div>
+                    <div className="text-xs text-slate-500">{a.employeeId}</div>
                   </td>
-                  <td className="p-3 text-muted-foreground">{a.department}</td>
+                  <td className="p-3 text-slate-500">{a.department}</td>
                   <td className="p-3">{a.structureName}</td>
-                  <td className="p-3 text-muted-foreground">{a.payGradeName}</td>
+                  <td className="p-3 text-slate-500">{a.payGradeName}</td>
                   <td className="p-3">{formatNaira(a.basicSalary)}</td>
                   <td className="p-3 font-medium">{formatNaira(a.grossPay)}</td>
-                  <td className="p-3 text-muted-foreground">{a.effectiveFrom}</td>
+                  <td className="p-3 text-slate-500">{a.effectiveFrom}</td>
                   <td className="p-3"><StatusBadge style={style} /></td>
                 </tr>
               );
@@ -472,11 +499,87 @@ function AssignmentsTab({ search, setSearch }: { search: string; setSearch: (v: 
   );
 }
 
+/* ── Add New Form ── */
+const FORM_FIELDS: Record<ConfigTab, { label: string; placeholder: string }[]> = {
+  "pay-grades": [
+    { label: "Grade Name", placeholder: "e.g. Senior" },
+    { label: "Level", placeholder: "e.g. 4" },
+    { label: "Min Salary (₦)", placeholder: "e.g. 800000" },
+    { label: "Max Salary (₦)", placeholder: "e.g. 1200000" },
+  ],
+  "salary-structures": [
+    { label: "Structure Name", placeholder: "e.g. Standard Mid-Level" },
+    { label: "Pay Grade", placeholder: "e.g. Mid-Level" },
+    { label: "Total Earnings (₦)", placeholder: "e.g. 650000" },
+    { label: "Effective From", placeholder: "e.g. 2026-04-01" },
+  ],
+  "templates": [
+    { label: "Template Name", placeholder: "e.g. Housing Allowance" },
+    { label: "Type", placeholder: "allowance or deduction" },
+    { label: "Category", placeholder: "e.g. Housing" },
+    { label: "Default Value", placeholder: "e.g. 20% or ₦25,000" },
+  ],
+  "calendar": [
+    { label: "Calendar Name", placeholder: "e.g. Monthly Payroll 2027" },
+    { label: "Pay Day", placeholder: "e.g. 25" },
+    { label: "Cutoff Day", placeholder: "e.g. 20" },
+    { label: "Processing Day", placeholder: "e.g. 22" },
+  ],
+  "assignments": [
+    { label: "Employee", placeholder: "Search employee..." },
+    { label: "Salary Structure", placeholder: "Select structure..." },
+    { label: "Basic Salary (₦)", placeholder: "e.g. 500000" },
+    { label: "Effective From", placeholder: "e.g. 2026-04-01" },
+  ],
+};
+
+function AddNewForm({ tab, label, saved, onSave, onCancel }: {
+  tab: ConfigTab;
+  label: string;
+  saved: boolean;
+  onSave: () => void;
+  onCancel: () => void;
+}) {
+  const fields = FORM_FIELDS[tab];
+
+  if (saved) {
+    return (
+      <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 flex items-center gap-2 text-emerald-800 text-sm">
+        <Check className="w-4 h-4" />
+        {label} saved successfully
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-semibold">New {label}</h3>
+        <button onClick={onCancel} className="p-1 rounded-md text-slate-500 hover:text-slate-900 hover:bg-[#f8fafc] transition-colors">
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {fields.map((field) => (
+          <div key={field.label} className="space-y-1.5">
+            <label className="text-xs font-medium text-slate-500">{field.label}</label>
+            <Input placeholder={field.placeholder} />
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center gap-2 pt-1">
+        <Button size="sm" onClick={onSave}>Save {label}</Button>
+        <Button variant="outline" size="sm" onClick={onCancel}>Cancel</Button>
+      </div>
+    </div>
+  );
+}
+
 /* ── Shared Helpers ── */
 function SummaryCard({ icon: Icon, label, value }: { icon: typeof Settings2; label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="flex items-center gap-2 text-muted-foreground mb-1">
+    <div className="rounded-xl border border-[#efefef] bg-white p-4">
+      <div className="flex items-center gap-2 text-slate-500 mb-1">
         <Icon className="w-4 h-4" />
         <span className="text-xs font-medium">{label}</span>
       </div>
@@ -488,7 +591,7 @@ function SummaryCard({ icon: Icon, label, value }: { icon: typeof Settings2; lab
 function SearchBar({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder: string }) {
   return (
     <div className="relative flex-1 max-w-sm">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
       <Input
         placeholder={placeholder}
         value={value}
@@ -502,7 +605,7 @@ function SearchBar({ value, onChange, placeholder }: { value: string; onChange: 
 function StatusBadge({ style }: { style: { label: string; bg: string; color: string } | undefined }) {
   if (!style) return null;
   return (
-    <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border", style.bg, style.color)}>
+    <span className={cn("text-sm font-medium", style.color)}>
       {style.label}
     </span>
   );
@@ -511,7 +614,7 @@ function StatusBadge({ style }: { style: { label: string; bg: string; color: str
 function EmptyRow({ colSpan }: { colSpan: number }) {
   return (
     <tr>
-      <td colSpan={colSpan} className="p-12 text-center text-muted-foreground">
+      <td colSpan={colSpan} className="p-12 text-center text-slate-500">
         <FileText className="w-10 h-10 mx-auto mb-3 opacity-30" />
         <p className="font-medium">No items found</p>
         <p className="text-xs mt-1">Try adjusting your search or filters</p>

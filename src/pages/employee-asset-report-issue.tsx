@@ -76,17 +76,17 @@ export default function EmployeeAssetReportIssuePage() {
     <div className="max-w-[900px] mx-auto space-y-8">
       <div>
         <h1 className="text-2xl font-semibold">Report an Issue</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-sm text-slate-500 mt-1">
           Report damage, malfunction, loss, or theft of an assigned asset.
         </p>
       </div>
 
       {submitted ? (
-        <Card className="rounded-xl border-border bg-card">
+        <Card className="rounded-xl border-[#efefef] bg-white">
           <CardContent className="text-center py-10 space-y-4">
             <CheckCircle2 className="size-16 mx-auto text-green-600" />
             <h2 className="text-xl font-semibold">Report Submitted</h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-500">
               Your issue report has been submitted. The IT/Admin team will
               review and follow up.
             </p>
@@ -109,16 +109,16 @@ export default function EmployeeAssetReportIssuePage() {
                     key={asset.id}
                     onClick={() => setSelectedAssetId(asset.id)}
                     className={cn(
-                      "flex items-center gap-3 rounded-xl border border-border bg-card p-4 text-left transition-colors hover:bg-accent",
+                      "flex items-center gap-3 rounded-xl border border-[#efefef] bg-white p-4 text-left transition-colors hover:bg-[#f8fafc]",
                       selected && "border-primary bg-primary/5 ring-1 ring-primary"
                     )}
                   >
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-                      <IconComp className="size-5 text-muted-foreground" />
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-[#f8fafc]">
+                      <IconComp className="size-5 text-slate-500" />
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{asset.name}</p>
-                      <p className="text-xs text-muted-foreground">{asset.tag}</p>
+                      <p className="text-xs text-slate-500">{asset.tag}</p>
                     </div>
                   </button>
                 );
@@ -137,13 +137,13 @@ export default function EmployeeAssetReportIssuePage() {
                     key={it.value}
                     onClick={() => setIssueType(it.value)}
                     className={cn(
-                      "flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 text-sm transition-colors hover:bg-accent",
+                      "flex flex-col items-center gap-2 rounded-xl border border-[#efefef] bg-white p-4 text-sm transition-colors hover:bg-[#f8fafc]",
                       selected && "border-primary bg-primary/5 ring-1 ring-primary"
                     )}
                   >
-                    <it.icon className={cn("size-5", selected ? "text-primary" : "text-muted-foreground")} />
+                    <it.icon className={cn("size-5", selected ? "text-blue-600" : "text-slate-500")} />
                     <span className="font-medium">{it.label}</span>
-                    <span className="text-xs text-muted-foreground text-center leading-tight">
+                    <span className="text-xs text-slate-500 text-center leading-tight">
                       {it.description}
                     </span>
                   </button>
@@ -163,7 +163,7 @@ export default function EmployeeAssetReportIssuePage() {
               placeholder="Describe what happened..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="flex w-full rounded-xl border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring resize-none"
+              className="flex w-full rounded-xl border border-[#efefef] bg-white px-3 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring resize-none"
             />
           </div>
 
@@ -184,10 +184,10 @@ export default function EmployeeAssetReportIssuePage() {
           {/* Photo upload area */}
           <div className="space-y-2">
             <Label className="text-sm">Evidence Photos</Label>
-            <div className="flex items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/30 p-8">
+            <div className="flex items-center justify-center rounded-xl border-2 border-dashed border-[#efefef] bg-[#f8fafc] p-8">
               <div className="text-center space-y-2">
-                <ImagePlus className="size-8 mx-auto text-muted-foreground" />
-                <p className="text-sm text-muted-foreground">
+                <ImagePlus className="size-8 mx-auto text-slate-500" />
+                <p className="text-sm text-slate-500">
                   Click or drag photos here to upload
                 </p>
                 <Button variant="outline" size="sm">
@@ -218,7 +218,7 @@ export default function EmployeeAssetReportIssuePage() {
       <div className="space-y-4">
         <h2 className="text-lg font-semibold">My Reports</h2>
         {myReports.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             No issue reports found.
           </p>
         ) : (
@@ -228,14 +228,14 @@ export default function EmployeeAssetReportIssuePage() {
               return (
                 <Card
                   key={report.id}
-                  className="rounded-xl border-border bg-card"
+                  className="rounded-xl border-[#efefef] bg-white"
                 >
                   <CardContent className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="space-y-1">
                       <p className="text-sm font-medium">
                         {report.assetName}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-slate-500">
                         {report.issueType.charAt(0).toUpperCase() +
                           report.issueType.slice(1)}{" "}
                         — reported{" "}

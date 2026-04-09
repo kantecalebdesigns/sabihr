@@ -42,37 +42,37 @@ function SetupCard({ icon, title, description, children, onSubmit, required }: S
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card overflow-hidden">
+    <div className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
-        className="flex items-center gap-3 w-full px-4 py-3 sm:px-5 sm:py-4 text-left hover:bg-muted/30 transition-colors"
+        className="flex items-center gap-3 w-full px-4 py-3 sm:px-5 sm:py-4 text-left hover:bg-[#f8fafc] transition-colors"
       >
-        <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+        <div className="w-9 h-9 rounded-[10px] bg-[#f0f4f8] flex items-center justify-center shrink-0">
           {icon}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-semibold">{title}</h3>
+            <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
             {required && (
               <span className="text-[10px] font-medium text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
                 Required
               </span>
             )}
           </div>
-          <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+          <p className="text-xs text-slate-500 mt-0.5">{description}</p>
         </div>
-        <div className="shrink-0 text-muted-foreground">
+        <div className="shrink-0 text-slate-400">
           {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </div>
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 sm:px-5 sm:pb-5 space-y-4 border-t border-border pt-4">
+        <div className="px-4 pb-4 sm:px-5 sm:pb-5 space-y-4 border-t border-[#efefef] pt-4">
           {children}
 
           <div className="flex justify-end pt-2">
-            <Button onClick={handleSubmit} disabled={submitting}>
+            <Button onClick={handleSubmit} disabled={submitting} className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-9 text-sm font-medium">
               {submitting ? (
                 <span className="flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -308,11 +308,11 @@ export function CompleteSetupSection() {
   if (dismissed) return null;
 
   return (
-    <div className="rounded-xl border border-border bg-muted/20 p-4 sm:p-5 space-y-4">
+    <div className="rounded-xl border border-[#efefef] bg-white p-4 sm:p-5 space-y-4">
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-sm font-medium text-foreground">Complete your account setup</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <h2 className="text-sm font-semibold text-slate-900">Complete your account setup</h2>
+          <p className="text-xs text-slate-500 mt-0.5">
             Set up your admin profile and password to secure your account
           </p>
         </div>

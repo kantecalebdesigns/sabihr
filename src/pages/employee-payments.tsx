@@ -30,14 +30,14 @@ export default function EmployeePaymentsPage() {
     <div className="max-w-[1000px] mx-auto space-y-6">
       <div>
         <h1 className="text-xl font-semibold tracking-tight">My Payments & Banking</h1>
-        <p className="text-sm text-muted-foreground">View payment history and manage bank details</p>
+        <p className="text-sm text-slate-500">View payment history and manage bank details</p>
       </div>
 
-      <div className="flex items-center gap-1 border-b border-border">
+      <div className="flex items-center gap-1 border-b border-[#efefef]">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
-            <button key={tab.key} onClick={() => setActiveTab(tab.key)} className={cn("flex items-center gap-2 px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap", activeTab === tab.key ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground")}>
+            <button key={tab.key} onClick={() => setActiveTab(tab.key)} className={cn("flex items-center gap-2 px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap", activeTab === tab.key ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900")}>
               <Icon className="w-4 h-4" />{tab.label}
             </button>
           );
@@ -57,42 +57,42 @@ function PaymentHistoryTab() {
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-border bg-card p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1"><CheckCircle2 className="w-4 h-4" /><span className="text-xs font-medium">Completed Payments</span></div>
+        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+          <div className="flex items-center gap-2 text-slate-500 mb-1"><CheckCircle2 className="w-4 h-4" /><span className="text-xs font-medium">Completed Payments</span></div>
           <p className="text-xl font-semibold">{completedCount}</p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1"><CreditCard className="w-4 h-4" /><span className="text-xs font-medium">Total Received</span></div>
+        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+          <div className="flex items-center gap-2 text-slate-500 mb-1"><CreditCard className="w-4 h-4" /><span className="text-xs font-medium">Total Received</span></div>
           <p className="text-xl font-semibold">{formatNaira(totalPaid)}</p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1"><Clock className="w-4 h-4" /><span className="text-xs font-medium">Pending</span></div>
+        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+          <div className="flex items-center gap-2 text-slate-500 mb-1"><Clock className="w-4 h-4" /><span className="text-xs font-medium">Pending</span></div>
           <p className="text-xl font-semibold">{MOCK_PAYMENT_RECORDS.filter((p) => p.status === "pending").length}</p>
         </div>
       </div>
 
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Period</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Pay Date</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Amount</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Bank</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Reference</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Pay Date</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Amount</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Bank</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Reference</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
             </tr>
           </thead>
           <tbody>
             {MOCK_PAYMENT_RECORDS.map((p) => {
               const style = PAYMENT_RECORD_STATUS_STYLES[p.status];
               return (
-                <tr key={p.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                <tr key={p.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
                   <td className="p-3 font-medium">{p.period}</td>
-                  <td className="p-3 text-muted-foreground">{p.payDate}</td>
+                  <td className="p-3 text-slate-500">{p.payDate}</td>
                   <td className="p-3 text-right font-semibold">{formatNaira(p.amount)}</td>
-                  <td className="p-3 text-muted-foreground">{p.bankName} ({p.accountNumber})</td>
-                  <td className="p-3 font-mono text-xs text-muted-foreground">{p.reference}</td>
+                  <td className="p-3 text-slate-500">{p.bankName} ({p.accountNumber})</td>
+                  <td className="p-3 font-mono text-xs text-slate-500">{p.reference}</td>
                   <td className="p-3"><span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border", style?.bg, style?.color)}>{style?.label}</span></td>
                 </tr>
               );
@@ -116,21 +116,21 @@ function BankDetailsTab() {
   return (
     <>
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">{bankDetails.length} bank accounts on file</p>
+        <p className="text-sm text-slate-500">{bankDetails.length} bank accounts on file</p>
         <Button size="sm" onClick={() => alert("Add bank account form would open here.")}><Plus className="w-4 h-4 mr-2" />Add Bank Account</Button>
       </div>
 
       <div className="space-y-4">
         {bankDetails.map((bank) => (
-          <div key={bank.id} className="rounded-xl border border-border bg-card p-5">
+          <div key={bank.id} className="rounded-xl border border-[#efefef] bg-white p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Building2 className="w-5 h-5 text-primary" />
+                <div className="w-10 h-10 rounded-lg bg-[#f8fafc] flex items-center justify-center">
+                  <Building2 className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
                   <h4 className="font-medium">{bank.bankName}</h4>
-                  <p className="text-xs text-muted-foreground">{bank.accountType.charAt(0).toUpperCase() + bank.accountType.slice(1)} Account</p>
+                  <p className="text-xs text-slate-500">{bank.accountType.charAt(0).toUpperCase() + bank.accountType.slice(1)} Account</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -143,11 +143,11 @@ function BankDetailsTab() {
               </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
-              <div><span className="text-muted-foreground">Account Name</span><br /><span className="font-medium">{bank.accountName}</span></div>
-              <div><span className="text-muted-foreground">Account Number</span><br /><span className="font-medium font-mono">{bank.accountNumber}</span></div>
-              <div><span className="text-muted-foreground">Added</span><br /><span className="font-medium">{bank.addedDate}</span></div>
+              <div><span className="text-slate-500">Account Name</span><br /><span className="font-medium">{bank.accountName}</span></div>
+              <div><span className="text-slate-500">Account Number</span><br /><span className="font-medium font-mono">{bank.accountNumber}</span></div>
+              <div><span className="text-slate-500">Added</span><br /><span className="font-medium">{bank.addedDate}</span></div>
             </div>
-            <div className="flex gap-2 mt-4 pt-3 border-t border-border">
+            <div className="flex gap-2 mt-4 pt-3 border-t border-[#efefef]">
               {!bank.isPrimary && <Button variant="outline" size="sm" className="text-xs" onClick={() => handleSetPrimary(bank.id)}>Set as Primary</Button>}
               <Button variant="outline" size="sm" className="text-xs" onClick={() => alert("Editing bank account: " + bank.bankName)}>Edit</Button>
             </div>

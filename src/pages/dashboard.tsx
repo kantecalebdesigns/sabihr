@@ -1,7 +1,5 @@
 import { CompleteSetupSection } from "@/components/dashboard/complete-setup-section";
 import { KpiCards } from "@/components/dashboard/kpi-cards";
-import { HeadcountChart } from "@/components/dashboard/headcount-chart";
-import { DepartmentChart } from "@/components/dashboard/department-chart";
 import { AttendanceOverview } from "@/components/dashboard/attendance-overview";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { AlertsPanel } from "@/components/dashboard/alerts-panel";
@@ -28,14 +26,14 @@ export default function DashboardPage() {
       {/* Greeting header */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-1">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
             {getGreeting()}, Admin
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Here&apos;s what&apos;s happening across your organization today.
           </p>
         </div>
-        <p className="text-sm text-muted-foreground">{formatDate()}</p>
+        <p className="text-sm text-slate-500">{formatDate()}</p>
       </div>
 
       {/* Complete account setup prompt */}
@@ -44,15 +42,11 @@ export default function DashboardPage() {
       {/* KPI Cards */}
       <KpiCards />
 
-      {/* Charts row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <HeadcountChart />
-        <DepartmentChart />
-      </div>
+      {/* Today's Attendance — full width */}
+      <AttendanceOverview />
 
-      {/* Attendance + Activity + Alerts row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <AttendanceOverview />
+      {/* Activity + Alerts row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <RecentActivity />
         <AlertsPanel />
       </div>

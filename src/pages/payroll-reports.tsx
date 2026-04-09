@@ -53,12 +53,12 @@ export default function PayrollReportsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Payroll Reports & Analytics</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Generate reports, build custom exports, and review payroll analytics
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => alert("Reports exported successfully.")}>
+          <Button variant="outline" size="sm" onClick={() => {}}>
             <Download className="w-4 h-4 mr-2" />
             Export
           </Button>
@@ -66,7 +66,7 @@ export default function PayrollReportsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-border overflow-x-auto">
+      <div className="flex items-center gap-1 border-b border-[#efefef] overflow-x-auto">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -76,8 +76,8 @@ export default function PayrollReportsPage() {
               className={cn(
                 "flex items-center gap-2 px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap",
                 activeTab === tab.key
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-500 hover:text-slate-900"
               )}
             >
               <Icon className="w-4 h-4" />
@@ -98,12 +98,12 @@ export default function PayrollReportsPage() {
 /* ── Summary Card ── */
 function SummaryCard({ icon: Icon, label, value }: { icon: typeof FileText; label: string; value: string }) {
   return (
-    <div className="rounded-lg border bg-card p-4 flex items-center gap-3">
-      <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary/10 text-primary">
+    <div className="rounded-lg border bg-white p-4 flex items-center gap-3">
+      <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[#f8fafc] text-blue-600">
         <Icon className="w-4 h-4" />
       </div>
       <div>
-        <p className="text-xs text-muted-foreground">{label}</p>
+        <p className="text-xs text-slate-500">{label}</p>
         <p className="text-lg font-semibold">{value}</p>
       </div>
     </div>
@@ -128,7 +128,7 @@ function StandardReportsTab({ search, setSearch }: { search: string; setSearch: 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-500" />
           <Input
             placeholder="Search reports..."
             value={search}
@@ -154,33 +154,33 @@ function StandardReportsTab({ search, setSearch }: { search: string; setSearch: 
       {/* Report Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((report) => (
-          <div key={report.id} className="rounded-lg border bg-card p-4 space-y-3">
+          <div key={report.id} className="rounded-lg border bg-white p-4 space-y-3">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
-                <FileSpreadsheet className="w-4 h-4 text-primary" />
+                <FileSpreadsheet className="w-4 h-4 text-blue-600" />
                 <h3 className="text-sm font-semibold">{report.name}</h3>
               </div>
               <span className={cn(
-                "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border",
-                report.status === "available" ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
-                report.status === "generating" ? "bg-blue-50 border-blue-200 text-blue-700" :
-                "bg-amber-50 border-amber-200 text-amber-700"
+                "text-xs font-medium",
+                report.status === "available" ? "text-emerald-700" :
+                report.status === "generating" ? "text-blue-700" :
+                "text-amber-700"
               )}>
                 {report.status === "available" ? "Available" : report.status === "generating" ? "Generating" : "Scheduled"}
               </span>
             </div>
-            <p className="text-xs text-muted-foreground">{report.description}</p>
-            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            <p className="text-xs text-slate-500">{report.description}</p>
+            <div className="flex items-center gap-4 text-xs text-slate-500">
               <span>Last: {report.lastGenerated ?? "Never"}</span>
               <span className="capitalize">{report.frequency}</span>
               <span className="uppercase">{report.format}</span>
             </div>
             <div className="flex items-center gap-2 pt-1">
-              <Button size="sm" variant="outline" className="flex-1" onClick={() => alert("Generating report: " + report.name + "...")}>
+              <Button size="sm" variant="outline" className="flex-1" onClick={() => {}}>
                 <RefreshCw className="w-3 h-3 mr-1" />
                 Generate
               </Button>
-              <Button size="sm" className="flex-1" onClick={() => alert("Downloading report: " + report.name)}>
+              <Button size="sm" className="flex-1" onClick={() => {}}>
                 <Download className="w-3 h-3 mr-1" />
                 Download
               </Button>
@@ -190,7 +190,7 @@ function StandardReportsTab({ search, setSearch }: { search: string; setSearch: 
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-12 text-muted-foreground text-sm">
+        <div className="text-center py-12 text-slate-500 text-sm">
           No reports match your search criteria.
         </div>
       )}
@@ -243,15 +243,15 @@ function ReportBuilderTab() {
 
   return (
     <>
-      <div className="rounded-lg border bg-card p-5 space-y-5">
+      <div className="rounded-lg border bg-white p-5 space-y-5">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-sm font-semibold">Custom Report Builder</h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-xs text-slate-500 mt-0.5">
               Select fields to include in your custom report ({selectedFields.size} selected)
             </p>
           </div>
-          <Button size="sm" disabled={selectedFields.size === 0} onClick={() => alert("Custom report generated with " + selectedFields.size + " fields.")}>
+          <Button size="sm" disabled={selectedFields.size === 0} onClick={() => {}}>
             <FileText className="w-4 h-4 mr-2" />
             Generate Custom Report
           </Button>
@@ -279,8 +279,8 @@ function ReportBuilderTab() {
                         checked={selectedFields.has(field.id)}
                         onCheckedChange={() => toggleField(field.id)}
                       />
-                      <span className="text-sm text-muted-foreground">{field.name}</span>
-                      <span className="ml-auto text-[10px] text-muted-foreground/60 uppercase">{field.dataType}</span>
+                      <span className="text-sm text-slate-500">{field.name}</span>
+                      <span className="ml-auto text-[10px] text-slate-500/60 uppercase">{field.dataType}</span>
                     </div>
                   ))}
                 </div>
@@ -308,27 +308,27 @@ function AnalyticsTab() {
       </div>
 
       {/* Monthly Payroll Trends */}
-      <div className="rounded-lg border bg-card">
+      <div className="rounded-lg border bg-white">
         <div className="p-4 border-b">
           <h2 className="text-sm font-semibold">Monthly Payroll Trends</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Payroll summary over recent months</p>
+          <p className="text-xs text-slate-500 mt-0.5">Payroll summary over recent months</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-muted/40">
-                <th className="text-left px-4 py-2 font-medium text-muted-foreground">Period</th>
-                <th className="text-right px-4 py-2 font-medium text-muted-foreground">Gross Pay</th>
-                <th className="text-right px-4 py-2 font-medium text-muted-foreground">Net Pay</th>
-                <th className="text-right px-4 py-2 font-medium text-muted-foreground">Deductions</th>
-                <th className="text-right px-4 py-2 font-medium text-muted-foreground">Tax</th>
-                <th className="text-right px-4 py-2 font-medium text-muted-foreground">Pension</th>
-                <th className="text-right px-4 py-2 font-medium text-muted-foreground">Employees</th>
+              <tr className="border-b bg-[#f8fafc]">
+                <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Period</th>
+                <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Gross Pay</th>
+                <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Net Pay</th>
+                <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Deductions</th>
+                <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Tax</th>
+                <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Pension</th>
+                <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Employees</th>
               </tr>
             </thead>
             <tbody>
               {MOCK_PAYROLL_ANALYTICS.map((row) => (
-                <tr key={row.period} className="border-b last:border-0 hover:bg-muted/20">
+                <tr key={row.period} className="border-b last:border-0 hover:bg-[#f8fafc]">
                   <td className="px-4 py-2.5 font-medium">{row.period}</td>
                   <td className="px-4 py-2.5 text-right">{formatNaira(row.totalGross)}</td>
                   <td className="px-4 py-2.5 text-right">{formatNaira(row.totalNet)}</td>
@@ -344,32 +344,32 @@ function AnalyticsTab() {
       </div>
 
       {/* Department Breakdown */}
-      <div className="rounded-lg border bg-card">
+      <div className="rounded-lg border bg-white">
         <div className="p-4 border-b">
           <h2 className="text-sm font-semibold">Department Breakdown</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Payroll distribution across departments</p>
+          <p className="text-xs text-slate-500 mt-0.5">Payroll distribution across departments</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-muted/40">
-                <th className="text-left px-4 py-2 font-medium text-muted-foreground">Department</th>
-                <th className="text-right px-4 py-2 font-medium text-muted-foreground">Employees</th>
-                <th className="text-right px-4 py-2 font-medium text-muted-foreground">Total Gross</th>
-                <th className="text-right px-4 py-2 font-medium text-muted-foreground">% of Payroll</th>
+              <tr className="border-b bg-[#f8fafc]">
+                <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Department</th>
+                <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Employees</th>
+                <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Total Gross</th>
+                <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">% of Payroll</th>
               </tr>
             </thead>
             <tbody>
               {MOCK_DEPARTMENT_SUMMARIES.map((dept) => (
-                <tr key={dept.department} className="border-b last:border-0 hover:bg-muted/20">
+                <tr key={dept.department} className="border-b last:border-0 hover:bg-[#f8fafc]">
                   <td className="px-4 py-2.5 font-medium">{dept.department}</td>
                   <td className="px-4 py-2.5 text-right">{dept.employeeCount}</td>
                   <td className="px-4 py-2.5 text-right">{formatNaira(dept.totalGross)}</td>
                   <td className="px-4 py-2.5 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <div className="w-16 h-1.5 rounded-full bg-muted overflow-hidden">
+                      <div className="w-16 h-1.5 rounded-full bg-[#f8fafc] overflow-hidden">
                         <div
-                          className="h-full rounded-full bg-primary"
+                          className="h-full rounded-full bg-blue-600"
                           style={{ width: `${dept.percentOfPayroll}%` }}
                         />
                       </div>
@@ -404,7 +404,7 @@ function GLIntegrationTab({ search, setSearch }: { search: string; setSearch: (v
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-500" />
           <Input
             placeholder="Search GL entries..."
             value={search}
@@ -426,41 +426,35 @@ function GLIntegrationTab({ search, setSearch }: { search: string; setSearch: (v
       </div>
 
       {/* GL Table */}
-      <div className="rounded-lg border bg-card">
+      <div className="rounded-lg border bg-white">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-muted/40">
-                <th className="text-left px-4 py-2 font-medium text-muted-foreground">Period</th>
-                <th className="text-left px-4 py-2 font-medium text-muted-foreground">Account Code</th>
-                <th className="text-left px-4 py-2 font-medium text-muted-foreground">Account Name</th>
-                <th className="text-right px-4 py-2 font-medium text-muted-foreground">Debit</th>
-                <th className="text-right px-4 py-2 font-medium text-muted-foreground">Credit</th>
-                <th className="text-left px-4 py-2 font-medium text-muted-foreground">Description</th>
-                <th className="text-left px-4 py-2 font-medium text-muted-foreground">Posting Date</th>
-                <th className="text-left px-4 py-2 font-medium text-muted-foreground">Status</th>
+              <tr className="border-b bg-[#f8fafc]">
+                <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Period</th>
+                <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Account Code</th>
+                <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Account Name</th>
+                <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Debit</th>
+                <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Credit</th>
+                <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Description</th>
+                <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Posting Date</th>
+                <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Status</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((entry) => {
                 const style = GL_STATUS_STYLES[entry.status];
                 return (
-                  <tr key={entry.id} className="border-b last:border-0 hover:bg-muted/20">
+                  <tr key={entry.id} className="border-b last:border-0 hover:bg-[#f8fafc]">
                     <td className="px-4 py-2.5">{entry.period}</td>
                     <td className="px-4 py-2.5 font-mono text-xs">{entry.accountCode}</td>
                     <td className="px-4 py-2.5 font-medium">{entry.accountName}</td>
                     <td className="px-4 py-2.5 text-right">{entry.debit > 0 ? formatNaira(entry.debit) : "—"}</td>
                     <td className="px-4 py-2.5 text-right">{entry.credit > 0 ? formatNaira(entry.credit) : "—"}</td>
-                    <td className="px-4 py-2.5 text-muted-foreground">{entry.description}</td>
+                    <td className="px-4 py-2.5 text-slate-500">{entry.description}</td>
                     <td className="px-4 py-2.5">{entry.postingDate}</td>
-                    <td className="px-4 py-2.5">
-                      <span className={cn(
-                        "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border",
-                        style.bg,
-                        style.color,
-                      )}>
-                        {style.label}
-                      </span>
+                    <td className={cn("px-4 py-2.5 text-sm font-medium", style.color)}>
+                      {style.label}
                     </td>
                   </tr>
                 );
@@ -471,7 +465,7 @@ function GLIntegrationTab({ search, setSearch }: { search: string; setSearch: (v
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-12 text-muted-foreground text-sm">
+        <div className="text-center py-12 text-slate-500 text-sm">
           No GL entries match your search criteria.
         </div>
       )}

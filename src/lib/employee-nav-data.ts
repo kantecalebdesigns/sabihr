@@ -1,23 +1,47 @@
-import { LayoutDashboard, Bell, UserCircle, Users, ArrowRightLeft, FileText, Package, DollarSign, Landmark, CreditCard, Banknote, Wallet } from "lucide-react";
+import {
+  LayoutDashboard,
+  Bell,
+  Users,
+  ArrowRightLeft,
+  Package,
+  DollarSign,
+  Landmark,
+  CreditCard,
+  Banknote,
+  Wallet,
+  Home,
+  CalendarDays,
+  Palmtree,
+  Megaphone,
+  ClipboardList,
+  Receipt,
+  ShieldAlert,
+  Target,
+  Heart,
+  Briefcase,
+} from "lucide-react";
 import type { NavSection } from "@/types/dashboard";
 
 export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
   {
     title: "Main",
+    icon: Home,
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/employee/dashboard" },
       { label: "Notifications", icon: Bell, path: "/employee/notifications" },
     ],
   },
   {
-    title: "My Profile",
+    title: "Time",
+    icon: CalendarDays,
     items: [
-      { label: "Personal Info", icon: UserCircle, path: "/employee/profile" },
-      { label: "My Documents", icon: FileText, path: "/employee/documents" },
+      { label: "Attendance", icon: CalendarDays, path: "/employee/attendance" },
+      { label: "Leave", icon: Palmtree, path: "/employee/leave" },
     ],
   },
   {
     title: "Pay & Finance",
+    icon: Wallet,
     items: [
       {
         label: "Pay & Salary",
@@ -34,16 +58,42 @@ export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
-    title: "Company",
+    title: "Performance",
+    icon: Target,
     items: [
-      { label: "Colleagues", icon: Users, path: "/employee/directory" },
+      { label: "My Performance", icon: Target, path: "/employee/performance" },
+    ],
+  },
+  {
+    title: "Benefits",
+    icon: Heart,
+    items: [
+      { label: "My Benefits", icon: Heart, path: "/employee/benefits" },
     ],
   },
   {
     title: "Self Service",
+    icon: Briefcase,
     items: [
       { label: "My Assets", icon: Package, path: "/employee/assets" },
+      { label: "Requisitions", icon: Receipt, path: "/employee/requisitions" },
       { label: "Redeployment", icon: ArrowRightLeft, path: "/employee/redeployment" },
+    ],
+  },
+  {
+    title: "Company",
+    icon: Users,
+    items: [
+      { label: "Colleagues", icon: Users, path: "/employee/directory" },
+      { label: "Announcements", icon: Megaphone, path: "/employee/announcements" },
+      { label: "Surveys", icon: ClipboardList, path: "/employee/surveys" },
+    ],
+  },
+  {
+    title: "Compliance",
+    icon: ShieldAlert,
+    items: [
+      { label: "Disciplinary", icon: ShieldAlert, path: "/employee/disciplinary" },
     ],
   },
 ];

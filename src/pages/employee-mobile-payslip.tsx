@@ -21,26 +21,26 @@ export default function EmployeeMobilePayslipPage() {
     const style = PAYSLIP_STATUS_STYLES[selected.status];
     return (
       <div className="max-w-[500px] mx-auto space-y-4">
-        <button onClick={() => setSelectedPayslip(null)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <button onClick={() => setSelectedPayslip(null)} className="flex items-center gap-1 text-sm text-slate-500 hover:text-slate-900 transition-colors">
           <ArrowLeft className="w-4 h-4" />Back to Payslips
         </button>
 
-        <div className="rounded-xl border border-border bg-card p-4 text-center">
-          <p className="text-sm text-muted-foreground">{selected.period}</p>
+        <div className="rounded-xl border border-[#efefef] bg-white p-4 text-center">
+          <p className="text-sm text-slate-500">{selected.period}</p>
           <p className="text-3xl font-bold mt-1">{formatNaira(selected.netPay)}</p>
           <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border mt-2", style?.bg, style?.color)}>{style?.label}</span>
         </div>
 
-        <div className="rounded-xl border border-border bg-card divide-y divide-border">
+        <div className="rounded-xl border border-[#efefef] bg-white divide-y divide-[#efefef]">
           <div className="p-3">
             <p className="text-xs font-medium text-emerald-700 mb-2">Earnings</p>
             {selected.earnings.map((e, i) => (
               <div key={i} className="flex justify-between py-1.5 text-sm">
-                <span className="text-muted-foreground">{e.name}</span>
+                <span className="text-slate-500">{e.name}</span>
                 <span className="font-medium">{formatNaira(e.amount)}</span>
               </div>
             ))}
-            <div className="flex justify-between py-1.5 text-sm font-semibold border-t border-border mt-1 pt-2">
+            <div className="flex justify-between py-1.5 text-sm font-semibold border-t border-[#efefef] mt-1 pt-2">
               <span>Total Earnings</span>
               <span className="text-emerald-600">{formatNaira(selected.totalEarnings)}</span>
             </div>
@@ -50,11 +50,11 @@ export default function EmployeeMobilePayslipPage() {
             <p className="text-xs font-medium text-red-700 mb-2">Deductions</p>
             {selected.deductions.map((d, i) => (
               <div key={i} className="flex justify-between py-1.5 text-sm">
-                <span className="text-muted-foreground">{d.name}</span>
+                <span className="text-slate-500">{d.name}</span>
                 <span className="font-medium text-red-600">-{formatNaira(d.amount)}</span>
               </div>
             ))}
-            <div className="flex justify-between py-1.5 text-sm font-semibold border-t border-border mt-1 pt-2">
+            <div className="flex justify-between py-1.5 text-sm font-semibold border-t border-[#efefef] mt-1 pt-2">
               <span>Total Deductions</span>
               <span className="text-red-600">-{formatNaira(selected.totalDeductions)}</span>
             </div>
@@ -66,18 +66,18 @@ export default function EmployeeMobilePayslipPage() {
           <p className="text-2xl font-bold text-emerald-700">{formatNaira(selected.netPay)}</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 text-center text-xs text-muted-foreground">
-          <div className="rounded-lg border border-border bg-card p-2">
+        <div className="grid grid-cols-3 gap-2 text-center text-xs text-slate-500">
+          <div className="rounded-lg border border-[#efefef] bg-white p-2">
             <p>YTD Gross</p>
-            <p className="font-medium text-foreground">{formatNaira(selected.ytdGross)}</p>
+            <p className="font-medium text-slate-900">{formatNaira(selected.ytdGross)}</p>
           </div>
-          <div className="rounded-lg border border-border bg-card p-2">
+          <div className="rounded-lg border border-[#efefef] bg-white p-2">
             <p>YTD Net</p>
-            <p className="font-medium text-foreground">{formatNaira(selected.ytdNet)}</p>
+            <p className="font-medium text-slate-900">{formatNaira(selected.ytdNet)}</p>
           </div>
-          <div className="rounded-lg border border-border bg-card p-2">
+          <div className="rounded-lg border border-[#efefef] bg-white p-2">
             <p>YTD Tax</p>
-            <p className="font-medium text-foreground">{formatNaira(selected.ytdTax)}</p>
+            <p className="font-medium text-slate-900">{formatNaira(selected.ytdTax)}</p>
           </div>
         </div>
 
@@ -90,7 +90,7 @@ export default function EmployeeMobilePayslipPage() {
     <div className="max-w-[500px] mx-auto space-y-4">
       <div>
         <h1 className="text-xl font-semibold tracking-tight">My Payslips</h1>
-        <p className="text-sm text-muted-foreground">Tap to view and download</p>
+        <p className="text-sm text-slate-500">Tap to view and download</p>
       </div>
 
       {/* Latest Payslip Highlight */}
@@ -98,9 +98,9 @@ export default function EmployeeMobilePayslipPage() {
         <div className="rounded-xl border-2 border-primary/20 bg-primary/5 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs text-muted-foreground">Latest Payslip</p>
+              <p className="text-xs text-slate-500">Latest Payslip</p>
               <p className="text-lg font-bold">{formatNaira(MOCK_EMPLOYEE_PAYSLIPS[0].netPay)}</p>
-              <p className="text-xs text-muted-foreground">{MOCK_EMPLOYEE_PAYSLIPS[0].period}</p>
+              <p className="text-xs text-slate-500">{MOCK_EMPLOYEE_PAYSLIPS[0].period}</p>
             </div>
             <Button size="sm" onClick={() => setSelectedPayslip(MOCK_EMPLOYEE_PAYSLIPS[0].id)}>
               View
@@ -117,15 +117,15 @@ export default function EmployeeMobilePayslipPage() {
             <button
               key={p.id}
               onClick={() => setSelectedPayslip(p.id)}
-              className="w-full rounded-xl border border-border bg-card p-4 flex items-center justify-between hover:bg-muted/30 transition-colors text-left"
+              className="w-full rounded-xl border border-[#efefef] bg-white p-4 flex items-center justify-between hover:bg-[#f8fafc] transition-colors text-left"
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-primary" />
+                <div className="w-10 h-10 rounded-lg bg-[#f8fafc] flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
                   <p className="font-medium text-sm">{p.period}</p>
-                  <p className="text-xs text-muted-foreground">{p.payDate}</p>
+                  <p className="text-xs text-slate-500">{p.payDate}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -133,7 +133,7 @@ export default function EmployeeMobilePayslipPage() {
                   <p className="font-semibold text-sm">{formatNaira(p.netPay)}</p>
                   <span className={cn("inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium", style?.bg, style?.color)}>{style?.label}</span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                <ChevronRight className="w-4 h-4 text-slate-500" />
               </div>
             </button>
           );

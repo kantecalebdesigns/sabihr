@@ -20,12 +20,12 @@ import type { EmployeeNotification, NotificationType } from "@/types/employee";
 
 const TYPE_CONFIG: Record<NotificationType, { icon: typeof CheckCircle2; color: string; bg: string }> = {
   "leave-approved": { icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-100" },
-  "leave-rejected": { icon: XCircle, color: "text-destructive", bg: "bg-red-100" },
+  "leave-rejected": { icon: XCircle, color: "text-[#e7000b]", bg: "bg-red-100" },
   "document-expiry": { icon: AlertTriangle, color: "text-amber-600", bg: "bg-amber-100" },
   "profile-update": { icon: UserCircle, color: "text-violet-600", bg: "bg-violet-100" },
   "payslip-available": { icon: Receipt, color: "text-emerald-600", bg: "bg-emerald-100" },
-  "redeployment-update": { icon: ArrowRightLeft, color: "text-primary", bg: "bg-primary/10" },
-  announcement: { icon: Megaphone, color: "text-primary", bg: "bg-primary/10" },
+  "redeployment-update": { icon: ArrowRightLeft, color: "text-blue-600", bg: "bg-[#f8fafc]" },
+  announcement: { icon: Megaphone, color: "text-blue-600", bg: "bg-[#f8fafc]" },
   "event-reminder": { icon: CalendarDays, color: "text-amber-600", bg: "bg-amber-100" },
 };
 
@@ -61,7 +61,7 @@ export default function EmployeeNotificationsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Notifications</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             {unreadCount > 0
               ? `You have ${unreadCount} unread notification${unreadCount > 1 ? "s" : ""}`
               : "You're all caught up"}
@@ -76,7 +76,7 @@ export default function EmployeeNotificationsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-border">
+      <div className="flex items-center gap-1 border-b border-[#efefef]">
         {(["all", "unread"] as const).map((tab) => (
           <button
             key={tab}
@@ -84,8 +84,8 @@ export default function EmployeeNotificationsPage() {
             className={cn(
               "flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors -mb-px",
               filter === tab
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-slate-500 hover:text-slate-900"
             )}
           >
             {tab === "all" ? "All" : "Unread"}
@@ -101,8 +101,8 @@ export default function EmployeeNotificationsPage() {
       {/* Notification list */}
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center py-16">
-          <BellOff className="w-10 h-10 text-muted-foreground/30 mb-3" />
-          <p className="text-sm text-muted-foreground">
+          <BellOff className="w-10 h-10 text-slate-500/30 mb-3" />
+          <p className="text-sm text-slate-500">
             {filter === "unread" ? "No unread notifications" : "No notifications yet"}
           </p>
         </div>
@@ -116,7 +116,7 @@ export default function EmployeeNotificationsPage() {
                 key={notif.id}
                 onClick={() => handleClick(notif)}
                 className={cn(
-                  "w-full flex items-start gap-4 p-4 rounded-xl border border-border text-left hover:shadow-sm transition-all",
+                  "w-full flex items-start gap-4 p-4 rounded-xl border border-[#efefef] text-left hover:shadow-sm transition-all",
                   !notif.read && "bg-primary/5 border-l-2 border-l-primary"
                 )}
               >
@@ -134,8 +134,8 @@ export default function EmployeeNotificationsPage() {
                       </Badge>
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">{notif.message}</p>
-                  <p className="text-[11px] text-muted-foreground/60 mt-1.5">
+                  <p className="text-xs text-slate-500 mt-0.5">{notif.message}</p>
+                  <p className="text-[11px] text-slate-500/60 mt-1.5">
                     {new Date(notif.timestamp).toLocaleDateString("en-NG", {
                       weekday: "short",
                       month: "short",

@@ -14,18 +14,18 @@ export function CompleteProfileSection() {
   if (dismissed) return null;
 
   return (
-    <div className="rounded-xl border border-border bg-muted/20 p-4 sm:p-5 space-y-4">
+    <div className="rounded-xl border border-[#efefef] bg-white p-4 sm:p-5 space-y-4">
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-sm font-medium text-foreground">Complete your profile</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <h2 className="text-sm font-semibold text-slate-900">Complete your profile</h2>
+          <p className="text-xs text-slate-500 mt-0.5">
             Fill in the sections below to finish setting up your account
           </p>
         </div>
         <button
           type="button"
           onClick={() => setDismissed(true)}
-          className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors shrink-0 -mt-0.5"
+          className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-[#f8fafc] transition-colors shrink-0 -mt-0.5"
           aria-label="Dismiss"
         >
           <X className="w-4 h-4" />

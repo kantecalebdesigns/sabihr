@@ -25,16 +25,12 @@ const stats = [
     value: `${LEAVE_BALANCE.annual.total - LEAVE_BALANCE.annual.used - LEAVE_BALANCE.annual.pending}`,
     sub: `of ${LEAVE_BALANCE.annual.total} annual days`,
     icon: CalendarDays,
-    color: "text-primary",
-    bg: "bg-primary/10",
   },
   {
     label: "Attendance",
     value: `${Math.round((ATTENDANCE_SUMMARY.daysPresent / (ATTENDANCE_SUMMARY.workingDays - ATTENDANCE_SUMMARY.daysRemaining)) * 100)}%`,
     sub: `${ATTENDANCE_SUMMARY.daysPresent}/${ATTENDANCE_SUMMARY.workingDays - ATTENDANCE_SUMMARY.daysRemaining} days this month`,
     icon: Clock,
-    color: "text-emerald-600",
-    bg: "bg-emerald-50",
   },
   {
     label: "Next Payday",
@@ -44,16 +40,12 @@ const stats = [
       day: "numeric",
     }),
     icon: Wallet,
-    color: "text-violet-600",
-    bg: "bg-violet-50",
   },
   {
     label: "Pending Requests",
     value: `${PENDING_REQUESTS.total}`,
     sub: PENDING_REQUESTS.total === 0 ? "All clear" : "Awaiting approval",
     icon: Bell,
-    color: "text-amber-600",
-    bg: "bg-amber-50",
   },
 ];
 
@@ -63,21 +55,19 @@ export function StatCards() {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3"
+          className="rounded-xl border border-[#efefef] bg-white p-4 flex flex-col gap-3"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-muted-foreground">
+            <span className="text-xs font-medium text-slate-500">
               {stat.label}
             </span>
-            <div
-              className={`w-8 h-8 rounded-lg ${stat.bg} flex items-center justify-center`}
-            >
-              <stat.icon className={`w-4 h-4 ${stat.color}`} />
+            <div className="w-9 h-9 rounded-[10px] bg-[#f0f4f8] flex items-center justify-center">
+              <stat.icon className="w-[18px] h-[18px] text-slate-500" />
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold tracking-tight">{stat.value}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">{stat.sub}</p>
+            <p className="text-2xl font-bold tracking-tight text-slate-900">{stat.value}</p>
+            <p className="text-xs text-slate-500 mt-0.5">{stat.sub}</p>
           </div>
         </div>
       ))}

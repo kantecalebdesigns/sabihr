@@ -56,12 +56,12 @@ export default function PaymentDisbursementPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Payment Disbursement</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Manage bank integrations, generate payment files, track transactions, and reconcile disbursements
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => alert("Payment disbursement data exported successfully.")}>
+          <Button variant="outline" size="sm" onClick={() => {}}>
             <Download className="w-4 h-4 mr-2" />
             Export
           </Button>
@@ -69,7 +69,7 @@ export default function PaymentDisbursementPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-border overflow-x-auto">
+      <div className="flex items-center gap-1 border-b border-[#efefef] overflow-x-auto">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -79,8 +79,8 @@ export default function PaymentDisbursementPage() {
               className={cn(
                 "flex items-center gap-2 px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap",
                 activeTab === tab.key
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-500 hover:text-slate-900"
               )}
             >
               <Icon className="w-4 h-4" />
@@ -121,37 +121,37 @@ function BankIntegrationTab({ search, setSearch }: { search: string; setSearch: 
 
       <SearchBar value={search} onChange={setSearch} placeholder="Search banks..." />
 
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Bank Name</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Code</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Account</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Type</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Currency</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">API Status</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Last Sync</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Bank Name</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Code</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Account</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Type</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Currency</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">API Status</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Last Sync</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((b) => {
               const style = BANK_STATUS_STYLES[b.status];
               return (
-                <tr key={b.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                <tr key={b.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
                   <td className="p-3 font-medium">
                     {b.bankName}
                     {b.isDefault && (
-                      <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-primary/10 text-primary">
+                      <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-[#f8fafc] text-blue-600">
                         Default
                       </span>
                     )}
                   </td>
-                  <td className="p-3 text-muted-foreground">{b.bankCode}</td>
+                  <td className="p-3 text-slate-500">{b.bankCode}</td>
                   <td className="p-3 font-mono text-xs">{b.accountNumber}</td>
-                  <td className="p-3 capitalize text-muted-foreground">{b.accountType}</td>
-                  <td className="p-3 text-muted-foreground">{b.currency}</td>
+                  <td className="p-3 capitalize text-slate-500">{b.accountType}</td>
+                  <td className="p-3 text-slate-500">{b.currency}</td>
                   <td className="p-3">
                     {b.apiIntegrated ? (
                       <span className="inline-flex items-center gap-1 text-emerald-600 text-xs font-medium">
@@ -163,7 +163,7 @@ function BankIntegrationTab({ search, setSearch }: { search: string; setSearch: 
                       </span>
                     )}
                   </td>
-                  <td className="p-3 text-muted-foreground text-xs">
+                  <td className="p-3 text-slate-500 text-xs">
                     {b.lastSyncDate
                       ? new Date(b.lastSyncDate).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
                       : "Never"}
@@ -223,34 +223,34 @@ function PaymentFilesTab({ search, setSearch }: { search: string; setSearch: (v:
         </Select>
       </div>
 
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Period</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Bank</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Format</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Amount</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Transactions</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">File Size</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Bank</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Format</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Amount</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Transactions</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">File Size</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((f) => {
               const style = PAYMENT_FILE_STATUS_STYLES[f.status];
               return (
-                <tr key={f.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                <tr key={f.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
                   <td className="p-3 font-medium">{f.period}</td>
-                  <td className="p-3 text-muted-foreground">{f.bankName}</td>
+                  <td className="p-3 text-slate-500">{f.bankName}</td>
                   <td className="p-3">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded bg-muted text-xs font-mono font-medium">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#f8fafc] text-xs font-mono font-medium">
                       {f.format}
                     </span>
                   </td>
                   <td className="p-3 text-right font-medium">{formatNaira(f.totalAmount)}</td>
-                  <td className="p-3 text-right text-muted-foreground">{f.transactionCount}</td>
-                  <td className="p-3 text-muted-foreground">{f.fileSize}</td>
+                  <td className="p-3 text-right text-slate-500">{f.transactionCount}</td>
+                  <td className="p-3 text-slate-500">{f.fileSize}</td>
                   <td className="p-3">
                     <StatusBadge style={style} />
                   </td>
@@ -330,36 +330,36 @@ function PaymentTrackingTab({ search, setSearch }: { search: string; setSearch: 
         </Select>
       </div>
 
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Employee</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Bank</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Amount</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Reference</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Failure Reason</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Actions</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Bank</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Amount</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Reference</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Failure Reason</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Actions</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((t) => {
               const style = TRANSACTION_STATUS_STYLES[t.status];
               return (
-                <tr key={t.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                <tr key={t.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
                   <td className="p-3">
                     <div className="font-medium">{t.employeeName}</div>
-                    <div className="text-xs text-muted-foreground">{t.accountNumber}</div>
+                    <div className="text-xs text-slate-500">{t.accountNumber}</div>
                   </td>
-                  <td className="p-3 text-muted-foreground">{t.bankName}</td>
+                  <td className="p-3 text-slate-500">{t.bankName}</td>
                   <td className="p-3 text-right font-medium">{formatNaira(t.amount)}</td>
-                  <td className="p-3 font-mono text-xs text-muted-foreground">{t.reference}</td>
+                  <td className="p-3 font-mono text-xs text-slate-500">{t.reference}</td>
                   <td className="p-3">
                     <StatusBadge style={style} />
                   </td>
                   <td className="p-3 text-xs text-red-600">
-                    {t.failureReason ?? <span className="text-muted-foreground">—</span>}
+                    {t.failureReason ?? <span className="text-slate-500">—</span>}
                   </td>
                   <td className="p-3">
                     {t.status === "failed" && (
@@ -424,25 +424,25 @@ function ReconciliationTab({ search, setSearch }: { search: string; setSearch: (
         </Select>
       </div>
 
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">Period</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Expected</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Disbursed</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Failed</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Variance</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Matched</th>
-              <th className="p-3 text-right font-medium text-muted-foreground">Unmatched</th>
-              <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Expected</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Disbursed</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Failed</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Variance</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Matched</th>
+              <th className="p-3 text-right text-xs font-medium text-slate-500">Unmatched</th>
+              <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((r) => {
               const style = RECON_STATUS_STYLES[r.status];
               return (
-                <tr key={r.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                <tr key={r.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
                   <td className="p-3 font-medium">{r.period}</td>
                   <td className="p-3 text-right">{formatNaira(r.totalExpected)}</td>
                   <td className="p-3 text-right">{formatNaira(r.totalDisbursed)}</td>
@@ -452,8 +452,8 @@ function ReconciliationTab({ search, setSearch }: { search: string; setSearch: (
                       {formatNaira(r.variance)}
                     </span>
                   </td>
-                  <td className="p-3 text-right text-muted-foreground">{r.matchedCount}</td>
-                  <td className="p-3 text-right text-muted-foreground">{r.unmatchedCount}</td>
+                  <td className="p-3 text-right text-slate-500">{r.matchedCount}</td>
+                  <td className="p-3 text-right text-slate-500">{r.unmatchedCount}</td>
                   <td className="p-3">
                     <StatusBadge style={style} />
                   </td>
@@ -471,8 +471,8 @@ function ReconciliationTab({ search, setSearch }: { search: string; setSearch: (
 /* ── Shared Helpers ── */
 function SummaryCard({ icon: Icon, label, value }: { icon: typeof Building2; label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="flex items-center gap-2 text-muted-foreground mb-1">
+    <div className="rounded-xl border border-[#efefef] bg-white p-4">
+      <div className="flex items-center gap-2 text-slate-500 mb-1">
         <Icon className="w-4 h-4" />
         <span className="text-xs font-medium">{label}</span>
       </div>
@@ -484,7 +484,7 @@ function SummaryCard({ icon: Icon, label, value }: { icon: typeof Building2; lab
 function SearchBar({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder: string }) {
   return (
     <div className="relative flex-1 max-w-sm">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
       <Input
         placeholder={placeholder}
         value={value}
@@ -498,7 +498,7 @@ function SearchBar({ value, onChange, placeholder }: { value: string; onChange: 
 function StatusBadge({ style }: { style: { label: string; bg: string; color: string } | undefined }) {
   if (!style) return null;
   return (
-    <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border", style.bg, style.color)}>
+    <span className={cn("text-sm font-medium", style.color)}>
       {style.label}
     </span>
   );
@@ -507,7 +507,7 @@ function StatusBadge({ style }: { style: { label: string; bg: string; color: str
 function EmptyRow({ colSpan }: { colSpan: number }) {
   return (
     <tr>
-      <td colSpan={colSpan} className="p-12 text-center text-muted-foreground">
+      <td colSpan={colSpan} className="p-12 text-center text-slate-500">
         <FileText className="w-10 h-10 mx-auto mb-3 opacity-30" />
         <p className="font-medium">No items found</p>
         <p className="text-xs mt-1">Try adjusting your search or filters</p>

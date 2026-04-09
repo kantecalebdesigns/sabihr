@@ -64,5 +64,6 @@ export interface NavItem {
 
 export interface NavSection {
   title: string;
+  icon?: React.ComponentType<{ className?: string }>;
   items: NavItem[];
 }

@@ -15,14 +15,22 @@ import {
   BarChart3,
   Megaphone,
   Settings,
-  Target,
   Settings2,
   Shield,
+  Home,
+  Briefcase,
+  Wallet,
+  MoreHorizontal,
+  Target,
+  ClipboardCheck,
+  UserCheck,
+  Heart,
   CreditCard,
-  Landmark,
-  Globe,
   ClipboardList,
-  History,
+  ShieldAlert,
+  LogOut,
+  MessageSquare,
+  Receipt,
 } from "lucide-react";
 import type {
   KpiCardData,
@@ -187,53 +195,90 @@ export const DASHBOARD_ALERTS: DashboardAlert[] = [
 export const NAV_SECTIONS: NavSection[] = [
   {
     title: "Main",
+    icon: Home,
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
     ],
   },
   {
     title: "People",
+    icon: Users,
     items: [
       { label: "Employees", icon: UserCircle, path: "/employees" },
       { label: "Departments", icon: Building2, path: "/departments" },
     ],
   },
   {
-    title: "Time & Pay",
+    title: "Time",
+    icon: Clock,
     items: [
       { label: "Attendance", icon: CalendarDays, path: "/attendance" },
       { label: "Leave", icon: Palmtree, path: "/leave" },
-      {
-        label: "Payroll",
-        icon: DollarSign,
-        path: "/payroll",
-        children: [
-          { label: "Processing", icon: DollarSign, path: "/payroll" },
-          { label: "Configuration", icon: Settings2, path: "/payroll/config" },
-          { label: "Compliance", icon: Shield, path: "/payroll/compliance" },
-          { label: "Payslips", icon: FileText, path: "/payroll/payslips" },
-          { label: "Disbursement", icon: CreditCard, path: "/payroll/disbursement" },
-          { label: "Remittance", icon: Landmark, path: "/payroll/remittance" },
-          { label: "Global", icon: Globe, path: "/payroll/global" },
-          { label: "Reports", icon: ClipboardList, path: "/payroll/reports" },
-          { label: "Audit", icon: History, path: "/payroll/audit" },
-        ],
-      },
+    ],
+  },
+  {
+    title: "Payroll",
+    icon: Wallet,
+    items: [
+      { label: "Processing", icon: DollarSign, path: "/payroll" },
+      { label: "Configuration", icon: Settings2, path: "/payroll/config" },
+      { label: "Compliance", icon: Shield, path: "/payroll/compliance" },
+    ],
+  },
+  {
+    title: "Performance",
+    icon: Target,
+    items: [
+      { label: "Dashboard", icon: Target, path: "/performance" },
+      { label: "Goals", icon: ClipboardCheck, path: "/performance/goals" },
+      { label: "Reviews", icon: UserCheck, path: "/performance/reviews" },
+    ],
+  },
+  {
+    title: "Benefits",
+    icon: Heart,
+    items: [
+      { label: "Plans", icon: Heart, path: "/benefits" },
+      { label: "Enrollments", icon: UserCheck, path: "/benefits/enrollments" },
+    ],
+  },
+  {
+    title: "Loans",
+    icon: CreditCard,
+    items: [
+      { label: "Management", icon: CreditCard, path: "/loans" },
     ],
   },
   {
     title: "Operations",
+    icon: Briefcase,
     items: [
       { label: "Documents", icon: FileText, path: "/documents" },
       { label: "Document Library", icon: FolderOpen, path: "/documents/library" },
       { label: "Assets", icon: Package, path: "/assets" },
-      { label: "Performance", icon: Target, path: "/performance" },
+    ],
+  },
+  {
+    title: "Engagement",
+    icon: MessageSquare,
+    items: [
+      { label: "Announcements", icon: Megaphone, path: "/announcements" },
+      { label: "Surveys", icon: ClipboardList, path: "/surveys" },
+      { label: "Requisitions", icon: Receipt, path: "/requisitions" },
+    ],
+  },
+  {
+    title: "Compliance",
+    icon: ShieldAlert,
+    items: [
+      { label: "Disciplinary", icon: ShieldAlert, path: "/disciplinary" },
+      { label: "Exit Management", icon: LogOut, path: "/exit" },
     ],
   },
   {
     title: "More",
+    icon: MoreHorizontal,
     items: [
-      { label: "Announcements", icon: Megaphone, path: "/announcements" },
       { label: "Reports", icon: BarChart3, path: "/reports" },
       { label: "Settings", icon: Settings, path: "/settings" },
     ],

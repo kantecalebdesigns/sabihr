@@ -4,24 +4,21 @@ import { cn } from "@/lib/utils";
 import { DASHBOARD_ALERTS } from "@/lib/dashboard-data";
 import type { AlertSeverity } from "@/types/dashboard";
 
-const SEVERITY_CONFIG: Record<AlertSeverity, { icon: typeof Info; color: string; bg: string; border: string }> = {
+const SEVERITY_CONFIG: Record<AlertSeverity, { icon: typeof Info; color: string; border: string }> = {
   info: {
     icon: Info,
-    color: "text-blue-600",
-    bg: "bg-blue-50",
-    border: "border-blue-200",
+    color: "text-blue-500",
+    border: "border-[#bedbff]",
   },
   warning: {
     icon: AlertTriangle,
-    color: "text-amber-600",
-    bg: "bg-amber-50",
-    border: "border-amber-200",
+    color: "text-[#ad6c21]",
+    border: "border-[#ad6c21]",
   },
   urgent: {
     icon: AlertCircle,
-    color: "text-red-600",
-    bg: "bg-red-50",
-    border: "border-red-200",
+    color: "text-[#b42121]",
+    border: "border-[#b42121]",
   },
 };
 
@@ -36,12 +33,12 @@ export function AlertsPanel() {
 
   if (visibleAlerts.length === 0) {
     return (
-      <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+      <div className="rounded-xl border border-[#efefef] bg-white pt-[21px] px-[21px] pb-4 flex flex-col gap-4">
         <div>
-          <h3 className="text-sm font-semibold">Alerts & Actions</h3>
-          <p className="text-xs text-muted-foreground">Items requiring your attention</p>
+          <h3 className="text-sm font-semibold text-slate-900">Alerts & Actions</h3>
+          <p className="text-xs text-slate-500">Items requiring your attention</p>
         </div>
-        <div className="flex items-center justify-center py-8 text-sm text-muted-foreground">
+        <div className="flex items-center justify-center py-8 text-sm text-slate-400">
           No pending alerts
         </div>
       </div>
@@ -49,18 +46,13 @@ export function AlertsPanel() {
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card p-5 space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-sm font-semibold">Alerts & Actions</h3>
-          <p className="text-xs text-muted-foreground">Items requiring your attention</p>
-        </div>
-        <span className="text-xs font-medium bg-destructive/10 text-destructive px-2 py-0.5 rounded-full">
-          {visibleAlerts.length}
-        </span>
+    <div className="rounded-xl border border-[#efefef] bg-white pt-[21px] px-[21px] pb-4 flex flex-col gap-4">
+      <div>
+        <h3 className="text-sm font-semibold text-slate-900">Alerts & Actions</h3>
+        <p className="text-xs text-slate-500">Items requiring your attention</p>
       </div>
 
-      <div className="space-y-2">
+      <div className="flex flex-col gap-2">
         {visibleAlerts.map((alert) => {
           const config = SEVERITY_CONFIG[alert.severity];
           const Icon = config.icon;
@@ -68,19 +60,18 @@ export function AlertsPanel() {
             <div
               key={alert.id}
               className={cn(
-                "flex items-start gap-3 rounded-lg border p-3 transition-colors",
-                config.border,
-                config.bg
+                "flex items-start gap-3 rounded-lg border p-3",
+                config.border
               )}
             >
               <Icon className={cn("w-4 h-4 mt-0.5 shrink-0", config.color)} />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium">{alert.title}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{alert.description}</p>
+              <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                <p className="text-sm font-medium text-slate-900">{alert.title}</p>
+                <p className="text-xs text-slate-500 leading-4">{alert.description}</p>
               </div>
               <button
                 onClick={() => dismiss(alert.id)}
-                className="w-5 h-5 rounded flex items-center justify-center text-muted-foreground hover:text-foreground shrink-0"
+                className="w-5 h-5 rounded flex items-center justify-center text-slate-400 hover:text-slate-700 shrink-0"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

@@ -20,10 +20,10 @@ export const LEAVE_STATUS_STYLES: Record<
   LeaveStatus,
   { label: string; bg: string; color: string }
 > = {
-  pending: { label: "Pending", bg: "bg-amber-50 border-amber-200", color: "text-amber-700" },
-  approved: { label: "Approved", bg: "bg-emerald-50 border-emerald-200", color: "text-emerald-700" },
-  rejected: { label: "Rejected", bg: "bg-red-50 border-red-200", color: "text-red-700" },
-  cancelled: { label: "Cancelled", bg: "bg-gray-50 border-gray-200", color: "text-gray-600" },
+  pending: { label: "Pending", bg: "bg-transparent border-amber-300", color: "text-amber-700" },
+  approved: { label: "Approved", bg: "bg-transparent border-emerald-300", color: "text-emerald-700" },
+  rejected: { label: "Rejected", bg: "bg-transparent border-red-300", color: "text-red-700" },
+  cancelled: { label: "Cancelled", bg: "bg-transparent border-gray-300", color: "text-gray-600" },
 };
 
 export const LEAVE_TYPE_LABELS: Record<LeaveType, string> = {

@@ -55,33 +55,33 @@ function SetupCard({ icon, title, description, children, onSubmit, required }: S
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card overflow-hidden">
+    <div className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
-        className="flex items-center gap-3 w-full px-4 py-3 sm:px-5 sm:py-4 text-left hover:bg-muted/30 transition-colors"
+        className="flex items-center gap-3 w-full px-4 py-3 sm:px-5 sm:py-4 text-left hover:bg-[#f8fafc] transition-colors"
       >
-        <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+        <div className="w-9 h-9 rounded-[10px] bg-[#f0f4f8] flex items-center justify-center shrink-0">
           {icon}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-semibold">{title}</h3>
+            <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
             {required && (
               <span className="text-[10px] font-medium text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
                 Required
               </span>
             )}
           </div>
-          <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+          <p className="text-xs text-slate-500 mt-0.5">{description}</p>
         </div>
-        <div className="shrink-0 text-muted-foreground">
+        <div className="shrink-0 text-slate-400">
           {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </div>
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 sm:px-5 sm:pb-5 space-y-4 border-t border-border pt-4">
+        <div className="px-4 pb-4 sm:px-5 sm:pb-5 space-y-4 border-t border-[#efefef] pt-4">
           {children}
 
           <div className="flex justify-end pt-2">
@@ -142,7 +142,7 @@ export function BasicDetailsCard() {
 
   return (
     <SetupCard
-      icon={<User className="w-4.5 h-4.5 text-primary" />}
+      icon={<User className="w-4.5 h-4.5 text-slate-500" />}
       title="Personal Details"
       description="Name, date of birth, gender, nationality, and statutory IDs"
       onSubmit={handleSubmit}
@@ -186,7 +186,7 @@ export function ContactInfoCard() {
 
   return (
     <SetupCard
-      icon={<Phone className="w-4.5 h-4.5 text-primary" />}
+      icon={<Phone className="w-4.5 h-4.5 text-slate-500" />}
       title="Contact Information"
       description="Email, phone number, and residential address"
       onSubmit={handleSubmit}
@@ -223,7 +223,7 @@ export function EmergencyContactsCard() {
 
   return (
     <SetupCard
-      icon={<ShieldAlert className="w-4.5 h-4.5 text-primary" />}
+      icon={<ShieldAlert className="w-4.5 h-4.5 text-slate-500" />}
       title="Emergency Contacts"
       description="At least one person we can reach in case of emergency"
       onSubmit={handleSubmit}
@@ -260,7 +260,7 @@ export function FamilyDependentsCard() {
 
   return (
     <SetupCard
-      icon={<Users className="w-4.5 h-4.5 text-primary" />}
+      icon={<Users className="w-4.5 h-4.5 text-slate-500" />}
       title="Family & Dependents"
       description="Add your spouse, children, or other dependents (optional)"
       onSubmit={handleSubmit}

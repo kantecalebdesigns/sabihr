@@ -18,13 +18,13 @@ export default function EmployeeMobileWalletPage() {
     <div className="max-w-[500px] mx-auto space-y-4">
       <div>
         <h1 className="text-xl font-semibold tracking-tight">My Wallet</h1>
-        <p className="text-sm text-muted-foreground">Multi-currency wallet & conversions</p>
+        <p className="text-sm text-slate-500">Multi-currency wallet & conversions</p>
       </div>
 
       {/* Balance Card */}
       <div className="rounded-xl border-2 border-primary/20 bg-primary/5 p-5 text-center">
-        <Wallet className="w-8 h-8 mx-auto text-primary mb-2" />
-        <p className="text-sm text-muted-foreground">Total Balance</p>
+        <Wallet className="w-8 h-8 mx-auto text-blue-600 mb-2" />
+        <p className="text-sm text-slate-500">Total Balance</p>
         <p className="text-3xl font-bold">{formatNaira(wallet.totalBalanceNGN)}</p>
       </div>
 
@@ -48,14 +48,14 @@ export default function EmployeeMobileWalletPage() {
       <div className="space-y-3">
         <h3 className="text-sm font-medium">My Currencies</h3>
         {wallet.wallets.map((w, i) => (
-          <div key={i} className="rounded-xl border border-border bg-card p-4 flex items-center justify-between">
+          <div key={i} className="rounded-xl border border-[#efefef] bg-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+              <div className="w-10 h-10 rounded-full bg-[#f8fafc] flex items-center justify-center text-blue-600 font-bold">
                 {w.symbol}
               </div>
               <div>
                 <p className="font-medium">{w.currency}</p>
-                <p className="text-xs text-muted-foreground">~ {formatNaira(w.ngnEquivalent)}</p>
+                <p className="text-xs text-slate-500">~ {formatNaira(w.ngnEquivalent)}</p>
               </div>
             </div>
             <p className="text-lg font-semibold">{w.symbol}{w.balance.toLocaleString()}</p>
@@ -64,11 +64,11 @@ export default function EmployeeMobileWalletPage() {
       </div>
 
       {/* Transactions */}
-      <div className="rounded-xl border border-border bg-card">
-        <div className="p-3 border-b border-border">
+      <div className="rounded-xl border border-[#efefef] bg-white">
+        <div className="p-3 border-b border-[#efefef]">
           <h3 className="text-sm font-medium">Recent Transactions</h3>
         </div>
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-[#efefef]">
           {wallet.recentTransactions.map((txn) => (
             <div key={txn.id} className="p-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -81,7 +81,7 @@ export default function EmployeeMobileWalletPage() {
                 </div>
                 <div>
                   <p className="text-sm font-medium">{txn.description}</p>
-                  <p className="text-xs text-muted-foreground">{txn.date}</p>
+                  <p className="text-xs text-slate-500">{txn.date}</p>
                 </div>
               </div>
               <p className={cn("text-sm font-semibold",

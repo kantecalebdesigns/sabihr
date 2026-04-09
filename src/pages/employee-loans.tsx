@@ -26,14 +26,14 @@ export default function EmployeeLoansPage() {
     <div className="max-w-[1000px] mx-auto space-y-6">
       <div>
         <h1 className="text-xl font-semibold tracking-tight">My Loans & Advances</h1>
-        <p className="text-sm text-muted-foreground">Track loan requests and salary advances</p>
+        <p className="text-sm text-slate-500">Track loan requests and salary advances</p>
       </div>
 
-      <div className="flex items-center gap-1 border-b border-border">
+      <div className="flex items-center gap-1 border-b border-[#efefef]">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
-            <button key={tab.key} onClick={() => setActiveTab(tab.key)} className={cn("flex items-center gap-2 px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap", activeTab === tab.key ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground")}>
+            <button key={tab.key} onClick={() => setActiveTab(tab.key)} className={cn("flex items-center gap-2 px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap", activeTab === tab.key ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900")}>
               <Icon className="w-4 h-4" />{tab.label}
             </button>
           );
@@ -54,20 +54,20 @@ function LoansTab() {
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-border bg-card p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1"><Banknote className="w-4 h-4" /><span className="text-xs font-medium">Total Loans</span></div>
+        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+          <div className="flex items-center gap-2 text-slate-500 mb-1"><Banknote className="w-4 h-4" /><span className="text-xs font-medium">Total Loans</span></div>
           <p className="text-xl font-semibold">{MOCK_LOANS.length}</p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1"><AlertCircle className="w-4 h-4" /><span className="text-xs font-medium">Outstanding</span></div>
+        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+          <div className="flex items-center gap-2 text-slate-500 mb-1"><AlertCircle className="w-4 h-4" /><span className="text-xs font-medium">Outstanding</span></div>
           <p className="text-xl font-semibold text-red-600">{formatNaira(totalOutstanding)}</p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1"><TrendingUp className="w-4 h-4" /><span className="text-xs font-medium">Monthly Deduction</span></div>
+        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+          <div className="flex items-center gap-2 text-slate-500 mb-1"><TrendingUp className="w-4 h-4" /><span className="text-xs font-medium">Monthly Deduction</span></div>
           <p className="text-xl font-semibold">{formatNaira(totalMonthlyDeduction)}</p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1"><Clock className="w-4 h-4" /><span className="text-xs font-medium">Pending</span></div>
+        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+          <div className="flex items-center gap-2 text-slate-500 mb-1"><Clock className="w-4 h-4" /><span className="text-xs font-medium">Pending</span></div>
           <p className="text-xl font-semibold">{MOCK_LOANS.filter((l) => l.status === "pending").length}</p>
         </div>
       </div>
@@ -82,43 +82,43 @@ function LoansTab() {
           const progress = loan.totalInstallments > 0 ? (loan.installmentsPaid / loan.totalInstallments) * 100 : 0;
 
           return (
-            <div key={loan.id} className="rounded-xl border border-border bg-card p-5">
+            <div key={loan.id} className="rounded-xl border border-[#efefef] bg-white p-5">
               <div className="flex items-center justify-between mb-3">
                 <div>
                   <h4 className="font-medium">{loan.typeName}</h4>
-                  <p className="text-xs text-muted-foreground">Requested: {loan.requestDate}</p>
+                  <p className="text-xs text-slate-500">Requested: {loan.requestDate}</p>
                 </div>
                 <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border", style?.bg, style?.color)}>{style?.label}</span>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm mb-4">
-                <div><span className="text-muted-foreground">Loan Amount</span><br /><span className="font-medium">{formatNaira(loan.amount)}</span></div>
-                <div><span className="text-muted-foreground">Outstanding</span><br /><span className="font-medium text-red-600">{formatNaira(loan.outstandingBalance)}</span></div>
-                <div><span className="text-muted-foreground">Monthly Deduction</span><br /><span className="font-medium">{formatNaira(loan.monthlyDeduction)}</span></div>
-                <div><span className="text-muted-foreground">Interest Rate</span><br /><span className="font-medium">{loan.interestRate}%</span></div>
+                <div><span className="text-slate-500">Loan Amount</span><br /><span className="font-medium">{formatNaira(loan.amount)}</span></div>
+                <div><span className="text-slate-500">Outstanding</span><br /><span className="font-medium text-red-600">{formatNaira(loan.outstandingBalance)}</span></div>
+                <div><span className="text-slate-500">Monthly Deduction</span><br /><span className="font-medium">{formatNaira(loan.monthlyDeduction)}</span></div>
+                <div><span className="text-slate-500">Interest Rate</span><br /><span className="font-medium">{loan.interestRate}%</span></div>
               </div>
 
               {loan.status === "active" && (
                 <div>
-                  <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                  <div className="flex justify-between text-xs text-slate-500 mb-1">
                     <span>Repayment Progress</span>
                     <span>{loan.installmentsPaid} / {loan.totalInstallments} installments</span>
                   </div>
-                  <div className="w-full bg-muted rounded-full h-2">
+                  <div className="w-full bg-[#f8fafc] rounded-full h-2">
                     <div className="bg-primary h-2 rounded-full transition-all" style={{ width: `${progress}%` }} />
                   </div>
                 </div>
               )}
 
               {loan.status === "active" && (
-                <div className="grid grid-cols-3 gap-4 text-xs text-muted-foreground mt-3 pt-3 border-t border-border">
+                <div className="grid grid-cols-3 gap-4 text-xs text-slate-500 mt-3 pt-3 border-t border-[#efefef]">
                   <span>Tenure: {loan.tenure} months</span>
                   <span>Start: {loan.startDate}</span>
                   <span>End: {loan.endDate}</span>
                 </div>
               )}
 
-              {loan.approvedBy && <p className="text-xs text-muted-foreground mt-2">Approved by: {loan.approvedBy}</p>}
+              {loan.approvedBy && <p className="text-xs text-slate-500 mt-2">Approved by: {loan.approvedBy}</p>}
             </div>
           );
         })}
@@ -133,13 +133,13 @@ function AdvanceTab() {
   return (
     <>
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">Request a salary advance against your next paycheck</p>
+        <p className="text-sm text-slate-500">Request a salary advance against your next paycheck</p>
         <Button size="sm" onClick={() => alert("Salary advance request form would open here.")}><Plus className="w-4 h-4 mr-2" />Request Advance</Button>
       </div>
 
-      <div className="rounded-xl border border-border bg-card p-6">
+      <div className="rounded-xl border border-[#efefef] bg-white p-6">
         <h3 className="font-medium mb-3">Salary Advance Guidelines</h3>
-        <ul className="space-y-2 text-sm text-muted-foreground">
+        <ul className="space-y-2 text-sm text-slate-500">
           <li>Maximum advance: 50% of monthly net salary</li>
           <li>Repayment: Deducted from next 1-2 salary payments</li>
           <li>No interest charged on salary advances</li>
@@ -154,23 +154,23 @@ function AdvanceTab() {
           {advances.map((adv) => {
             const style = LOAN_STATUS_STYLES[adv.status];
             return (
-              <div key={adv.id} className="rounded-xl border border-border bg-card p-4 flex items-center justify-between">
+              <div key={adv.id} className="rounded-xl border border-[#efefef] bg-white p-4 flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2">
                     <h4 className="font-medium">{formatNaira(adv.amount)}</h4>
                     <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border", style?.bg, style?.color)}>{style?.label}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Requested: {adv.requestDate} | Tenure: {adv.tenure} months</p>
+                  <p className="text-xs text-slate-500 mt-1">Requested: {adv.requestDate} | Tenure: {adv.tenure} months</p>
                 </div>
                 <div className="text-right text-sm">
-                  <p className="text-muted-foreground">{adv.installmentsPaid}/{adv.totalInstallments} paid</p>
+                  <p className="text-slate-500">{adv.installmentsPaid}/{adv.totalInstallments} paid</p>
                 </div>
               </div>
             );
           })}
         </div>
       ) : (
-        <div className="text-center py-12 text-muted-foreground">
+        <div className="text-center py-12 text-slate-500">
           <FileText className="w-10 h-10 mx-auto mb-3 opacity-30" />
           <p className="font-medium">No salary advances</p>
           <p className="text-xs mt-1">You haven't requested any salary advances yet</p>

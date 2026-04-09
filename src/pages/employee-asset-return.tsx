@@ -94,17 +94,17 @@ export default function EmployeeAssetReturnPage() {
     <div className="max-w-[900px] mx-auto space-y-8">
       <div>
         <h1 className="text-2xl font-semibold">Return Assets</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-sm text-slate-500 mt-1">
           Initiate a return for one or more of your assigned assets.
         </p>
       </div>
 
       {submitted ? (
-        <Card className="rounded-xl border-border bg-card">
+        <Card className="rounded-xl border-[#efefef] bg-white">
           <CardContent className="text-center py-10 space-y-4">
             <CheckCircle2 className="size-16 mx-auto text-green-600" />
             <h2 className="text-xl font-semibold">Return Request Submitted</h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-500">
               Your return request for {selectedAssetIds.size} asset
               {selectedAssetIds.size !== 1 ? "s" : ""} has been submitted. You
               will be notified when a collection is scheduled.
@@ -128,7 +128,7 @@ export default function EmployeeAssetReturnPage() {
                     key={asset.id}
                     onClick={() => toggleAsset(asset.id)}
                     className={cn(
-                      "flex items-center gap-3 rounded-xl border border-border bg-card p-4 text-left transition-colors hover:bg-accent",
+                      "flex items-center gap-3 rounded-xl border border-[#efefef] bg-white p-4 text-left transition-colors hover:bg-[#f8fafc]",
                       selected && "border-primary bg-primary/5 ring-1 ring-primary"
                     )}
                   >
@@ -136,14 +136,14 @@ export default function EmployeeAssetReturnPage() {
                       checked={selected}
                       className="pointer-events-none"
                     />
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-                      <IconComp className="size-5 text-muted-foreground" />
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-[#f8fafc]">
+                      <IconComp className="size-5 text-slate-500" />
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">
                         {asset.name}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-slate-500">
                         {asset.tag}
                       </p>
                     </div>
@@ -162,7 +162,7 @@ export default function EmployeeAssetReturnPage() {
                   key={r.value}
                   onClick={() => setReason(r.value)}
                   className={cn(
-                    "rounded-xl border border-border bg-card px-4 py-2 text-sm transition-colors hover:bg-accent",
+                    "rounded-xl border border-[#efefef] bg-white px-4 py-2 text-sm transition-colors hover:bg-[#f8fafc]",
                     reason === r.value &&
                       "border-primary bg-primary/5 ring-1 ring-primary font-medium"
                   )}
@@ -182,7 +182,7 @@ export default function EmployeeAssetReturnPage() {
                   key={c.value}
                   onClick={() => setCondition(c.value)}
                   className={cn(
-                    "rounded-xl border border-border bg-card px-4 py-2 text-sm transition-colors hover:bg-accent",
+                    "rounded-xl border border-[#efefef] bg-white px-4 py-2 text-sm transition-colors hover:bg-[#f8fafc]",
                     condition === c.value &&
                       "border-primary bg-primary/5 ring-1 ring-primary font-medium"
                   )}
@@ -227,7 +227,7 @@ export default function EmployeeAssetReturnPage() {
       <div className="space-y-4">
         <h2 className="text-lg font-semibold">My Returns</h2>
         {myReturns.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             No return requests found.
           </p>
         ) : (
@@ -237,12 +237,12 @@ export default function EmployeeAssetReturnPage() {
               return (
                 <Card
                   key={ret.id}
-                  className="rounded-xl border-border bg-card"
+                  className="rounded-xl border-[#efefef] bg-white"
                 >
                   <CardContent className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="space-y-1">
                       <p className="text-sm font-medium">{ret.assetName}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-slate-500">
                         Submitted{" "}
                         {new Date(ret.submittedDate).toLocaleDateString(
                           "en-NG",

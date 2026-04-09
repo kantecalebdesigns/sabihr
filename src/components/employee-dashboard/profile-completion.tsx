@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Check, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MOCK_EMPLOYEE_PROFILE } from "@/lib/employee-mock-data";
-import { Card, CardContent, CardHeader, CardTitle, CardAction } from "@/components/ui/card";
 
 const CHECKLIST = [
   { label: "Basic details", complete: true },
@@ -20,18 +19,17 @@ export function ProfileCompletion() {
   if (completion >= 100) return null;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium">Profile Completion</CardTitle>
-        <CardAction>
-          <span className="text-lg font-bold text-primary">{completion}%</span>
-        </CardAction>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-sm font-semibold text-slate-900">Profile Completion</h3>
+        <span className="text-lg font-bold text-blue-600">{completion}%</span>
+      </div>
+
+      <div className="space-y-4">
         {/* Progress bar */}
-        <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-[#f0f4f8] rounded-full overflow-hidden">
           <div
-            className="h-full bg-primary rounded-full transition-all duration-500"
+            className="h-full bg-blue-600 rounded-full transition-all duration-500"
             style={{ width: `${completion}%` }}
           />
         </div>
@@ -41,18 +39,18 @@ export function ProfileCompletion() {
           {CHECKLIST.map((item) => (
             <div key={item.label} className="flex items-center gap-2.5">
               {item.complete ? (
-                <div className="w-4 h-4 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="w-2.5 h-2.5 text-primary" />
+                <div className="w-4 h-4 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+                  <Check className="w-2.5 h-2.5 text-blue-600" />
                 </div>
               ) : (
-                <Circle className="w-4 h-4 text-border shrink-0" />
+                <Circle className="w-4 h-4 text-slate-200 shrink-0" />
               )}
               <span
                 className={cn(
                   "text-xs",
                   item.complete
-                    ? "text-muted-foreground line-through"
-                    : "text-foreground font-medium"
+                    ? "text-slate-400 line-through"
+                    : "text-slate-900 font-medium"
                 )}
               >
                 {item.label}
@@ -62,18 +60,18 @@ export function ProfileCompletion() {
         </div>
 
         <div className="flex items-center justify-between pt-1">
-          <p className="text-[11px] text-muted-foreground">
+          <p className="text-[11px] text-slate-400">
             {completedCount} of {CHECKLIST.length} completed
           </p>
           <Link
             to="/employee/profile"
-            className="flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+            className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700"
           >
             Complete
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

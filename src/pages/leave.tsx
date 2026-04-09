@@ -4,8 +4,8 @@ import {
   Filter,
   Download,
   Palmtree,
-  CheckCircle2,
-  XCircle,
+  Check,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +21,6 @@ import {
   MOCK_LEAVE_REQUESTS,
   LEAVE_STATUS_STYLES,
   LEAVE_TYPE_LABELS,
-  LEAVE_TYPE_COLORS,
   LEAVE_POLICY_SUMMARY,
 } from "@/lib/leave-mock-data";
 import type { LeaveStatus, LeaveType } from "@/lib/leave-mock-data";
@@ -64,14 +63,14 @@ export default function LeavePage() {
     return counts;
   }, []);
 
-  const handleApprove = (id: string) => {
+  const handleApprove = (_id: string) => {
     // Mock action
-    alert(`Leave request ${id} approved`);
+    // no-op
   };
 
-  const handleReject = (id: string) => {
+  const handleReject = (_id: string) => {
     // Mock action
-    alert(`Leave request ${id} rejected`);
+    // no-op
   };
 
   return (
@@ -79,14 +78,14 @@ export default function LeavePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">
+          <h1 className="text-xl font-semibold tracking-tight text-slate-900">
             Leave Management
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Review and manage employee leave requests
           </p>
         </div>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" className="border-[#efefef]">
           <Download className="w-4 h-4 mr-2" />
           Export
         </Button>
@@ -97,19 +96,19 @@ export default function LeavePage() {
         {Object.entries(LEAVE_POLICY_SUMMARY).map(([key, policy]) => (
           <div
             key={key}
-            className="rounded-xl border border-border bg-card p-3 text-center"
+            className="rounded-xl border border-[#efefef] bg-white p-3 text-center"
           >
-            <p className="text-xs text-muted-foreground mb-1">
+            <p className="text-xs text-slate-500 mb-1">
               {policy.label}
             </p>
-            <p className="text-lg font-semibold">{policy.total}</p>
-            <p className="text-[10px] text-muted-foreground">days/year</p>
+            <p className="text-lg font-semibold text-slate-900">{policy.total}</p>
+            <p className="text-[10px] text-slate-500">days/year</p>
           </div>
         ))}
       </div>
 
       {/* Status Tabs */}
-      <div className="flex items-center gap-1 border-b border-border">
+      <div className="flex items-center gap-1 border-b border-slate-200">
         {[
           { key: "all", label: "All Requests" },
           { key: "pending", label: "Pending" },
@@ -122,8 +121,8 @@ export default function LeavePage() {
             className={cn(
               "px-3 py-2 text-sm font-medium border-b-2 transition-colors -mb-px",
               statusFilter === tab.key
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-slate-500 hover:text-slate-900"
             )}
           >
             {tab.label}
@@ -133,7 +132,7 @@ export default function LeavePage() {
                   "ml-1.5 text-xs px-1.5 py-0.5 rounded-full",
                   tab.key === "pending"
                     ? "bg-amber-100 text-amber-700"
-                    : "bg-muted"
+                    : "bg-[#f8fafc]"
                 )}
               >
                 {statusCounts[tab.key]}
@@ -147,7 +146,7 @@ export default function LeavePage() {
       <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
         <div className="flex items-center gap-3 flex-1 w-full sm:w-auto">
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input
               placeholder="Search by employee or department..."
               value={search}
@@ -159,6 +158,7 @@ export default function LeavePage() {
             variant="outline"
             size="sm"
             onClick={() => setFilterOpen(!filterOpen)}
+            className="border-[#efefef]"
           >
             <Filter className="w-4 h-4 mr-2" />
             Filters
@@ -168,9 +168,9 @@ export default function LeavePage() {
 
       {/* Filter Panel */}
       {filterOpen && (
-        <div className="grid grid-cols-2 gap-3 rounded-xl border border-border bg-card p-4">
+        <div className="grid grid-cols-2 gap-3 rounded-xl border border-[#efefef] bg-white p-4">
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">
+            <label className="text-xs font-medium text-slate-500">
               Leave Type
             </label>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
@@ -188,7 +188,7 @@ export default function LeavePage() {
             </Select>
           </div>
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">
+            <label className="text-xs font-medium text-slate-500">
               Department
             </label>
             <Select
@@ -212,32 +212,32 @@ export default function LeavePage() {
       )}
 
       {/* Table */}
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Employee
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Department
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Leave Type
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Duration
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Days
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Applied On
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Status
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Actions
               </th>
             </tr>
@@ -246,40 +246,21 @@ export default function LeavePage() {
             {filtered.map((request) => {
               const statusStyle =
                 LEAVE_STATUS_STYLES[request.status as LeaveStatus];
-              const typeColor =
-                LEAVE_TYPE_COLORS[request.leaveType as LeaveType];
               return (
                 <tr
                   key={request.id}
-                  className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors"
+                  className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors"
                 >
-                  <td className="p-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-medium">
-                        {request.employeeName
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </div>
-                      <span className="font-medium">
-                        {request.employeeName}
-                      </span>
-                    </div>
+                  <td className="p-3 font-medium text-slate-900">
+                    {request.employeeName}
                   </td>
-                  <td className="p-3 text-muted-foreground">
+                  <td className="p-3 text-slate-500">
                     {request.department}
                   </td>
-                  <td className="p-3">
-                    <span
-                      className={cn(
-                        "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium",
-                        typeColor
-                      )}
-                    >
-                      {LEAVE_TYPE_LABELS[request.leaveType as LeaveType]}
-                    </span>
+                  <td className="p-3 text-slate-500">
+                    {LEAVE_TYPE_LABELS[request.leaveType as LeaveType]}
                   </td>
-                  <td className="p-3 text-xs">
+                  <td className="p-3 text-xs text-slate-500">
                     <div>
                       {new Date(request.startDate).toLocaleDateString("en-NG", {
                         day: "numeric",
@@ -293,49 +274,41 @@ export default function LeavePage() {
                       })}
                     </div>
                   </td>
-                  <td className="p-3 font-medium">{request.days}</td>
-                  <td className="p-3 text-muted-foreground text-xs">
+                  <td className="p-3 font-medium text-slate-900">{request.days}</td>
+                  <td className="p-3 text-slate-500 text-xs">
                     {new Date(request.appliedOn).toLocaleDateString("en-NG", {
                       day: "numeric",
                       month: "short",
                       year: "numeric",
                     })}
                   </td>
-                  <td className="p-3">
-                    <span
-                      className={cn(
-                        "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border",
-                        statusStyle?.bg,
-                        statusStyle?.color
-                      )}
-                    >
-                      {statusStyle?.label}
-                    </span>
+                  <td className={cn("p-3 text-sm font-medium", statusStyle?.color)}>
+                    {statusStyle?.label}
                   </td>
                   <td className="p-3">
                     {request.status === "pending" ? (
                       <div className="flex items-center gap-1">
                         <button
                           onClick={() => handleApprove(request.id)}
-                          className="p-1.5 rounded-lg hover:bg-emerald-50 text-emerald-600 transition-colors"
+                          className="p-1.5 rounded-md text-[#009966] hover:bg-emerald-50 transition-colors"
                           title="Approve"
                         >
-                          <CheckCircle2 className="w-4 h-4" />
+                          <Check className="w-4 h-4" strokeWidth={2.5} />
                         </button>
                         <button
                           onClick={() => handleReject(request.id)}
-                          className="p-1.5 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
-                          title="Reject"
+                          className="p-1.5 rounded-md text-[#e7000b] hover:bg-red-50 transition-colors"
+                          title="Decline"
                         >
-                          <XCircle className="w-4 h-4" />
+                          <X className="w-4 h-4" strokeWidth={2.5} />
                         </button>
                       </div>
                     ) : request.approvedBy ? (
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-slate-500">
                         by {request.approvedBy}
                       </span>
                     ) : (
-                      <span className="text-xs text-muted-foreground">--</span>
+                      <span className="text-xs text-slate-500">--</span>
                     )}
                   </td>
                 </tr>
@@ -345,11 +318,11 @@ export default function LeavePage() {
               <tr>
                 <td
                   colSpan={8}
-                  className="p-12 text-center text-muted-foreground"
+                  className="p-12 text-center text-slate-400"
                 >
                   <Palmtree className="w-10 h-10 mx-auto mb-3 opacity-30" />
-                  <p className="font-medium">No leave requests found</p>
-                  <p className="text-xs mt-1">
+                  <p className="font-medium text-slate-900">No leave requests found</p>
+                  <p className="text-xs mt-1 text-slate-500">
                     Try adjusting your search or filters
                   </p>
                 </td>

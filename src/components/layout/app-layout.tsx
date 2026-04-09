@@ -14,7 +14,7 @@ export function AppLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-[#f8fafc]">
       <Sidebar
         collapsed={sidebarCollapsed}
         onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -25,7 +25,7 @@ export function AppLayout() {
       <div
         className={cn(
           "flex flex-col min-h-screen transition-all duration-200",
-          sidebarCollapsed ? "lg:pl-16" : "lg:pl-64"
+          sidebarCollapsed ? "lg:pl-16" : "lg:pl-[260px]"
         )}
       >
         <Topbar onMenuToggle={() => setMobileOpen(!mobileOpen)} />

@@ -77,7 +77,7 @@ export default function AttendancePage() {
           <h1 className="text-xl font-semibold tracking-tight">
             Attendance Management
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Track and manage daily employee attendance
           </p>
         </div>
@@ -89,8 +89,8 @@ export default function AttendancePage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-        <div className="rounded-xl border border-border bg-card p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1">
+        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+          <div className="flex items-center gap-2 text-slate-500 mb-1">
             <Users className="w-4 h-4" />
             <span className="text-xs font-medium">Total</span>
           </div>
@@ -135,12 +135,12 @@ export default function AttendancePage() {
       </div>
 
       {/* Attendance Rate Bar */}
-      <div className="rounded-xl border border-border bg-card p-4">
+      <div className="rounded-xl border border-[#efefef] bg-white p-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium">Today's Attendance Rate</span>
           <span className="text-sm font-semibold">{attendanceRate}%</span>
         </div>
-        <div className="h-3 rounded-full bg-muted overflow-hidden flex">
+        <div className="h-3 rounded-full bg-[#f8fafc] overflow-hidden flex">
           <div
             className="bg-emerald-500 transition-all"
             style={{
@@ -170,7 +170,7 @@ export default function AttendancePage() {
             }}
           />
         </div>
-        <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground flex-wrap">
+        <div className="flex items-center gap-4 mt-2 text-xs text-slate-500 flex-wrap">
           <span className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-emerald-500" /> Present
           </span>
@@ -192,8 +192,8 @@ export default function AttendancePage() {
       {/* Date Selector + Toolbar */}
       <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
         <div className="flex items-center gap-3 flex-1 w-full sm:w-auto">
-          <div className="flex items-center gap-1 border border-border rounded-lg p-1">
-            <button className="p-1 rounded hover:bg-muted transition-colors">
+          <div className="flex items-center gap-1 border border-[#efefef] rounded-lg p-1">
+            <button className="p-1 rounded hover:bg-[#f8fafc] transition-colors">
               <ChevronLeft className="w-4 h-4" />
             </button>
             <Input
@@ -202,12 +202,12 @@ export default function AttendancePage() {
               onChange={(e) => setSelectedDate(e.target.value)}
               className="w-auto border-0 shadow-none text-sm font-medium px-2"
             />
-            <button className="p-1 rounded hover:bg-muted transition-colors">
+            <button className="p-1 rounded hover:bg-[#f8fafc] transition-colors">
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <Input
               placeholder="Search employees..."
               value={search}
@@ -228,9 +228,9 @@ export default function AttendancePage() {
 
       {/* Filter Panel */}
       {filterOpen && (
-        <div className="grid grid-cols-2 gap-3 rounded-xl border border-border bg-card p-4">
+        <div className="grid grid-cols-2 gap-3 rounded-xl border border-[#efefef] bg-white p-4">
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">
+            <label className="text-xs font-medium text-slate-500">
               Status
             </label>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -250,7 +250,7 @@ export default function AttendancePage() {
             </Select>
           </div>
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">
+            <label className="text-xs font-medium text-slate-500">
               Department
             </label>
             <Select
@@ -274,29 +274,29 @@ export default function AttendancePage() {
       )}
 
       {/* Table */}
-      <div className="rounded-xl border border-border bg-card overflow-x-auto">
+      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="p-3 text-left font-medium text-muted-foreground">
+            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Employee
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Department
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Clock In
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Clock Out
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Hours
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Status
               </th>
-              <th className="p-3 text-left font-medium text-muted-foreground">
+              <th className="p-3 text-left text-xs font-medium text-slate-500">
                 Location
               </th>
             </tr>
@@ -308,27 +308,27 @@ export default function AttendancePage() {
               return (
                 <tr
                   key={record.id}
-                  className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors"
+                  className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors"
                 >
                   <td className="p-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-medium">
+                      <div className="w-8 h-8 rounded-full bg-[#f8fafc] flex items-center justify-center text-blue-600 text-xs font-medium">
                         {record.employeeName.split(" ").map((n) => n[0]).join("")}
                       </div>
                       <span className="font-medium">{record.employeeName}</span>
                     </div>
                   </td>
-                  <td className="p-3 text-muted-foreground">
+                  <td className="p-3 text-slate-500">
                     {record.department}
                   </td>
                   <td className="p-3 font-mono text-xs">
                     {record.clockIn ?? (
-                      <span className="text-muted-foreground">--</span>
+                      <span className="text-slate-500">--</span>
                     )}
                   </td>
                   <td className="p-3 font-mono text-xs">
                     {record.clockOut ?? (
-                      <span className="text-muted-foreground">--</span>
+                      <span className="text-slate-500">--</span>
                     )}
                   </td>
                   <td className="p-3">
@@ -337,7 +337,7 @@ export default function AttendancePage() {
                         {record.hoursWorked.toFixed(1)}h
                       </span>
                     ) : (
-                      <span className="text-muted-foreground">--</span>
+                      <span className="text-slate-500">--</span>
                     )}
                   </td>
                   <td className="p-3">
@@ -351,7 +351,7 @@ export default function AttendancePage() {
                       {statusStyle?.label}
                     </span>
                   </td>
-                  <td className="p-3 text-muted-foreground">
+                  <td className="p-3 text-slate-500">
                     {record.location}
                   </td>
                 </tr>
@@ -361,7 +361,7 @@ export default function AttendancePage() {
               <tr>
                 <td
                   colSpan={7}
-                  className="p-12 text-center text-muted-foreground"
+                  className="p-12 text-center text-slate-500"
                 >
                   <Clock className="w-10 h-10 mx-auto mb-3 opacity-30" />
                   <p className="font-medium">No attendance records found</p>

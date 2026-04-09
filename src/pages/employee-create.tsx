@@ -121,13 +121,13 @@ export default function EmployeeCreatePage() {
       <div className="space-y-1">
         <button
           onClick={() => navigate("/employees")}
-          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Employees
         </button>
         <h1 className="text-xl font-semibold tracking-tight">Add New Employee</h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-slate-500">
           Fill in the details below to add a new employee to the organisation
         </p>
       </div>
@@ -143,8 +143,8 @@ export default function EmployeeCreatePage() {
               step === s.key
                 ? "bg-primary text-primary-foreground"
                 : i < stepIndex
-                  ? "bg-primary/10 text-primary"
-                  : "bg-muted text-muted-foreground hover:text-foreground"
+                  ? "bg-[#f8fafc] text-blue-600"
+                  : "bg-[#f8fafc] text-slate-500 hover:text-slate-900"
             )}
           >
             <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] border border-current">
@@ -157,7 +157,7 @@ export default function EmployeeCreatePage() {
 
       {/* Section: Personal Info */}
       {step === "personal" && (
-        <div className="rounded-xl border border-border bg-card p-6 space-y-5">
+        <div className="rounded-xl border border-[#efefef] bg-white p-6 space-y-5">
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <User className="w-4 h-4" /> Personal Information
           </h2>
@@ -250,7 +250,7 @@ export default function EmployeeCreatePage() {
 
       {/* Section: Contact Details */}
       {step === "contact" && (
-        <div className="rounded-xl border border-border bg-card p-6 space-y-5">
+        <div className="rounded-xl border border-[#efefef] bg-white p-6 space-y-5">
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <Phone className="w-4 h-4" /> Contact Details
           </h2>
@@ -335,7 +335,7 @@ export default function EmployeeCreatePage() {
 
       {/* Section: Employment */}
       {step === "employment" && (
-        <div className="rounded-xl border border-border bg-card p-6 space-y-5">
+        <div className="rounded-xl border border-[#efefef] bg-white p-6 space-y-5">
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <Briefcase className="w-4 h-4" /> Employment Details
           </h2>
@@ -439,79 +439,79 @@ export default function EmployeeCreatePage() {
 
       {/* Section: Review */}
       {step === "review" && (
-        <div className="rounded-xl border border-border bg-card p-6 space-y-5">
+        <div className="rounded-xl border border-[#efefef] bg-white p-6 space-y-5">
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <FileText className="w-4 h-4" /> Review & Submit
           </h2>
 
           <div className="space-y-4">
             {/* Personal */}
-            <div className="rounded-lg bg-muted/50 p-4 space-y-3">
+            <div className="rounded-lg bg-[#f8fafc] p-4 space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   Personal Information
                 </h3>
                 <button
                   onClick={() => setStep("personal")}
-                  className="text-xs text-primary hover:underline"
+                  className="text-xs text-blue-600 hover:underline"
                 >
                   Edit
                 </button>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
                 <div>
-                  <p className="text-xs text-muted-foreground">Full Name</p>
+                  <p className="text-xs text-slate-500">Full Name</p>
                   <p className="font-medium">
                     {[form.firstName, form.middleName, form.lastName].filter(Boolean).join(" ") || "--"}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Date of Birth</p>
+                  <p className="text-xs text-slate-500">Date of Birth</p>
                   <p className="font-medium">{form.dateOfBirth || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Gender</p>
+                  <p className="text-xs text-slate-500">Gender</p>
                   <p className="font-medium capitalize">{form.gender || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Nationality</p>
+                  <p className="text-xs text-slate-500">Nationality</p>
                   <p className="font-medium">{form.nationality || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">State of Origin</p>
+                  <p className="text-xs text-slate-500">State of Origin</p>
                   <p className="font-medium">{form.stateOfOrigin || "--"}</p>
                 </div>
               </div>
             </div>
 
             {/* Contact */}
-            <div className="rounded-lg bg-muted/50 p-4 space-y-3">
+            <div className="rounded-lg bg-[#f8fafc] p-4 space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   Contact Details
                 </h3>
                 <button
                   onClick={() => setStep("contact")}
-                  className="text-xs text-primary hover:underline"
+                  className="text-xs text-blue-600 hover:underline"
                 >
                   Edit
                 </button>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
                 <div>
-                  <p className="text-xs text-muted-foreground">Work Email</p>
+                  <p className="text-xs text-slate-500">Work Email</p>
                   <p className="font-medium">{form.workEmail || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Personal Email</p>
+                  <p className="text-xs text-slate-500">Personal Email</p>
                   <p className="font-medium">{form.personalEmail || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Phone</p>
+                  <p className="text-xs text-slate-500">Phone</p>
                   <p className="font-medium">{form.phone || "--"}</p>
                 </div>
                 <div className="col-span-2">
-                  <p className="text-xs text-muted-foreground">Address</p>
+                  <p className="text-xs text-slate-500">Address</p>
                   <p className="font-medium">
                     {[form.address, form.city, form.state, form.country].filter(Boolean).join(", ") || "--"}
                   </p>
@@ -520,49 +520,49 @@ export default function EmployeeCreatePage() {
             </div>
 
             {/* Employment */}
-            <div className="rounded-lg bg-muted/50 p-4 space-y-3">
+            <div className="rounded-lg bg-[#f8fafc] p-4 space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   Employment Details
                 </h3>
                 <button
                   onClick={() => setStep("employment")}
-                  className="text-xs text-primary hover:underline"
+                  className="text-xs text-blue-600 hover:underline"
                 >
                   Edit
                 </button>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
                 <div>
-                  <p className="text-xs text-muted-foreground">Job Title</p>
+                  <p className="text-xs text-slate-500">Job Title</p>
                   <p className="font-medium">{form.jobTitle || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Department</p>
+                  <p className="text-xs text-slate-500">Department</p>
                   <p className="font-medium">{form.department || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Employment Type</p>
+                  <p className="text-xs text-slate-500">Employment Type</p>
                   <p className="font-medium capitalize">{form.employmentType.replace("-", " ") || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Start Date</p>
+                  <p className="text-xs text-slate-500">Start Date</p>
                   <p className="font-medium">{form.startDate || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Work Location</p>
+                  <p className="text-xs text-slate-500">Work Location</p>
                   <p className="font-medium">{form.workLocation || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Supervisor</p>
+                  <p className="text-xs text-slate-500">Supervisor</p>
                   <p className="font-medium">{form.supervisor || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Pay Grade</p>
+                  <p className="text-xs text-slate-500">Pay Grade</p>
                   <p className="font-medium">{form.payGrade || "--"}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Contract Type</p>
+                  <p className="text-xs text-slate-500">Contract Type</p>
                   <p className="font-medium capitalize">{form.contractType.replace("-", " ") || "--"}</p>
                 </div>
               </div>
@@ -610,7 +610,7 @@ export default function EmployeeCreatePage() {
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-3 shadow-lg text-sm font-medium animate-in slide-in-from-bottom-4 fade-in">
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg border border-[#efefef] bg-white px-4 py-3 shadow-lg text-sm font-medium animate-in slide-in-from-bottom-4 fade-in">
           <Check className="w-4 h-4 text-green-600" />
           {toast}
         </div>
