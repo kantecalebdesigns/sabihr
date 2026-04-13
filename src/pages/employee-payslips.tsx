@@ -78,7 +78,7 @@ function CurrentPayslip() {
         </div>
         <div className="rounded-xl border border-[#efefef] bg-white p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><DollarSign className="w-4 h-4" /><span className="text-xs font-medium">Net Pay</span></div>
-          <p className="text-xl font-semibold text-emerald-600">{formatNaira(payslip.netPay)}</p>
+          <p className="text-xl font-semibold">{formatNaira(payslip.netPay)}</p>
         </div>
         <div className="rounded-xl border border-[#efefef] bg-white p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><TrendingUp className="w-4 h-4" /><span className="text-xs font-medium">Deductions</span></div>
@@ -104,7 +104,7 @@ function CurrentPayslip() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#efefef]">
           <div className="p-4">
-            <h4 className="text-sm font-medium text-emerald-700 mb-3">Earnings</h4>
+            <h4 className="text-sm font-medium text-slate-900 mb-3">Earnings</h4>
             <div className="space-y-2">
               {payslip.earnings.map((e, i) => (
                 <div key={i} className="flex justify-between text-sm">
@@ -114,7 +114,7 @@ function CurrentPayslip() {
               ))}
               <div className="flex justify-between text-sm pt-2 border-t border-[#efefef] font-semibold">
                 <span>Total Earnings</span>
-                <span className="text-emerald-600">{formatNaira(payslip.totalEarnings)}</span>
+                <span>{formatNaira(payslip.totalEarnings)}</span>
               </div>
             </div>
           </div>
@@ -139,7 +139,7 @@ function CurrentPayslip() {
         <div className="p-4 border-t border-[#efefef] bg-[#f8fafc]">
           <div className="flex justify-between items-center">
             <span className="font-semibold">Net Pay</span>
-            <span className="text-2xl font-bold text-emerald-600">{formatNaira(payslip.netPay)}</span>
+            <span className="text-2xl font-bold text-slate-900">{formatNaira(payslip.netPay)}</span>
           </div>
           <div className="flex justify-between text-xs text-slate-500 mt-2">
             <span>YTD Gross: {formatNaira(payslip.ytdGross)}</span>
@@ -236,7 +236,7 @@ function SalaryBreakdown() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="rounded-xl border border-[#efefef] bg-white p-5">
-          <h3 className="text-sm font-medium text-emerald-700 mb-4">Earnings Breakdown</h3>
+          <h3 className="text-sm font-medium text-slate-900 mb-4">Earnings Breakdown</h3>
           <div className="space-y-3">
             {earningsItems.map((item, i) => (
               <div key={i}>
@@ -245,13 +245,13 @@ function SalaryBreakdown() {
                   <span className="font-medium">{formatNaira(item.amount)}</span>
                 </div>
                 <div className="w-full bg-[#f8fafc] rounded-full h-1.5">
-                  <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: `${(item.amount / b.grossPay) * 100}%` }} />
+                  <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${(item.amount / b.grossPay) * 100}%` }} />
                 </div>
               </div>
             ))}
             <div className="flex justify-between text-sm pt-3 border-t border-[#efefef] font-semibold">
               <span>Gross Pay</span>
-              <span className="text-emerald-600">{formatNaira(b.grossPay)}</span>
+              <span>{formatNaira(b.grossPay)}</span>
             </div>
           </div>
         </div>
@@ -278,9 +278,9 @@ function SalaryBreakdown() {
         </div>
       </div>
 
-      <div className="rounded-xl border-2 border-emerald-200 bg-emerald-50 p-5 text-center">
-        <p className="text-sm text-emerald-700 mb-1">Monthly Net Pay</p>
-        <p className="text-3xl font-bold text-emerald-700">{formatNaira(b.netPay)}</p>
+      <div className="rounded-xl border border-[#efefef] bg-white p-5 text-center">
+        <p className="text-sm text-slate-500 mb-1">Monthly Net Pay</p>
+        <p className="text-3xl font-bold text-slate-900">{formatNaira(b.netPay)}</p>
       </div>
     </>
   );
@@ -312,9 +312,9 @@ function RevisionHistory() {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
               <div><span className="text-slate-500">Previous Gross</span><br /><span className="font-medium">{formatNaira(rev.previousGross)}</span></div>
-              <div><span className="text-slate-500">New Gross</span><br /><span className="font-medium text-emerald-600">{formatNaira(rev.newGross)}</span></div>
+              <div><span className="text-slate-500">New Gross</span><br /><span className="font-medium">{formatNaira(rev.newGross)}</span></div>
               <div><span className="text-slate-500">Previous Net</span><br /><span className="font-medium">{formatNaira(rev.previousNet)}</span></div>
-              <div><span className="text-slate-500">New Net</span><br /><span className="font-medium text-emerald-600">{formatNaira(rev.newNet)}</span></div>
+              <div><span className="text-slate-500">New Net</span><br /><span className="font-medium">{formatNaira(rev.newNet)}</span></div>
             </div>
             <p className="text-xs text-slate-500 mt-3">Approved by: {rev.approvedBy}</p>
           </div>

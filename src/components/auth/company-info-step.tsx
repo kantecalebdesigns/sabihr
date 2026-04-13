@@ -242,6 +242,7 @@ export function CompanyInfoStep({ data, errors, onChange, onLogoChange }: Compan
             </Select>
           </div>
         </div>
+
       </div>
     </div>
   );

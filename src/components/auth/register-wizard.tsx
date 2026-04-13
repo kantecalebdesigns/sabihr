@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { StepIndicator } from "./step-indicator";
 import { EmailVerificationStep } from "./email-verification-step";
+import { CreatePasswordStep } from "./create-password-step";
 import { CompanyInfoStep } from "./company-info-step";
 import { PlanSelectionStep } from "./plan-selection-step";
 import { PaystackPaymentStep } from "./paystack-payment-step";
@@ -13,11 +14,6 @@ import type {
   CompanyInfoData,
   PlanSelectionData,
 } from "@/types/auth";
-import {
-  validateCompanyInfo,
-  validatePlanSelection,
-  hasErrors,
-} from "@/lib/validators";
 import type { ValidationErrors } from "@/lib/validators";
 
 const STEPS = [
@@ -39,6 +35,8 @@ const INITIAL_COMPANY: CompanyInfoData = {
   employeeCount: "",
   logo: null,
   logoPreview: "",
+  password: "",
+  confirmPassword: "",
 };
 
 const INITIAL_PLAN: PlanSelectionData = {
@@ -49,6 +47,7 @@ const INITIAL_PLAN: PlanSelectionData = {
 export function RegisterWizard() {
   const navigate = useNavigate();
   const [verifiedEmail, setVerifiedEmail] = useState<string | null>(null);
+  const [passwordSet, setPasswordSet] = useState(false);
   const [currentStep, setCurrentStep] = useState<RegistrationStep>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -62,6 +61,11 @@ export function RegisterWizard() {
   function handleEmailVerified(email: string, companyName: string) {
     setVerifiedEmail(email);
     setCompanyData((prev) => ({ ...prev, companyName, email }));
+  }
+
+  function handlePasswordComplete(password: string) {
+    setCompanyData((prev) => ({ ...prev, password, confirmPassword: password }));
+    setPasswordSet(true);
   }
 
   function updateCompanyField(field: keyof CompanyInfoData, value: string) {
@@ -86,26 +90,7 @@ export function RegisterWizard() {
     setPlanErrors((prev) => ({ ...prev, [field]: undefined }));
   }
 
-  function validateCurrentStep(): boolean {
-    switch (currentStep) {
-      case 1: {
-        const errors = validateCompanyInfo(companyData);
-        setCompanyErrors(errors);
-        return !hasErrors(errors);
-      }
-      case 2: {
-        const errors = validatePlanSelection(planData);
-        setPlanErrors(errors);
-        return !hasErrors(errors);
-      }
-      default:
-        return true;
-    }
-  }
-
   function handleNext() {
-    if (!validateCurrentStep()) return;
-
     if (currentStep < 3) {
       setCurrentStep((prev) => (prev + 1) as RegistrationStep);
     }
@@ -123,20 +108,19 @@ export function RegisterWizard() {
 
   async function handleSubmit() {
     setIsSubmitting(true);
-
-    // TODO: send registration data to API
-    // { company: companyData, admin: adminData, plan: planData }
-
-    // Mock API call
     await new Promise((resolve) => setTimeout(resolve, 2000));
-
     setIsSubmitting(false);
     setIsComplete(true);
   }
 
-  // Gate: verify email before showing the wizard
-  if (!verifiedEmail) {
+  // Gate 1: verify email
+  if (verifiedEmail === null) {
     return <EmailVerificationStep onVerified={handleEmailVerified} />;
+  }
+
+  // Gate 2: create password
+  if (!passwordSet) {
+    return <CreatePasswordStep onComplete={handlePasswordComplete} />;
   }
 
   if (isComplete) {

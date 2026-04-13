@@ -12,6 +12,7 @@ import {
   AlertTriangle,
   RotateCcw,
   Package,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -33,11 +34,32 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
 
 const CURRENT_EMPLOYEE_ID = "emp-001";
 
+const ASSET_CATEGORIES = ["Laptops", "Monitors", "Phones", "Furniture", "Vehicles", "Networking", "Printers", "Other"];
+
 export default function EmployeeAssetsPage() {
   const myAssets = MOCK_ASSETS.filter(
     (a) => a.assignedTo === CURRENT_EMPLOYEE_ID
   );
   const [filter, setFilter] = useState<string>("all");
+  const [showModal, setShowModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  // Form state
+  const [formCategory, setFormCategory] = useState("Laptops");
+  const [formAssetName, setFormAssetName] = useState("");
+  const [formReason, setFormReason] = useState("");
+  const [formUrgency, setFormUrgency] = useState("normal");
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setShowModal(false);
+    setFormCategory("Laptops");
+    setFormAssetName("");
+    setFormReason("");
+    setFormUrgency("normal");
+    setSuccessMessage("Asset request submitted successfully!");
+    setTimeout(() => setSuccessMessage(""), 3000);
+  }
 
   const categories = ["all", ...new Set(myAssets.map((a) => a.categoryName))];
   const filtered =
@@ -59,7 +81,7 @@ export default function EmployeeAssetsPage() {
             asset{myAssets.length !== 1 ? "s" : ""} assigned to you
           </p>
         </div>
-        <Button>
+        <Button onClick={() => setShowModal(true)}>
           <Plus className="size-4" />
           Request New Asset
         </Button>
@@ -90,6 +112,112 @@ export default function EmployeeAssetsPage() {
         <div className="text-center py-12 text-slate-500">
           <Package className="size-12 mx-auto mb-3 opacity-40" />
           <p className="text-sm">No assets found in this category.</p>
+        </div>
+      )}
+
+      {/* Toast */}
+      {successMessage && (
+        <div className="fixed top-6 right-6 z-50 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 shadow-lg">
+          {successMessage}
+        </div>
+      )}
+
+      {/* Request Asset Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setShowModal(false)}
+          />
+          <div className="relative w-full max-w-md rounded-xl border border-[#efefef] bg-white p-6 shadow-xl">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-lg font-semibold text-slate-900">
+                Request New Asset
+              </h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-900">
+                  Category
+                </label>
+                <select
+                  value={formCategory}
+                  onChange={(e) => setFormCategory(e.target.value)}
+                  className="h-9 w-full rounded-lg border border-[#efefef] bg-white px-3 text-sm text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"
+                >
+                  {ASSET_CATEGORIES.map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-900">
+                  Asset Name / Description
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formAssetName}
+                  onChange={(e) => setFormAssetName(e.target.value)}
+                  placeholder="e.g. MacBook Pro 16-inch"
+                  className="h-9 w-full rounded-lg border border-[#efefef] bg-white px-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-900">
+                  Urgency
+                </label>
+                <select
+                  value={formUrgency}
+                  onChange={(e) => setFormUrgency(e.target.value)}
+                  className="h-9 w-full rounded-lg border border-[#efefef] bg-white px-3 text-sm text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"
+                >
+                  <option value="low">Low</option>
+                  <option value="normal">Normal</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-900">
+                  Reason
+                </label>
+                <textarea
+                  required
+                  rows={3}
+                  value={formReason}
+                  onChange={(e) => setFormReason(e.target.value)}
+                  placeholder="Why do you need this asset?"
+                  className="w-full rounded-lg border border-[#efefef] bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 resize-none"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="h-9 rounded-lg border border-[#efefef] bg-white px-4 text-sm font-medium text-slate-700 hover:bg-[#f8fafc] transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="h-9 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+                >
+                  Submit Request
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

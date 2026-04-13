@@ -5,7 +5,12 @@ import {
   CheckCircle2,
   AlertTriangle,
   Timer,
+  LogIn,
+  FileEdit,
+  BarChart3,
+  ChevronRight,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
   ATTENDANCE_STATUS_STYLES,
@@ -216,6 +221,51 @@ export default function EmployeeAttendancePage() {
         })}
       </div>
 
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[
+          {
+            label: "Clock In/Out",
+            description: "Record your attendance",
+            icon: LogIn,
+            path: "/employee/clock-in",
+            iconBg: "bg-blue-50",
+            iconColor: "text-blue-600",
+          },
+          {
+            label: "Request Correction",
+            description: "Fix attendance records",
+            icon: FileEdit,
+            path: "/employee/attendance/correction",
+            iconBg: "bg-amber-50",
+            iconColor: "text-amber-600",
+          },
+          {
+            label: "My Dashboard",
+            description: "Detailed attendance stats",
+            icon: BarChart3,
+            path: "/employee/attendance/dashboard",
+            iconBg: "bg-violet-50",
+            iconColor: "text-violet-600",
+          },
+        ].map((action) => (
+          <Link
+            key={action.path}
+            to={action.path}
+            className="rounded-xl border border-[#efefef] bg-white px-[21px] py-4 flex items-center gap-4 hover:bg-[#f8fafc] transition-colors group"
+          >
+            <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", action.iconBg)}>
+              <action.icon className={cn("h-5 w-5", action.iconColor)} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-slate-900">{action.label}</p>
+              <p className="text-xs text-slate-500">{action.description}</p>
+            </div>
+            <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-slate-500 transition-colors shrink-0" />
+          </Link>
+        ))}
+      </div>
+
       {/* Today's Status Card */}
       <div className="rounded-xl border border-[#efefef] bg-white px-[21px] pt-[21px] pb-4">
         <div className="flex items-center justify-between">
@@ -294,13 +344,18 @@ export default function EmployeeAttendancePage() {
 
       {/* Attendance History Table */}
       <div className="rounded-xl border border-[#efefef] bg-white">
-        <div className="px-[21px] pt-[21px] pb-4">
-          <h2 className="text-base font-semibold text-slate-900">
-            Attendance History
-          </h2>
-          <p className="mt-1 text-xs text-slate-500">
-            Your attendance records for the past 2 weeks
-          </p>
+        <div className="px-[21px] pt-[21px] pb-4 flex items-start justify-between">
+          <div>
+            <h2 className="text-base font-semibold text-slate-900">
+              Attendance History
+            </h2>
+            <p className="mt-1 text-xs text-slate-500">
+              Your attendance records for the past 2 weeks
+            </p>
+          </div>
+          <Link to="/employee/attendance/history" className="text-xs font-medium text-slate-500 hover:text-slate-700 hover:underline mt-1">
+            See all
+          </Link>
         </div>
 
         <div className="overflow-x-auto">

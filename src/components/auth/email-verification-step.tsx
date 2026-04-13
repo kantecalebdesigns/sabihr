@@ -37,19 +37,6 @@ export function EmailVerificationStep({ onVerified }: EmailVerificationStepProps
     e.preventDefault();
     setError("");
 
-    if (!companyName.trim()) {
-      setError("Please enter your company name");
-      return;
-    }
-    if (!email.trim()) {
-      setError("Please enter your email address");
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Please enter a valid email address");
-      return;
-    }
-
     setIsLoading(true);
     // Mock API call to send OTP
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -96,18 +83,12 @@ export function EmailVerificationStep({ onVerified }: EmailVerificationStepProps
     e.preventDefault();
     setError("");
 
-    const code = otp.join("");
-    if (code.length !== OTP_LENGTH) {
-      setError("Please enter the complete verification code");
-      return;
-    }
-
     setIsLoading(true);
     // Mock verification
     await new Promise((resolve) => setTimeout(resolve, 1000));
     setIsLoading(false);
 
-    // Mock: any 6-digit code works
+    // Mock: any code works
     onVerified(email, companyName);
   }
 

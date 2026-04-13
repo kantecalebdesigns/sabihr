@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Plus, Check, X, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,34 @@ import {
   formatReqCurrency,
 } from "@/lib/requisitions-mock-data";
 import type { Requisition, RequisitionStatus } from "@/lib/requisitions-mock-data";
+import {
+  ApprovalStepDots,
+  ApprovalTimeline,
+} from "@/components/shared/approval-workflow";
+import type { ApprovalWorkflow } from "@/components/shared/approval-workflow";
+
+const MOCK_REQ_WORKFLOWS: Record<string, ApprovalWorkflow> = {
+  "req-1": {
+    id: "wf-req-1", module: "requisitions", requestId: "req-1", requestType: "Expense Requisition",
+    requestedBy: "Emeka Okafor", requestedAt: "2026-04-02T09:00:00", currentStep: 1,
+    steps: [
+      { id: "s1", role: "employee", roleLabel: "Employee Submission", assignee: "Emeka Okafor", status: "approved", date: "2026-04-02T09:00:00", comment: null },
+      { id: "s2", role: "line_manager", roleLabel: "Line Manager Review", assignee: "Ngozi Ibe", status: "pending", date: null, comment: null },
+      { id: "s3", role: "admin", roleLabel: "Admin / HR Approval", assignee: "Fatima Abdullahi", status: "pending", date: null, comment: null },
+    ],
+    overallStatus: "in_progress",
+  },
+  "req-7": {
+    id: "wf-req-7", module: "requisitions", requestId: "req-7", requestType: "Procurement Requisition",
+    requestedBy: "Oluwaseun Afolabi", requestedAt: "2026-03-18T10:00:00", currentStep: 1,
+    steps: [
+      { id: "s1", role: "employee", roleLabel: "Employee Submission", assignee: "Oluwaseun Afolabi", status: "approved", date: "2026-03-18T10:00:00", comment: null },
+      { id: "s2", role: "line_manager", roleLabel: "Line Manager Review", assignee: "Chiamaka Eze", status: "pending", date: null, comment: null },
+      { id: "s3", role: "admin", roleLabel: "Admin / HR Approval", assignee: "Fatima Abdullahi", status: "pending", date: null, comment: null },
+    ],
+    overallStatus: "in_progress",
+  },
+};
 
 type TabFilter = "all" | RequisitionStatus;
 
@@ -21,6 +49,7 @@ export default function RequisitionsPage() {
   const [data, setData] = useState<Requisition[]>(MOCK_REQUISITIONS);
   const [showForm, setShowForm] = useState(false);
   const [formSaved, setFormSaved] = useState(false);
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
   const handleSaveReq = () => {
     setFormSaved(true);
@@ -189,6 +218,7 @@ export default function RequisitionsPage() {
                 <th className="p-3 text-xs font-medium text-slate-500">Amount</th>
                 <th className="p-3 text-xs font-medium text-slate-500">Date</th>
                 <th className="p-3 text-xs font-medium text-slate-500">Status</th>
+                <th className="p-3 text-xs font-medium text-slate-500">Approval</th>
                 <th className="p-3 text-xs font-medium text-slate-500">Actions</th>
               </tr>
             </thead>
@@ -196,9 +226,10 @@ export default function RequisitionsPage() {
               {filtered.map((r) => {
                 const typeStyle = REQ_TYPE_STYLES[r.type];
                 const statusStyle = REQ_STATUS_STYLES[r.status];
+                const workflow = MOCK_REQ_WORKFLOWS[r.id];
                 return (
+                  <React.Fragment key={r.id}>
                   <tr
-                    key={r.id}
                     className="hover:bg-[#f8fafc] cursor-pointer transition-colors"
                     onClick={() => navigate(`/requisitions/${r.id}`)}
                   >
@@ -212,6 +243,15 @@ export default function RequisitionsPage() {
                     <td className="p-3 text-sm font-medium">{formatReqCurrency(r.amount)}</td>
                     <td className="p-3 text-sm text-slate-500">{r.requestDate}</td>
                     <td className={cn("p-3 text-sm font-medium", statusStyle.color)}>{statusStyle.label}</td>
+                    <td className="p-3">
+                      {workflow ? (
+                        <button onClick={(e) => { e.stopPropagation(); setExpandedRow(expandedRow === r.id ? null : r.id); }}>
+                          <ApprovalStepDots workflow={workflow} />
+                        </button>
+                      ) : (
+                        <span className="text-xs text-slate-400">--</span>
+                      )}
+                    </td>
                     <td className="p-3">
                       {r.status === "pending" && (
                         <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
@@ -233,6 +273,14 @@ export default function RequisitionsPage() {
                       )}
                     </td>
                   </tr>
+                  {expandedRow === r.id && workflow && (
+                    <tr>
+                      <td colSpan={9} className="p-4 bg-[#f8fafc]">
+                        <ApprovalTimeline workflow={workflow} />
+                      </td>
+                    </tr>
+                  )}
+                  </React.Fragment>
                 );
               })}
             </tbody>

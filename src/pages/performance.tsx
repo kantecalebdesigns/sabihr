@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Target,
@@ -8,6 +8,12 @@ import {
   AlertCircle,
   ArrowRight,
   TrendingUp,
+  ChevronRight,
+  Crosshair,
+  BarChart3,
+  ClipboardList,
+  Star,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -19,8 +25,165 @@ import {
 } from "@/lib/performance-mock-data";
 import type { RatingValue } from "@/lib/performance-mock-data";
 
+// ── Performance System Types ──
+
+export type PerformanceSystem = "okr" | "balanced-scorecard" | "goals-reviews" | "360-feedback";
+
+const PERFORMANCE_SYSTEMS: {
+  id: PerformanceSystem;
+  name: string;
+  description: string;
+  icon: React.ElementType;
+  features: string[];
+}[] = [
+  {
+    id: "okr",
+    name: "OKRs",
+    description: "Objectives and Key Results — set ambitious goals with measurable outcomes at company, team, and individual levels.",
+    icon: Crosshair,
+    features: ["Company, team & individual OKRs", "Quarterly goal cycles", "Key result tracking", "Alignment & cascading"],
+  },
+  {
+    id: "balanced-scorecard",
+    name: "Balanced Scorecard",
+    description: "A strategic planning framework measuring performance across four perspectives: Financial, Customer, Internal Process, and Learning & Growth.",
+    icon: BarChart3,
+    features: ["4 strategic perspectives", "KPI tracking & scoring", "Strategic objective mapping", "Weighted performance metrics"],
+  },
+  {
+    id: "goals-reviews",
+    name: "Goals & Reviews",
+    description: "Traditional goal setting with periodic performance reviews, manager appraisals, and calibration.",
+    icon: ClipboardList,
+    features: ["Goal setting & tracking", "Self & manager reviews", "Review cycles & templates", "Rating calibration"],
+  },
+  {
+    id: "360-feedback",
+    name: "360° Feedback",
+    description: "Multi-rater feedback from peers, managers, and direct reports for a holistic view of performance.",
+    icon: Star,
+    features: ["Multi-rater assessments", "Peer nominations", "Competency-based ratings", "Anonymous feedback option"],
+  },
+];
+
+// Persist selection in localStorage
+const STORAGE_KEY = "sabi-hr-performance-system";
+
+function getStoredSystem(): PerformanceSystem | null {
+  try {
+    const val = localStorage.getItem(STORAGE_KEY);
+    return val as PerformanceSystem | null;
+  } catch {
+    return null;
+  }
+}
+
+function storeSystem(system: PerformanceSystem) {
+  localStorage.setItem(STORAGE_KEY, system);
+}
+
+// ── Setup Page ──
+
+function PerformanceSetup({ onSelect }: { onSelect: (system: PerformanceSystem) => void }) {
+  const [selected, setSelected] = useState<PerformanceSystem | null>(null);
+
+  return (
+    <div className="max-w-[900px] mx-auto space-y-8">
+      <div className="text-center space-y-2">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+          Choose Your Performance System
+        </h1>
+        <p className="text-sm text-slate-500 max-w-md mx-auto">
+          Select the performance management framework that best fits your organization. You can change this later from settings.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {PERFORMANCE_SYSTEMS.map((system) => {
+          const isSelected = selected === system.id;
+          return (
+            <button
+              key={system.id}
+              onClick={() => setSelected(system.id)}
+              className={cn(
+                "rounded-xl border bg-white p-5 text-left transition-all",
+                isSelected
+                  ? "border-slate-900 ring-1 ring-slate-900"
+                  : "border-[#efefef] hover:border-slate-300"
+              )}
+            >
+              <div className="flex items-start gap-4">
+                <div className={cn(
+                  "w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
+                  isSelected ? "bg-slate-900" : "bg-[#f0f4f8]"
+                )}>
+                  <system.icon className={cn("w-5 h-5", isSelected ? "text-white" : "text-slate-500")} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold text-slate-900">{system.name}</h3>
+                    {isSelected && (
+                      <div className="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center">
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">{system.description}</p>
+                  <ul className="mt-3 space-y-1.5">
+                    {system.features.map((f) => (
+                      <li key={f} className="flex items-center gap-2 text-xs text-slate-500">
+                        <div className="w-1 h-1 rounded-full bg-slate-300 shrink-0" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="flex justify-center">
+        <Button
+          disabled={!selected}
+          onClick={() => selected && onSelect(selected)}
+          className="h-10 px-8"
+        >
+          Continue with {selected ? PERFORMANCE_SYSTEMS.find((s) => s.id === selected)?.name : "..."}
+          <ChevronRight className="w-4 h-4 ml-2" />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+// ── Main Export ──
+
 export default function PerformancePage() {
   const navigate = useNavigate();
+  const [activeSystem, setActiveSystem] = useState<PerformanceSystem | null>(getStoredSystem());
+
+  const handleSelectSystem = (system: PerformanceSystem) => {
+    storeSystem(system);
+    setActiveSystem(system);
+  };
+
+  // Redirect to the appropriate page based on selected system
+  useEffect(() => {
+    if (!activeSystem) return;
+    if (activeSystem === "okr") navigate("/performance/okrs", { replace: true });
+    else if (activeSystem === "balanced-scorecard") navigate("/performance/balanced-scorecard", { replace: true });
+    else if (activeSystem === "360-feedback") navigate("/performance/360", { replace: true });
+    // goals-reviews stays on this dashboard
+  }, [activeSystem, navigate]);
+
+  // If no system selected, show setup
+  if (!activeSystem) {
+    return <PerformanceSetup onSelect={handleSelectSystem} />;
+  }
+
+  // Only goals-reviews reaches here
   const cycle = MOCK_CYCLE;
 
   const goalStats = useMemo(() => {
@@ -73,10 +236,19 @@ export default function PerformancePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">Performance Management</h1>
-          <p className="text-sm text-slate-500">Track goals, reviews, and team performance</p>
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl font-semibold tracking-tight">Performance Management</h1>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#f0f4f8] text-xs font-medium text-slate-500">
+              <ClipboardList className="w-3.5 h-3.5" />
+              Goals & Reviews
+            </span>
+          </div>
+          <p className="text-sm text-slate-500 mt-1">Track goals, reviews, and team performance</p>
         </div>
         <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => { localStorage.removeItem(STORAGE_KEY); setActiveSystem(null); }}>
+            Change System
+          </Button>
           <Button variant="outline" size="sm" onClick={() => navigate("/performance/goals")}>
             <Target className="w-4 h-4 mr-2" />
             Goals

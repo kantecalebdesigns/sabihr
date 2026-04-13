@@ -11,6 +11,8 @@ export interface CompanyInfoData {
   employeeCount: string;
   logo: File | null;
   logoPreview: string;
+  password: string;
+  confirmPassword: string;
 }
 
 export interface AdminUserData {

@@ -6,11 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
-interface LoginFormProps {
-  mode?: "admin" | "employee";
-}
-
-export function LoginForm({ mode = "admin" }: LoginFormProps) {
+export function LoginForm() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +24,11 @@ export function LoginForm({ mode = "admin" }: LoginFormProps) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     setIsLoading(false);
 
-    if (mode === "employee") {
+    // Mock: determine role from credentials
+    // Employee IDs (EMP-xxx) or specific emails route to employee dashboard
+    const isEmployee = /^EMP-/i.test(email.trim());
+
+    if (isEmployee) {
       localStorage.setItem("userRole", "employee");
       navigate("/employee/dashboard");
     } else {
@@ -46,11 +46,11 @@ export function LoginForm({ mode = "admin" }: LoginFormProps) {
       )}
 
       <div className="space-y-1.5">
-        <Label htmlFor="email">Email address</Label>
+        <Label htmlFor="email">Email address or Employee ID</Label>
         <Input
           id="email"
-          type="email"
-          placeholder="you@company.com"
+          type="text"
+          placeholder="you@company.com or EMP-001"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           autoComplete="email"

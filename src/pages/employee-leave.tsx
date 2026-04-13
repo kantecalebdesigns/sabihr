@@ -3,9 +3,7 @@ import { Plus, Palmtree, Calendar, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   MOCK_LEAVE_REQUESTS,
-  LEAVE_STATUS_STYLES,
   LEAVE_TYPE_LABELS,
-  LEAVE_TYPE_COLORS,
   LEAVE_POLICY_SUMMARY,
 } from "@/lib/leave-mock-data";
 import type { LeaveStatus, LeaveType } from "@/lib/leave-mock-data";
@@ -21,14 +19,6 @@ const LEAVE_BALANCES: Record<LeaveType, { used: number; total: number }> = {
   compassionate: { used: 0, total: 5 },
 };
 
-const BALANCE_BAR_COLORS: Record<LeaveType, string> = {
-  annual: "bg-blue-500",
-  sick: "bg-red-500",
-  casual: "bg-violet-500",
-  maternity: "bg-pink-500",
-  paternity: "bg-cyan-500",
-  compassionate: "bg-amber-500",
-};
 
 type StatusTab = "all" | LeaveStatus;
 
@@ -96,6 +86,13 @@ export default function EmployeeLeavePage() {
     });
   }
 
+  function progressBarColor(used: number, total: number) {
+    const pct = total > 0 ? used / total : 0;
+    if (pct < 0.5) return "bg-emerald-500";
+    if (pct < 0.75) return "bg-amber-500";
+    return "bg-red-500";
+  }
+
   return (
     <div className="space-y-6">
       {/* Toast */}
@@ -123,7 +120,7 @@ export default function EmployeeLeavePage() {
       </div>
 
       {/* Leave Balance Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
         {(Object.keys(LEAVE_BALANCES) as LeaveType[]).map((type) => {
           const { used, total } = LEAVE_BALANCES[type];
           const remaining = total - used;
@@ -132,30 +129,23 @@ export default function EmployeeLeavePage() {
           return (
             <div
               key={type}
-              className="rounded-xl border border-[#efefef] bg-white p-4"
+              className="rounded-xl border border-[#efefef] bg-white p-4 flex flex-col gap-3"
             >
-              <div className="flex items-center gap-2 mb-3">
-                <span
-                  className={cn(
-                    "inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium",
-                    LEAVE_TYPE_COLORS[type]
-                  )}
-                >
-                  {LEAVE_POLICY_SUMMARY[type].label}
-                </span>
+              <span className="text-xs font-medium text-slate-500">
+                {LEAVE_POLICY_SUMMARY[type].label}
+              </span>
+              <div>
+                <p className="text-2xl font-bold tracking-tight text-slate-900">
+                  {remaining}
+                  <span className="text-sm font-normal text-slate-400 ml-1">/ {total}</span>
+                </p>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  {used} used · {remaining} remaining
+                </p>
               </div>
-              <p className="text-2xl font-semibold text-slate-900">
-                {remaining}
-                <span className="text-sm font-normal text-slate-400">
-                  /{total}
-                </span>
-              </p>
-              <p className="mt-1 text-xs text-slate-500">
-                {used} used &middot; {remaining} remaining
-              </p>
-              <div className="mt-3 h-1.5 w-full rounded-full bg-slate-100">
+              <div className="h-1.5 w-full rounded-full bg-slate-100">
                 <div
-                  className={cn("h-1.5 rounded-full", BALANCE_BAR_COLORS[type])}
+                  className={cn("h-1.5 rounded-full transition-all", progressBarColor(used, total))}
                   style={{ width: `${pct}%` }}
                 />
               </div>
@@ -174,19 +164,12 @@ export default function EmployeeLeavePage() {
               className={cn(
                 "whitespace-nowrap border-b-2 pb-3 text-sm font-medium transition-colors",
                 activeTab === tab.key
-                  ? "border-blue-600 text-blue-600"
+                  ? "border-slate-900 text-slate-900"
                   : "border-transparent text-slate-500 hover:text-slate-700"
               )}
             >
               {tab.label}
-              <span
-                className={cn(
-                  "ml-2 inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs",
-                  activeTab === tab.key
-                    ? "bg-blue-50 text-blue-600"
-                    : "bg-slate-100 text-slate-500"
-                )}
-              >
+              <span className="ml-1.5 text-xs text-slate-400">
                 {statusCounts[tab.key]}
               </span>
             </button>
@@ -233,21 +216,20 @@ export default function EmployeeLeavePage() {
                 </tr>
               ) : (
                 filteredRequests.map((req) => {
-                  const style = LEAVE_STATUS_STYLES[req.status];
+                  const statusText: Record<LeaveStatus, { label: string; color: string }> = {
+                    pending: { label: "Pending", color: "text-amber-600" },
+                    approved: { label: "Approved", color: "text-emerald-600" },
+                    rejected: { label: "Rejected", color: "text-red-600" },
+                    cancelled: { label: "Cancelled", color: "text-slate-400" },
+                  };
+                  const st = statusText[req.status];
                   return (
                     <tr
                       key={req.id}
                       className="border-b border-[#efefef] hover:bg-[#f8fafc]"
                     >
-                      <td className="px-4 py-3">
-                        <span
-                          className={cn(
-                            "inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium",
-                            LEAVE_TYPE_COLORS[req.leaveType]
-                          )}
-                        >
-                          {LEAVE_TYPE_LABELS[req.leaveType]}
-                        </span>
+                      <td className="px-4 py-3 text-sm text-slate-900">
+                        {LEAVE_TYPE_LABELS[req.leaveType]}
                       </td>
                       <td className="px-4 py-3 text-sm text-slate-900">
                         <span className="inline-flex items-center gap-1">
@@ -260,14 +242,8 @@ export default function EmployeeLeavePage() {
                         {req.days}
                       </td>
                       <td className="px-4 py-3">
-                        <span
-                          className={cn(
-                            "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium",
-                            style.bg,
-                            style.color
-                          )}
-                        >
-                          {style.label}
+                        <span className={cn("text-sm font-medium", st.color)}>
+                          {st.label}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm text-slate-500">

@@ -1,4 +1,4 @@
-import { Menu, Bell, LogOut, User, Settings, ChevronDown } from "lucide-react";
+import { Menu, Bell, LogOut, User, Settings, ChevronDown, ArrowRightLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -43,6 +43,26 @@ export function Topbar({ onMenuToggle, pageTitle = "Dashboard" }: TopbarProps) {
 
       {/* Right */}
       <div className="flex items-center gap-2">
+        {/* View switcher — hover dropdown */}
+        <div className="relative group">
+          <button className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:bg-[#f8fafc] hover:text-slate-600 transition-colors">
+            <ArrowRightLeft className="w-4.5 h-4.5" />
+          </button>
+          <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute right-0 top-full mt-1 w-48 rounded-xl border border-[#efefef] bg-white shadow-lg py-1 z-50 transition-all duration-150">
+            <p className="px-3 py-1.5 text-[11px] font-medium text-slate-400 uppercase tracking-wider">Switch View</p>
+            <button
+              onClick={() => {
+                localStorage.setItem("adminViewSwitch", "true");
+                navigate("/employee/dashboard");
+              }}
+              className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-900 hover:bg-[#f8fafc] transition-colors"
+            >
+              <User className="w-4 h-4 text-slate-400" />
+              Employee View
+            </button>
+          </div>
+        </div>
+
         {/* Notification bell */}
         <button className="relative w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:bg-[#f8fafc] hover:text-slate-600 transition-colors">
           <Bell className="w-4.5 h-4.5" />
@@ -69,7 +89,7 @@ export function Topbar({ onMenuToggle, pageTitle = "Dashboard" }: TopbarProps) {
           </button>
 
           {dropdownOpen && (
-            <div className="absolute right-0 top-full mt-1 w-48 rounded-xl border border-[#efefef] bg-white shadow-lg py-1 z-50">
+            <div className="absolute right-0 top-full mt-1 w-56 rounded-xl border border-[#efefef] bg-white shadow-lg py-1 z-50">
               <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-900 hover:bg-[#f8fafc] transition-colors">
                 <User className="w-4 h-4 text-slate-400" />
                 Profile
@@ -77,6 +97,17 @@ export function Topbar({ onMenuToggle, pageTitle = "Dashboard" }: TopbarProps) {
               <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-900 hover:bg-[#f8fafc] transition-colors">
                 <Settings className="w-4 h-4 text-slate-400" />
                 Settings
+              </button>
+              <button
+                onClick={() => {
+                  setDropdownOpen(false);
+                  localStorage.setItem("adminViewSwitch", "true");
+                  navigate("/employee/dashboard");
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-900 hover:bg-[#f8fafc] transition-colors"
+              >
+                <ArrowRightLeft className="w-4 h-4 text-slate-400" />
+                Switch to Employee View
               </button>
               <div className="border-t border-[#efefef] my-1" />
               <button

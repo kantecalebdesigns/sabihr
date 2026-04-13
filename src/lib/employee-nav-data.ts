@@ -1,6 +1,5 @@
 import {
   LayoutDashboard,
-  Bell,
   Users,
   ArrowRightLeft,
   Package,
@@ -10,6 +9,7 @@ import {
   Banknote,
   Wallet,
   Home,
+  Clock,
   CalendarDays,
   Palmtree,
   Megaphone,
@@ -28,7 +28,6 @@ export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
     icon: Home,
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/employee/dashboard" },
-      { label: "Notifications", icon: Bell, path: "/employee/notifications" },
     ],
   },
   {
@@ -36,7 +35,10 @@ export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
     icon: CalendarDays,
     items: [
       { label: "Attendance", icon: CalendarDays, path: "/employee/attendance" },
+      { label: "Shifts", icon: Clock, path: "/employee/shifts" },
+      { label: "Work Hours & Overtime", icon: Clock, path: "/employee/work-hours" },
       { label: "Leave", icon: Palmtree, path: "/employee/leave" },
+      { label: "Work Schedule", icon: Clock, path: "/employee/schedule" },
     ],
   },
   {

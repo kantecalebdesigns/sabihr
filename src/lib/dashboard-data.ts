@@ -22,7 +22,6 @@ import {
   Wallet,
   MoreHorizontal,
   Target,
-  ClipboardCheck,
   UserCheck,
   Heart,
   CreditCard,
@@ -212,8 +211,59 @@ export const NAV_SECTIONS: NavSection[] = [
     title: "Time",
     icon: Clock,
     items: [
-      { label: "Attendance", icon: CalendarDays, path: "/attendance" },
+      {
+        label: "Attendance",
+        icon: CalendarDays,
+        path: "/attendance",
+        children: [
+          { label: "Overview", icon: CalendarDays, path: "/attendance" },
+          { label: "Real-Time Dashboard", icon: CalendarDays, path: "/attendance/realtime" },
+          { label: "Department View", icon: CalendarDays, path: "/attendance/department" },
+          { label: "Corrections Queue", icon: CalendarDays, path: "/attendance/corrections" },
+          { label: "Manual Entry", icon: CalendarDays, path: "/attendance/manual-entry" },
+          { label: "Biometric Devices", icon: CalendarDays, path: "/attendance/biometric" },
+          { label: "GPS & Geofencing", icon: CalendarDays, path: "/attendance/geofencing" },
+          { label: "Break Management", icon: CalendarDays, path: "/attendance/breaks" },
+        ],
+      },
+      {
+        label: "Shifts",
+        icon: Clock,
+        path: "/shifts",
+        children: [
+          { label: "Configuration", icon: Clock, path: "/shifts" },
+          { label: "Roster", icon: Clock, path: "/shifts/roster" },
+          { label: "Calendar", icon: Clock, path: "/shifts/calendar" },
+          { label: "Swap Queue", icon: Clock, path: "/shifts/swap-queue" },
+          { label: "Allowance & Payroll", icon: Clock, path: "/shifts/allowance" },
+        ],
+      },
+      {
+        label: "Reports",
+        icon: CalendarDays,
+        path: "/attendance/daily-report",
+        children: [
+          { label: "Daily Report", icon: CalendarDays, path: "/attendance/daily-report" },
+          { label: "Monthly Summary", icon: CalendarDays, path: "/attendance/monthly-report" },
+          { label: "Analytics", icon: CalendarDays, path: "/attendance/analytics" },
+          { label: "Anomalies", icon: CalendarDays, path: "/attendance/anomalies" },
+          { label: "Work Hours", icon: CalendarDays, path: "/attendance/work-hours" },
+          { label: "Overtime", icon: CalendarDays, path: "/attendance/overtime" },
+        ],
+      },
+      {
+        label: "Payroll Integration",
+        icon: CalendarDays,
+        path: "/attendance/payroll-sync",
+        children: [
+          { label: "Payroll Sync", icon: CalendarDays, path: "/attendance/payroll-sync" },
+          { label: "Deduction Preview", icon: CalendarDays, path: "/attendance/deduction-preview" },
+          { label: "Overtime Preview", icon: CalendarDays, path: "/attendance/overtime-preview" },
+          { label: "Leave Reconciliation", icon: CalendarDays, path: "/attendance/leave-reconciliation" },
+        ],
+      },
       { label: "Leave", icon: Palmtree, path: "/leave" },
+      { label: "Work Schedules", icon: Clock, path: "/schedules" },
     ],
   },
   {
@@ -222,6 +272,8 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: "Processing", icon: DollarSign, path: "/payroll" },
       { label: "Configuration", icon: Settings2, path: "/payroll/config" },
+      { label: "Pay Grades & Groups", icon: DollarSign, path: "/payroll/pay-grades" },
+      { label: "Payroll Roster", icon: UserCheck, path: "/payroll/roster" },
       { label: "Compliance", icon: Shield, path: "/payroll/compliance" },
     ],
   },
@@ -229,9 +281,7 @@ export const NAV_SECTIONS: NavSection[] = [
     title: "Performance",
     icon: Target,
     items: [
-      { label: "Dashboard", icon: Target, path: "/performance" },
-      { label: "Goals", icon: ClipboardCheck, path: "/performance/goals" },
-      { label: "Reviews", icon: UserCheck, path: "/performance/reviews" },
+      { label: "Performance", icon: Target, path: "/performance" },
     ],
   },
   {

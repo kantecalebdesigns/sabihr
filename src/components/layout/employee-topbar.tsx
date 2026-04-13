@@ -1,4 +1,4 @@
-import { Menu, Bell, LogOut, User, ChevronDown } from "lucide-react";
+import { Menu, Bell, LogOut, User, ChevronDown, ArrowRightLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -22,6 +22,7 @@ export function EmployeeTopbar({ onMenuToggle, pageTitle = "Dashboard" }: Employ
   const employee = MOCK_EMPLOYEE_PROFILE;
   const initials = `${employee.basicDetails.firstName[0]}${employee.basicDetails.lastName[0]}`;
   const unreadCount = notifications.filter((n) => !n.read).length;
+  const isAdminSwitch = localStorage.getItem("adminViewSwitch") === "true";
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -61,6 +62,28 @@ export function EmployeeTopbar({ onMenuToggle, pageTitle = "Dashboard" }: Employ
 
       {/* Right */}
       <div className="flex items-center gap-2">
+        {/* View switcher — hover dropdown, only when admin switched here */}
+        {isAdminSwitch && (
+          <div className="relative group">
+            <button className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:bg-[#f8fafc] hover:text-slate-600 transition-colors">
+              <ArrowRightLeft className="w-4.5 h-4.5" />
+            </button>
+            <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute right-0 top-full mt-1 w-48 rounded-xl border border-[#efefef] bg-white shadow-lg py-1 z-50 transition-all duration-150">
+              <p className="px-3 py-1.5 text-[11px] font-medium text-slate-400 uppercase tracking-wider">Switch View</p>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("adminViewSwitch");
+                  navigate("/dashboard");
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-900 hover:bg-[#f8fafc] transition-colors"
+              >
+                <User className="w-4 h-4 text-slate-400" />
+                Admin View
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Notification bell */}
         <div ref={notifRef} className="relative">
           <button
@@ -104,7 +127,7 @@ export function EmployeeTopbar({ onMenuToggle, pageTitle = "Dashboard" }: Employ
           </button>
 
           {dropdownOpen && (
-            <div className="absolute right-0 top-full mt-1 w-48 rounded-xl border border-[#efefef] bg-white shadow-lg py-1 z-50">
+            <div className="absolute right-0 top-full mt-1 w-56 rounded-xl border border-[#efefef] bg-white shadow-lg py-1 z-50">
               <button
                 onClick={() => {
                   setDropdownOpen(false);
@@ -115,6 +138,19 @@ export function EmployeeTopbar({ onMenuToggle, pageTitle = "Dashboard" }: Employ
                 <User className="w-4 h-4 text-slate-400" />
                 My Profile
               </button>
+              {isAdminSwitch && (
+                <button
+                  onClick={() => {
+                    setDropdownOpen(false);
+                    localStorage.removeItem("adminViewSwitch");
+                    navigate("/dashboard");
+                  }}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-900 hover:bg-[#f8fafc] transition-colors"
+                >
+                  <ArrowRightLeft className="w-4 h-4 text-slate-400" />
+                  Switch to Admin View
+                </button>
+              )}
               <div className="border-t border-[#efefef] my-1" />
               <button
                 onClick={handleLogout}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -12,6 +12,7 @@ import {
   Star,
   ThumbsUp,
   Hash,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,6 +26,37 @@ interface QuestionDraft {
   required: boolean;
   options: string[];
 }
+
+type SurveyAudienceType = "all" | "departments" | "specific";
+
+interface SurveyAudience {
+  type: SurveyAudienceType;
+  departments: string[];
+  employees: string[];
+}
+
+const SURVEY_DEPARTMENTS = ["Engineering", "Sales", "Marketing", "Finance", "HR", "Operations", "Legal", "IT"];
+const SURVEY_DEPT_SIZE: Record<string, number> = {
+  Engineering: 25,
+  Sales: 18,
+  Marketing: 12,
+  Finance: 10,
+  HR: 8,
+  Operations: 15,
+  Legal: 6,
+  IT: 14,
+};
+const SURVEY_MOCK_EMPLOYEES = [
+  { id: "emp-001", name: "Adebayo Ogunlesi", department: "Engineering" },
+  { id: "emp-002", name: "Oluwaseun Afolabi", department: "Engineering" },
+  { id: "emp-003", name: "Emeka Okafor", department: "Sales" },
+  { id: "emp-004", name: "Fatima Abdullahi", department: "HR" },
+  { id: "emp-005", name: "Bukola Adeyemi", department: "Marketing" },
+  { id: "emp-006", name: "Aisha Mohammed", department: "Finance" },
+  { id: "emp-007", name: "Ibrahim Musa", department: "Operations" },
+  { id: "emp-008", name: "Halima Yusuf", department: "Legal" },
+];
+const SURVEY_TOTAL_EMPLOYEES = 108;
 
 const QUESTION_TYPES: { value: QuestionType; label: string; icon: typeof Type }[] = [
   { value: "multiple-choice", label: "Multiple Choice", icon: ListChecks },
@@ -45,10 +77,53 @@ export default function SurveyCreatePage() {
   const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
   const [anonymous, setAnonymous] = useState(true);
+  const [audience, setAudience] = useState<SurveyAudience>({
+    type: "all",
+    departments: [],
+    employees: [],
+  });
+  const [employeeSearch, setEmployeeSearch] = useState("");
   const [questions, setQuestions] = useState<QuestionDraft[]>([
     { id: genId(), text: "", type: "multiple-choice", required: true, options: ["Option 1", "Option 2"] },
   ]);
   const [saved, setSaved] = useState(false);
+
+  const filteredEmployees = useMemo(() => {
+    if (!employeeSearch) return SURVEY_MOCK_EMPLOYEES;
+    const q = employeeSearch.toLowerCase();
+    return SURVEY_MOCK_EMPLOYEES.filter(
+      (e) => e.name.toLowerCase().includes(q) || e.department.toLowerCase().includes(q)
+    );
+  }, [employeeSearch]);
+
+  const recipientCount = useMemo(() => {
+    switch (audience.type) {
+      case "all":
+        return SURVEY_TOTAL_EMPLOYEES;
+      case "departments":
+        return audience.departments.reduce((sum, d) => sum + (SURVEY_DEPT_SIZE[d] || 0), 0);
+      case "specific":
+        return audience.employees.length;
+    }
+  }, [audience]);
+
+  const toggleDepartment = (dept: string) => {
+    setAudience((prev) => ({
+      ...prev,
+      departments: prev.departments.includes(dept)
+        ? prev.departments.filter((d) => d !== dept)
+        : [...prev.departments, dept],
+    }));
+  };
+
+  const toggleEmployee = (empId: string) => {
+    setAudience((prev) => ({
+      ...prev,
+      employees: prev.employees.includes(empId)
+        ? prev.employees.filter((id) => id !== empId)
+        : [...prev.employees, empId],
+    }));
+  };
 
   const addQuestion = () => {
     setQuestions((prev) => [...prev, { id: genId(), text: "", type: "multiple-choice", required: false, options: ["Option 1"] }]);
@@ -164,6 +239,86 @@ export default function SurveyCreatePage() {
             </label>
           </div>
         </div>
+      </div>
+
+      {/* Audience Section */}
+      <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
+        <h2 className="text-sm font-semibold text-slate-900">Audience</h2>
+        <div className="flex flex-wrap gap-3">
+          {([
+            { value: "all" as SurveyAudienceType, label: "All Employees" },
+            { value: "departments" as SurveyAudienceType, label: "By Department" },
+            { value: "specific" as SurveyAudienceType, label: "Specific Employees" },
+          ]).map((opt) => (
+            <label key={opt.value} className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="surveyAudienceType"
+                value={opt.value}
+                checked={audience.type === opt.value}
+                onChange={() => setAudience({ type: opt.value, departments: [], employees: [] })}
+                className="h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-500"
+              />
+              <span className="text-sm text-slate-700">{opt.label}</span>
+            </label>
+          ))}
+        </div>
+
+        {/* Department checkboxes */}
+        {audience.type === "departments" && (
+          <div className="rounded-lg border border-[#efefef] p-3 space-y-2">
+            <p className="text-xs font-medium text-slate-500 mb-2">Select departments</p>
+            <div className="grid grid-cols-2 gap-2">
+              {SURVEY_DEPARTMENTS.map((dept) => (
+                <label key={dept} className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={audience.departments.includes(dept)}
+                    onChange={() => toggleDepartment(dept)}
+                    className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="text-sm text-slate-700">{dept}</span>
+                  <span className="text-xs text-slate-400">({SURVEY_DEPT_SIZE[dept]})</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Specific employees */}
+        {audience.type === "specific" && (
+          <div className="rounded-lg border border-[#efefef] p-3 space-y-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search employees..."
+                value={employeeSearch}
+                onChange={(e) => setEmployeeSearch(e.target.value)}
+                className="h-9 w-full rounded-lg border border-[#efefef] bg-white pl-9 pr-3 text-sm text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"
+              />
+            </div>
+            <div className="max-h-48 overflow-y-auto space-y-1">
+              {filteredEmployees.map((emp) => (
+                <label key={emp.id} className="flex items-center gap-2 cursor-pointer rounded-md px-2 py-1.5 hover:bg-slate-50">
+                  <input
+                    type="checkbox"
+                    checked={audience.employees.includes(emp.id)}
+                    onChange={() => toggleEmployee(emp.id)}
+                    className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="text-sm text-slate-700">{emp.name}</span>
+                  <span className="text-xs text-slate-400">{emp.department}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Recipient count */}
+        <p className="text-xs text-slate-500">
+          Estimated recipients: <span className="font-medium text-slate-700">{recipientCount}</span> employee{recipientCount !== 1 ? "s" : ""}
+        </p>
       </div>
 
       {/* Questions */}

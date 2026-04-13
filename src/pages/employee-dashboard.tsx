@@ -1,4 +1,5 @@
 import { WelcomeBanner } from "@/components/employee-dashboard/welcome-banner";
+import { ClockInOut } from "@/components/employee-dashboard/clock-in-out";
 import { CompleteProfileSection } from "@/components/employee-dashboard/complete-profile-section";
 import { StatCards } from "@/components/employee-dashboard/stat-cards";
 import { LeaveSummary } from "@/components/employee-dashboard/leave-summary";
@@ -13,6 +14,9 @@ export default function EmployeeDashboardPage() {
     <div className="max-w-[1200px] mx-auto space-y-6">
       {/* Welcome */}
       <WelcomeBanner />
+
+      {/* Clock In / Clock Out */}
+      <ClockInOut />
 
       {/* Complete your profile */}
       <CompleteProfileSection />

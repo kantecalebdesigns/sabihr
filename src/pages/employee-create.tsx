@@ -76,6 +76,9 @@ export default function EmployeeCreatePage() {
     workLocation: "",
     supervisor: "",
     payGrade: "",
+    payGroup: "",
+    annualSalary: "",
+    monthlyGross: "",
     contractType: "",
   });
 
@@ -433,6 +436,43 @@ export default function EmployeeCreatePage() {
                 onChange={(e) => updateForm("payGrade", e.target.value)}
               />
             </div>
+            <div className="space-y-1.5">
+              <Label>Pay Group</Label>
+              <Select value={form.payGroup} onValueChange={(v) => updateForm("payGroup", v)}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select pay group" />
+                </SelectTrigger>
+                <SelectContent>
+                  {["Executive", "Senior Management", "Mid-Level", "Junior", "Entry-Level", "Intern"].map((g) => (
+                    <SelectItem key={g} value={g}>{g}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="annualSalary">Annual Salary (NGN)</Label>
+              <Input
+                id="annualSalary"
+                type="number"
+                placeholder="e.g. 6000000"
+                value={form.annualSalary}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  updateForm("annualSalary", val);
+                  updateForm("monthlyGross", val ? (parseFloat(val) / 12).toFixed(2) : "");
+                }}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="monthlyGross">Monthly Gross (NGN)</Label>
+              <Input
+                id="monthlyGross"
+                readOnly
+                className="bg-slate-50"
+                value={form.monthlyGross ? Number(form.monthlyGross).toLocaleString("en-NG", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : ""}
+                placeholder="Auto-calculated"
+              />
+            </div>
           </div>
         </div>
       )}
@@ -560,6 +600,14 @@ export default function EmployeeCreatePage() {
                 <div>
                   <p className="text-xs text-slate-500">Pay Grade</p>
                   <p className="font-medium">{form.payGrade || "--"}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500">Pay Group</p>
+                  <p className="font-medium">{form.payGroup || "--"}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500">Annual Salary</p>
+                  <p className="font-medium">{form.annualSalary ? `NGN ${Number(form.annualSalary).toLocaleString()}` : "--"}</p>
                 </div>
                 <div>
                   <p className="text-xs text-slate-500">Contract Type</p>

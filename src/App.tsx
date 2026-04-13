@@ -77,12 +77,17 @@ import LoanDetailPage from "@/pages/loan-detail";
 import BenefitsPage from "@/pages/benefits";
 import BenefitsEnrollmentsPage from "@/pages/benefits-enrollments";
 import EmployeeBenefitsPage from "@/pages/employee-benefits";
+// Pay Grades & Payroll Roster
+import PayGradesPage from "@/pages/pay-grades";
+import PayrollRosterPage from "@/pages/payroll-roster";
 // Performance Management
 import PerformancePage from "@/pages/performance";
 import PerformanceGoalsPage from "@/pages/performance-goals";
 import PerformanceReviewsPage from "@/pages/performance-reviews";
 import PerformanceReviewDetailPage from "@/pages/performance-review-detail";
 import Performance360Page from "@/pages/performance-360";
+import PerformanceOkrsPage from "@/pages/performance-okrs";
+import PerformanceBalancedScorecardPage from "@/pages/performance-balanced-scorecard";
 import EmployeePerformancePage from "@/pages/employee-performance";
 // Announcements & Surveys
 import AnnouncementsPage from "@/pages/announcements";
@@ -97,6 +102,46 @@ import RequisitionDetailPage from "@/pages/requisition-detail";
 // Disciplinary
 import DisciplinaryPage from "@/pages/disciplinary";
 import DisciplinaryCaseDetailPage from "@/pages/disciplinary-case-detail";
+// Work Schedules
+import WorkSchedulesPage from "@/pages/work-schedules";
+import EmployeeWorkSchedulePage from "@/pages/employee-work-schedule";
+// Attendance Extended — Admin
+import AttendanceBiometricPage from "@/pages/attendance-biometric";
+import AttendanceGeofencingPage from "@/pages/attendance-geofencing";
+import AttendanceManualEntryPage from "@/pages/attendance-manual-entry";
+import AttendanceCorrectionsPage from "@/pages/attendance-corrections";
+import AttendanceRealtimePage from "@/pages/attendance-realtime";
+import AttendanceDepartmentPage from "@/pages/attendance-department";
+import AttendanceDailyReportPage from "@/pages/attendance-daily-report";
+import AttendanceMonthlyReportPage from "@/pages/attendance-monthly-report";
+import AttendanceAnalyticsPage from "@/pages/attendance-analytics";
+import AttendanceAnomaliesPage from "@/pages/attendance-anomalies";
+import AttendanceWorkHoursPage from "@/pages/attendance-work-hours";
+import AttendanceOvertimePage from "@/pages/attendance-overtime";
+import AttendanceBreaksPage from "@/pages/attendance-breaks";
+import AttendancePayrollSyncPage from "@/pages/attendance-payroll-sync";
+import AttendanceDeductionPreviewPage from "@/pages/attendance-deduction-preview";
+import AttendanceOvertimePreviewPage from "@/pages/attendance-overtime-preview";
+import AttendanceLeaveReconciliationPage from "@/pages/attendance-leave-reconciliation";
+// Shift Management — Admin
+import ShiftConfigPage from "@/pages/shift-config";
+import ShiftRosterPage from "@/pages/shift-roster";
+import ShiftSwapQueuePage from "@/pages/shift-swap-queue";
+import ShiftCalendarPage from "@/pages/shift-calendar";
+import ShiftAllowancePage from "@/pages/shift-allowance";
+// Employee Attendance & Clock-In
+import EmployeeClockInPage from "@/pages/employee-clock-in";
+import EmployeeAttendanceDashboardPage from "@/pages/employee-attendance-dashboard";
+import EmployeeAttendanceHistoryPage from "@/pages/employee-attendance-history";
+import EmployeeAttendanceCorrectionPage from "@/pages/employee-attendance-correction";
+import EmployeeWorkHoursPage from "@/pages/employee-work-hours";
+import EmployeeShiftSchedulePage from "@/pages/employee-shift-schedule";
+import EmployeeShiftSwapPage from "@/pages/employee-shift-swap";
+import EmployeeShiftChangePage from "@/pages/employee-shift-change";
+// Employee Mobile — Attendance
+import EmployeeMobileClockInPage from "@/pages/employee-mobile-clock-in";
+import EmployeeMobileAttendancePage from "@/pages/employee-mobile-attendance";
+import EmployeeMobileShiftPage from "@/pages/employee-mobile-shift";
 // Exit Management
 import ExitPage from "@/pages/exit";
 import ExitDetailPage from "@/pages/exit-detail";
@@ -125,7 +170,30 @@ function App() {
           <Route path="/departments/create" element={<DepartmentCreatePage />} />
           <Route path="/departments/:id" element={<DepartmentDetailPage />} />
           <Route path="/attendance" element={<AttendancePage />} />
+          <Route path="/attendance/biometric" element={<AttendanceBiometricPage />} />
+          <Route path="/attendance/geofencing" element={<AttendanceGeofencingPage />} />
+          <Route path="/attendance/manual-entry" element={<AttendanceManualEntryPage />} />
+          <Route path="/attendance/corrections" element={<AttendanceCorrectionsPage />} />
+          <Route path="/attendance/realtime" element={<AttendanceRealtimePage />} />
+          <Route path="/attendance/department" element={<AttendanceDepartmentPage />} />
+          <Route path="/attendance/daily-report" element={<AttendanceDailyReportPage />} />
+          <Route path="/attendance/monthly-report" element={<AttendanceMonthlyReportPage />} />
+          <Route path="/attendance/analytics" element={<AttendanceAnalyticsPage />} />
+          <Route path="/attendance/anomalies" element={<AttendanceAnomaliesPage />} />
+          <Route path="/attendance/work-hours" element={<AttendanceWorkHoursPage />} />
+          <Route path="/attendance/overtime" element={<AttendanceOvertimePage />} />
+          <Route path="/attendance/breaks" element={<AttendanceBreaksPage />} />
+          <Route path="/attendance/payroll-sync" element={<AttendancePayrollSyncPage />} />
+          <Route path="/attendance/deduction-preview" element={<AttendanceDeductionPreviewPage />} />
+          <Route path="/attendance/overtime-preview" element={<AttendanceOvertimePreviewPage />} />
+          <Route path="/attendance/leave-reconciliation" element={<AttendanceLeaveReconciliationPage />} />
+          <Route path="/shifts" element={<ShiftConfigPage />} />
+          <Route path="/shifts/roster" element={<ShiftRosterPage />} />
+          <Route path="/shifts/swap-queue" element={<ShiftSwapQueuePage />} />
+          <Route path="/shifts/calendar" element={<ShiftCalendarPage />} />
+          <Route path="/shifts/allowance" element={<ShiftAllowancePage />} />
           <Route path="/leave" element={<LeavePage />} />
+          <Route path="/schedules" element={<WorkSchedulesPage />} />
           <Route path="/payroll" element={<PayrollPage />} />
           <Route path="/payroll/config" element={<PayrollConfigPage />} />
           <Route path="/payroll/compliance" element={<StatutoryCompliancePage />} />
@@ -135,6 +203,8 @@ function App() {
           <Route path="/payroll/global" element={<CrossBorderPayrollPage />} />
           <Route path="/payroll/reports" element={<PayrollReportsPage />} />
           <Route path="/payroll/audit" element={<PayrollAuditPage />} />
+          <Route path="/payroll/pay-grades" element={<PayGradesPage />} />
+          <Route path="/payroll/roster" element={<PayrollRosterPage />} />
           {/* Loans */}
           <Route path="/loans" element={<LoansPage />} />
           <Route path="/loans/apply" element={<LoanApplyPage />} />
@@ -148,6 +218,8 @@ function App() {
           <Route path="/performance/reviews" element={<PerformanceReviewsPage />} />
           <Route path="/performance/reviews/:id" element={<PerformanceReviewDetailPage />} />
           <Route path="/performance/360/:id" element={<Performance360Page />} />
+          <Route path="/performance/okrs" element={<PerformanceOkrsPage />} />
+          <Route path="/performance/balanced-scorecard" element={<PerformanceBalancedScorecardPage />} />
           <Route path="/documents" element={<DocumentsPage />} />
           <Route path="/documents/templates/new" element={<DocumentTemplateBuilderPage />} />
           <Route path="/documents/templates/:id" element={<DocumentTemplateBuilderPage />} />
@@ -209,7 +281,19 @@ function App() {
           <Route path="/employee/mobile/wallet" element={<EmployeeMobileWalletPage />} />
           <Route path="/employee/documents" element={<EmployeeDocumentsPage />} />
           <Route path="/employee/attendance" element={<EmployeeAttendancePage />} />
+          <Route path="/employee/attendance/dashboard" element={<EmployeeAttendanceDashboardPage />} />
+          <Route path="/employee/attendance/history" element={<EmployeeAttendanceHistoryPage />} />
+          <Route path="/employee/attendance/correction" element={<EmployeeAttendanceCorrectionPage />} />
+          <Route path="/employee/clock-in" element={<EmployeeClockInPage />} />
+          <Route path="/employee/work-hours" element={<EmployeeWorkHoursPage />} />
+          <Route path="/employee/shifts" element={<EmployeeShiftSchedulePage />} />
+          <Route path="/employee/shifts/swap" element={<EmployeeShiftSwapPage />} />
+          <Route path="/employee/shifts/change" element={<EmployeeShiftChangePage />} />
+          <Route path="/employee/mobile/clock-in" element={<EmployeeMobileClockInPage />} />
+          <Route path="/employee/mobile/attendance" element={<EmployeeMobileAttendancePage />} />
+          <Route path="/employee/mobile/shift" element={<EmployeeMobileShiftPage />} />
           <Route path="/employee/leave" element={<EmployeeLeavePage />} />
+          <Route path="/employee/schedule" element={<EmployeeWorkSchedulePage />} />
           <Route path="/employee/announcements" element={<EmployeeAnnouncementsPage />} />
           <Route path="/employee/surveys" element={<EmployeeSurveysPage />} />
           <Route path="/employee/requisitions" element={<EmployeeRequisitionsPage />} />

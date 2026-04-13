@@ -2,10 +2,10 @@ import { cn } from "@/lib/utils";
 import { ATTENDANCE_SUMMARY } from "@/lib/dashboard-data";
 
 const SEGMENTS = [
-  { key: "present" as const, label: "Present", barColor: "bg-[#00bc7d]", dotColor: "bg-[#00bc7d]", valueColor: "text-[#009966]", borderColor: "border-[#2f781d]" },
-  { key: "late" as const, label: "Late", barColor: "bg-[#fe9a00]", dotColor: "bg-[#fe9a00]", valueColor: "text-[#e17100]", borderColor: "border-[#ad6c21]" },
-  { key: "absent" as const, label: "Absent", barColor: "bg-[#fb2c36]", dotColor: "bg-[#fb2c36]", valueColor: "text-[#e7000b]", borderColor: "border-[#b42121]" },
-  { key: "onLeave" as const, label: "On Leave", barColor: "bg-[#2b7fff]", dotColor: "bg-[#2b7fff]", valueColor: "text-[#155dfc]", borderColor: "border-[#006ce5]" },
+  { key: "present" as const, label: "Present", barColor: "bg-[#00bc7d]", dotColor: "bg-[#00bc7d]" },
+  { key: "late" as const, label: "Late", barColor: "bg-[#fe9a00]", dotColor: "bg-[#fe9a00]" },
+  { key: "absent" as const, label: "Absent", barColor: "bg-[#fb2c36]", dotColor: "bg-[#fb2c36]" },
+  { key: "onLeave" as const, label: "On Leave", barColor: "bg-[#2b7fff]", dotColor: "bg-[#2b7fff]" },
 ];
 
 export function AttendanceOverview() {
@@ -40,14 +40,14 @@ export function AttendanceOverview() {
           const value = data[seg.key];
           const pct = ((value / data.total) * 100).toFixed(1);
           return (
-            <div key={seg.key} className={cn("rounded-lg border py-[17px] pl-[17px] pr-1 flex flex-col gap-1", seg.borderColor)}>
+            <div key={seg.key} className="rounded-lg border border-[#efefef] bg-white py-[17px] pl-[17px] pr-1 flex flex-col gap-1">
               <div className="flex items-center gap-2">
                 <div className={cn("w-2 h-2 rounded-full shrink-0", seg.dotColor)} />
-                <span className="text-xs text-[#62748e]">{seg.label}</span>
+                <span className="text-xs text-slate-500">{seg.label}</span>
               </div>
               <div className="flex items-baseline gap-2">
-                <span className={cn("text-2xl font-semibold", seg.valueColor)}>{value}</span>
-                <span className="text-xs text-[#90a1b9]">{pct}%</span>
+                <span className="text-2xl font-semibold text-slate-900">{value}</span>
+                <span className="text-xs text-slate-400">{pct}%</span>
               </div>
             </div>
           );
