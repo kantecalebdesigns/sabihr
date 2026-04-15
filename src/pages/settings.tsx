@@ -52,7 +52,7 @@ const COMPANY_INFO = {
   email: "admin@techventures.ng",
   phone: "+234 801 234 5678",
   rcNumber: "RC-1234567",
-  tinNumber: "TIN-9876543",
+  tinNumber: "N-9876543",
   address: "42 Marina Road, Victoria Island",
   city: "Lagos",
   state: "Lagos",

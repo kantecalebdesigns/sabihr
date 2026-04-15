@@ -171,7 +171,7 @@ export function BasicDetailsStep({ data, errors, onChange }: Props) {
             <Label htmlFor="taxId">Tax ID (TIN)</Label>
             <Input
               id="taxId"
-              placeholder="TIN-1234567890"
+              placeholder="N-1234567"
               value={data.taxId}
               onChange={(e) => onChange({ taxId: e.target.value })}
             />
@@ -180,7 +180,7 @@ export function BasicDetailsStep({ data, errors, onChange }: Props) {
             <Label htmlFor="pensionId">Pension ID (PenCom)</Label>
             <Input
               id="pensionId"
-              placeholder="PEN-NG-00123456"
+              placeholder="PEN-1234556789"
               value={data.pensionId}
               onChange={(e) => onChange({ pensionId: e.target.value })}
             />

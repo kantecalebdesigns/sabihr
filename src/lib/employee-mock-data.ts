@@ -58,8 +58,8 @@ export const MOCK_EMPLOYEE_PROFILE: EmployeeProfile = {
     nationality: "Nigerian",
     stateOfOrigin: "Lagos",
     nin: "12345678901",
-    taxId: "TIN-1234567890",
-    pensionId: "PEN-NG-00123456",
+    taxId: "N-1234567",
+    pensionId: "PEN-1234556789",
     bvn: "22345678901",
   },
   contactInfo: {

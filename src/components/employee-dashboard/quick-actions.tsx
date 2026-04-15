@@ -4,13 +4,13 @@ import {
   FileText,
   UserCircle,
   Users,
-  Receipt,
+  Clock,
   Send,
 } from "lucide-react";
 
 const ACTIONS = [
   { label: "Request Leave", icon: CalendarPlus, path: "/employee/leave" },
-  { label: "View Payslips", icon: Receipt, path: "/employee/payslips" },
+  { label: "Log Attendance", icon: Clock, path: "/employee/attendance" },
   { label: "Edit Profile", icon: UserCircle, path: "/employee/profile" },
   { label: "Colleagues", icon: Users, path: "/employee/directory" },
   { label: "Documents", icon: FileText, path: "/employee/documents" },
