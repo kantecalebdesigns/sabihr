@@ -17,15 +17,8 @@ import {
   Trash2,
   Users,
   Eye,
-  EyeOff,
-  Globe,
   Calendar,
-  Clock,
   Mail,
-  ChevronRight,
-  AlertTriangle,
-  ToggleLeft,
-  ToggleRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -346,7 +339,7 @@ function GeneralTab() {
   const [dateFormat, setDateFormat] = useState("DD/MM/YYYY");
   const [currency, setCurrency] = useState("NGN");
   const [language, setLanguage] = useState("en-NG");
-  const [timezone, setTimezone] = useState("Africa/Lagos");
+  const [timezone] = useState("Africa/Lagos");
   const [fiscalYear, setFiscalYear] = useState("January");
   const [saved, setSaved] = useState(false);
 

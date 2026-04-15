@@ -9,14 +9,10 @@ import {
   Monitor,
   Check,
   X,
-  Mail,
   Smartphone,
   Moon,
   Sun,
-  Globe,
-  Calendar,
   Shield,
-  Trash2,
   LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
