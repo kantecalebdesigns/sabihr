@@ -4,12 +4,11 @@ import {
   ArrowRightLeft,
   Package,
   DollarSign,
-  Landmark,
-  CreditCard,
   Banknote,
   Wallet,
   Home,
   Clock,
+  Timer,
   CalendarDays,
   Palmtree,
   Megaphone,
@@ -19,6 +18,8 @@ import {
   Target,
   Heart,
   Briefcase,
+  Settings,
+  CalendarClock,
 } from "lucide-react";
 import type { NavSection } from "@/types/dashboard";
 
@@ -35,10 +36,10 @@ export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
     icon: CalendarDays,
     items: [
       { label: "Attendance", icon: CalendarDays, path: "/employee/attendance" },
-      { label: "Shifts", icon: Clock, path: "/employee/shifts" },
+      { label: "Shifts", icon: Timer, path: "/employee/shifts" },
       { label: "Work Hours & Overtime", icon: Clock, path: "/employee/work-hours" },
       { label: "Leave", icon: Palmtree, path: "/employee/leave" },
-      { label: "Work Schedule", icon: Clock, path: "/employee/schedule" },
+      { label: "Work Schedule", icon: CalendarClock, path: "/employee/schedule" },
     ],
   },
   {
@@ -50,9 +51,9 @@ export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
         icon: DollarSign,
         path: "/employee/payslips",
         children: [
-          { label: "My Payslips", icon: DollarSign, path: "/employee/payslips" },
-          { label: "Tax & Statutory", icon: Landmark, path: "/employee/tax" },
-          { label: "Payments & Banking", icon: CreditCard, path: "/employee/payments" },
+          { label: "My Payslips", path: "/employee/payslips" },
+          { label: "Tax & Statutory", path: "/employee/tax" },
+          { label: "Payments & Banking", path: "/employee/payments" },
         ],
       },
       { label: "Loans & Advances", icon: Banknote, path: "/employee/loans" },
@@ -96,6 +97,13 @@ export const EMPLOYEE_NAV_SECTIONS: NavSection[] = [
     icon: ShieldAlert,
     items: [
       { label: "Disciplinary", icon: ShieldAlert, path: "/employee/disciplinary" },
+    ],
+  },
+  {
+    title: "Account",
+    icon: Settings,
+    items: [
+      { label: "Settings", icon: Settings, path: "/employee/settings" },
     ],
   },
 ];

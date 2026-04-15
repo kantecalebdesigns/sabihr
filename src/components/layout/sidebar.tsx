@@ -40,7 +40,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
     const isExpanded = expandedItems[item.label];
     const isActive = location.pathname === item.path;
     const isChildActive = hasChildren && item.children!.some((child) => location.pathname === child.path);
-    const Icon = item.icon;
+    const Icon = item.icon ?? null;
 
     if (hasChildren) {
       return (
@@ -61,14 +61,14 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
                 "w-10 h-10 rounded-[10px] flex items-center justify-center transition-colors",
                 isChildActive ? "bg-blue-50 text-blue-600" : "bg-[#f0f4f8] text-slate-400 hover:bg-slate-100"
               )}>
-                <Icon className="w-[18px] h-[18px]" />
+                {Icon && <Icon className="w-[18px] h-[18px]" />}
               </div>
             ) : (
               <>
-                <Icon className={cn(
+                {Icon && <Icon className={cn(
                   "w-[18px] h-[18px] shrink-0 transition-colors",
                   isChildActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-500"
-                )} />
+                )} />}
                 <span className="flex-1 text-left">{item.label}</span>
                 <ChevronDown className={cn(
                   "w-3.5 h-3.5 text-slate-300 transition-transform duration-200",
@@ -81,7 +81,6 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
             <div className="ml-[21px] pl-3 border-l border-slate-100 space-y-0.5 mt-0.5">
               {item.children!.map((child) => {
                 const childActive = location.pathname === child.path;
-                const ChildIcon = child.icon;
                 return (
                   <Link
                     key={child.path}
@@ -94,9 +93,9 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
                         : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
                     )}
                   >
-                    <ChildIcon className={cn(
-                      "w-[16px] h-[16px] shrink-0",
-                      childActive ? "text-blue-600" : "text-slate-400"
+                    <span className={cn(
+                      "w-1.5 h-1.5 rounded-full shrink-0",
+                      childActive ? "bg-blue-600" : "bg-slate-300 group-hover:bg-slate-400"
                     )} />
                     <span>{child.label}</span>
                   </Link>
@@ -126,14 +125,14 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
             "w-10 h-10 rounded-[10px] flex items-center justify-center transition-colors",
             isActive ? "bg-blue-50 text-blue-600" : "bg-[#f0f4f8] text-slate-400 hover:bg-slate-100"
           )}>
-            <Icon className="w-[18px] h-[18px]" />
+            {Icon && <Icon className="w-[18px] h-[18px]" />}
           </div>
         ) : (
           <>
-            <Icon className={cn(
+            {Icon && <Icon className={cn(
               "w-[18px] h-[18px] shrink-0 transition-colors",
               isActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-500"
-            )} />
+            )} />}
             <span>{item.label}</span>
           </>
         )}

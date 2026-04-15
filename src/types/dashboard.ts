@@ -57,7 +57,7 @@ export interface DashboardAlert {
 
 export interface NavItem {
   label: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
   path: string;
   children?: NavItem[];
 }

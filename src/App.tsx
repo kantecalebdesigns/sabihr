@@ -106,11 +106,9 @@ import DisciplinaryCaseDetailPage from "@/pages/disciplinary-case-detail";
 import WorkSchedulesPage from "@/pages/work-schedules";
 import EmployeeWorkSchedulePage from "@/pages/employee-work-schedule";
 // Attendance Extended — Admin
-import AttendanceBiometricPage from "@/pages/attendance-biometric";
 import AttendanceGeofencingPage from "@/pages/attendance-geofencing";
 import AttendanceManualEntryPage from "@/pages/attendance-manual-entry";
 import AttendanceCorrectionsPage from "@/pages/attendance-corrections";
-import AttendanceRealtimePage from "@/pages/attendance-realtime";
 import AttendanceDepartmentPage from "@/pages/attendance-department";
 import AttendanceDailyReportPage from "@/pages/attendance-daily-report";
 import AttendanceMonthlyReportPage from "@/pages/attendance-monthly-report";
@@ -146,6 +144,9 @@ import EmployeeMobileShiftPage from "@/pages/employee-mobile-shift";
 import ExitPage from "@/pages/exit";
 import ExitDetailPage from "@/pages/exit-detail";
 import ExitInitiatePage from "@/pages/exit-initiate";
+// Settings
+import SettingsPage from "@/pages/settings";
+import EmployeeSettingsPage from "@/pages/employee-settings";
 import { AppLayout } from "@/components/layout/app-layout";
 import { EmployeeLayout } from "@/components/layout/employee-layout";
 
@@ -170,11 +171,9 @@ function App() {
           <Route path="/departments/create" element={<DepartmentCreatePage />} />
           <Route path="/departments/:id" element={<DepartmentDetailPage />} />
           <Route path="/attendance" element={<AttendancePage />} />
-          <Route path="/attendance/biometric" element={<AttendanceBiometricPage />} />
           <Route path="/attendance/geofencing" element={<AttendanceGeofencingPage />} />
           <Route path="/attendance/manual-entry" element={<AttendanceManualEntryPage />} />
           <Route path="/attendance/corrections" element={<AttendanceCorrectionsPage />} />
-          <Route path="/attendance/realtime" element={<AttendanceRealtimePage />} />
           <Route path="/attendance/department" element={<AttendanceDepartmentPage />} />
           <Route path="/attendance/daily-report" element={<AttendanceDailyReportPage />} />
           <Route path="/attendance/monthly-report" element={<AttendanceMonthlyReportPage />} />
@@ -259,6 +258,8 @@ function App() {
           <Route path="/exit" element={<ExitPage />} />
           <Route path="/exit/:id" element={<ExitDetailPage />} />
           <Route path="/exit/initiate" element={<ExitInitiatePage />} />
+          {/* Settings */}
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
 
         {/* Employee onboarding (standalone, no layout) */}
@@ -306,6 +307,8 @@ function App() {
           <Route path="/employee/assets/request" element={<EmployeeAssetRequestPage />} />
           <Route path="/employee/assets/report-issue" element={<EmployeeAssetReportIssuePage />} />
           <Route path="/employee/assets/return" element={<EmployeeAssetReturnPage />} />
+          {/* Employee Settings */}
+          <Route path="/employee/settings" element={<EmployeeSettingsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
