@@ -30,8 +30,18 @@ import {
   CheckCircle2,
   RefreshCw,
 } from "lucide-react";
-import { MOCK_MAINTENANCE_RECORDS, formatCurrency } from "@/lib/asset-mock-data";
-import type { MaintenanceRecord, MaintenanceType } from "@/types/asset";
+import {
+  MOCK_MAINTENANCE_RECORDS,
+  MOCK_MAINTENANCE_REQUESTS,
+  formatCurrency,
+} from "@/lib/asset-mock-data";
+import type {
+  MaintenanceRecord,
+  MaintenanceType,
+  MaintenanceRequest,
+  MaintenanceRequestStatus,
+} from "@/types/asset";
+import { Check, X as XIcon, Inbox } from "lucide-react";
 
 const MAINTENANCE_TYPE_STYLES: Record<MaintenanceType, { label: string; color: string; bg: string }> = {
   preventive: { label: "Preventive", color: "text-blue-700", bg: "bg-blue-50 border-blue-200" },
@@ -53,10 +63,73 @@ function isOverdue(record: MaintenanceRecord): boolean {
   return new Date(record.nextDueDate) < new Date();
 }
 
+const REQUEST_STATUS_STYLES: Record<MaintenanceRequestStatus, { label: string; color: string; bg: string }> = {
+  pending: { label: "Pending", color: "text-amber-700", bg: "bg-amber-50 border-amber-200" },
+  approved: { label: "Approved", color: "text-emerald-700", bg: "bg-emerald-50 border-emerald-200" },
+  scheduled: { label: "Scheduled", color: "text-blue-700", bg: "bg-blue-50 border-blue-200" },
+  rejected: { label: "Rejected", color: "text-red-700", bg: "bg-red-50 border-red-200" },
+};
+
+const URGENCY_STYLES: Record<MaintenanceRequest["urgency"], string> = {
+  low: "text-slate-500",
+  normal: "text-blue-700",
+  high: "text-amber-700",
+};
+
 export default function AssetMaintenance() {
   const [showForm, setShowForm] = useState(false);
   const [filterType, setFilterType] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
+  const [requests, setRequests] = useState<MaintenanceRequest[]>(MOCK_MAINTENANCE_REQUESTS);
+  const [showRaise, setShowRaise] = useState(false);
+  const [raiseAsset, setRaiseAsset] = useState("");
+  const [raiseEmployee, setRaiseEmployee] = useState("");
+  const [raiseType, setRaiseType] = useState<MaintenanceType>("preventive");
+  const [raiseDescription, setRaiseDescription] = useState("");
+
+  const pendingRequests = requests.filter((r) => r.status === "pending");
+
+  const updateRequest = (id: string, status: MaintenanceRequestStatus) => {
+    setRequests((prev) =>
+      prev.map((r) =>
+        r.id === id
+          ? {
+              ...r,
+              status,
+              reviewedBy: "Admin User",
+              reviewedAt: new Date().toISOString(),
+            }
+          : r
+      )
+    );
+  };
+
+  const submitAdminRequest = () => {
+    if (!raiseAsset || !raiseEmployee || !raiseDescription) return;
+    const now = new Date().toISOString();
+    const newRequest: MaintenanceRequest = {
+      id: `mr-${Date.now()}`,
+      assetId: "",
+      assetName: raiseAsset,
+      assetTag: "",
+      employeeId: "",
+      employeeName: raiseEmployee,
+      type: raiseType,
+      urgency: "normal",
+      description: raiseDescription,
+      preferredDate: null,
+      submittedAt: now,
+      status: "approved",
+      reviewedBy: "Admin User",
+      reviewedAt: now,
+      reviewerNote: "Raised internally by admin.",
+    };
+    setRequests((prev) => [newRequest, ...prev]);
+    setRaiseAsset("");
+    setRaiseEmployee("");
+    setRaiseDescription("");
+    setShowRaise(false);
+  };
 
   // Form state
   const [formAssetName, setFormAssetName] = useState("");
@@ -173,6 +246,136 @@ export default function AssetMaintenance() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Maintenance Requests Inbox */}
+      <Card className="rounded-xl border-border bg-card">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm font-semibold flex items-center gap-2">
+              <Inbox className="size-4" />
+              Maintenance Requests
+              {pendingRequests.length > 0 && (
+                <Badge variant="outline" className="text-[11px] text-amber-700 bg-amber-50 border-amber-200">
+                  {pendingRequests.length} pending
+                </Badge>
+              )}
+            </CardTitle>
+            <Button size="sm" variant="outline" onClick={() => setShowRaise((v) => !v)}>
+              <Plus className="size-4" />
+              Raise Request
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {showRaise && (
+            <div className="rounded-lg border border-[#efefef] bg-[#f8fafc] p-4 space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs mb-1 block">Asset</Label>
+                  <Input
+                    placeholder="Asset name or tag..."
+                    value={raiseAsset}
+                    onChange={(e) => setRaiseAsset(e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs mb-1 block">Employee (optional)</Label>
+                  <Input
+                    placeholder="Assigned employee..."
+                    value={raiseEmployee}
+                    onChange={(e) => setRaiseEmployee(e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs mb-1 block">Type</Label>
+                  <Select value={raiseType} onValueChange={(v) => setRaiseType(v as MaintenanceType)}>
+                    <SelectTrigger className="text-sm w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="preventive">Preventive</SelectItem>
+                      <SelectItem value="corrective">Corrective</SelectItem>
+                      <SelectItem value="inspection">Inspection</SelectItem>
+                      <SelectItem value="upgrade">Upgrade</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div>
+                <Label className="text-xs mb-1 block">Description</Label>
+                <textarea
+                  rows={2}
+                  value={raiseDescription}
+                  onChange={(e) => setRaiseDescription(e.target.value)}
+                  placeholder="What needs to be done?"
+                  className="w-full rounded-lg border border-[#efefef] bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 resize-none"
+                />
+              </div>
+              <div className="flex items-center justify-end gap-2">
+                <Button size="sm" variant="outline" onClick={() => setShowRaise(false)}>
+                  Cancel
+                </Button>
+                <Button size="sm" onClick={submitAdminRequest}>
+                  Submit Request
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {requests.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-4">
+              No maintenance requests yet.
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {requests.map((r) => {
+                const typeStyle = MAINTENANCE_TYPE_STYLES[r.type];
+                const statusStyle = REQUEST_STATUS_STYLES[r.status];
+                return (
+                  <div
+                    key={r.id}
+                    className="flex flex-col sm:flex-row sm:items-center gap-3 rounded-lg border border-[#efefef] bg-white p-3"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="text-sm font-medium">{r.assetName}</p>
+                        <Badge variant="outline" className={cn("text-[11px]", typeStyle.bg, typeStyle.color)}>
+                          {typeStyle.label}
+                        </Badge>
+                        <Badge variant="outline" className={cn("text-[11px]", statusStyle.bg, statusStyle.color)}>
+                          {statusStyle.label}
+                        </Badge>
+                        <span className={cn("text-[11px] font-medium capitalize", URGENCY_STYLES[r.urgency])}>
+                          {r.urgency} urgency
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        From {r.employeeName || "—"}
+                        {r.preferredDate && ` · prefers ${new Date(r.preferredDate).toLocaleDateString("en-NG", { day: "numeric", month: "short" })}`}
+                      </p>
+                      <p className="text-xs text-slate-600 mt-1 line-clamp-2">{r.description}</p>
+                    </div>
+                    {r.status === "pending" && (
+                      <div className="flex items-center gap-1 shrink-0">
+                        <Button size="sm" variant="outline" onClick={() => updateRequest(r.id, "rejected")}>
+                          <XIcon className="size-3.5" />
+                          Reject
+                        </Button>
+                        <Button size="sm" onClick={() => updateRequest(r.id, "approved")}>
+                          <Check className="size-3.5" />
+                          Approve
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Add Maintenance Record (collapsible) */}
       <Card className="rounded-xl border-border bg-card">

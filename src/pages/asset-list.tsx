@@ -20,6 +20,7 @@ import {
   Trash2,
   Download,
   UserPlus,
+  Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -129,10 +130,16 @@ export default function AssetListPage() {
             {MOCK_ASSETS.length} total assets &middot; {filtered.length} shown
           </p>
         </div>
-        <Button onClick={() => navigate("/assets/create")}>
-          <Plus className="w-4 h-4 mr-2" />
-          Add Asset
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={() => navigate("/assets/maintenance")}>
+            <Wrench className="w-4 h-4 mr-2" />
+            Maintenance
+          </Button>
+          <Button onClick={() => navigate("/assets/create")}>
+            <Plus className="w-4 h-4 mr-2" />
+            Add Asset
+          </Button>
+        </div>
       </div>
 
       {/* Toolbar */}

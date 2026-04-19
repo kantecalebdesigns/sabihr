@@ -90,11 +90,23 @@ export function Topbar({ onMenuToggle, pageTitle = "Dashboard" }: TopbarProps) {
 
           {dropdownOpen && (
             <div className="absolute right-0 top-full mt-1 w-56 rounded-xl border border-[#efefef] bg-white shadow-lg py-1 z-50">
-              <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-900 hover:bg-[#f8fafc] transition-colors">
+              <button
+                onClick={() => {
+                  setDropdownOpen(false);
+                  navigate("/settings");
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-900 hover:bg-[#f8fafc] transition-colors"
+              >
                 <User className="w-4 h-4 text-slate-400" />
                 Profile
               </button>
-              <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-900 hover:bg-[#f8fafc] transition-colors">
+              <button
+                onClick={() => {
+                  setDropdownOpen(false);
+                  navigate("/settings");
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-900 hover:bg-[#f8fafc] transition-colors"
+              >
                 <Settings className="w-4 h-4 text-slate-400" />
                 Settings
               </button>

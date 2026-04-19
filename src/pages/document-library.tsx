@@ -17,6 +17,8 @@ import {
   ArrowUpDown,
   ChevronUp,
   ChevronDown,
+  ArrowLeft,
+  ChevronRight,
 } from "lucide-react";
 
 /* ─── Types ─── */
@@ -247,11 +249,40 @@ function formatDate(dateStr: string) {
 /* ─── Page Component ─── */
 
 export default function DocumentLibraryPage() {
+  const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<DocumentFilters | null>(null);
   const [sortField, setSortField] = useState<SortField>("uploadDate");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
+  // Group documents by employee for the card overview
+  const employeeSummaries = useMemo(() => {
+    const q = searchQuery.toLowerCase();
+    const byEmployee = new Map<string, MockDocument[]>();
+    for (const doc of MOCK_DOCUMENTS) {
+      const list = byEmployee.get(doc.employee) ?? [];
+      list.push(doc);
+      byEmployee.set(doc.employee, list);
+    }
+    const summaries = [...byEmployee.entries()].map(([employee, docs]) => {
+      const latest = docs.reduce((max, d) =>
+        d.uploadDate > max.uploadDate ? d : max
+      , docs[0]);
+      return {
+        employee,
+        totalDocs: docs.length,
+        verifiedCount: docs.filter((d) => d.status === "verified").length,
+        pendingCount: docs.filter((d) => d.status === "uploaded").length,
+        rejectedCount: docs.filter((d) => d.status === "rejected").length,
+        latestUpload: latest.uploadDate,
+      };
+    });
+    const filtered = q
+      ? summaries.filter((s) => s.employee.toLowerCase().includes(q))
+      : summaries;
+    return filtered.sort((a, b) => a.employee.localeCompare(b.employee));
+  }, [searchQuery]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -265,7 +296,12 @@ export default function DocumentLibraryPage() {
   const filteredDocuments = useMemo(() => {
     let docs = [...MOCK_DOCUMENTS];
 
-    // Search
+    // Scope to selected employee (drill-in)
+    if (selectedEmployee) {
+      docs = docs.filter((d) => d.employee === selectedEmployee);
+    }
+
+    // Search (scoped differently when drilled in)
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       docs = docs.filter(
@@ -329,33 +365,137 @@ export default function DocumentLibraryPage() {
     });
 
     return docs;
-  }, [searchQuery, filters, sortField, sortDirection]);
+  }, [selectedEmployee, searchQuery, filters, sortField, sortDirection]);
 
   return (
     <div className="max-w-[1400px] mx-auto space-y-6">
+      {/* Breadcrumb (drill-in) */}
+      {selectedEmployee && (
+        <nav className="flex items-center gap-1.5 text-xs text-slate-500">
+          <button
+            onClick={() => { setSelectedEmployee(null); setSearchQuery(""); }}
+            className="hover:text-slate-900 transition-colors"
+          >
+            Document Library
+          </button>
+          <ChevronRight className="w-3.5 h-3.5" />
+          <span className="text-slate-900 font-medium">{selectedEmployee}</span>
+        </nav>
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">
-            Document Library
+            {selectedEmployee ? `${selectedEmployee}'s Documents` : "Document Library"}
           </h1>
           <p className="text-sm text-slate-500">
-            Browse and manage all employee documents
+            {selectedEmployee
+              ? `${filteredDocuments.length} document${filteredDocuments.length !== 1 ? "s" : ""} in this employee's file`
+              : "Browse documents by employee"}
           </p>
         </div>
-        <Button size="sm" className="gap-1.5">
-          <Upload className="w-4 h-4" />
-          Upload Documents
-        </Button>
+        <div className="flex items-center gap-2">
+          {selectedEmployee && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => { setSelectedEmployee(null); setSearchQuery(""); }}
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Library
+            </Button>
+          )}
+          <Button size="sm" className="gap-1.5">
+            <Upload className="w-4 h-4" />
+            Upload Documents
+          </Button>
+        </div>
       </div>
 
-      {/* Search / Filters */}
-      <DocumentSearchFilter
-        onSearch={(query) => setSearchQuery(query)}
-        onFilter={(f) => setFilters(f)}
-      />
+      {/* Search / Filters — document search only when drilled in */}
+      {selectedEmployee ? (
+        <DocumentSearchFilter
+          onSearch={(query) => setSearchQuery(query)}
+          onFilter={(f) => setFilters(f)}
+        />
+      ) : (
+        <div className="relative max-w-md">
+          <input
+            type="text"
+            placeholder="Search employees..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full h-10 rounded-lg border border-[#efefef] bg-white pl-10 pr-3 text-sm outline-none focus:border-slate-300 transition-colors"
+          />
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M16 10a6 6 0 11-12 0 6 6 0 0112 0z" />
+          </svg>
+        </div>
+      )}
 
-      {/* Toolbar: count + view toggle */}
+      {/* Employee cards (default view) */}
+      {!selectedEmployee && (
+        <>
+          <p className="text-sm text-slate-500">
+            {employeeSummaries.length} employee{employeeSummaries.length !== 1 ? "s" : ""} · {MOCK_DOCUMENTS.length} total documents
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {employeeSummaries.map((s) => {
+              const initials = s.employee
+                .split(" ")
+                .map((n) => n[0])
+                .slice(0, 2)
+                .join("");
+              return (
+                <button
+                  key={s.employee}
+                  onClick={() => { setSelectedEmployee(s.employee); setSearchQuery(""); }}
+                  className="text-left rounded-xl border border-[#efefef] bg-white p-5 hover:border-slate-300 hover:shadow-sm transition-all group"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-semibold shrink-0">
+                      {initials}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-slate-900 truncate">{s.employee}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">Last upload {formatDate(s.latestUpload)}</p>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-slate-500 transition-colors mt-1" />
+                  </div>
+
+                  <div className="mt-4 pt-4 border-t border-[#efefef] flex items-end justify-between">
+                    <div>
+                      <p className="text-2xl font-semibold text-slate-900">{s.totalDocs}</p>
+                      <p className="text-xs text-slate-500">total documents</p>
+                    </div>
+                    <div className="flex flex-col items-end gap-0.5 text-[11px]">
+                      {s.verifiedCount > 0 && (
+                        <span className="text-emerald-700">{s.verifiedCount} verified</span>
+                      )}
+                      {s.pendingCount > 0 && (
+                        <span className="text-slate-500">{s.pendingCount} pending</span>
+                      )}
+                      {s.rejectedCount > 0 && (
+                        <span className="text-slate-700">{s.rejectedCount} rejected</span>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+          {employeeSummaries.length === 0 && (
+            <div className="flex flex-col items-center py-16">
+              <FileText className="w-10 h-10 text-slate-500/30 mb-3" />
+              <p className="text-sm text-slate-500">No employees match your search</p>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Toolbar: count + view toggle (drill-in only) */}
+      {selectedEmployee && (
       <div className="flex items-center justify-between">
         <p className="text-sm text-slate-500">
           {filteredDocuments.length} document
@@ -386,9 +526,10 @@ export default function DocumentLibraryPage() {
           </button>
         </div>
       </div>
+      )}
 
       {/* Grid View */}
-      {viewMode === "grid" && (
+      {selectedEmployee && viewMode === "grid" && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredDocuments.map((doc) => {
             const ftConfig = FILE_TYPE_ICONS[doc.fileType] ?? { icon: File, color: "text-gray-500" };
@@ -432,7 +573,7 @@ export default function DocumentLibraryPage() {
       )}
 
       {/* List / Table View */}
-      {viewMode === "list" && (
+      {selectedEmployee && viewMode === "list" && (
         <div className="border border-[#efefef] rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -559,8 +700,8 @@ export default function DocumentLibraryPage() {
         </div>
       )}
 
-      {/* Empty state */}
-      {filteredDocuments.length === 0 && (
+      {/* Empty state (drill-in only) */}
+      {selectedEmployee && filteredDocuments.length === 0 && (
         <div className="flex flex-col items-center py-16">
           <FileText className="w-10 h-10 text-slate-500/30 mb-3" />
           <p className="text-sm text-slate-500">

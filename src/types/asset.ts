@@ -179,6 +179,27 @@ export interface MaintenanceRecord {
   status: "scheduled" | "in-progress" | "completed" | "overdue";
 }
 
+export type MaintenanceRequestStatus = "pending" | "approved" | "rejected" | "scheduled";
+export type MaintenanceRequestUrgency = "low" | "normal" | "high";
+
+export interface MaintenanceRequest {
+  id: string;
+  assetId: string;
+  assetName: string;
+  assetTag: string;
+  employeeId: string;
+  employeeName: string;
+  type: MaintenanceType;
+  urgency: MaintenanceRequestUrgency;
+  description: string;
+  preferredDate: string | null;
+  submittedAt: string;
+  status: MaintenanceRequestStatus;
+  reviewedBy: string | null;
+  reviewedAt: string | null;
+  reviewerNote: string | null;
+}
+
 // --- Depreciation ---
 export interface DepreciationEntry {
   period: string;

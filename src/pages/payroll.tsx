@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   Search,
   DollarSign,
@@ -68,8 +69,7 @@ export default function PayrollPage() {
   const [view, setView] = useState<ViewMode>("runs");
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
-  const [runs, setRuns] = useState<PayrollRun[]>(INITIAL_RUNS);
-  const [processing, setProcessing] = useState(false);
+  const [runs] = useState<PayrollRun[]>(INITIAL_RUNS);
   const [toast, setToast] = useState<{ message: string; type: "success" | "info" } | null>(null);
 
   const currentRun = runs[0];
@@ -102,39 +102,6 @@ export default function PayrollPage() {
     );
   }, [filteredPayslips]);
 
-  const handleProcessPayroll = () => {
-    setProcessing(true);
-    setToast({ message: `Processing payroll for ${currentRun.period}...`, type: "info" });
-    // Simulate processing
-    setTimeout(() => {
-      setRuns((prev) =>
-        prev.map((r) =>
-          r.id === currentRun.id
-            ? { ...r, status: "processing" as const }
-            : r
-        )
-      );
-    }, 800);
-    setTimeout(() => {
-      setRuns((prev) =>
-        prev.map((r) =>
-          r.id === currentRun.id
-            ? {
-                ...r,
-                status: "completed" as const,
-                totalGross: 8450000,
-                totalNet: 5980000,
-                totalDeductions: 2470000,
-                processedDate: new Date().toISOString().split("T")[0],
-              }
-            : r
-        )
-      );
-      setProcessing(false);
-      setToast({ message: `Payroll for ${currentRun.period} processed successfully.`, type: "success" });
-    }, 2500);
-  };
-
   const handleExport = () => {
     setToast({ message: "Payroll data exported to CSV.", type: "success" });
   };
@@ -160,9 +127,11 @@ export default function PayrollPage() {
             Export
           </Button>
           {currentRun.status === "draft" && (
-            <Button onClick={handleProcessPayroll} disabled={processing}>
-              {processing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Play className="w-4 h-4 mr-2" />}
-              {processing ? "Processing..." : `Process ${currentRun.period}`}
+            <Button asChild>
+              <Link to="/payroll/process">
+                <Play className="w-4 h-4 mr-2" />
+                Process {currentRun.period}
+              </Link>
             </Button>
           )}
         </div>
@@ -347,8 +316,8 @@ export default function PayrollPage() {
                       <td className="p-3 text-right">{formatNaira(slip.basicSalary)}</td>
                       <td className="p-3 text-right text-slate-500">{formatNaira(totalAllowances)}</td>
                       <td className="p-3 text-right font-medium">{formatNaira(slip.grossPay)}</td>
-                      <td className="p-3 text-right text-red-600">-{formatNaira(slip.tax)}</td>
-                      <td className="p-3 text-right text-red-600">-{formatNaira(slip.pension)}</td>
+                      <td className="p-3 text-right text-slate-700">-{formatNaira(slip.tax)}</td>
+                      <td className="p-3 text-right text-slate-700">-{formatNaira(slip.pension)}</td>
                       <td className="p-3 text-right font-semibold">{formatNaira(slip.netPay)}</td>
                       <td className={cn("p-3 text-sm font-medium", statusStyle?.color)}>{statusStyle?.label}</td>
                       <td className="p-3 text-xs text-slate-500">
@@ -405,6 +374,7 @@ export default function PayrollPage() {
     </div>
   );
 }
+
 
 /* ── Input Review ── */
 function InputReviewSection() {
@@ -469,7 +439,7 @@ function InputReviewSection() {
                   <td className="p-3">{input.type}</td>
                   <td className="p-3 text-right">{input.hours || "—"}</td>
                   <td className="p-3 text-right">{input.rate ? formatNaira(input.rate) : "—"}</td>
-                  <td className={cn("p-3 text-right font-medium", input.amount < 0 ? "text-red-600" : "")}>{formatNaira(Math.abs(input.amount))}{input.amount < 0 ? " (Ded)" : ""}</td>
+                  <td className={cn("p-3 text-right font-medium", input.amount < 0 ? "text-slate-700" : "")}>{formatNaira(Math.abs(input.amount))}{input.amount < 0 ? " (Ded)" : ""}</td>
                   <td className={cn("p-3 text-sm font-medium", style.color)}>{style.label}</td>
                   <td className="p-3">
                     {input.status === "pending" && (
@@ -532,10 +502,10 @@ function ComputationSection() {
                 <td className="p-3 text-right">{formatNaira(c.basic)}</td>
                 <td className="p-3 text-right text-slate-500">{formatNaira(c.allowances)}</td>
                 <td className="p-3 text-right font-medium">{formatNaira(c.gross)}</td>
-                <td className="p-3 text-right text-red-600">-{formatNaira(c.paye)}</td>
-                <td className="p-3 text-right text-red-600">-{formatNaira(c.pension)}</td>
-                <td className="p-3 text-right text-red-600">-{formatNaira(c.nhf)}</td>
-                <td className="p-3 text-right text-red-600 font-medium">-{formatNaira(c.totalDed)}</td>
+                <td className="p-3 text-right text-slate-700">-{formatNaira(c.paye)}</td>
+                <td className="p-3 text-right text-slate-700">-{formatNaira(c.pension)}</td>
+                <td className="p-3 text-right text-slate-700">-{formatNaira(c.nhf)}</td>
+                <td className="p-3 text-right text-slate-700 font-medium">-{formatNaira(c.totalDed)}</td>
                 <td className="p-3 text-right font-semibold">{formatNaira(c.net)}</td>
               </tr>
             ))}

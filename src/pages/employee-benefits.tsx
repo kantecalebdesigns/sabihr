@@ -88,26 +88,14 @@ export default function EmployeeBenefitsPage() {
                 <p className="text-sm text-slate-500">
                   {plan.coverageSummary}
                 </p>
-                <div className="text-sm space-y-1">
-                  <p>
-                    Employer:{" "}
-                    <span className="font-medium">
-                      {formatBenefitCurrency(plan.employerContribution)}
-                    </span>
-                    <span className="text-slate-500">
-                      /{plan.frequency === "monthly" ? "mo" : "yr"}
-                    </span>
-                  </p>
-                  <p>
-                    Employee:{" "}
-                    <span className="font-medium">
-                      {formatBenefitCurrency(plan.employeeContribution)}
-                    </span>
-                    <span className="text-slate-500">
-                      /{plan.frequency === "monthly" ? "mo" : "yr"}
-                    </span>
-                  </p>
-                </div>
+                <p className="text-sm">
+                  <span className="font-semibold">
+                    {formatBenefitCurrency(plan.employerContribution + plan.employeeContribution)}
+                  </span>
+                  <span className="text-slate-500">
+                    /{plan.frequency === "monthly" ? "mo" : "yr"}
+                  </span>
+                </p>
                 {isEnrolled ? (
                   <p className="text-sm font-medium text-emerald-700">
                     Enrolled

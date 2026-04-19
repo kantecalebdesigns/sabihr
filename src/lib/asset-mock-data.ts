@@ -7,6 +7,7 @@ import type {
   ReturnRequest,
   ConditionEntry,
   MaintenanceRecord,
+  MaintenanceRequest,
   DepreciationEntry,
   DisposalRecord,
   AssetRequest,
@@ -80,6 +81,13 @@ export const MOCK_MAINTENANCE_RECORDS: MaintenanceRecord[] = [
   { id: "maint-2", assetId: "ast-6", assetName: "Toyota Camry 2024", type: "preventive", description: "15,000 km service — oil, filters, brake check", vendor: "Toyota Service Center", cost: 120000, date: "2026-02-10", nextDueDate: "2026-08-10", isRecurring: true, recurringFrequencyMonths: 6, status: "completed" },
   { id: "maint-3", assetId: "ast-7", assetName: "HP LaserJet Pro M404dn", type: "preventive", description: "Toner replacement and cleaning", vendor: "HP Support", cost: 35000, date: "2026-01-15", nextDueDate: "2026-04-15", isRecurring: true, recurringFrequencyMonths: 3, status: "scheduled" },
   { id: "maint-4", assetId: "ast-1", assetName: "MacBook Pro 16\" M3", type: "inspection", description: "Annual IT audit and security check", vendor: "Internal IT", cost: 0, date: "2026-03-15", nextDueDate: "2027-03-15", isRecurring: true, recurringFrequencyMonths: 12, status: "scheduled" },
+];
+
+// --- Maintenance Requests (raised by employees or admin) ---
+export const MOCK_MAINTENANCE_REQUESTS: MaintenanceRequest[] = [
+  { id: "mr-1", assetId: "ast-1", assetName: "MacBook Pro 16\" M3", assetTag: "SHR-LAP-001", employeeId: "emp-001", employeeName: "Adebayo Ogunlesi", type: "corrective", urgency: "high", description: "Fan noise has become much louder over the past week, temperatures are higher than normal under load.", preferredDate: "2026-04-22", submittedAt: "2026-04-18T09:15:00Z", status: "pending", reviewedBy: null, reviewedAt: null, reviewerNote: null },
+  { id: "mr-2", assetId: "ast-7", assetName: "HP LaserJet Pro M404dn", assetTag: "SHR-PRT-001", employeeId: "emp-009", employeeName: "Ibrahim Musa", type: "preventive", urgency: "normal", description: "Toner low warning and output is fading. Request routine maintenance and toner replacement.", preferredDate: "2026-04-24", submittedAt: "2026-04-17T14:20:00Z", status: "pending", reviewedBy: null, reviewedAt: null, reviewerNote: null },
+  { id: "mr-3", assetId: "ast-6", assetName: "Toyota Camry 2024", assetTag: "SHR-VEH-001", employeeId: "emp-005", employeeName: "Emeka Okafor", type: "inspection", urgency: "low", description: "Quarterly inspection — AC re-gassing and tyre rotation.", preferredDate: "2026-05-05", submittedAt: "2026-04-15T10:00:00Z", status: "approved", reviewedBy: "Amina Bello", reviewedAt: "2026-04-16T09:30:00Z", reviewerNote: "Approved — scheduled with Toyota Service Center." },
 ];
 
 // --- Depreciation (for ast-1) ---

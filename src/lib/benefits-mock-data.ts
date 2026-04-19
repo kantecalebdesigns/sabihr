@@ -58,10 +58,10 @@ export const MOCK_BENEFIT_PLANS: BenefitPlan[] = [
     name: "Health Insurance (HMO)",
     category: "health",
     provider: "Leadway Health",
-    description: "Comprehensive health insurance covering outpatient, inpatient, dental, and optical care for employees and dependents.",
-    coverageSummary: "Outpatient, inpatient, dental, optical",
-    employerContribution: 45000,
-    employeeContribution: 15000,
+    description: "Comprehensive health insurance covering outpatient, inpatient, dental, and optical care for employees and dependents. Includes wellness program with gym access, mental health counseling, and annual health screening. Fully funded by the employer.",
+    coverageSummary: "Outpatient, inpatient, dental, optical, gym, counseling, annual health check",
+    employerContribution: 80000,
+    employeeContribution: 0,
     currency: "₦",
     frequency: "monthly",
     maxDependents: 4,
@@ -109,20 +109,6 @@ export const MOCK_BENEFIT_PLANS: BenefitPlan[] = [
     maxDependents: 0,
     status: "active",
   },
-  {
-    id: "plan-5",
-    name: "Wellness Program",
-    category: "wellness",
-    provider: "FitLife Nigeria",
-    description: "Gym membership, mental health counseling sessions, and annual health screening package.",
-    coverageSummary: "Gym, counseling, annual health check",
-    employerContribution: 20000,
-    employeeContribution: 10000,
-    currency: "₦",
-    frequency: "monthly",
-    maxDependents: 0,
-    status: "active",
-  },
 ];
 
 // ── Mock Enrollments ──
@@ -130,7 +116,6 @@ export const MOCK_BENEFIT_PLANS: BenefitPlan[] = [
 export const MOCK_ENROLLMENTS: Enrollment[] = [
   { id: "enr-1", planId: "plan-1", planName: "Health Insurance (HMO)", employeeId: "emp-001", employeeName: "Adebayo Ogunlesi", department: "Engineering", startDate: "2025-03-01", endDate: null, dependentsCovered: 2, status: "active", enrolledAt: "2025-02-20" },
   { id: "enr-2", planId: "plan-2", planName: "Group Life Insurance", employeeId: "emp-001", employeeName: "Adebayo Ogunlesi", department: "Engineering", startDate: "2025-03-01", endDate: null, dependentsCovered: 0, status: "active", enrolledAt: "2025-02-20" },
-  { id: "enr-3", planId: "plan-5", planName: "Wellness Program", employeeId: "emp-001", employeeName: "Adebayo Ogunlesi", department: "Engineering", startDate: "2025-06-01", endDate: null, dependentsCovered: 0, status: "active", enrolledAt: "2025-05-25" },
   { id: "enr-4", planId: "plan-1", planName: "Health Insurance (HMO)", employeeId: "emp-004", employeeName: "Fatima Abdullahi", department: "Human Resources", startDate: "2024-09-01", endDate: null, dependentsCovered: 3, status: "active", enrolledAt: "2024-08-28" },
   { id: "enr-5", planId: "plan-3", planName: "Meal Subsidy", employeeId: "emp-005", employeeName: "Emeka Okafor", department: "Sales", startDate: "2025-04-01", endDate: null, dependentsCovered: 0, status: "active", enrolledAt: "2025-03-28" },
   { id: "enr-6", planId: "plan-1", planName: "Health Insurance (HMO)", employeeId: "emp-006", employeeName: "Aisha Mohammed", department: "Finance", startDate: "2025-05-01", endDate: null, dependentsCovered: 1, status: "pending", enrolledAt: "2026-03-30" },

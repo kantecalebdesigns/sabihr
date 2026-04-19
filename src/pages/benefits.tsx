@@ -70,7 +70,6 @@ export default function BenefitsPage() {
     { key: "life", label: "Life Insurance" },
     { key: "meal", label: "Meal" },
     { key: "transport", label: "Transport" },
-    { key: "wellness", label: "Wellness" },
   ];
 
   return (
@@ -218,21 +217,14 @@ export default function BenefitsPage() {
               {/* Coverage */}
               <p className="text-xs text-slate-500">{plan.coverageSummary}</p>
 
-              {/* Cost Breakdown */}
-              <div className="space-y-2 pt-3 border-t border-[#efefef]">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-500">Employer pays</span>
-                  <span className="font-medium">{formatBenefitCurrency(plan.employerContribution)}/{plan.frequency === "monthly" ? "mo" : "yr"}</span>
-                </div>
-                {plan.employeeContribution > 0 && (
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500">Employee pays</span>
-                    <span className="font-medium">{formatBenefitCurrency(plan.employeeContribution)}/{plan.frequency === "monthly" ? "mo" : "yr"}</span>
-                  </div>
-                )}
-                <div className="flex items-center justify-between text-xs pt-1 border-t border-[#efefef]">
-                  <span className="text-slate-500">Total</span>
-                  <span className="font-semibold">{formatBenefitCurrency(totalCost)}/{plan.frequency === "monthly" ? "mo" : "yr"}</span>
+              {/* Amount */}
+              <div className="pt-3 border-t border-[#efefef] space-y-1">
+                <div className="flex items-baseline justify-between">
+                  <span className="text-xs text-slate-500">Benefit value</span>
+                  <span className="text-sm font-semibold">
+                    {formatBenefitCurrency(totalCost)}
+                    <span className="text-xs text-slate-500 font-normal">/{plan.frequency === "monthly" ? "mo" : "yr"}</span>
+                  </span>
                 </div>
                 {plan.maxDependents > 0 && (
                   <p className="text-[11px] text-slate-500">Up to {plan.maxDependents} dependents</p>

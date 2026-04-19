@@ -3,6 +3,7 @@ import type { LucideIcon } from "lucide-react";
 // Template Types
 export type DocumentTemplateType =
   | "OFFER_LETTER"
+  | "CONFIRMATION_LETTER"
   | "CONTRACT"
   | "REFERENCE_LETTER"
   | "EMBASSY_LETTER"

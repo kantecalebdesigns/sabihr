@@ -31,8 +31,12 @@ import {
   MessageSquare,
   Receipt,
   Timer,
-  ArrowLeftRight,
   PieChart,
+  Network,
+  Building,
+  ScrollText,
+  GitBranch,
+  Workflow,
 } from "lucide-react";
 import type {
   KpiCardData,
@@ -236,7 +240,6 @@ export const NAV_SECTIONS: NavSection[] = [
           { label: "Roster", path: "/shifts/roster" },
           { label: "Calendar", path: "/shifts/calendar" },
           { label: "Swap Queue", path: "/shifts/swap-queue" },
-          { label: "Allowance & Payroll", path: "/shifts/allowance" },
         ],
       },
       {
@@ -252,17 +255,6 @@ export const NAV_SECTIONS: NavSection[] = [
           { label: "Overtime", path: "/attendance/overtime" },
         ],
       },
-      {
-        label: "Payroll Integration",
-        icon: ArrowLeftRight,
-        path: "/attendance/payroll-sync",
-        children: [
-          { label: "Payroll Sync", path: "/attendance/payroll-sync" },
-          { label: "Deduction Preview", path: "/attendance/deduction-preview" },
-          { label: "Overtime Preview", path: "/attendance/overtime-preview" },
-          { label: "Leave Reconciliation", path: "/attendance/leave-reconciliation" },
-        ],
-      },
       { label: "Leave", icon: Palmtree, path: "/leave" },
       { label: "Work Schedules", icon: Clock, path: "/schedules" },
     ],
@@ -275,6 +267,7 @@ export const NAV_SECTIONS: NavSection[] = [
       { label: "Configuration", icon: Settings2, path: "/payroll/config" },
       { label: "Pay Grades & Groups", icon: Banknote, path: "/payroll/pay-grades" },
       { label: "Payroll Roster", icon: UserCheck, path: "/payroll/roster" },
+      { label: "Shift Allowance & Payroll", icon: Timer, path: "/shifts/allowance" },
       { label: "Compliance", icon: Shield, path: "/payroll/compliance" },
     ],
   },
@@ -305,8 +298,18 @@ export const NAV_SECTIONS: NavSection[] = [
     icon: Briefcase,
     items: [
       { label: "Documents", icon: FileText, path: "/documents" },
-      { label: "Document Library", icon: FolderOpen, path: "/documents/library" },
+      { label: "Employee Documents", icon: FolderOpen, path: "/documents/library" },
       { label: "Assets", icon: Package, path: "/assets" },
+    ],
+  },
+  {
+    title: "Branches",
+    icon: Network,
+    items: [
+      { label: "Branches", icon: Building, path: "/branches" },
+      { label: "Branch Policies", icon: ScrollText, path: "/branches/policies" },
+      { label: "Branch Hierarchy", icon: GitBranch, path: "/branches/hierarchy" },
+      { label: "Organogram", icon: Workflow, path: "/branches/organogram" },
     ],
   },
   {

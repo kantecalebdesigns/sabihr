@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Laptop,
   Monitor,
@@ -11,6 +12,7 @@ import {
   Plus,
   AlertTriangle,
   RotateCcw,
+  Wrench,
   Package,
   X,
 } from "lucide-react";
@@ -279,14 +281,24 @@ function AssetCard({ asset }: { asset: Asset }) {
         )}
 
         {/* Quick Actions */}
-        <div className="flex gap-2 pt-1 border-t border-[#efefef]">
-          <Button variant="ghost" size="sm" className="flex-1 text-xs">
-            <AlertTriangle className="size-3.5" />
-            Report Issue
+        <div className="flex gap-1 pt-1 border-t border-[#efefef]">
+          <Button variant="ghost" size="sm" className="flex-1 text-xs px-2" asChild>
+            <Link to="/employee/assets/report-issue">
+              <AlertTriangle className="size-3.5" />
+              Report
+            </Link>
           </Button>
-          <Button variant="ghost" size="sm" className="flex-1 text-xs">
-            <RotateCcw className="size-3.5" />
-            Request Return
+          <Button variant="ghost" size="sm" className="flex-1 text-xs px-2" asChild>
+            <Link to="/employee/assets/maintenance-request">
+              <Wrench className="size-3.5" />
+              Maintenance
+            </Link>
+          </Button>
+          <Button variant="ghost" size="sm" className="flex-1 text-xs px-2" asChild>
+            <Link to="/employee/assets/return">
+              <RotateCcw className="size-3.5" />
+              Return
+            </Link>
           </Button>
         </div>
       </CardContent>

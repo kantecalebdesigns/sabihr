@@ -8,6 +8,7 @@ import {
   AlertTriangle,
   HelpCircle,
   Sparkles,
+  BadgeCheck,
 } from "lucide-react";
 import type {
   DocumentTemplate,
@@ -21,15 +22,16 @@ import type {
 
 // --- Template Type Configs ---
 export const TEMPLATE_TYPE_CONFIGS: TemplateTypeConfig[] = [
-  { type: "OFFER_LETTER", label: "Offer Letter", description: "Employment offer letters for new hires", icon: FileText, color: "text-blue-600", bgColor: "bg-blue-50" },
-  { type: "CONTRACT", label: "Employment Contract", description: "Formal employment agreements", icon: FileSignature, color: "text-emerald-600", bgColor: "bg-emerald-50" },
-  { type: "REFERENCE_LETTER", label: "Reference Letter", description: "Employee reference and recommendation letters", icon: ScrollText, color: "text-violet-600", bgColor: "bg-violet-50" },
-  { type: "EMBASSY_LETTER", label: "Embassy Letter", description: "Employment verification for visa applications", icon: Plane, color: "text-amber-600", bgColor: "bg-amber-50" },
-  { type: "PROMOTION_LETTER", label: "Promotion Letter", description: "Employee promotion announcements", icon: TrendingUp, color: "text-emerald-600", bgColor: "bg-emerald-50" },
-  { type: "TERMINATION_LETTER", label: "Termination Letter", description: "Employment termination notices", icon: UserX, color: "text-red-600", bgColor: "bg-red-50" },
-  { type: "WARNING_LETTER", label: "Warning Letter", description: "Disciplinary warning notices", icon: AlertTriangle, color: "text-amber-600", bgColor: "bg-amber-50" },
-  { type: "TWIMC", label: "To Whom It May Concern", description: "General purpose verification letters", icon: HelpCircle, color: "text-slate-600", bgColor: "bg-slate-50" },
-  { type: "CUSTOM", label: "Custom Template", description: "Create your own template from scratch", icon: Sparkles, color: "text-primary", bgColor: "bg-primary/10" },
+  { type: "OFFER_LETTER", label: "Offer Letter", description: "Employment offer letters for new hires", icon: FileText, color: "text-slate-600", bgColor: "bg-slate-100" },
+  { type: "CONFIRMATION_LETTER", label: "Confirmation Letter", description: "Confirmation of employment after probation", icon: BadgeCheck, color: "text-slate-600", bgColor: "bg-slate-100" },
+  { type: "CONTRACT", label: "Employment Contract", description: "Formal employment agreements", icon: FileSignature, color: "text-slate-600", bgColor: "bg-slate-100" },
+  { type: "REFERENCE_LETTER", label: "Reference Letter", description: "Employee reference and recommendation letters", icon: ScrollText, color: "text-slate-600", bgColor: "bg-slate-100" },
+  { type: "EMBASSY_LETTER", label: "Embassy Letter", description: "Employment verification for visa applications", icon: Plane, color: "text-slate-600", bgColor: "bg-slate-100" },
+  { type: "PROMOTION_LETTER", label: "Promotion Letter", description: "Employee promotion announcements", icon: TrendingUp, color: "text-slate-600", bgColor: "bg-slate-100" },
+  { type: "TERMINATION_LETTER", label: "Termination Letter", description: "Employment termination notices", icon: UserX, color: "text-slate-600", bgColor: "bg-slate-100" },
+  { type: "WARNING_LETTER", label: "Warning Letter", description: "Disciplinary warning notices", icon: AlertTriangle, color: "text-slate-600", bgColor: "bg-slate-100" },
+  { type: "TWIMC", label: "To Whom It May Concern", description: "General purpose verification letters", icon: HelpCircle, color: "text-slate-600", bgColor: "bg-slate-100" },
+  { type: "CUSTOM", label: "Custom Template", description: "Create your own template from scratch", icon: Sparkles, color: "text-slate-600", bgColor: "bg-slate-100" },
 ];
 
 // --- Template Variables ---
@@ -178,6 +180,22 @@ export const WARNING_LETTER_BLOCKS: TemplateBlock[] = [
   { id: "wl-15", type: "signature", content: "{{employee.fullName}}\nDate: _______________" },
 ];
 
+export const CONFIRMATION_LETTER_BLOCKS: TemplateBlock[] = [
+  { id: "cl-1", type: "logo", content: "{{company.logo}}", style: { alignment: "center" } },
+  { id: "cl-2", type: "header", content: "LETTER OF CONFIRMATION OF EMPLOYMENT", style: { alignment: "center", fontSize: "xl", bold: true } },
+  { id: "cl-3", type: "date", content: "{{currentDate}}", style: { alignment: "right" } },
+  { id: "cl-4", type: "paragraph", content: "{{employee.fullName}}\n{{employee.address}}" },
+  { id: "cl-5", type: "paragraph", content: "Dear {{employee.firstName}}," },
+  { id: "cl-6", type: "paragraph", content: "We are pleased to confirm that you have successfully completed your probationary period with {{company.name}} as {{employee.jobTitle}} in the {{employee.department}} department." },
+  { id: "cl-7", type: "paragraph", content: "Effective {{currentDate}}, your employment is hereby confirmed as permanent, subject to the terms and conditions contained in your employment contract." },
+  { id: "cl-8", type: "paragraph", content: "Your current remuneration of {{employee.salary}} per annum remains unchanged, along with all benefits and entitlements under the company's policies." },
+  { id: "cl-9", type: "paragraph", content: "We appreciate your contributions during your probationary period and look forward to your continued growth and success with us." },
+  { id: "cl-10", type: "paragraph", content: "Congratulations, and welcome to the permanent team." },
+  { id: "cl-11", type: "spacer", content: "" },
+  { id: "cl-12", type: "paragraph", content: "Yours sincerely," },
+  { id: "cl-13", type: "signature", content: "HR Manager\n{{company.name}}" },
+];
+
 export const TWIMC_LETTER_BLOCKS: TemplateBlock[] = [
   { id: "tw-1", type: "logo", content: "{{company.logo}}", style: { alignment: "left" } },
   { id: "tw-2", type: "date", content: "{{currentDate}}", style: { alignment: "right" } },
@@ -193,6 +211,7 @@ export const TWIMC_LETTER_BLOCKS: TemplateBlock[] = [
 // Map of type to default blocks
 export const DEFAULT_TEMPLATE_BLOCKS: Record<string, TemplateBlock[]> = {
   OFFER_LETTER: OFFER_LETTER_BLOCKS,
+  CONFIRMATION_LETTER: CONFIRMATION_LETTER_BLOCKS,
   CONTRACT: CONTRACT_BLOCKS,
   REFERENCE_LETTER: REFERENCE_LETTER_BLOCKS,
   EMBASSY_LETTER: EMBASSY_LETTER_BLOCKS,
@@ -206,16 +225,16 @@ export const DEFAULT_TEMPLATE_BLOCKS: Record<string, TemplateBlock[]> = {
 export const MOCK_TEMPLATES: DocumentTemplate[] = [
   {
     id: "tpl-1",
-    name: "Standard Offer Letter",
+    name: "Intern Letter",
     type: "OFFER_LETTER",
-    description: "Default offer letter template for full-time employees",
+    description: "Offer letter template for interns and internship placements",
     content: "",
     status: "active",
     version: 3,
     versions: [
       { id: "v1", version: 1, changelog: "Initial template created", createdBy: "Amina Bello", createdAt: "2025-09-15T10:00:00Z", status: "archived" },
-      { id: "v2", version: 2, changelog: "Updated salary section format", createdBy: "Amina Bello", createdAt: "2025-11-20T14:30:00Z", status: "archived" },
-      { id: "v3", version: 3, changelog: "Added probation terms paragraph", createdBy: "Fatima Ibrahim", createdAt: "2026-01-10T09:15:00Z", status: "active" },
+      { id: "v2", version: 2, changelog: "Updated stipend section format", createdBy: "Amina Bello", createdAt: "2025-11-20T14:30:00Z", status: "archived" },
+      { id: "v3", version: 3, changelog: "Renamed to Intern Letter and adjusted terms", createdBy: "Fatima Ibrahim", createdAt: "2026-01-10T09:15:00Z", status: "active" },
     ],
     permissions: { level: "hr_only", canGenerate: ["hr", "admin"], canEdit: ["hr"], canDelete: ["admin"] },
     createdBy: "Amina Bello",
@@ -223,7 +242,26 @@ export const MOCK_TEMPLATES: DocumentTemplate[] = [
     updatedAt: "2026-01-10T09:15:00Z",
     usageCount: 47,
     lastUsed: "2026-03-08T11:00:00Z",
-    tags: ["hiring", "full-time"],
+    tags: ["hiring", "intern"],
+  },
+  {
+    id: "tpl-10",
+    name: "Confirmation Letter",
+    type: "CONFIRMATION_LETTER",
+    description: "Confirmation of employment after successful probation",
+    content: "",
+    status: "active",
+    version: 1,
+    versions: [
+      { id: "v15", version: 1, changelog: "Initial confirmation letter template", createdBy: "Fatima Ibrahim", createdAt: "2026-02-05T10:00:00Z", status: "active" },
+    ],
+    permissions: { level: "hr_only", canGenerate: ["hr", "admin"], canEdit: ["hr"], canDelete: ["admin"] },
+    createdBy: "Fatima Ibrahim",
+    createdAt: "2026-02-05T10:00:00Z",
+    updatedAt: "2026-02-05T10:00:00Z",
+    usageCount: 6,
+    lastUsed: "2026-03-10T11:00:00Z",
+    tags: ["onboarding", "confirmation"],
   },
   {
     id: "tpl-2",
@@ -384,7 +422,7 @@ export const MOCK_TEMPLATES: DocumentTemplate[] = [
 
 // --- Mock Generated Documents ---
 export const MOCK_GENERATED_DOCUMENTS: GeneratedDocument[] = [
-  { id: "doc-1", templateId: "tpl-1", templateName: "Standard Offer Letter", employeeId: "emp-1", employeeName: "Adebayo Ogunlesi", status: "delivered", generatedBy: "Amina Bello", generatedAt: "2026-03-08T11:00:00Z", signedAt: "2026-03-08T14:00:00Z", deliveredAt: "2026-03-08T14:30:00Z", deliveredVia: "email", fileSize: "245 KB", version: 1 },
+  { id: "doc-1", templateId: "tpl-1", templateName: "Intern Letter", employeeId: "emp-1", employeeName: "Adebayo Ogunlesi", status: "delivered", generatedBy: "Amina Bello", generatedAt: "2026-03-08T11:00:00Z", signedAt: "2026-03-08T14:00:00Z", deliveredAt: "2026-03-08T14:30:00Z", deliveredVia: "email", fileSize: "245 KB", version: 1 },
   { id: "doc-2", templateId: "tpl-2", templateName: "Employment Contract (Full-Time)", employeeId: "emp-1", employeeName: "Adebayo Ogunlesi", status: "pending_signature", generatedBy: "Amina Bello", generatedAt: "2026-03-08T11:15:00Z", signedAt: null, deliveredAt: null, deliveredVia: null, fileSize: "380 KB", version: 1 },
   { id: "doc-3", templateId: "tpl-5", templateName: "Promotion Letter", employeeId: "emp-5", employeeName: "Chioma Nwosu", status: "signed", generatedBy: "Fatima Ibrahim", generatedAt: "2026-02-28T14:00:00Z", signedAt: "2026-03-01T09:00:00Z", deliveredAt: null, deliveredVia: null, fileSize: "198 KB", version: 1 },
   { id: "doc-4", templateId: "tpl-4", templateName: "Embassy Verification Letter", employeeId: "emp-8", employeeName: "Emeka Eze", status: "delivered", generatedBy: "Amina Bello", generatedAt: "2026-03-01T09:30:00Z", signedAt: "2026-03-01T10:00:00Z", deliveredAt: "2026-03-01T10:15:00Z", deliveredVia: "portal", fileSize: "210 KB", version: 1 },
@@ -393,7 +431,7 @@ export const MOCK_GENERATED_DOCUMENTS: GeneratedDocument[] = [
 
 // --- Mock Document Version History ---
 export const MOCK_VERSION_HISTORY: DocumentVersionEntry[] = [
-  { id: "vh-1", documentId: "doc-1", version: 1, action: "created", performedBy: "Amina Bello", performedAt: "2026-03-08T11:00:00Z", changes: "Document generated from Standard Offer Letter template", fileSize: "245 KB" },
+  { id: "vh-1", documentId: "doc-1", version: 1, action: "created", performedBy: "Amina Bello", performedAt: "2026-03-08T11:00:00Z", changes: "Document generated from Intern Letter template", fileSize: "245 KB" },
   { id: "vh-2", documentId: "doc-1", version: 1, action: "signed", performedBy: "Adebayo Ogunlesi", performedAt: "2026-03-08T14:00:00Z", changes: "Employee signature added", fileSize: "248 KB" },
   { id: "vh-3", documentId: "doc-1", version: 1, action: "delivered", performedBy: "System", performedAt: "2026-03-08T14:30:00Z", changes: "Delivered via email to adebayo.ogunlesi@company.com", fileSize: "248 KB" },
   { id: "vh-4", documentId: "doc-2", version: 1, action: "created", performedBy: "Amina Bello", performedAt: "2026-03-08T11:15:00Z", changes: "Contract generated for new hire", fileSize: "380 KB" },

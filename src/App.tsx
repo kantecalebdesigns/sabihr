@@ -13,6 +13,7 @@ import DepartmentDetailPage from "@/pages/department-detail";
 import AttendancePage from "@/pages/attendance";
 import LeavePage from "@/pages/leave";
 import PayrollPage from "@/pages/payroll";
+import PayrollProcessPage from "@/pages/payroll-process";
 import PayrollConfigPage from "@/pages/payroll-config";
 import StatutoryCompliancePage from "@/pages/statutory-compliance";
 import PayslipManagementPage from "@/pages/payslip-management";
@@ -69,6 +70,7 @@ import EmployeeAssetDetailPage from "@/pages/employee-asset-detail";
 import EmployeeAssetRequestPage from "@/pages/employee-asset-request";
 import EmployeeAssetReportIssuePage from "@/pages/employee-asset-report-issue";
 import EmployeeAssetReturnPage from "@/pages/employee-asset-return";
+import EmployeeAssetMaintenanceRequestPage from "@/pages/employee-asset-maintenance-request";
 // Loans
 import LoansPage from "@/pages/loans";
 import LoanApplyPage from "@/pages/loan-apply";
@@ -117,10 +119,6 @@ import AttendanceAnomaliesPage from "@/pages/attendance-anomalies";
 import AttendanceWorkHoursPage from "@/pages/attendance-work-hours";
 import AttendanceOvertimePage from "@/pages/attendance-overtime";
 import AttendanceBreaksPage from "@/pages/attendance-breaks";
-import AttendancePayrollSyncPage from "@/pages/attendance-payroll-sync";
-import AttendanceDeductionPreviewPage from "@/pages/attendance-deduction-preview";
-import AttendanceOvertimePreviewPage from "@/pages/attendance-overtime-preview";
-import AttendanceLeaveReconciliationPage from "@/pages/attendance-leave-reconciliation";
 // Shift Management — Admin
 import ShiftConfigPage from "@/pages/shift-config";
 import ShiftRosterPage from "@/pages/shift-roster";
@@ -144,6 +142,11 @@ import EmployeeMobileShiftPage from "@/pages/employee-mobile-shift";
 import ExitPage from "@/pages/exit";
 import ExitDetailPage from "@/pages/exit-detail";
 import ExitInitiatePage from "@/pages/exit-initiate";
+// Branches
+import BranchesPage from "@/pages/branches";
+import BranchPoliciesPage from "@/pages/branch-policies";
+import BranchHierarchyPage from "@/pages/branch-hierarchy";
+import OrganogramPage from "@/pages/organogram";
 // Settings
 import SettingsPage from "@/pages/settings";
 import EmployeeSettingsPage from "@/pages/employee-settings";
@@ -182,10 +185,6 @@ function App() {
           <Route path="/attendance/work-hours" element={<AttendanceWorkHoursPage />} />
           <Route path="/attendance/overtime" element={<AttendanceOvertimePage />} />
           <Route path="/attendance/breaks" element={<AttendanceBreaksPage />} />
-          <Route path="/attendance/payroll-sync" element={<AttendancePayrollSyncPage />} />
-          <Route path="/attendance/deduction-preview" element={<AttendanceDeductionPreviewPage />} />
-          <Route path="/attendance/overtime-preview" element={<AttendanceOvertimePreviewPage />} />
-          <Route path="/attendance/leave-reconciliation" element={<AttendanceLeaveReconciliationPage />} />
           <Route path="/shifts" element={<ShiftConfigPage />} />
           <Route path="/shifts/roster" element={<ShiftRosterPage />} />
           <Route path="/shifts/swap-queue" element={<ShiftSwapQueuePage />} />
@@ -194,6 +193,7 @@ function App() {
           <Route path="/leave" element={<LeavePage />} />
           <Route path="/schedules" element={<WorkSchedulesPage />} />
           <Route path="/payroll" element={<PayrollPage />} />
+          <Route path="/payroll/process" element={<PayrollProcessPage />} />
           <Route path="/payroll/config" element={<PayrollConfigPage />} />
           <Route path="/payroll/compliance" element={<StatutoryCompliancePage />} />
           <Route path="/payroll/payslips" element={<PayslipManagementPage />} />
@@ -224,6 +224,11 @@ function App() {
           <Route path="/documents/templates/:id" element={<DocumentTemplateBuilderPage />} />
           <Route path="/documents/templates/:id/view" element={<DocumentTemplateDetailPage />} />
           <Route path="/documents/library" element={<DocumentLibraryPage />} />
+          {/* Branches */}
+          <Route path="/branches" element={<BranchesPage />} />
+          <Route path="/branches/policies" element={<BranchPoliciesPage />} />
+          <Route path="/branches/hierarchy" element={<BranchHierarchyPage />} />
+          <Route path="/branches/organogram" element={<OrganogramPage />} />
           {/* Asset Management */}
           <Route path="/assets" element={<AssetListPage />} />
           <Route path="/assets/create" element={<AssetCreatePage />} />
@@ -307,6 +312,7 @@ function App() {
           <Route path="/employee/assets/request" element={<EmployeeAssetRequestPage />} />
           <Route path="/employee/assets/report-issue" element={<EmployeeAssetReportIssuePage />} />
           <Route path="/employee/assets/return" element={<EmployeeAssetReturnPage />} />
+          <Route path="/employee/assets/maintenance-request" element={<EmployeeAssetMaintenanceRequestPage />} />
           {/* Employee Settings */}
           <Route path="/employee/settings" element={<EmployeeSettingsPage />} />
         </Route>
