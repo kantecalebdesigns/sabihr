@@ -48,7 +48,7 @@ export default function EmployeeMobileWalletPage() {
       <div className="space-y-3">
         <h3 className="text-sm font-medium">My Currencies</h3>
         {wallet.wallets.map((w, i) => (
-          <div key={i} className="rounded-xl border border-[#efefef] bg-white p-4 flex items-center justify-between">
+          <div key={i} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-[#f8fafc] flex items-center justify-center text-blue-600 font-bold">
                 {w.symbol}
@@ -64,7 +64,7 @@ export default function EmployeeMobileWalletPage() {
       </div>
 
       {/* Transactions */}
-      <div className="rounded-xl border border-[#efefef] bg-white">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
         <div className="p-3 border-b border-[#efefef]">
           <h3 className="text-sm font-medium">Recent Transactions</h3>
         </div>

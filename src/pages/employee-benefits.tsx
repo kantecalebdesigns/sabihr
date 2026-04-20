@@ -51,7 +51,7 @@ export default function EmployeeBenefitsPage() {
               return (
                 <div
                   key={enrollment.id}
-                  className="rounded-xl border border-[#efefef] bg-white p-4 space-y-2"
+                  className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-2"
                 >
                   <p className="font-medium">{enrollment.planName}</p>
                   <p className={cn("text-sm font-medium", style.color)}>
@@ -79,7 +79,7 @@ export default function EmployeeBenefitsPage() {
             return (
               <div
                 key={plan.id}
-                className="rounded-xl border border-[#efefef] bg-white p-4 space-y-3"
+                className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-3"
               >
                 <p className="font-medium">{plan.name}</p>
                 <p className="text-sm text-slate-500">

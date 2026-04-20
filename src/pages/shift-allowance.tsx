@@ -101,10 +101,10 @@ export default function ShiftAllowancePage() {
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm min-w-[800px]">
           <thead>
-            <tr className="bg-[#f8fafc] text-left">
+            <tr className="border-b border-slate-200/70 text-left">
               <th className="px-4 py-3 font-medium text-slate-600">Employee</th>
               <th className="px-4 py-3 font-medium text-slate-600">Shift</th>
               <th className="px-4 py-3 font-medium text-slate-600">Dates Worked</th>
@@ -115,7 +115,7 @@ export default function ShiftAllowancePage() {
           </thead>
           <tbody>
             {rows.map(row => (
-              <tr key={row.key} className="border-b border-[#efefef] hover:bg-[#f8fafc]">
+              <tr key={row.key} className="border-b border-slate-100 hover:bg-slate-50/60">
                 <td className="px-4 py-3">
                   <div className="font-medium">{row.employeeName}</div>
                   <div className="text-xs text-slate-500">{row.department}</div>

@@ -205,10 +205,10 @@ export default function PayrollPage() {
 
       {/* ── Payroll Runs ── */}
       {view === "runs" && (
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
                 <th className="p-3 text-right text-xs font-medium text-slate-500">Gross Pay</th>
@@ -224,7 +224,7 @@ export default function PayrollPage() {
               {runs.map((run) => {
                 const statusStyle = PAYROLL_STATUS_STYLES[run.status as PayrollStatus];
                 return (
-                  <tr key={run.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                  <tr key={run.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                     <td className="p-3 font-medium">{run.period}</td>
                     <td className={cn("p-3 text-sm font-medium", statusStyle?.color)}>
                       <span className="flex items-center gap-1.5">
@@ -289,10 +289,10 @@ export default function PayrollPage() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                <tr className="border-b border-slate-200/70">
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Department</th>
                   <th className="p-3 text-right text-xs font-medium text-slate-500">Basic</th>
@@ -310,7 +310,7 @@ export default function PayrollPage() {
                   const statusStyle = PAYSLIP_STATUS_STYLES[slip.status as PayslipStatus];
                   const totalAllowances = slip.housingAllowance + slip.transportAllowance + slip.otherAllowances;
                   return (
-                    <tr key={slip.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                    <tr key={slip.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                       <td className="p-3 font-medium">{slip.employeeName}</td>
                       <td className="p-3 text-slate-500">{slip.department}</td>
                       <td className="p-3 text-right">{formatNaira(slip.basicSalary)}</td>
@@ -415,10 +415,10 @@ function InputReviewSection() {
         <Input placeholder="Search inputs..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Department</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Type</th>
@@ -433,7 +433,7 @@ function InputReviewSection() {
             {filtered.map((input) => {
               const style = statusStyles[input.status];
               return (
-                <tr key={input.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={input.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{input.employee}</td>
                   <td className="p-3 text-slate-500">{input.department}</td>
                   <td className="p-3">{input.type}</td>
@@ -480,10 +480,10 @@ function ComputationSection() {
         <SummaryCard icon={Users} label="Employees" value={String(computations.length)} />
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Basic</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Allowances</th>
@@ -497,7 +497,7 @@ function ComputationSection() {
           </thead>
           <tbody>
             {computations.map((c) => (
-              <tr key={c.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+              <tr key={c.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                 <td className="p-3 font-medium">{c.employee}</td>
                 <td className="p-3 text-right">{formatNaira(c.basic)}</td>
                 <td className="p-3 text-right text-slate-500">{formatNaira(c.allowances)}</td>
@@ -580,10 +580,10 @@ function ApprovalSection() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Step</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Assignee</th>
@@ -597,7 +597,7 @@ function ApprovalSection() {
             {approvals.map((a) => {
               const style = approvalStyles[a.status];
               return (
-                <tr key={a.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={a.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{a.period}</td>
                   <td className="p-3">{a.step}</td>
                   <td className="p-3 text-slate-500">{a.assignee}</td>
@@ -699,8 +699,8 @@ function AutoPayrollSection() {
       </div>
 
       {enabled && (
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
-          <div className="p-3 border-b border-[#efefef] bg-[#f8fafc]">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
+          <div className="p-3 border-b border-slate-200/70">
             <h3 className="font-medium text-sm">Execution Log</h3>
           </div>
           <div className="p-8 text-center text-slate-500">

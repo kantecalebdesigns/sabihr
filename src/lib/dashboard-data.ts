@@ -46,6 +46,9 @@ import type {
   RecentActivity,
   DashboardAlert,
   NavSection,
+  QuickAction,
+  PendingApproval,
+  OnLeaveToday,
 } from "@/types/dashboard";
 
 // --- KPI Cards ---
@@ -120,6 +123,7 @@ export const ATTENDANCE_SUMMARY: AttendanceSummary = {
 };
 
 // --- Recent Activity ---
+// Photos are Unsplash portraits; they fall back to initials avatars on load error.
 export const RECENT_ACTIVITIES: RecentActivity[] = [
   {
     id: "1",
@@ -127,6 +131,7 @@ export const RECENT_ACTIVITIES: RecentActivity[] = [
     description: "joined as Senior Developer in Engineering",
     employee: "Adebayo Ogunlesi",
     timestamp: "2 hours ago",
+    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces",
   },
   {
     id: "2",
@@ -134,6 +139,7 @@ export const RECENT_ACTIVITIES: RecentActivity[] = [
     description: "annual leave approved (Mar 3-7)",
     employee: "Chioma Nwosu",
     timestamp: "3 hours ago",
+    photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces",
   },
   {
     id: "3",
@@ -148,6 +154,7 @@ export const RECENT_ACTIVITIES: RecentActivity[] = [
     description: "requested 3 days sick leave",
     employee: "Emeka Eze",
     timestamp: "Yesterday",
+    photo: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=120&h=120&fit=crop&crop=faces",
   },
   {
     id: "5",
@@ -155,6 +162,7 @@ export const RECENT_ACTIVITIES: RecentActivity[] = [
     description: "confirmation letter generated",
     employee: "Fatima Ibrahim",
     timestamp: "2 days ago",
+    photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&crop=faces",
   },
   {
     id: "6",
@@ -162,6 +170,7 @@ export const RECENT_ACTIVITIES: RecentActivity[] = [
     description: "probation period ends in 7 days",
     employee: "Oluwaseun Adeyemi",
     timestamp: "2 days ago",
+    photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=120&h=120&fit=crop&crop=faces",
   },
 ];
 
@@ -197,6 +206,138 @@ export const DASHBOARD_ALERTS: DashboardAlert[] = [
   },
 ];
 
+// --- Quick Actions (tile strip) ---
+export const QUICK_ACTIONS: QuickAction[] = [
+  {
+    key: "add_employee",
+    label: "Add Employee",
+    icon: UserCircle,
+    countLabel: "Start onboarding",
+    path: "/employees",
+    iconBg: "bg-slate-50",
+    iconColor: "text-slate-700",
+  },
+  {
+    key: "approve_leave",
+    label: "Leave Requests",
+    icon: Briefcase,
+    count: 4,
+    countLabel: "pending",
+    path: "/leave",
+    iconBg: "bg-slate-50",
+    iconColor: "text-slate-700",
+  },
+  {
+    key: "run_payroll",
+    label: "Run Payroll",
+    icon: DollarSign,
+    countLabel: "Due in 5 days",
+    path: "/payroll",
+    iconBg: "bg-slate-50",
+    iconColor: "text-slate-700",
+  },
+  {
+    key: "post_announcement",
+    label: "Post Announcement",
+    icon: Megaphone,
+    countLabel: "Notify team",
+    path: "/announcements",
+    iconBg: "bg-slate-50",
+    iconColor: "text-slate-700",
+  },
+  {
+    key: "new_asset",
+    label: "Asset Requests",
+    icon: Package,
+    count: 2,
+    countLabel: "awaiting review",
+    path: "/assets",
+    iconBg: "bg-slate-50",
+    iconColor: "text-slate-700",
+  },
+];
+
+// --- Pending Approvals (right-rail list) ---
+export const PENDING_APPROVALS: PendingApproval[] = [
+  {
+    id: "a1",
+    employeeName: "Chioma Nwosu",
+    initials: "CN",
+    avatarColor: "bg-rose-500",
+    type: "leave",
+    summary: "Annual leave · Mar 3–7",
+    submittedAt: "20 min ago",
+  },
+  {
+    id: "a2",
+    employeeName: "Emeka Eze",
+    initials: "EE",
+    avatarColor: "bg-blue-500",
+    type: "leave",
+    summary: "Sick leave · 3 days",
+    submittedAt: "1 hr ago",
+  },
+  {
+    id: "a3",
+    employeeName: "Fatima Ibrahim",
+    initials: "FI",
+    avatarColor: "bg-emerald-500",
+    type: "expense",
+    summary: "Expense claim · ₦42,500",
+    submittedAt: "2 hrs ago",
+  },
+  {
+    id: "a4",
+    employeeName: "Tunde Bakare",
+    initials: "TB",
+    avatarColor: "bg-amber-500",
+    type: "document",
+    summary: "NDA signature request",
+    submittedAt: "Yesterday",
+  },
+  {
+    id: "a5",
+    employeeName: "Ngozi Okafor",
+    initials: "NO",
+    avatarColor: "bg-violet-500",
+    type: "loan",
+    summary: "Salary advance · ₦180,000",
+    submittedAt: "Yesterday",
+  },
+];
+
+// --- On Leave Today (right-rail chips) ---
+export const ON_LEAVE_TODAY: OnLeaveToday[] = [
+  {
+    id: "l1",
+    name: "Samuel John",
+    initials: "SJ",
+    avatarColor: "bg-blue-500",
+    returns: "Apr 24",
+  },
+  {
+    id: "l2",
+    name: "Amina Yusuf",
+    initials: "AY",
+    avatarColor: "bg-emerald-500",
+    returns: "Apr 22",
+  },
+  {
+    id: "l3",
+    name: "Jide Bello",
+    initials: "JB",
+    avatarColor: "bg-amber-500",
+    returns: "Apr 26",
+  },
+  {
+    id: "l4",
+    name: "Grace Adeola",
+    initials: "GA",
+    avatarColor: "bg-rose-500",
+    returns: "Apr 21",
+  },
+];
+
 // --- Sidebar Navigation ---
 export const NAV_SECTIONS: NavSection[] = [
   {
@@ -218,30 +359,8 @@ export const NAV_SECTIONS: NavSection[] = [
     title: "Time",
     icon: Clock,
     items: [
-      {
-        label: "Attendance",
-        icon: CalendarDays,
-        path: "/attendance",
-        children: [
-          { label: "Overview", path: "/attendance" },
-          { label: "Department View", path: "/attendance/department" },
-          { label: "Corrections Queue", path: "/attendance/corrections" },
-          { label: "Manual Entry", path: "/attendance/manual-entry" },
-          { label: "GPS & Geofencing", path: "/attendance/geofencing" },
-          { label: "Break Management", path: "/attendance/breaks" },
-        ],
-      },
-      {
-        label: "Shifts",
-        icon: Timer,
-        path: "/shifts",
-        children: [
-          { label: "Configuration", path: "/shifts" },
-          { label: "Roster", path: "/shifts/roster" },
-          { label: "Calendar", path: "/shifts/calendar" },
-          { label: "Swap Queue", path: "/shifts/swap-queue" },
-        ],
-      },
+      { label: "Attendance", icon: CalendarDays, path: "/attendance" },
+      { label: "Shifts", icon: Timer, path: "/shifts" },
       {
         label: "Reports",
         icon: BarChart3,
@@ -250,9 +369,6 @@ export const NAV_SECTIONS: NavSection[] = [
           { label: "Daily Report", path: "/attendance/daily-report" },
           { label: "Monthly Summary", path: "/attendance/monthly-report" },
           { label: "Analytics", path: "/attendance/analytics" },
-          { label: "Anomalies", path: "/attendance/anomalies" },
-          { label: "Work Hours", path: "/attendance/work-hours" },
-          { label: "Overtime", path: "/attendance/overtime" },
         ],
       },
       { label: "Leave", icon: Palmtree, path: "/leave" },

@@ -3,7 +3,7 @@ import { EmployeeOnboardingWizard } from "@/components/employee-onboarding/emplo
 
 export default function EmployeeOnboardingPage() {
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex items-start justify-center py-8 px-4">
+    <div className="min-h-screen bg-[#eff6ff] flex items-start justify-center py-8 px-4">
       <div className="w-full max-w-[900px] space-y-6">
         <div className="text-center space-y-2">
           <div className="flex justify-center">

@@ -48,7 +48,7 @@ export function EmployeeTopbar({ onMenuToggle, pageTitle = "Dashboard" }: Employ
   }
 
   return (
-    <header className="h-[60px] border-b border-[#efefef] bg-white flex items-center justify-between px-4 lg:px-6 shrink-0">
+    <header className="h-[60px] border-b-2 border-slate-200 bg-white flex items-center justify-between px-4 lg:px-6 shrink-0">
       {/* Left */}
       <div className="flex items-center gap-3">
         <button

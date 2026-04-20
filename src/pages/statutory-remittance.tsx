@@ -110,10 +110,10 @@ function RemittanceTable({
   onRecordPayment?: (id: string) => void;
 }) {
   return (
-    <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+    <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+          <tr className="border-b border-slate-200/70">
             <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Period</th>
             <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Due Date</th>
             <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Employees</th>
@@ -361,10 +361,10 @@ export default function StatutoryRemittancePage() {
             </Select>
           </div>
 
-          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                <tr className="border-b border-slate-200/70">
                   <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Type</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Period</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Due Date</th>

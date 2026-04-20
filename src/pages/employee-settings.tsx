@@ -51,7 +51,7 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: () => void 
 
 function SectionCard({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-[#efefef] bg-white">
+    <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
       <div className="p-5 border-b border-[#efefef]">
         <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
         {description && <p className="text-xs text-slate-500 mt-1">{description}</p>}

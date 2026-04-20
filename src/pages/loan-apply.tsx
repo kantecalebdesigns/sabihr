@@ -225,7 +225,7 @@ export default function LoanApplyPage() {
               <div className="rounded-xl border border-[#efefef] overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-[#f8fafc] text-left">
+                    <tr className="border-b border-slate-200/70 text-left">
                       <th className="px-3 py-2 text-xs font-medium text-slate-500">Month</th>
                       <th className="px-3 py-2 text-xs font-medium text-slate-500 text-right">
                         Principal

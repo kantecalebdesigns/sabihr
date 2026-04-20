@@ -7,6 +7,10 @@ import {
   Check,
   X,
   Plus,
+  TrendingUp,
+  CheckCircle2,
+  Clock,
+  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -177,8 +181,20 @@ export default function LeavePage() {
     setTimeout(() => setSuccessMessage(""), 4000);
   };
 
+  const totalRequests = ALL_LEAVE_REQUESTS.length;
+  const pendingCount = statusCounts["pending"] ?? 0;
+  const approvedCount = statusCounts["approved"] ?? 0;
+  const approvalRate = totalRequests > 0 ? Math.round((approvedCount / totalRequests) * 100) : 0;
+
+  const kpis = [
+    { value: totalRequests, label: "Total requests", icon: Palmtree, trend: 6, up: true as const },
+    { value: pendingCount, label: "Pending review", icon: Clock, trend: 2, up: true as const },
+    { value: approvedCount, label: "Approved", icon: CheckCircle2, trend: 4, up: true as const },
+    { value: `${approvalRate}%`, label: "Approval rate", icon: AlertCircle, trend: 1.5, up: true as const },
+  ];
+
   return (
-    <div className="max-w-[1400px] mx-auto space-y-6">
+    <div className="max-w-[1500px] space-y-5">
       {/* Toast */}
       {successMessage && (
         <div className="fixed top-6 right-6 z-50 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 shadow-lg">
@@ -186,31 +202,51 @@ export default function LeavePage() {
         </div>
       )}
 
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-slate-900">
-            Leave Management
-          </h1>
-          <p className="text-sm text-slate-500">
-            Review and manage employee leave requests
-          </p>
+      {/* Banner */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#1d4ed8] text-white">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-6 px-6 py-7 sm:px-8 sm:py-8">
+          <div className="flex-1 min-w-0 space-y-3">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[11px] font-medium">
+              <Palmtree className="w-3 h-3" />
+              Time · Northwind Studio
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Leave</h1>
+            <p className="text-sm text-white/85 max-w-xl leading-relaxed">
+              <span className="font-semibold text-white">Review, approve, or reject</span> leave
+              requests across the company, submit leave on behalf of an employee, and keep balances
+              up to date by type and policy.
+            </p>
+          </div>
+
+          <div className="hidden sm:flex shrink-0 w-48 h-36 relative">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute top-0 right-4 w-24 h-24 rounded-2xl bg-white/15 backdrop-blur rotate-6" />
+              <div className="absolute bottom-0 right-14 w-20 h-20 rounded-2xl bg-white/20 backdrop-blur -rotate-12" />
+              <div className="absolute top-4 right-16 w-16 h-16 rounded-xl bg-white/25 backdrop-blur rotate-12 flex items-center justify-center">
+                <Palmtree className="w-7 h-7 text-white" />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="border-[#efefef]"
-            onClick={() => setShowAdminForm(!showAdminForm)}
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Request Leave for Employee
-          </Button>
-          <Button variant="outline" size="sm" className="border-[#efefef]">
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </Button>
-        </div>
+
+        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
+        <div className="absolute -bottom-20 left-1/3 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
+      </div>
+
+      {/* Actions */}
+      <div className="flex items-center justify-end gap-2">
+        <Button
+          variant="outline"
+          onClick={() => setShowAdminForm(!showAdminForm)}
+          className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+        >
+          <Plus className="w-4 h-4 mr-1" />
+          Request for employee
+        </Button>
+        <Button variant="outline" className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white">
+          <Download className="w-4 h-4 mr-1" />
+          Export
+        </Button>
       </div>
 
       {/* Admin Request Form */}
@@ -305,20 +341,48 @@ export default function LeavePage() {
         </div>
       )}
 
-      {/* Leave Policy Summary */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        {Object.entries(LEAVE_POLICY_SUMMARY).map(([key, policy]) => (
-          <div
-            key={key}
-            className="rounded-xl border border-[#efefef] bg-white p-3 text-center"
-          >
-            <p className="text-xs text-slate-500 mb-1">
-              {policy.label}
-            </p>
-            <p className="text-lg font-semibold text-slate-900">{policy.total}</p>
-            <p className="text-[10px] text-slate-500">days/year</p>
-          </div>
-        ))}
+      {/* KPI cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
+            <div
+              key={kpi.label}
+              className="rounded-2xl border border-slate-200/70 bg-white px-5 pt-5 pb-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] flex flex-col gap-7"
+            >
+              <div className="flex items-start justify-between">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                  <Icon className="w-[18px] h-[18px] text-blue-600" />
+                </div>
+                <div className="inline-flex items-center gap-0.5 text-xs font-semibold text-emerald-600">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span>+{kpi.trend}</span>
+                </div>
+              </div>
+              <div>
+                <p className="text-3xl font-bold tracking-tight text-slate-900 leading-none">{kpi.value}</p>
+                <p className="text-sm text-slate-500 mt-2">{kpi.label}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Leave policy reference */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
+        <div className="mb-3">
+          <h3 className="text-sm font-semibold text-slate-900">Leave policy</h3>
+          <p className="text-xs text-slate-500 mt-0.5">Annual entitlement by leave type (days/year)</p>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {Object.entries(LEAVE_POLICY_SUMMARY).map(([key, policy]) => (
+            <div key={key} className="rounded-xl bg-slate-50 p-3">
+              <p className="text-xs text-slate-500">{policy.label}</p>
+              <p className="text-xl font-bold text-slate-900 mt-1 tabular-nums leading-none">{policy.total}</p>
+              <p className="text-[10px] text-slate-400 mt-1">days/year</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Status Tabs */}
@@ -359,10 +423,10 @@ export default function LeavePage() {
 
       {/* Balances Tab Content */}
       {activeTab === "balances" ? (
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Department</th>
                 <th className="p-3 text-center text-xs font-medium text-slate-500">Annual (Used/Total)</th>
@@ -378,7 +442,7 @@ export default function LeavePage() {
                 const totalAll = emp.annual.total + emp.sick.total + emp.casual.total;
                 const totalRemaining = totalAll - totalUsed;
                 return (
-                  <tr key={emp.employee} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                  <tr key={emp.employee} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                     <td className="p-3 font-medium text-slate-900">{emp.employee}</td>
                     <td className="p-3 text-slate-500">{emp.department}</td>
                     <td className={cn("p-3 text-center font-medium", balanceColor(emp.annual.used, emp.annual.total))}>
@@ -472,10 +536,10 @@ export default function LeavePage() {
           )}
 
           {/* Table */}
-          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                <tr className="border-b border-slate-200/70">
                   <th className="p-3 text-left text-xs font-medium text-slate-500">
                     Employee
                   </th>
@@ -513,7 +577,7 @@ export default function LeavePage() {
                   return (
                     <React.Fragment key={request.id}>
                     <tr
-                      className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors cursor-pointer"
+                      className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer"
                       onClick={() => MOCK_LEAVE_WORKFLOWS[request.id] && setExpandedRow(expandedRow === request.id ? null : request.id)}
                     >
                       <td className="p-3 font-medium text-slate-900">

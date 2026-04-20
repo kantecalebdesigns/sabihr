@@ -53,7 +53,7 @@ function AnnouncementCard({
 }) {
   return (
     <div
-      className="rounded-xl border border-[#efefef] bg-white p-5 cursor-pointer transition-shadow hover:shadow-sm"
+      className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 cursor-pointer transition-shadow hover:shadow-sm"
       onClick={onToggle}
     >
       <div className="flex items-start justify-between gap-3">
@@ -118,7 +118,7 @@ export default function EmployeeAnnouncementsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-[#eff6ff]">
       <div className="max-w-3xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">
@@ -135,7 +135,7 @@ export default function EmployeeAnnouncementsPage() {
 
         {announcements.length === 0 ? (
           /* Empty state */
-          <div className="rounded-xl border border-[#efefef] bg-white p-12 text-center">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-12 text-center">
             <Megaphone className="h-10 w-10 text-slate-300 mx-auto mb-3" />
             <h3 className="text-sm font-medium text-slate-900 mb-1">
               No announcements

@@ -121,10 +121,10 @@ function BankIntegrationTab({ search, setSearch }: { search: string; setSearch: 
 
       <SearchBar value={search} onChange={setSearch} placeholder="Search banks..." />
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Bank Name</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Code</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Account</th>
@@ -139,7 +139,7 @@ function BankIntegrationTab({ search, setSearch }: { search: string; setSearch: 
             {filtered.map((b) => {
               const style = BANK_STATUS_STYLES[b.status];
               return (
-                <tr key={b.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={b.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">
                     {b.bankName}
                     {b.isDefault && (
@@ -223,10 +223,10 @@ function PaymentFilesTab({ search, setSearch }: { search: string; setSearch: (v:
         </Select>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Bank</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Format</th>
@@ -240,7 +240,7 @@ function PaymentFilesTab({ search, setSearch }: { search: string; setSearch: (v:
             {filtered.map((f) => {
               const style = PAYMENT_FILE_STATUS_STYLES[f.status];
               return (
-                <tr key={f.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={f.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{f.period}</td>
                   <td className="p-3 text-slate-500">{f.bankName}</td>
                   <td className="p-3">
@@ -330,10 +330,10 @@ function PaymentTrackingTab({ search, setSearch }: { search: string; setSearch: 
         </Select>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Bank</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Amount</th>
@@ -347,7 +347,7 @@ function PaymentTrackingTab({ search, setSearch }: { search: string; setSearch: 
             {filtered.map((t) => {
               const style = TRANSACTION_STATUS_STYLES[t.status];
               return (
-                <tr key={t.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={t.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3">
                     <div className="font-medium">{t.employeeName}</div>
                     <div className="text-xs text-slate-500">{t.accountNumber}</div>
@@ -424,10 +424,10 @@ function ReconciliationTab({ search, setSearch }: { search: string; setSearch: (
         </Select>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Expected</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Disbursed</th>
@@ -442,7 +442,7 @@ function ReconciliationTab({ search, setSearch }: { search: string; setSearch: (
             {filtered.map((r) => {
               const style = RECON_STATUS_STYLES[r.status];
               return (
-                <tr key={r.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={r.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{r.period}</td>
                   <td className="p-3 text-right">{formatNaira(r.totalExpected)}</td>
                   <td className="p-3 text-right">{formatNaira(r.totalDisbursed)}</td>

@@ -5,53 +5,88 @@ import {
   Download,
   Clock,
   Users,
+  CheckCircle2,
   AlertTriangle,
   CalendarDays,
+  ChevronDown,
+  MoreHorizontal,
   ChevronLeft,
   ChevronRight,
+  TrendingUp,
+  TrendingDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import {
-  MOCK_ATTENDANCE_RECORDS,
-  ATTENDANCE_STATUS_STYLES,
-} from "@/lib/attendance-mock-data";
+import { MOCK_ATTENDANCE_RECORDS } from "@/lib/attendance-mock-data";
 import type { AttendanceStatus } from "@/lib/attendance-mock-data";
+
+const AVATAR_PALETTE = [
+  "bg-blue-500",
+  "bg-violet-500",
+  "bg-teal-500",
+  "bg-amber-500",
+  "bg-rose-500",
+  "bg-emerald-500",
+  "bg-indigo-500",
+  "bg-pink-500",
+  "bg-orange-500",
+  "bg-cyan-500",
+];
+
+function avatarColor(id: string): string {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  return AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+}
+
+function initialsOf(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+const STATUS_PILL: Record<AttendanceStatus, { dot: string; pill: string; label: string }> = {
+  present: { dot: "bg-emerald-500", pill: "bg-emerald-50 text-emerald-700", label: "Present" },
+  late: { dot: "bg-amber-500", pill: "bg-amber-50 text-amber-700", label: "Late" },
+  absent: { dot: "bg-rose-500", pill: "bg-rose-50 text-rose-700", label: "Absent" },
+  "on-leave": { dot: "bg-blue-500", pill: "bg-blue-50 text-blue-700", label: "On leave" },
+  "half-day": { dot: "bg-violet-500", pill: "bg-violet-50 text-violet-700", label: "Half day" },
+};
+
+function formatDisplayDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-US", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
 
 export default function AttendancePage() {
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [departmentFilter, setDepartmentFilter] = useState("all");
-  const [filterOpen, setFilterOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState("2026-03-24");
-
-  const departments = useMemo(
-    () => [...new Set(MOCK_ATTENDANCE_RECORDS.map((r) => r.department))].sort(),
-    []
-  );
+  const [sortBy, setSortBy] = useState<"name" | "clockIn" | "hours">("name");
 
   const filtered = useMemo(() => {
-    return MOCK_ATTENDANCE_RECORDS.filter((r) => {
-      const q = search.toLowerCase();
-      const matchesSearch =
+    const q = search.toLowerCase();
+    const rows = MOCK_ATTENDANCE_RECORDS.filter((r) => {
+      return (
         !q ||
         r.employeeName.toLowerCase().includes(q) ||
-        r.department.toLowerCase().includes(q);
-      const matchesStatus =
-        statusFilter === "all" || r.status === statusFilter;
-      const matchesDept =
-        departmentFilter === "all" || r.department === departmentFilter;
-      return matchesSearch && matchesStatus && matchesDept;
+        r.department.toLowerCase().includes(q)
+      );
     });
-  }, [search, statusFilter, departmentFilter]);
+    rows.sort((a, b) => {
+      if (sortBy === "name") return a.employeeName.localeCompare(b.employeeName);
+      if (sortBy === "clockIn") return (a.clockIn ?? "zz").localeCompare(b.clockIn ?? "zz");
+      return (b.hoursWorked ?? -1) - (a.hoursWorked ?? -1);
+    });
+    return rows;
+  }, [search, sortBy]);
 
   const summary = useMemo(() => {
     const records = MOCK_ATTENDANCE_RECORDS;
@@ -69,310 +104,290 @@ export default function AttendancePage() {
     ((summary.present + summary.late + summary.halfDay) / summary.total) * 100
   );
 
+  const kpis = [
+    {
+      label: "Attendance rate",
+      value: `${attendanceRate}%`,
+      icon: CheckCircle2,
+      trend: 1.2,
+      trendDirection: "up" as const,
+    },
+    {
+      label: "Present today",
+      value: summary.present,
+      icon: Users,
+      trend: 4,
+      trendDirection: "up" as const,
+    },
+    {
+      label: "Late today",
+      value: summary.late,
+      icon: AlertTriangle,
+      trend: 2,
+      trendDirection: "down" as const,
+    },
+    {
+      label: "On leave",
+      value: summary.onLeave,
+      icon: CalendarDays,
+      trend: 1,
+      trendDirection: "up" as const,
+    },
+  ];
+
+  function shiftDate(days: number) {
+    const d = new Date(selectedDate);
+    d.setDate(d.getDate() + days);
+    setSelectedDate(d.toISOString().slice(0, 10));
+  }
+
   return (
-    <div className="max-w-[1400px] mx-auto space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">
-            Attendance Management
-          </h1>
-          <p className="text-sm text-slate-500">
-            Track and manage daily employee attendance
-          </p>
+    <div className="max-w-[1500px] space-y-5">
+      {/* Banner */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#1d4ed8] text-white">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-6 px-6 py-7 sm:px-8 sm:py-8">
+          <div className="flex-1 min-w-0 space-y-3">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[11px] font-medium">
+              <Clock className="w-3 h-3" />
+              Time · Northwind Studio
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Attendance</h1>
+            <p className="text-sm text-white/85 max-w-xl leading-relaxed">
+              See who's in today at a glance —{" "}
+              <span className="font-semibold text-white">review clock-ins</span>, flag late
+              arrivals, approve corrections, and export daily attendance reports.
+            </p>
+          </div>
+
+          <div className="hidden sm:flex shrink-0 w-48 h-36 relative">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute top-0 right-4 w-24 h-24 rounded-2xl bg-white/15 backdrop-blur rotate-6" />
+              <div className="absolute bottom-0 right-14 w-20 h-20 rounded-2xl bg-white/20 backdrop-blur -rotate-12" />
+              <div className="absolute top-4 right-16 w-16 h-16 rounded-xl bg-white/25 backdrop-blur rotate-12 flex items-center justify-center">
+                <Clock className="w-7 h-7 text-white" />
+              </div>
+            </div>
+          </div>
         </div>
-        <Button variant="outline" size="sm">
-          <Download className="w-4 h-4 mr-2" />
-          Export Report
+
+        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
+        <div className="absolute -bottom-20 left-1/3 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
+      </div>
+
+      {/* Action buttons */}
+      <div className="flex items-center justify-end gap-2">
+        <Button
+          variant="outline"
+          className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+        >
+          <Filter className="w-4 h-4 mr-1" />
+          Filters
+        </Button>
+        <Button
+          variant="outline"
+          className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+        >
+          <Download className="w-4 h-4 mr-1" />
+          Export
         </Button>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
-          <div className="flex items-center gap-2 text-slate-500 mb-1">
-            <Users className="w-4 h-4" />
-            <span className="text-xs font-medium">Total</span>
-          </div>
-          <p className="text-2xl font-semibold">{summary.total}</p>
-        </div>
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-4">
-          <div className="flex items-center gap-2 text-emerald-700 mb-1">
-            <Clock className="w-4 h-4" />
-            <span className="text-xs font-medium">Present</span>
-          </div>
-          <p className="text-2xl font-semibold text-emerald-700">
-            {summary.present}
-          </p>
-        </div>
-        <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-4">
-          <div className="flex items-center gap-2 text-amber-700 mb-1">
-            <AlertTriangle className="w-4 h-4" />
-            <span className="text-xs font-medium">Late</span>
-          </div>
-          <p className="text-2xl font-semibold text-amber-700">
-            {summary.late}
-          </p>
-        </div>
-        <div className="rounded-xl border border-red-200 bg-red-50/50 p-4">
-          <div className="flex items-center gap-2 text-red-700 mb-1">
-            <Users className="w-4 h-4" />
-            <span className="text-xs font-medium">Absent</span>
-          </div>
-          <p className="text-2xl font-semibold text-red-700">
-            {summary.absent}
-          </p>
-        </div>
-        <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-4">
-          <div className="flex items-center gap-2 text-blue-700 mb-1">
-            <CalendarDays className="w-4 h-4" />
-            <span className="text-xs font-medium">On Leave</span>
-          </div>
-          <p className="text-2xl font-semibold text-blue-700">
-            {summary.onLeave}
-          </p>
-        </div>
-      </div>
-
-      {/* Attendance Rate Bar */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium">Today's Attendance Rate</span>
-          <span className="text-sm font-semibold">{attendanceRate}%</span>
-        </div>
-        <div className="h-3 rounded-full bg-[#f8fafc] overflow-hidden flex">
-          <div
-            className="bg-emerald-500 transition-all"
-            style={{
-              width: `${(summary.present / summary.total) * 100}%`,
-            }}
-          />
-          <div
-            className="bg-amber-400 transition-all"
-            style={{ width: `${(summary.late / summary.total) * 100}%` }}
-          />
-          <div
-            className="bg-violet-400 transition-all"
-            style={{
-              width: `${(summary.halfDay / summary.total) * 100}%`,
-            }}
-          />
-          <div
-            className="bg-blue-400 transition-all"
-            style={{
-              width: `${(summary.onLeave / summary.total) * 100}%`,
-            }}
-          />
-          <div
-            className="bg-red-400 transition-all"
-            style={{
-              width: `${(summary.absent / summary.total) * 100}%`,
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-4 mt-2 text-xs text-slate-500 flex-wrap">
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" /> Present
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-amber-400" /> Late
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-violet-400" /> Half Day
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-blue-400" /> On Leave
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-red-400" /> Absent
-          </span>
-        </div>
-      </div>
-
-      {/* Date Selector + Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-        <div className="flex items-center gap-3 flex-1 w-full sm:w-auto">
-          <div className="flex items-center gap-1 border border-[#efefef] rounded-lg p-1">
-            <button className="p-1 rounded hover:bg-[#f8fafc] transition-colors">
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <Input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="w-auto border-0 shadow-none text-sm font-medium px-2"
-            />
-            <button className="p-1 rounded hover:bg-[#f8fafc] transition-colors">
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-            <Input
-              placeholder="Search employees..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9"
-            />
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setFilterOpen(!filterOpen)}
-          >
-            <Filter className="w-4 h-4 mr-2" />
-            Filters
-          </Button>
-        </div>
-      </div>
-
-      {/* Filter Panel */}
-      {filterOpen && (
-        <div className="grid grid-cols-2 gap-3 rounded-xl border border-[#efefef] bg-white p-4">
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-500">
-              Status
-            </label>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                {Object.entries(ATTENDANCE_STATUS_STYLES).map(
-                  ([key, style]) => (
-                    <SelectItem key={key} value={key}>
-                      {style.label}
-                    </SelectItem>
-                  )
-                )}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-500">
-              Department
-            </label>
-            <Select
-              value={departmentFilter}
-              onValueChange={setDepartmentFilter}
+      {/* KPI cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          const up = kpi.trendDirection === "up";
+          return (
+            <div
+              key={kpi.label}
+              className="rounded-2xl border border-slate-200/70 bg-white px-5 pt-5 pb-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] flex flex-col gap-7"
             >
-              <SelectTrigger className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Departments</SelectItem>
-                {departments.map((d) => (
-                  <SelectItem key={d} value={d}>
-                    {d}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <div className="flex items-start justify-between">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-blue-50">
+                  <Icon className="w-[18px] h-[18px] text-blue-600" />
+                </div>
+                <div
+                  className={cn(
+                    "inline-flex items-center gap-0.5 text-xs font-semibold",
+                    up ? "text-emerald-600" : "text-rose-600"
+                  )}
+                >
+                  {up ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
+                  <span>
+                    {up ? "+" : "-"}
+                    {kpi.trend}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <p className="text-3xl font-bold tracking-tight text-slate-900 leading-none">{kpi.value}</p>
+                <p className="text-sm text-slate-500 mt-2">{kpi.label}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Table card */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+        {/* Toolbar */}
+        <div className="flex flex-col lg:flex-row lg:items-center gap-3 justify-between px-5 py-4 border-b border-slate-200/70">
+          <div className="flex items-center gap-3 flex-1">
+            {/* Date stepper */}
+            <div className="inline-flex items-center gap-1 h-10 rounded-lg border border-slate-200 bg-white px-1">
+              <button
+                type="button"
+                onClick={() => shiftDate(-1)}
+                aria-label="Previous day"
+                className="w-7 h-7 rounded-md text-slate-500 hover:bg-slate-100 inline-flex items-center justify-center"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <span className="text-sm font-medium text-slate-700 px-2 whitespace-nowrap">
+                {formatDisplayDate(selectedDate)}
+              </span>
+              <button
+                type="button"
+                onClick={() => shiftDate(1)}
+                aria-label="Next day"
+                className="w-7 h-7 rounded-md text-slate-500 hover:bg-slate-100 inline-flex items-center justify-center"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by employee or department..."
+                className="pl-9 bg-white border-slate-200 h-10 rounded-lg"
+              />
+            </div>
+            <p className="text-sm text-slate-500 whitespace-nowrap hidden sm:block">
+              {filtered.length} records
+            </p>
+          </div>
+          <div className="relative">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as "name" | "clockIn" | "hours")}
+              className="appearance-none h-10 pl-3 pr-9 rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-700 cursor-pointer"
+            >
+              <option value="name">Sort: Name</option>
+              <option value="clockIn">Sort: Clock-in</option>
+              <option value="hours">Sort: Hours</option>
+            </select>
+            <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
-      )}
 
-      {/* Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
-              <th className="p-3 text-left text-xs font-medium text-slate-500">
-                Employee
-              </th>
-              <th className="p-3 text-left text-xs font-medium text-slate-500">
-                Department
-              </th>
-              <th className="p-3 text-left text-xs font-medium text-slate-500">
-                Clock In
-              </th>
-              <th className="p-3 text-left text-xs font-medium text-slate-500">
-                Clock Out
-              </th>
-              <th className="p-3 text-left text-xs font-medium text-slate-500">
-                Hours
-              </th>
-              <th className="p-3 text-left text-xs font-medium text-slate-500">
-                Status
-              </th>
-              <th className="p-3 text-left text-xs font-medium text-slate-500">
-                Location
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((record) => {
-              const statusStyle =
-                ATTENDANCE_STATUS_STYLES[record.status as AttendanceStatus];
-              return (
-                <tr
-                  key={record.id}
-                  className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors"
-                >
-                  <td className="p-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#f8fafc] flex items-center justify-center text-blue-600 text-xs font-medium">
-                        {record.employeeName.split(" ").map((n) => n[0]).join("")}
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-200/70">
+                <th className="w-12 pl-5 py-3">
+                  <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
+                </th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Employee</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Department</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Clock in</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Clock out</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Hours</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Status</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Location</th>
+                <th className="w-10 px-2" aria-label="Actions" />
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((record) => {
+                const status = STATUS_PILL[record.status];
+                return (
+                  <tr
+                    key={record.id}
+                    className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer"
+                  >
+                    <td className="pl-5 py-4" onClick={(e) => e.stopPropagation()}>
+                      <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
+                    </td>
+                    <td className="py-4 pr-5">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={cn(
+                            "w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-white font-semibold text-sm",
+                            avatarColor(record.id)
+                          )}
+                        >
+                          {initialsOf(record.employeeName)}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-slate-900 leading-tight truncate">
+                            {record.employeeName}
+                          </p>
+                          <p className="text-xs text-slate-500 leading-tight mt-0.5 truncate">
+                            {record.employeeId}
+                          </p>
+                        </div>
                       </div>
-                      <span className="font-medium">{record.employeeName}</span>
-                    </div>
-                  </td>
-                  <td className="p-3 text-slate-500">
-                    {record.department}
-                  </td>
-                  <td className="p-3 font-mono text-xs">
-                    {record.clockIn ?? (
-                      <span className="text-slate-500">--</span>
-                    )}
-                  </td>
-                  <td className="p-3 font-mono text-xs">
-                    {record.clockOut ?? (
-                      <span className="text-slate-500">--</span>
-                    )}
-                  </td>
-                  <td className="p-3">
-                    {record.hoursWorked != null ? (
-                      <span className="font-medium">
-                        {record.hoursWorked.toFixed(1)}h
+                    </td>
+                    <td className="py-4 pr-5">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium">
+                        {record.department}
                       </span>
-                    ) : (
-                      <span className="text-slate-500">--</span>
-                    )}
-                  </td>
-                  <td className="p-3">
-                    <span
-                      className={cn(
-                        "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border",
-                        statusStyle?.bg,
-                        statusStyle?.color
+                    </td>
+                    <td className="py-4 pr-5 font-mono text-xs text-slate-700">
+                      {record.clockIn ?? <span className="text-slate-400">—</span>}
+                    </td>
+                    <td className="py-4 pr-5 font-mono text-xs text-slate-700">
+                      {record.clockOut ?? <span className="text-slate-400">—</span>}
+                    </td>
+                    <td className="py-4 pr-5">
+                      {record.hoursWorked != null ? (
+                        <span className="font-semibold text-slate-900 tabular-nums">
+                          {record.hoursWorked.toFixed(1)}h
+                        </span>
+                      ) : (
+                        <span className="text-slate-400">—</span>
                       )}
-                    >
-                      {statusStyle?.label}
-                    </span>
-                  </td>
-                  <td className="p-3 text-slate-500">
-                    {record.location}
+                    </td>
+                    <td className="py-4 pr-5">
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium",
+                          status.pill
+                        )}
+                      >
+                        <span className={cn("w-1.5 h-1.5 rounded-full", status.dot)} />
+                        {status.label}
+                      </span>
+                    </td>
+                    <td className="py-4 pr-5 text-slate-600 text-xs">{record.location}</td>
+                    <td className="px-2 py-4 text-right" onClick={(e) => e.stopPropagation()}>
+                      <button
+                        type="button"
+                        className="w-8 h-8 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 inline-flex items-center justify-center"
+                        aria-label="More actions"
+                      >
+                        <MoreHorizontal className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+              {filtered.length === 0 && (
+                <tr>
+                  <td colSpan={9} className="py-16 text-center text-slate-400">
+                    <Clock className="w-10 h-10 mx-auto mb-3 opacity-30" />
+                    <p className="font-medium text-slate-900">No attendance records found</p>
+                    <p className="text-xs mt-1 text-slate-500">Try adjusting your search or selected date</p>
                   </td>
                 </tr>
-              );
-            })}
-            {filtered.length === 0 && (
-              <tr>
-                <td
-                  colSpan={7}
-                  className="p-12 text-center text-slate-500"
-                >
-                  <Clock className="w-10 h-10 mx-auto mb-3 opacity-30" />
-                  <p className="font-medium">No attendance records found</p>
-                  <p className="text-xs mt-1">
-                    Try adjusting your search or filters
-                  </p>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

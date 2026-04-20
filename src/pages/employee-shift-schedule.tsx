@@ -77,7 +77,7 @@ export default function EmployeeShiftSchedulePage() {
           <Link
             key={action.path}
             to={action.path}
-            className="rounded-xl border border-[#efefef] bg-white px-[21px] py-4 flex items-center gap-4 hover:bg-[#f8fafc] transition-colors group"
+            className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-[21px] py-4 flex items-center gap-4 hover:bg-[#f8fafc] transition-colors group"
           >
             <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", action.iconBg)}>
               <action.icon className={cn("h-5 w-5", action.iconColor)} />
@@ -92,7 +92,7 @@ export default function EmployeeShiftSchedulePage() {
       </div>
 
       {/* Upcoming 2 Weeks */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h2 className="text-sm font-semibold mb-4">Upcoming Schedule</h2>
         <div className="space-y-2">
           {upcomingAssignments.map((assignment) => {

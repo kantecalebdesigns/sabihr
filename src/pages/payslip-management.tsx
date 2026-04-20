@@ -134,10 +134,10 @@ function BatchesTab() {
         <SummaryCard icon={Shield} label="Pending" value={String(batches.filter((b) => b.status === "pending").length)} />
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Template</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Total</th>
@@ -153,7 +153,7 @@ function BatchesTab() {
             {batches.map((batch) => {
               const style = BATCH_STATUS_STYLES[batch.status];
               return (
-                <tr key={batch.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={batch.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{batch.period}</td>
                   <td className="p-3 text-slate-500">{batch.templateName}</td>
                   <td className="p-3">{batch.totalPayslips}</td>
@@ -187,10 +187,10 @@ function DistributionTab() {
         <SummaryCard icon={FileText} label="Scheduled" value={String(MOCK_DISTRIBUTIONS.filter((d) => d.status === "scheduled").length)} />
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Channel</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Recipients</th>
@@ -205,7 +205,7 @@ function DistributionTab() {
             {MOCK_DISTRIBUTIONS.map((dist) => {
               const style = DISTRIBUTION_STATUS_STYLES[dist.status];
               return (
-                <tr key={dist.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={dist.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{dist.period}</td>
                   <td className="p-3 capitalize">{dist.channel}</td>
                   <td className="p-3">{dist.totalRecipients}</td>

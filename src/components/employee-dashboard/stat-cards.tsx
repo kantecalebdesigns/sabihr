@@ -51,23 +51,21 @@ const stats = [
 
 export function StatCards() {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="rounded-xl border border-[#efefef] bg-white p-4 flex flex-col gap-3"
+          className="rounded-2xl border border-slate-200/70 bg-white px-5 pt-5 pb-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] flex flex-col gap-6"
         >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500">
-              {stat.label}
-            </span>
-            <div className="w-9 h-9 rounded-[10px] bg-[#f0f4f8] flex items-center justify-center">
-              <stat.icon className="w-[18px] h-[18px] text-slate-500" />
+          <div className="flex items-start justify-between">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+              <stat.icon className="w-[18px] h-[18px] text-blue-600" />
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold tracking-tight text-slate-900">{stat.value}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{stat.sub}</p>
+            <p className="text-3xl font-bold tracking-tight text-slate-900 leading-none">{stat.value}</p>
+            <p className="text-sm text-slate-500 mt-2">{stat.label}</p>
+            <p className="text-xs text-slate-400 mt-1">{stat.sub}</p>
           </div>
         </div>
       ))}

@@ -26,7 +26,7 @@ export default function EmployeeDetailPage() {
       <EmploymentDetailHeader employee={employee} onBack={() => navigate("/dashboard")} />
 
       {/* Admin Actions */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-4">
         <h3 className="text-sm font-semibold">Admin Actions</h3>
 
         {resetState === "confirm" && (

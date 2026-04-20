@@ -160,10 +160,10 @@ function PayGradesTab({ search, setSearch }: { search: string; setSearch: (v: st
 
       <SearchBar value={search} onChange={setSearch} placeholder="Search pay grades..." />
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Grade</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Level</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Min Salary</th>
@@ -177,7 +177,7 @@ function PayGradesTab({ search, setSearch }: { search: string; setSearch: (v: st
             {filtered.map((g) => {
               const style = PAY_GRADE_STATUS_STYLES[g.status];
               return (
-                <tr key={g.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={g.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{g.name}</td>
                   <td className="p-3 text-slate-500">{g.level}</td>
                   <td className="p-3">{formatNaira(g.minSalary)}</td>
@@ -235,10 +235,10 @@ function SalaryStructuresTab({ search, setSearch }: { search: string; setSearch:
         </Select>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Structure Name</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Pay Grade</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Total Earnings</th>
@@ -253,7 +253,7 @@ function SalaryStructuresTab({ search, setSearch }: { search: string; setSearch:
             {filtered.map((s) => {
               const style = STRUCTURE_STATUS_STYLES[s.status];
               return (
-                <tr key={s.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={s.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3">
                     <div className="font-medium">{s.name}</div>
                     <div className="text-xs text-slate-500">{s.description}</div>
@@ -315,10 +315,10 @@ function TemplatesTab({ search, setSearch }: { search: string; setSearch: (v: st
         </Select>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Name</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Type</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Category</th>
@@ -332,7 +332,7 @@ function TemplatesTab({ search, setSearch }: { search: string; setSearch: (v: st
           </thead>
           <tbody>
             {filtered.map((t) => (
-              <tr key={t.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+              <tr key={t.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                 <td className="p-3">
                   <div className="font-medium">{t.name}</div>
                   <div className="text-xs text-slate-500">{t.description}</div>
@@ -386,10 +386,10 @@ function PayrollCalendarTab() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Start Date</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">End Date</th>
@@ -403,7 +403,7 @@ function PayrollCalendarTab() {
             {cal.periods.map((p) => {
               const style = PERIOD_STATUS_STYLES[p.status];
               return (
-                <tr key={p.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={p.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{p.periodName}</td>
                   <td className="p-3 text-slate-500">{p.startDate}</td>
                   <td className="p-3 text-slate-500">{p.endDate}</td>
@@ -458,10 +458,10 @@ function AssignmentsTab({ search, setSearch }: { search: string; setSearch: (v: 
         </Select>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Department</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Structure</th>
@@ -476,7 +476,7 @@ function AssignmentsTab({ search, setSearch }: { search: string; setSearch: (v: 
             {filtered.map((a) => {
               const style = ASSIGNMENT_STATUS_STYLES[a.status];
               return (
-                <tr key={a.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={a.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3">
                     <div className="font-medium">{a.employeeName}</div>
                     <div className="text-xs text-slate-500">{a.employeeId}</div>

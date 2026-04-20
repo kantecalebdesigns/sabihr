@@ -122,10 +122,10 @@ export default function ExitPage() {
       {/* All Exits Table */}
       <div>
         <h2 className="text-sm font-semibold mb-3">All Exits ({MOCK_EXITS.length})</h2>
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Department</th>
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Type</th>
@@ -140,7 +140,7 @@ export default function ExitPage() {
                 const typeStyle = EXIT_TYPE_STYLES[exit.exitType];
                 const stageStyle = EXIT_STAGE_STYLES[exit.stage];
                 return (
-                  <tr key={exit.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors cursor-pointer" onClick={() => navigate(`/exit/${exit.id}`)}>
+                  <tr key={exit.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer" onClick={() => navigate(`/exit/${exit.id}`)}>
                     <td className="p-3">
                       <p className="font-medium">{exit.employeeName}</p>
                       <p className="text-xs text-slate-500">{exit.jobTitle}</p>

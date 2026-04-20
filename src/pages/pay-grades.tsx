@@ -295,10 +295,10 @@ export default function PayGradesPage() {
           )}
 
           {/* Table */}
-          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                <tr className="border-b border-slate-200/70">
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Group Name</th>
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Description</th>
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Salary Range</th>
@@ -310,7 +310,7 @@ export default function PayGradesPage() {
               </thead>
               <tbody>
                 {payGroups.map((g) => (
-                  <tr key={g.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                  <tr key={g.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                     <td className="p-3 font-medium text-slate-900">{g.name}</td>
                     <td className="p-3 text-slate-500">{g.description}</td>
                     <td className="p-3 text-slate-900">{formatCurrency(g.minSalary)} — {formatCurrency(g.maxSalary)}</td>
@@ -403,10 +403,10 @@ export default function PayGradesPage() {
           )}
 
           {/* Table */}
-          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                <tr className="border-b border-slate-200/70">
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Level</th>
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Grade Name</th>
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Pay Group</th>
@@ -420,7 +420,7 @@ export default function PayGradesPage() {
               </thead>
               <tbody>
                 {payGrades.map((g) => (
-                  <tr key={g.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                  <tr key={g.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                     <td className="p-3 font-medium text-slate-900">{g.level}</td>
                     <td className="p-3 font-medium text-slate-900">{g.name}</td>
                     <td className="p-3 text-slate-500">{getGroupName(g.payGroupId)}</td>

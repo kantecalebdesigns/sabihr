@@ -56,7 +56,7 @@ export default function EmployeeBreakClockPage() {
       </div>
 
       {/* Current Break Status */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-6 text-center space-y-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 text-center space-y-4">
         {breakStatus === "not-on-break" ? (
           <>
             <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto">
@@ -78,7 +78,7 @@ export default function EmployeeBreakClockPage() {
       </div>
 
       {/* Break Type & Action */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-4">
         <h2 className="text-sm font-semibold">Break Type</h2>
         <div className="flex gap-3">
           {(["Lunch Break", "Short Break"] as BreakType[]).map((type) => (
@@ -109,7 +109,7 @@ export default function EmployeeBreakClockPage() {
       </div>
 
       {/* Today's Breaks */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h2 className="text-sm font-semibold mb-4">Today's Breaks</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -145,7 +145,7 @@ export default function EmployeeBreakClockPage() {
       </div>
 
       {/* Break Policy Info */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h2 className="text-sm font-semibold mb-4 flex items-center gap-2">
           <Info className="w-4 h-4" /> Break Policy
         </h2>

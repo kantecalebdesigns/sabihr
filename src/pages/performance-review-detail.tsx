@@ -118,10 +118,10 @@ export default function PerformanceReviewDetailPage() {
       {activeTab === "competencies" && (
         <div className="space-y-4">
           <p className="text-sm text-slate-500">Assess performance across core competencies using the 1-5 rating scale.</p>
-          <div className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                <tr className="border-b border-slate-200/70">
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Competency</th>
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Description</th>
                   <th className="p-3 text-center text-xs font-medium text-slate-500 w-32">Self</th>

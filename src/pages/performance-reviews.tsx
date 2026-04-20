@@ -220,10 +220,10 @@ export default function PerformanceReviewsPage() {
           </div>
 
           {/* Table */}
-          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                <tr className="border-b border-slate-200/70">
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Department</th>
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Manager</th>
@@ -241,7 +241,7 @@ export default function PerformanceReviewsPage() {
                   return (
                     <tr
                       key={appraisal.id}
-                      className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors"
+                      className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors"
                     >
                       <td className="p-3 font-medium text-slate-900">
                         {appraisal.employeeName}
@@ -343,10 +343,10 @@ export default function PerformanceReviewsPage() {
           )}
 
           {/* Templates Table */}
-          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                <tr className="border-b border-slate-200/70">
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Template Name</th>
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Type</th>
                   <th className="p-3 text-center text-xs font-medium text-slate-500">Sections</th>
@@ -355,7 +355,7 @@ export default function PerformanceReviewsPage() {
               </thead>
               <tbody>
                 {MOCK_TEMPLATES.map((tpl) => (
-                  <tr key={tpl.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                  <tr key={tpl.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                     <td className="p-3 font-medium text-slate-900 flex items-center gap-2">
                       <FileText className="w-4 h-4 text-slate-400" />
                       {tpl.name}
@@ -448,10 +448,10 @@ export default function PerformanceReviewsPage() {
       {activeView === "calibration" && (
         <div className="space-y-4">
           <p className="text-sm text-slate-500">Review and calibrate employee ratings across departments for consistency.</p>
-          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                <tr className="border-b border-slate-200/70">
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Department</th>
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Manager</th>
@@ -463,7 +463,7 @@ export default function PerformanceReviewsPage() {
               </thead>
               <tbody>
                 {MOCK_CALIBRATION.map((row) => (
-                  <tr key={row.employeeName} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                  <tr key={row.employeeName} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                     <td className="p-3 font-medium text-slate-900">{row.employeeName}</td>
                     <td className="p-3 text-slate-500">{row.department}</td>
                     <td className="p-3 text-slate-500">{row.manager}</td>

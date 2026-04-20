@@ -123,7 +123,7 @@ export default function AttendanceManualEntryPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-[#f8fafc] text-left">
+                  <tr className="border-b border-slate-200/70 text-left">
                     <th className="px-4 py-3 font-medium text-slate-600">Employee</th>
                     <th className="px-4 py-3 font-medium text-slate-600">Date</th>
                     <th className="px-4 py-3 font-medium text-slate-600">Clock In</th>
@@ -136,7 +136,7 @@ export default function AttendanceManualEntryPage() {
                   {SAMPLE_MANUAL_ENTRIES.map((entry) => {
                     const style = STATUS_ENTRY_STYLES[entry.status];
                     return (
-                      <tr key={entry.id} className="border-b border-[#efefef] hover:bg-[#f8fafc]">
+                      <tr key={entry.id} className="border-b border-slate-100 hover:bg-slate-50/60">
                         <td className="px-4 py-3 font-medium">{entry.employee}</td>
                         <td className="px-4 py-3 text-slate-600">{entry.date}</td>
                         <td className="px-4 py-3 text-slate-600">{entry.clockIn}</td>
@@ -195,7 +195,7 @@ export default function AttendanceManualEntryPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-[#f8fafc] text-left">
+                    <tr className="border-b border-slate-200/70 text-left">
                       <th className="px-4 py-3 font-medium text-slate-600">Employee</th>
                       <th className="px-4 py-3 font-medium text-slate-600">Date</th>
                       <th className="px-4 py-3 font-medium text-slate-600">Clock In</th>
@@ -205,7 +205,7 @@ export default function AttendanceManualEntryPage() {
                   </thead>
                   <tbody>
                     {SAMPLE_CSV_PREVIEW.map((row, i) => (
-                      <tr key={i} className="border-b border-[#efefef] hover:bg-[#f8fafc]">
+                      <tr key={i} className="border-b border-slate-100 hover:bg-slate-50/60">
                         <td className="px-4 py-3 font-medium">{row.employee}</td>
                         <td className="px-4 py-3 text-slate-600">{row.date}</td>
                         <td className="px-4 py-3 text-slate-600">{row.clockIn}</td>

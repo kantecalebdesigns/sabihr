@@ -128,7 +128,7 @@ export default function EmployeeAssetReturnPage() {
                     key={asset.id}
                     onClick={() => toggleAsset(asset.id)}
                     className={cn(
-                      "flex items-center gap-3 rounded-xl border border-[#efefef] bg-white p-4 text-left transition-colors hover:bg-[#f8fafc]",
+                      "flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 text-left transition-colors hover:bg-[#f8fafc]",
                       selected && "border-primary bg-primary/5 ring-1 ring-primary"
                     )}
                   >
@@ -162,7 +162,7 @@ export default function EmployeeAssetReturnPage() {
                   key={r.value}
                   onClick={() => setReason(r.value)}
                   className={cn(
-                    "rounded-xl border border-[#efefef] bg-white px-4 py-2 text-sm transition-colors hover:bg-[#f8fafc]",
+                    "rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-4 py-2 text-sm transition-colors hover:bg-[#f8fafc]",
                     reason === r.value &&
                       "border-primary bg-primary/5 ring-1 ring-primary font-medium"
                   )}
@@ -182,7 +182,7 @@ export default function EmployeeAssetReturnPage() {
                   key={c.value}
                   onClick={() => setCondition(c.value)}
                   className={cn(
-                    "rounded-xl border border-[#efefef] bg-white px-4 py-2 text-sm transition-colors hover:bg-[#f8fafc]",
+                    "rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-4 py-2 text-sm transition-colors hover:bg-[#f8fafc]",
                     condition === c.value &&
                       "border-primary bg-primary/5 ring-1 ring-primary font-medium"
                   )}

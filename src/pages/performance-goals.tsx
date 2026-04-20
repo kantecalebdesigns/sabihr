@@ -144,10 +144,10 @@ export default function PerformanceGoalsPage() {
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Goal</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Owner</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Department</th>
@@ -162,7 +162,7 @@ export default function PerformanceGoalsPage() {
               return (
                 <tr
                   key={goal.id}
-                  className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors"
+                  className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors"
                 >
                   <td className="p-3">
                     <p className="font-medium text-slate-900">{goal.title}</p>

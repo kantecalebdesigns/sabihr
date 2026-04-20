@@ -109,7 +109,7 @@ export default function AttendanceDepartmentPage() {
           const employees = SAMPLE_EMPLOYEES[dept.department] || [];
 
           return (
-            <div key={dept.department} className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
+            <div key={dept.department} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
               <button
                 className="w-full text-left p-5 hover:bg-[#f8fafc] transition-colors"
                 onClick={() => setExpanded(isExpanded ? null : dept.department)}
@@ -162,7 +162,7 @@ export default function AttendanceDepartmentPage() {
                 <div className="border-t border-[#efefef]">
                   <table className="w-full text-xs">
                     <thead>
-                      <tr className="bg-[#f8fafc] text-left">
+                      <tr className="border-b border-slate-200/70 text-left">
                         <th className="px-4 py-2 font-medium text-slate-500">Name</th>
                         <th className="px-4 py-2 font-medium text-slate-500">Status</th>
                         <th className="px-4 py-2 font-medium text-slate-500">In</th>
@@ -172,7 +172,7 @@ export default function AttendanceDepartmentPage() {
                     </thead>
                     <tbody>
                       {employees.map((emp, i) => (
-                        <tr key={i} className="border-b border-[#efefef] hover:bg-[#f8fafc]">
+                        <tr key={i} className="border-b border-slate-100 hover:bg-slate-50/60">
                           <td className="px-4 py-2 font-medium">{emp.name}</td>
                           <td className="px-4 py-2">
                             <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border capitalize", STATUS_COLORS[emp.status] || "text-slate-500 bg-slate-50 border-slate-200")}>

@@ -254,7 +254,7 @@ export default function PerformanceOKRsPage() {
             const isExpanded = expandedObj.has(obj.id);
             const pct = obj.progress;
             return (
-              <div key={obj.id} className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
+              <div key={obj.id} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
                 {/* Objective Header */}
                 <button
                   onClick={() => toggleExpand(obj.id)}

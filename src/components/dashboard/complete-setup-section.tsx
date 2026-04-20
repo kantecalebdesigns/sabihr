@@ -42,11 +42,11 @@ function SetupCard({ icon, title, description, children, onSubmit, required }: S
   }
 
   return (
-    <div className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
+    <div className="rounded-xl border border-slate-200/70 bg-white overflow-hidden">
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
-        className="flex items-center gap-3 w-full px-4 py-3 sm:px-5 sm:py-4 text-left hover:bg-[#f8fafc] transition-colors"
+        className="flex items-center gap-3 w-full px-4 py-3 sm:px-5 sm:py-4 text-left hover:bg-slate-50 transition-colors"
       >
         <div className="w-9 h-9 rounded-[10px] bg-[#f0f4f8] flex items-center justify-center shrink-0">
           {icon}
@@ -68,7 +68,7 @@ function SetupCard({ icon, title, description, children, onSubmit, required }: S
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 sm:px-5 sm:pb-5 space-y-4 border-t border-[#efefef] pt-4">
+        <div className="px-4 pb-4 sm:px-5 sm:pb-5 space-y-4 border-t border-slate-200/70 pt-4">
           {children}
 
           <div className="flex justify-end pt-2">
@@ -308,7 +308,7 @@ export function CompleteSetupSection() {
   if (dismissed) return null;
 
   return (
-    <div className="rounded-xl border border-[#efefef] bg-white p-4 sm:p-5 space-y-4">
+    <div className="rounded-2xl border border-slate-200/70 bg-white p-4 sm:p-5 space-y-4 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
       <div className="flex items-start justify-between">
         <div>
           <h2 className="text-sm font-semibold text-slate-900">Complete your account setup</h2>

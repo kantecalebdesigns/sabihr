@@ -270,7 +270,7 @@ export default function EmployeeAssetMaintenanceRequestPage() {
               return (
                 <div
                   key={r.id}
-                  className="flex flex-col sm:flex-row sm:items-center gap-3 rounded-xl border border-[#efefef] bg-white p-4"
+                  className="flex flex-col sm:flex-row sm:items-center gap-3 rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4"
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">

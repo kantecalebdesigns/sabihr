@@ -63,7 +63,7 @@ function WalletDashboard() {
       {/* Currency Wallets */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {wallet.wallets.map((w, i) => (
-          <div key={i} className="rounded-xl border border-[#efefef] bg-white p-5">
+          <div key={i} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-[#f8fafc] flex items-center justify-center text-blue-600 text-sm font-bold">
@@ -84,7 +84,7 @@ function WalletDashboard() {
       </div>
 
       {/* Recent Transactions */}
-      <div className="rounded-xl border border-[#efefef] bg-white">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
         <div className="p-4 border-b border-[#efefef]">
           <h3 className="font-medium">Recent Transactions</h3>
         </div>
@@ -142,7 +142,7 @@ function FundingTab() {
           {fundingMethods.map((method, i) => {
             const Icon = method.icon;
             return (
-              <div key={i} className="rounded-xl border border-[#efefef] bg-white p-5 text-center">
+              <div key={i} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 text-center">
                 <div className="w-12 h-12 rounded-full bg-[#f8fafc] flex items-center justify-center mx-auto mb-3">
                   <Icon className="w-6 h-6 text-blue-600" />
                 </div>
@@ -161,7 +161,7 @@ function FundingTab() {
           {spendingOptions.map((option, i) => {
             const Icon = option.icon;
             return (
-              <div key={i} className="rounded-xl border border-[#efefef] bg-white p-5 text-center">
+              <div key={i} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 text-center">
                 <div className="w-12 h-12 rounded-full bg-[#f8fafc] flex items-center justify-center mx-auto mb-3">
                   <Icon className="w-6 h-6 text-blue-600" />
                 </div>

@@ -55,7 +55,7 @@ function SetupCard({ icon, title, description, children, onSubmit, required }: S
   }
 
   return (
-    <div className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
+    <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}

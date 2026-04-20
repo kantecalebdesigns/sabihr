@@ -131,7 +131,7 @@ export default function AttendanceCorrectionsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#f8fafc] text-left">
+              <tr className="border-b border-slate-200/70 text-left">
                 <th className="px-4 py-3 font-medium text-slate-600">Employee</th>
                 <th className="px-4 py-3 font-medium text-slate-600">Department</th>
                 <th className="px-4 py-3 font-medium text-slate-600">Date</th>
@@ -149,7 +149,7 @@ export default function AttendanceCorrectionsPage() {
                 const workflow = MOCK_CORRECTION_WORKFLOWS[req.id];
                 return (
                   <React.Fragment key={req.id}>
-                  <tr className="border-b border-[#efefef] hover:bg-[#f8fafc] cursor-pointer" onClick={() => workflow && setExpandedRow(expandedRow === req.id ? null : req.id)}>
+                  <tr className="border-b border-slate-100 hover:bg-slate-50/60 cursor-pointer" onClick={() => workflow && setExpandedRow(expandedRow === req.id ? null : req.id)}>
                     <td className="px-4 py-3 font-medium">{req.employeeName}</td>
                     <td className="px-4 py-3 text-slate-600">{req.department}</td>
                     <td className="px-4 py-3 text-slate-600">{req.date}</td>

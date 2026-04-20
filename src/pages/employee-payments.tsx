@@ -57,24 +57,24 @@ function PaymentHistoryTab() {
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><CheckCircle2 className="w-4 h-4" /><span className="text-xs font-medium">Completed Payments</span></div>
           <p className="text-xl font-semibold">{completedCount}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><CreditCard className="w-4 h-4" /><span className="text-xs font-medium">Total Received</span></div>
           <p className="text-xl font-semibold">{formatNaira(totalPaid)}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Clock className="w-4 h-4" /><span className="text-xs font-medium">Pending</span></div>
           <p className="text-xl font-semibold">{MOCK_PAYMENT_RECORDS.filter((p) => p.status === "pending").length}</p>
         </div>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Pay Date</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Amount</th>
@@ -87,7 +87,7 @@ function PaymentHistoryTab() {
             {MOCK_PAYMENT_RECORDS.map((p) => {
               const style = PAYMENT_RECORD_STATUS_STYLES[p.status];
               return (
-                <tr key={p.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={p.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{p.period}</td>
                   <td className="p-3 text-slate-500">{p.payDate}</td>
                   <td className="p-3 text-right font-semibold">{formatNaira(p.amount)}</td>
@@ -122,7 +122,7 @@ function BankDetailsTab() {
 
       <div className="space-y-4">
         {bankDetails.map((bank) => (
-          <div key={bank.id} className="rounded-xl border border-[#efefef] bg-white p-5">
+          <div key={bank.id} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-[#f8fafc] flex items-center justify-center">

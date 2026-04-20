@@ -103,7 +103,7 @@ export default function EmployeeAttendanceNotificationsPage() {
           );
         })}
         {filtered.length === 0 && (
-          <div className="rounded-xl border border-[#efefef] bg-white p-8 text-center text-slate-400 text-sm">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-8 text-center text-slate-400 text-sm">
             No notifications to show
           </div>
         )}

@@ -51,7 +51,7 @@ export function DocumentUploadPrompt() {
   const progressPercent = Math.round((uploadedCount / totalCount) * 100);
 
   return (
-    <div className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
+    <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 sm:px-5 sm:py-4">
         <div className="w-10 h-10 rounded-[10px] bg-[#f0f4f8] flex items-center justify-center shrink-0">

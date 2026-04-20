@@ -300,10 +300,10 @@ export default function AssetListPage() {
 
       {/* Table View */}
       {view === "table" && (
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="p-3 text-left w-10">
                   <input
                     type="checkbox"
@@ -348,7 +348,7 @@ export default function AssetListPage() {
                 return (
                   <tr
                     key={asset.id}
-                    className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors cursor-pointer"
+                    className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer"
                     onClick={() => navigate(`/assets/${asset.id}`)}
                   >
                     <td className="p-3" onClick={(e) => e.stopPropagation()}>

@@ -425,7 +425,7 @@ function TemplatesTab({
         <div className="border border-[#efefef] rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#f8fafc] text-left">
+              <tr className="border-b border-slate-200/70 text-left">
                 <th className="px-4 py-3 text-xs font-medium text-slate-500">
                   Name
                 </th>
@@ -556,7 +556,7 @@ function GeneratedDocumentsTab({
       <div className="border border-[#efefef] rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-[#f8fafc] text-left">
+            <tr className="border-b border-slate-200/70 text-left">
               <th className="px-4 py-3 text-xs font-medium text-slate-500">
                 Employee
               </th>

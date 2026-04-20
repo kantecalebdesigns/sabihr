@@ -95,19 +95,19 @@ function LoansTab() {
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Banknote className="w-4 h-4" /><span className="text-xs font-medium">Total Loans</span></div>
           <p className="text-xl font-semibold">{MOCK_LOANS.length}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><AlertCircle className="w-4 h-4" /><span className="text-xs font-medium">Outstanding</span></div>
           <p className="text-xl font-semibold text-red-600">{formatNaira(totalOutstanding)}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><TrendingUp className="w-4 h-4" /><span className="text-xs font-medium">Monthly Deduction</span></div>
           <p className="text-xl font-semibold">{formatNaira(totalMonthlyDeduction)}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Clock className="w-4 h-4" /><span className="text-xs font-medium">Pending</span></div>
           <p className="text-xl font-semibold">{MOCK_LOANS.filter((l) => l.status === "pending").length}</p>
         </div>
@@ -123,7 +123,7 @@ function LoansTab() {
           const progress = loan.totalInstallments > 0 ? (loan.installmentsPaid / loan.totalInstallments) * 100 : 0;
 
           return (
-            <div key={loan.id} className="rounded-xl border border-[#efefef] bg-white p-5">
+            <div key={loan.id} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
               <div className="flex items-center justify-between mb-3">
                 <div>
                   <h4 className="font-medium">{loan.typeName}</h4>
@@ -318,7 +318,7 @@ function LoanRequestForm({ onBack, onSubmit }: { onBack: () => void; onSubmit: (
         <div className="space-y-5">
           <p className="text-sm text-slate-500">Review your loan request before submitting.</p>
 
-          <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
                 <span className="text-slate-500">Loan Type</span>
@@ -392,7 +392,7 @@ function AdvanceTab() {
         <Button size="sm" onClick={() => setShowForm(true)}><Plus className="w-4 h-4 mr-2" />Request Advance</Button>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white p-6">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6">
         <h3 className="font-medium mb-3">Salary Advance Guidelines</h3>
         <ul className="space-y-2 text-sm text-slate-500">
           <li>Maximum advance: 50% of monthly net salary</li>
@@ -409,7 +409,7 @@ function AdvanceTab() {
           {advances.map((adv) => {
             const style = LOAN_STATUS_STYLES[adv.status];
             return (
-              <div key={adv.id} className="rounded-xl border border-[#efefef] bg-white p-4 flex items-center justify-between">
+              <div key={adv.id} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2">
                     <h4 className="font-medium">{formatNaira(adv.amount)}</h4>
@@ -505,7 +505,7 @@ function AdvanceRequestForm({ onBack, onSubmit }: { onBack: () => void; onSubmit
         </div>
 
         {parsedAmount > 0 && parsedAmount <= maxAdvance && (
-          <div className="rounded-xl border border-[#efefef] bg-white p-4">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
             <p className="text-xs font-medium text-slate-500 mb-3">Deduction Summary</p>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>

@@ -126,7 +126,7 @@ export default function EmployeeRequisitionsPage() {
         {summaryCards.map((card) => (
           <div
             key={card.label}
-            className="rounded-xl border border-[#efefef] bg-white px-[21px] pt-[21px] pb-4 flex gap-[14px] items-start"
+            className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-[21px] pt-[21px] pb-4 flex gap-[14px] items-start"
           >
             <div
               className={cn(
@@ -175,7 +175,7 @@ export default function EmployeeRequisitionsPage() {
       </div>
 
       {/* Requisitions Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -221,7 +221,7 @@ export default function EmployeeRequisitionsPage() {
                   return (
                     <tr
                       key={req.id}
-                      className="border-b border-[#efefef] hover:bg-[#f8fafc] transition-colors"
+                      className="border-b border-slate-100 hover:bg-slate-50/60 transition-colors"
                     >
                       <td className="px-4 py-3">
                         <span
@@ -280,7 +280,7 @@ export default function EmployeeRequisitionsPage() {
           />
 
           {/* Modal */}
-          <div className="relative z-10 w-full max-w-lg rounded-xl border border-[#efefef] bg-white p-6 shadow-xl">
+          <div className="relative z-10 w-full max-w-lg rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 shadow-xl">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-slate-900">
                 New Requisition Request

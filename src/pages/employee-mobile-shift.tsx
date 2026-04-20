@@ -71,7 +71,7 @@ export default function EmployeeMobileShiftPage() {
         )}
 
         {nextShift && nextAssignment && (
-          <div className="rounded-xl border border-[#efefef] bg-white p-4">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
             <p className="text-xs text-slate-500 mb-2 flex items-center gap-1">
               <Calendar className="w-3 h-3" /> Next: {nextAssignment.date}
             </p>
@@ -92,7 +92,7 @@ export default function EmployeeMobileShiftPage() {
       </div>
 
       {/* 7-Day View */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
         <h2 className="text-sm font-semibold mb-3">Upcoming 7 Days</h2>
         <div className="space-y-2">
           {upcoming7.map((a) => {
@@ -137,7 +137,7 @@ export default function EmployeeMobileShiftPage() {
           <ArrowRightLeft className="w-4 h-4" /> Request Swap
         </Button>
       ) : (
-        <div className="rounded-xl border border-[#efefef] bg-white p-4 space-y-3">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-3">
           <h3 className="text-sm font-semibold">Quick Swap Request</h3>
           <form onSubmit={handleSubmitSwap} className="space-y-3">
             <div className="space-y-1.5">
@@ -175,7 +175,7 @@ export default function EmployeeMobileShiftPage() {
       )}
 
       {/* Shift Legend */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
         <h2 className="text-sm font-semibold mb-3">Shift Legend</h2>
         <div className="grid grid-cols-2 gap-2">
           {MOCK_SHIFTS.filter((s) => s.status === "active").map((shift) => (

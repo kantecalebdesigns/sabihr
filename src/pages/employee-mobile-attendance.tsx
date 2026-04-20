@@ -29,7 +29,7 @@ export default function EmployeeMobileAttendancePage() {
       </div>
 
       {/* Today's Status */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-4 space-y-2">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-2">
         <p className="text-xs text-slate-500">Today, April 9, 2026</p>
         <div className="flex items-center gap-2">
           <CheckCircle className="w-5 h-5 text-emerald-600" />
@@ -43,17 +43,17 @@ export default function EmployeeMobileAttendancePage() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-xl border border-[#efefef] bg-white p-3 text-center">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-3 text-center">
           <CheckCircle className="w-4 h-4 text-emerald-600 mx-auto mb-1" />
           <p className="text-lg font-bold">18</p>
           <p className="text-xs text-slate-500">Present</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-3 text-center">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-3 text-center">
           <AlertTriangle className="w-4 h-4 text-amber-600 mx-auto mb-1" />
           <p className="text-lg font-bold">3</p>
           <p className="text-xs text-slate-500">Late</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-3 text-center">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-3 text-center">
           <TrendingUp className="w-4 h-4 text-blue-600 mx-auto mb-1" />
           <p className="text-lg font-bold">91%</p>
           <p className="text-xs text-slate-500">Rate</p>
@@ -68,7 +68,7 @@ export default function EmployeeMobileAttendancePage() {
             const style = STATUS_STYLES[day.status];
             const Icon = style.icon;
             return (
-              <div key={day.date} className="rounded-xl border border-[#efefef] bg-white p-3">
+              <div key={day.date} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium">{day.day}</p>

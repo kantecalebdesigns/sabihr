@@ -81,10 +81,10 @@ export default function ShiftSwapQueuePage() {
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm min-w-[900px]">
           <thead>
-            <tr className="bg-[#f8fafc] text-left">
+            <tr className="border-b border-slate-200/70 text-left">
               <th className="px-4 py-3 font-medium text-slate-600">Requester</th>
               <th className="px-4 py-3 font-medium text-slate-600">Target Employee</th>
               <th className="px-4 py-3 font-medium text-slate-600">Date</th>
@@ -102,7 +102,7 @@ export default function ShiftSwapQueuePage() {
               const workflow = MOCK_SWAP_WORKFLOWS[req.id];
               return (
                 <React.Fragment key={req.id}>
-                <tr className="border-b border-[#efefef] hover:bg-[#f8fafc] cursor-pointer" onClick={() => workflow && setExpandedRow(expandedRow === req.id ? null : req.id)}>
+                <tr className="border-b border-slate-100 hover:bg-slate-50/60 cursor-pointer" onClick={() => workflow && setExpandedRow(expandedRow === req.id ? null : req.id)}>
                   <td className="px-4 py-3 font-medium">{req.requesterName}</td>
                   <td className="px-4 py-3">{req.targetName}</td>
                   <td className="px-4 py-3">{new Date(req.date).toLocaleDateString("en-NG", { month: "short", day: "numeric", year: "numeric" })}</td>

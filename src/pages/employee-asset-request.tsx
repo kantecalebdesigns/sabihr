@@ -110,7 +110,7 @@ export default function EmployeeAssetRequestPage() {
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.id)}
                     className={cn(
-                      "flex flex-col items-center gap-2 rounded-xl border border-[#efefef] bg-white p-4 text-sm transition-colors hover:bg-[#f8fafc]",
+                      "flex flex-col items-center gap-2 rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 text-sm transition-colors hover:bg-[#f8fafc]",
                       selected && "border-primary bg-primary/5 ring-1 ring-primary"
                     )}
                   >
@@ -136,7 +136,7 @@ export default function EmployeeAssetRequestPage() {
               placeholder="Explain why you need this asset..."
               value={justification}
               onChange={(e) => setJustification(e.target.value)}
-              className="flex w-full rounded-xl border border-[#efefef] bg-white px-3 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring resize-none"
+              className="flex w-full rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-3 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring resize-none"
             />
           </div>
 
@@ -149,7 +149,7 @@ export default function EmployeeAssetRequestPage() {
                   key={u}
                   onClick={() => setUrgency(u)}
                   className={cn(
-                    "flex items-center gap-2 rounded-xl border border-[#efefef] bg-white px-4 py-2.5 text-sm transition-colors hover:bg-[#f8fafc]",
+                    "flex items-center gap-2 rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-4 py-2.5 text-sm transition-colors hover:bg-[#f8fafc]",
                     urgency === u && "border-primary bg-primary/5 ring-1 ring-primary"
                   )}
                 >
@@ -172,7 +172,7 @@ export default function EmployeeAssetRequestPage() {
               placeholder="E.g., 16GB RAM, 27-inch screen..."
               value={specs}
               onChange={(e) => setSpecs(e.target.value)}
-              className="flex w-full rounded-xl border border-[#efefef] bg-white px-3 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring resize-none"
+              className="flex w-full rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-3 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring resize-none"
             />
           </div>
 

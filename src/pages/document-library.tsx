@@ -578,7 +578,7 @@ export default function DocumentLibraryPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#f8fafc] text-left">
+                <tr className="border-b border-slate-200/70 text-left">
                   <SortableHeader
                     label="Name"
                     field="name"

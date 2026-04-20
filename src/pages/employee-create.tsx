@@ -160,7 +160,7 @@ export default function EmployeeCreatePage() {
 
       {/* Section: Personal Info */}
       {step === "personal" && (
-        <div className="rounded-xl border border-[#efefef] bg-white p-6 space-y-5">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 space-y-5">
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <User className="w-4 h-4" /> Personal Information
           </h2>
@@ -253,7 +253,7 @@ export default function EmployeeCreatePage() {
 
       {/* Section: Contact Details */}
       {step === "contact" && (
-        <div className="rounded-xl border border-[#efefef] bg-white p-6 space-y-5">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 space-y-5">
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <Phone className="w-4 h-4" /> Contact Details
           </h2>
@@ -338,7 +338,7 @@ export default function EmployeeCreatePage() {
 
       {/* Section: Employment */}
       {step === "employment" && (
-        <div className="rounded-xl border border-[#efefef] bg-white p-6 space-y-5">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 space-y-5">
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <Briefcase className="w-4 h-4" /> Employment Details
           </h2>
@@ -479,7 +479,7 @@ export default function EmployeeCreatePage() {
 
       {/* Section: Review */}
       {step === "review" && (
-        <div className="rounded-xl border border-[#efefef] bg-white p-6 space-y-5">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 space-y-5">
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <FileText className="w-4 h-4" /> Review & Submit
           </h2>

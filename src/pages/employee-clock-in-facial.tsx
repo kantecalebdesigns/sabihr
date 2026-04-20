@@ -49,13 +49,13 @@ export default function EmployeeClockInFacialPage() {
       </div>
 
       {/* Clock */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-6 text-center space-y-2">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 text-center space-y-2">
         <p className="text-sm text-slate-500">{now.toLocaleDateString("en-NG", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
         <p className="text-4xl font-bold tracking-tight tabular-nums">{formatTime(now)}</p>
       </div>
 
       {/* Camera Area */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-4">
         <h2 className="text-sm font-semibold">Face Verification</h2>
 
         <div className="rounded-xl bg-slate-900 h-64 flex flex-col items-center justify-center gap-3 text-slate-400 relative overflow-hidden">
@@ -112,7 +112,7 @@ export default function EmployeeClockInFacialPage() {
 
       {/* Clock In/Out Action (only visible after verification) */}
       {verifyStep === "verified" && (
-        <div className="rounded-xl border border-[#efefef] bg-white p-6 text-center space-y-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 text-center space-y-4">
           <div className="flex items-center justify-center gap-2">
             {status === "not-clocked" && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-100 text-slate-600">Not Clocked In</span>
@@ -153,7 +153,7 @@ export default function EmployeeClockInFacialPage() {
       )}
 
       {/* Today's Status */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h2 className="text-sm font-semibold mb-4">Today's Status</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
           <div className="space-y-1">

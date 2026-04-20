@@ -199,7 +199,7 @@ export default function EmployeeAttendancePage() {
           return (
             <div
               key={card.label}
-              className="rounded-xl border border-[#efefef] bg-white px-[21px] pt-[21px] pb-4"
+              className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-[21px] pt-[21px] pb-4"
             >
               <div className="flex items-center gap-3">
                 <div
@@ -252,7 +252,7 @@ export default function EmployeeAttendancePage() {
           <Link
             key={action.path}
             to={action.path}
-            className="rounded-xl border border-[#efefef] bg-white px-[21px] py-4 flex items-center gap-4 hover:bg-[#f8fafc] transition-colors group"
+            className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-[21px] py-4 flex items-center gap-4 hover:bg-[#f8fafc] transition-colors group"
           >
             <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", action.iconBg)}>
               <action.icon className={cn("h-5 w-5", action.iconColor)} />
@@ -267,7 +267,7 @@ export default function EmployeeAttendancePage() {
       </div>
 
       {/* Today's Status Card */}
-      <div className="rounded-xl border border-[#efefef] bg-white px-[21px] pt-[21px] pb-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-[21px] pt-[21px] pb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f8fafc]">
@@ -343,7 +343,7 @@ export default function EmployeeAttendancePage() {
       </div>
 
       {/* Attendance History Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
         <div className="px-[21px] pt-[21px] pb-4 flex items-start justify-between">
           <div>
             <h2 className="text-base font-semibold text-slate-900">
@@ -385,7 +385,7 @@ export default function EmployeeAttendancePage() {
                 return (
                   <tr
                     key={record.id}
-                    className="border-b border-[#efefef] hover:bg-[#f8fafc]"
+                    className="border-b border-slate-100 hover:bg-slate-50/60"
                   >
                     <td className="px-[21px] py-3 text-sm text-slate-900">
                       {formatDate(record.date)}

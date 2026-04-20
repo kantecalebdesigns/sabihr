@@ -56,9 +56,9 @@ export default function EmployeeSurveysPage() {
   // --- Success state after submission ---
   if (activeSurvey && submitted) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] p-6">
+      <div className="min-h-screen bg-[#eff6ff] p-6">
         <div className="mx-auto max-w-3xl">
-          <div className="rounded-xl border border-[#efefef] bg-white p-10 text-center">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-10 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50">
               <Check className="h-7 w-7 text-emerald-600" />
             </div>
@@ -84,7 +84,7 @@ export default function EmployeeSurveysPage() {
   // --- Survey form ---
   if (activeSurvey) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] p-6">
+      <div className="min-h-screen bg-[#eff6ff] p-6">
         <div className="mx-auto max-w-3xl">
           <button
             onClick={handleBack}
@@ -93,7 +93,7 @@ export default function EmployeeSurveysPage() {
             &larr; Back to Surveys
           </button>
 
-          <div className="rounded-xl border border-[#efefef] bg-white p-6">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6">
             <h2 className="text-lg font-semibold text-slate-900">
               {activeSurvey.title}
             </h2>
@@ -136,7 +136,7 @@ export default function EmployeeSurveysPage() {
 
   // --- Survey list ---
   return (
-    <div className="min-h-screen bg-[#f8fafc] p-6">
+    <div className="min-h-screen bg-[#eff6ff] p-6">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-6">
@@ -166,7 +166,7 @@ export default function EmployeeSurveysPage() {
 
         {/* Survey cards */}
         {filteredSurveys.length === 0 ? (
-          <div className="rounded-xl border border-[#efefef] bg-white px-6 py-16 text-center">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-6 py-16 text-center">
             <ClipboardList className="mx-auto h-10 w-10 text-slate-400" />
             <p className="mt-3 text-sm font-medium text-slate-900">
               No surveys found
@@ -184,7 +184,7 @@ export default function EmployeeSurveysPage() {
               return (
                 <div
                   key={survey.id}
-                  className="rounded-xl border border-[#efefef] bg-white p-5"
+                  className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0 flex-1">

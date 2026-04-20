@@ -145,10 +145,10 @@ function HistoryTab({ search, setSearch }: { search: string; setSearch: (v: stri
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Year</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Gross Pay</th>
@@ -164,7 +164,7 @@ function HistoryTab({ search, setSearch }: { search: string; setSearch: (v: stri
             {filtered.map((a) => {
               const style = ARCHIVE_STATUS_STYLES[a.status];
               return (
-                <tr key={a.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={a.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{a.period}</td>
                   <td className="p-3 text-slate-500">{a.year}</td>
                   <td className="p-3 text-right">{formatNaira(a.totalGross)}</td>
@@ -259,10 +259,10 @@ function AuditTrailTab({ search, setSearch }: { search: string; setSearch: (v: s
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Timestamp</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Action</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Module</th>
@@ -278,7 +278,7 @@ function AuditTrailTab({ search, setSearch }: { search: string; setSearch: (v: s
             {filtered.map((e) => {
               const actionStyle = AUDIT_ACTION_STYLES[e.action] ?? { label: e.actionLabel, bg: "bg-gray-50 border-gray-200", color: "text-gray-700" };
               return (
-                <tr key={e.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={e.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 text-slate-500 whitespace-nowrap">{formatTimestamp(e.timestamp)}</td>
                   <td className={cn("p-3 text-sm font-medium", actionStyle.color)}>
                     {actionStyle.label}

@@ -157,7 +157,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
       </div>
 
       {/* Divider */}
-      <div className={cn("h-px bg-gradient-to-r from-slate-200/80 via-slate-100 to-transparent", collapsed ? "mx-2" : "mx-4")} />
+      <div className={cn("h-0.5 bg-slate-200", collapsed ? "mx-2" : "mx-4")} />
 
       {/* Navigation */}
       <nav className={cn(
@@ -173,7 +173,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
                 </span>
               </div>
             ) : (
-              <div className="h-px bg-slate-100 mx-1 my-2" />
+              <div className="h-0.5 bg-slate-200 mx-1 my-2" />
             )}
             <div className={cn("space-y-0.5", collapsed && "flex flex-col items-center")}>
               {section.items.map(renderNavItem)}
@@ -183,7 +183,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
       </nav>
 
       {/* User card + collapse */}
-      <div className="shrink-0 border-t border-slate-100">
+      <div className="shrink-0 border-t-2 border-slate-200">
         {!collapsed ? (
           <div className="px-4 py-3">
             <div className="flex items-center gap-3 rounded-lg p-2 hover:bg-slate-50 transition-colors cursor-pointer">
@@ -239,7 +239,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          "hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 bg-white border-r border-slate-100/80 transition-all duration-200",
+          "hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 bg-white border-r-2 border-slate-200 transition-all duration-200",
           collapsed ? "lg:w-16" : "lg:w-[260px]"
         )}
       >

@@ -106,7 +106,7 @@ export default function ShiftCalendarPage() {
       </div>
 
       {/* Calendar Grid */}
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
         {/* Day headers */}
         <div className="grid grid-cols-7 bg-[#f8fafc]">
           {DAY_LABELS.map(day => (

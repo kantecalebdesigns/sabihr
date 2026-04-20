@@ -131,7 +131,7 @@ export default function EmployeeAssetsPage() {
             className="absolute inset-0 bg-black/40"
             onClick={() => setShowModal(false)}
           />
-          <div className="relative w-full max-w-md rounded-xl border border-[#efefef] bg-white p-6 shadow-xl">
+          <div className="relative w-full max-w-md rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 shadow-xl">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-lg font-semibold text-slate-900">
                 Request New Asset

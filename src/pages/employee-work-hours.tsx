@@ -46,7 +46,7 @@ export default function EmployeeWorkHoursPage() {
           { label: "Overtime Hours", value: `${overtimeHours}h`, icon: Timer, color: "text-amber-600" },
           { label: "Avg Daily", value: `${avgDaily}h`, icon: TrendingUp, color: "text-violet-600" },
         ].map((stat) => (
-          <div key={stat.label} className="rounded-xl border border-[#efefef] bg-white p-4 space-y-2">
+          <div key={stat.label} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs text-slate-500">{stat.label}</span>
               <stat.icon className={cn("w-4 h-4", stat.color)} />
@@ -57,7 +57,7 @@ export default function EmployeeWorkHoursPage() {
       </div>
 
       {/* Weekly Breakdown */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h2 className="text-sm font-semibold mb-4">Weekly Breakdown</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -94,7 +94,7 @@ export default function EmployeeWorkHoursPage() {
       </div>
 
       {/* Request Overtime */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold">Request Overtime</h2>
           {!showOtForm && (
@@ -134,7 +134,7 @@ export default function EmployeeWorkHoursPage() {
       </div>
 
       {/* Monthly OT History */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h2 className="text-sm font-semibold mb-4">Monthly Overtime Summary</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {MONTHLY_OT.map((m) => (

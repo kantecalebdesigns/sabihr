@@ -316,7 +316,7 @@ function AnalyticsTab() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Period</th>
                 <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Gross Pay</th>
                 <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Net Pay</th>
@@ -352,7 +352,7 @@ function AnalyticsTab() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Department</th>
                 <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Employees</th>
                 <th className="text-right px-4 py-2 text-xs font-medium text-slate-500">Total Gross</th>
@@ -430,7 +430,7 @@ function GLIntegrationTab({ search, setSearch }: { search: string; setSearch: (v
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Period</th>
                 <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Account Code</th>
                 <th className="text-left px-4 py-2 text-xs font-medium text-slate-500">Account Name</th>

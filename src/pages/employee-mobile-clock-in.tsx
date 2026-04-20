@@ -47,13 +47,13 @@ export default function EmployeeMobileClockInPage() {
       </div>
 
       {/* Time Display */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-6 text-center space-y-2">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 text-center space-y-2">
         <p className="text-xs text-slate-500">{now.toLocaleDateString("en-NG", { weekday: "long", month: "long", day: "numeric" })}</p>
         <p className="text-4xl font-bold tracking-tight tabular-nums">{formatTime(now)}</p>
       </div>
 
       {/* Today's Status */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
         <div className="flex items-center justify-between text-sm">
           <span className="text-slate-500">Status</span>
           {status === "not-clocked" && <span className="text-slate-500">Not clocked in</span>}
@@ -116,7 +116,7 @@ export default function EmployeeMobileClockInPage() {
       </div>
 
       {status === "clocked-out" && (
-        <div className="rounded-xl border border-[#efefef] bg-white p-4 text-center text-sm text-slate-400">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 text-center text-sm text-slate-400">
           You have completed your shift for today.
         </div>
       )}

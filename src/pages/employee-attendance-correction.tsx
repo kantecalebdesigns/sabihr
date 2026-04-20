@@ -30,7 +30,7 @@ export default function EmployeeAttendanceCorrectionPage() {
       </div>
 
       {/* Form */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h2 className="text-sm font-semibold mb-4 flex items-center gap-2">
           <FileEdit className="w-4 h-4" /> New Correction Request
         </h2>
@@ -98,7 +98,7 @@ export default function EmployeeAttendanceCorrectionPage() {
       </div>
 
       {/* Previous Requests */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h2 className="text-sm font-semibold mb-4">My Previous Requests</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

@@ -55,26 +55,26 @@ export default function EmployeeWorkSchedulePage() {
 
       {/* Summary cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Clock className="w-4 h-4" /><span className="text-xs font-medium">Daily Hours</span></div>
           <p className="text-xl font-semibold">{schedule.totalHoursPerDay}h</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><CalendarDays className="w-4 h-4" /><span className="text-xs font-medium">Work Days</span></div>
           <p className="text-xl font-semibold">{schedule.workDays.length} days</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Clock className="w-4 h-4" /><span className="text-xs font-medium">Weekly Hours</span></div>
           <p className="text-xl font-semibold">{weeklyHours}h</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Coffee className="w-4 h-4" /><span className="text-xs font-medium">Break</span></div>
           <p className="text-xl font-semibold">{schedule.breakStart ? `${schedule.breakStart}` : "None"}</p>
         </div>
       </div>
 
       {/* Weekly schedule */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-4">
         <h2 className="font-semibold">Weekly Schedule</h2>
         <div className="space-y-2">
           {DAYS_OF_WEEK.map((day) => {
@@ -124,7 +124,7 @@ export default function EmployeeWorkSchedulePage() {
       </div>
 
       {/* Schedule details */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-4">
         <h2 className="font-semibold">Schedule Details</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div className="flex items-start gap-3">

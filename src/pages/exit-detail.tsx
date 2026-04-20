@@ -107,7 +107,7 @@ export default function ExitDetailPage() {
 
       {/* Clearance Checklist */}
       {exit.clearanceItems.length > 0 && (
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
           <div className="p-4 border-b border-[#efefef]">
             <h3 className="text-sm font-semibold">Clearance Checklist</h3>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -116,7 +116,7 @@ export default function ExitDetailPage() {
           </div>
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Activity</th>
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Assignee</th>
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>

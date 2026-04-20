@@ -126,34 +126,75 @@ function ScheduleList({
   const activeCount = schedules.filter((s) => s.status === "active").length;
   const draftCount = schedules.filter((s) => s.status === "draft").length;
 
+  const kpis = [
+    { value: schedules.length, label: "Total schedules", icon: Clock },
+    { value: activeCount, label: "Active", icon: CheckCircle2 },
+    { value: draftCount, label: "Drafts", icon: AlertCircle },
+    { value: totalEmployees, label: "Employees assigned", icon: Users },
+  ];
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">Work Schedules</h1>
-          <p className="text-sm text-slate-500">Create and manage work schedules for your employees</p>
+    <div className="max-w-[1500px] space-y-5">
+      {/* Banner */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#1d4ed8] text-white">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-6 px-6 py-7 sm:px-8 sm:py-8">
+          <div className="flex-1 min-w-0 space-y-3">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[11px] font-medium">
+              <Clock className="w-3 h-3" />
+              Time · Northwind Studio
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Work schedules</h1>
+            <p className="text-sm text-white/85 max-w-xl leading-relaxed">
+              Define <span className="font-semibold text-white">weekly templates</span> — set work
+              days, daily hours, and break periods, then assign employees to the right schedule for
+              their role or team.
+            </p>
+          </div>
+
+          <div className="hidden sm:flex shrink-0 w-48 h-36 relative">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute top-0 right-4 w-24 h-24 rounded-2xl bg-white/15 backdrop-blur rotate-6" />
+              <div className="absolute bottom-0 right-14 w-20 h-20 rounded-2xl bg-white/20 backdrop-blur -rotate-12" />
+              <div className="absolute top-4 right-16 w-16 h-16 rounded-xl bg-white/25 backdrop-blur rotate-12 flex items-center justify-center">
+                <Clock className="w-7 h-7 text-white" />
+              </div>
+            </div>
+          </div>
         </div>
-        <Button onClick={onCreateNew}><Plus className="w-4 h-4 mr-2" />Create Schedule</Button>
+
+        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
+        <div className="absolute -bottom-20 left-1/3 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
       </div>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
-          <div className="flex items-center gap-2 text-slate-500 mb-1"><Clock className="w-4 h-4" /><span className="text-xs font-medium">Total Schedules</span></div>
-          <p className="text-xl font-semibold">{schedules.length}</p>
-        </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
-          <div className="flex items-center gap-2 text-emerald-600 mb-1"><CheckCircle2 className="w-4 h-4" /><span className="text-xs font-medium">Active</span></div>
-          <p className="text-xl font-semibold">{activeCount}</p>
-        </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
-          <div className="flex items-center gap-2 text-amber-600 mb-1"><AlertCircle className="w-4 h-4" /><span className="text-xs font-medium">Drafts</span></div>
-          <p className="text-xl font-semibold">{draftCount}</p>
-        </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
-          <div className="flex items-center gap-2 text-blue-600 mb-1"><Users className="w-4 h-4" /><span className="text-xs font-medium">Employees Assigned</span></div>
-          <p className="text-xl font-semibold">{totalEmployees}</p>
-        </div>
+      {/* Actions */}
+      <div className="flex items-center justify-end">
+        <Button onClick={onCreateNew} className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4">
+          <Plus className="w-4 h-4 mr-1" />
+          Create schedule
+        </Button>
+      </div>
+
+      {/* KPI cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
+            <div
+              key={kpi.label}
+              className="rounded-2xl border border-slate-200/70 bg-white px-5 pt-5 pb-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] flex flex-col gap-7"
+            >
+              <div className="flex items-start justify-between">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                  <Icon className="w-[18px] h-[18px] text-blue-600" />
+                </div>
+              </div>
+              <div>
+                <p className="text-3xl font-bold tracking-tight text-slate-900 leading-none">{kpi.value}</p>
+                <p className="text-sm text-slate-500 mt-2">{kpi.label}</p>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Filters */}

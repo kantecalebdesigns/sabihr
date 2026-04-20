@@ -246,10 +246,10 @@ export default function CrossBorderPayrollPage() {
 
       {/* Tab 1: Multi-Currency Config */}
       {activeTab === "currencies" && (
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Code</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Currency Name</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Symbol</th>
@@ -264,7 +264,7 @@ export default function CrossBorderPayrollPage() {
               {filteredCurrencies.map((cur) => {
                 const style = CURRENCY_STATUS_STYLES[cur.status];
                 return (
-                  <tr key={cur.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                  <tr key={cur.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                     <td className="px-4 py-3 font-mono font-medium">{cur.code}</td>
                     <td className="px-4 py-3">{cur.name}</td>
                     <td className="px-4 py-3">{cur.symbol}</td>
@@ -306,10 +306,10 @@ export default function CrossBorderPayrollPage() {
 
       {/* Tab 2: International Payments */}
       {activeTab === "payments" && (
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Employee</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Country</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Currency</th>
@@ -332,7 +332,7 @@ export default function CrossBorderPayrollPage() {
                     ? "Local Transfer"
                     : "Wallet";
                 return (
-                  <tr key={pmt.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                  <tr key={pmt.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                     <td className="px-4 py-3 text-xs font-medium text-slate-500">{pmt.employeeName}</td>
                     <td className="px-4 py-3">{pmt.country}</td>
                     <td className="px-4 py-3 font-mono">{pmt.currency}</td>
@@ -442,10 +442,10 @@ export default function CrossBorderPayrollPage() {
 
       {/* Tab 4: Employee Wallets */}
       {activeTab === "wallets" && (
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Employee</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Department</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-slate-500">Wallet Balances</th>
@@ -459,7 +459,7 @@ export default function CrossBorderPayrollPage() {
               {filteredWallets.map((wallet) => {
                 const style = WALLET_STATUS_STYLES[wallet.status];
                 return (
-                  <tr key={wallet.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                  <tr key={wallet.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                     <td className="px-4 py-3">
                       <div className="font-medium">{wallet.employeeName}</div>
                       <div className="text-[10px] text-slate-500">{wallet.employeeId}</div>

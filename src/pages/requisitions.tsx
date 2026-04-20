@@ -207,7 +207,7 @@ export default function RequisitionsPage() {
           <p className="mt-3 text-sm text-slate-500">No requisitions found</p>
         </div>
       ) : (
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
           <table className="w-full text-left">
             <thead>
               <tr className="bg-[#f8fafc]">

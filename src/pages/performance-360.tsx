@@ -328,10 +328,10 @@ function Performance360Overview() {
 
       {/* ── Feedback Requests ── */}
       {activeSection === "requests" && (
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Reviewer</th>
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Submitted At</th>
@@ -339,7 +339,7 @@ function Performance360Overview() {
             </thead>
             <tbody>
               {MOCK_PENDING_REVIEWS.map((req) => (
-                <tr key={req.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={req.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium text-slate-900">{req.reviewerName}</td>
                   <td className="p-3">
                     <span className={cn(
@@ -391,10 +391,10 @@ function Performance360Overview() {
       {activeSection === "matrix" && (
         <div className="space-y-6">
           {/* Table */}
-          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                <tr className="border-b border-slate-200/70">
                   <th className="p-3 text-left text-xs font-medium text-slate-500">Competency</th>
                   <th className="p-3 text-center text-xs font-medium text-slate-500">Self</th>
                   <th className="p-3 text-center text-xs font-medium text-slate-500">Manager</th>
@@ -403,7 +403,7 @@ function Performance360Overview() {
               </thead>
               <tbody>
                 {MOCK_COMPETENCY_MATRIX.map((row) => (
-                  <tr key={row.competency} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                  <tr key={row.competency} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                     <td className="p-3 font-medium text-slate-900">{row.competency}</td>
                     <td className="p-3 text-center text-slate-700">{row.selfRating}/5</td>
                     <td className="p-3 text-center text-slate-700">{row.managerRating}/5</td>

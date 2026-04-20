@@ -79,7 +79,7 @@ export default function AttendanceMonthlyReport() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#f8fafc] text-left">
+              <tr className="border-b border-slate-200/70 text-left">
                 <th className="px-4 py-3 font-medium text-slate-600">Employee</th>
                 <th className="px-4 py-3 font-medium text-slate-600">Department</th>
                 <th className="px-4 py-3 font-medium text-slate-600 text-center">Work Days</th>
@@ -95,7 +95,7 @@ export default function AttendanceMonthlyReport() {
             </thead>
             <tbody>
               {data.map((r) => (
-                <tr key={r.employeeId} className="border-b border-[#efefef] hover:bg-[#f8fafc]">
+                <tr key={r.employeeId} className="border-b border-slate-100 hover:bg-slate-50/60">
                   <td className="px-4 py-3 font-medium">{r.employeeName}</td>
                   <td className="px-4 py-3 text-slate-600">{r.department}</td>
                   <td className="px-4 py-3 text-center text-slate-600">{r.totalWorkingDays}</td>

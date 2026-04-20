@@ -223,10 +223,10 @@ export default function PayrollProcessPage() {
           </div>
 
           {/* Employees table */}
-          <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                <tr className="border-b border-slate-200/70">
                   <SortableHeader label="Employee" sortKey="name" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="left" />
                   <SortableHeader label="Department" sortKey="department" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="left" />
                   <SortableHeader label="Gross" sortKey="gross" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="right" />

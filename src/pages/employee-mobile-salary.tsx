@@ -32,12 +32,12 @@ export default function EmployeeMobileSalaryPage() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-xl border border-[#efefef] bg-white p-3 text-center">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-3 text-center">
           <Banknote className="w-5 h-5 mx-auto text-slate-500 mb-1" />
           <p className="text-xs text-slate-500">Gross</p>
           <p className="font-semibold">{formatNaira(b.grossPay)}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-3 text-center">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-3 text-center">
           <TrendingUp className="w-5 h-5 mx-auto text-slate-500 mb-1" />
           <p className="text-xs text-slate-500">Deductions</p>
           <p className="font-semibold text-red-600">{formatNaira(b.totalDeductions)}</p>
@@ -45,7 +45,7 @@ export default function EmployeeMobileSalaryPage() {
       </div>
 
       {/* Earnings Breakdown */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
         <h3 className="text-sm font-medium mb-3">Earnings</h3>
         <div className="space-y-2">
           {[
@@ -64,7 +64,7 @@ export default function EmployeeMobileSalaryPage() {
       </div>
 
       {/* Deductions Breakdown */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
         <h3 className="text-sm font-medium mb-3">Deductions</h3>
         <div className="space-y-2">
           {[
@@ -83,7 +83,7 @@ export default function EmployeeMobileSalaryPage() {
 
       {/* Recent Salary Revisions */}
       {MOCK_SALARY_REVISIONS.length > 0 && (
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <h3 className="text-sm font-medium mb-3">Salary Revisions</h3>
           <div className="space-y-3">
             {MOCK_SALARY_REVISIONS.slice(0, 2).map((rev) => (
@@ -102,7 +102,7 @@ export default function EmployeeMobileSalaryPage() {
       )}
 
       {/* Recent Payments */}
-      <div className="rounded-xl border border-[#efefef] bg-white">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
         <div className="p-4 border-b border-[#efefef]">
           <h3 className="text-sm font-medium">Recent Payments</h3>
         </div>

@@ -49,21 +49,21 @@ export default function EmployeePerformancePage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1">
             <Target className="w-4 h-4" />
             <span className="text-xs font-medium">My Goals</span>
           </div>
           <p className="text-xl font-semibold">{myGoals.length}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1">
             <CheckCircle2 className="w-4 h-4" />
             <span className="text-xs font-medium">Avg Progress</span>
           </div>
           <p className="text-xl font-semibold">{avgProgress}%</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1">
             <Clock className="w-4 h-4" />
             <span className="text-xs font-medium">Review Status</span>
@@ -72,7 +72,7 @@ export default function EmployeePerformancePage() {
             {appraisalStatus?.label ?? "No Review"}
           </p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1">
             <Star className="w-4 h-4" />
             <span className="text-xs font-medium">My Rating</span>
@@ -87,7 +87,7 @@ export default function EmployeePerformancePage() {
 
       {/* Review Status Card */}
       {myAppraisal && (
-        <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-3">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-3">
           <h2 className="text-sm font-semibold">Review Progress</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
             <div>
@@ -127,7 +127,7 @@ export default function EmployeePerformancePage() {
             {myGoals.map((goal) => {
               const style = GOAL_STATUS_STYLES[goal.status];
               return (
-                <div key={goal.id} className="rounded-xl border border-[#efefef] bg-white p-4 space-y-2">
+                <div key={goal.id} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-2">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">{goal.title}</p>

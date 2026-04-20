@@ -176,10 +176,10 @@ export default function BenefitsEnrollmentsPage() {
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-[#f8fafc] text-left">
+            <tr className="border-b border-slate-200/70 text-left">
               <th className="px-4 py-3 text-xs font-medium text-slate-500">Employee</th>
               <th className="px-4 py-3 text-xs font-medium text-slate-500">Department</th>
               <th className="px-4 py-3 text-xs font-medium text-slate-500">Plans</th>

@@ -63,7 +63,7 @@ export default function EmployeeClockInPage() {
       </div>
 
       {/* Live Clock & Action */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-8 text-center space-y-6">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-8 text-center space-y-6">
         <p className="text-sm text-slate-500">{now.toLocaleDateString("en-NG", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
         <p className="text-5xl font-bold tracking-tight tabular-nums">{formatTime(now)}</p>
 
@@ -106,7 +106,7 @@ export default function EmployeeClockInPage() {
       </div>
 
       {/* Today's Summary */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h2 className="text-sm font-semibold mb-4">Today's Summary</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="space-y-1">
@@ -129,7 +129,7 @@ export default function EmployeeClockInPage() {
       </div>
 
       {/* Recent History */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h2 className="text-sm font-semibold mb-4">Recent Attendance (Last 5 Days)</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

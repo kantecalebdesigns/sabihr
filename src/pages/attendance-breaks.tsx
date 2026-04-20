@@ -137,10 +137,10 @@ export default function AttendanceBreaksPage() {
       {/* Monitoring Section */}
       <div>
         <h2 className="text-base font-semibold mb-3">Today's Break Compliance</h2>
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#f8fafc] text-left">
+              <tr className="border-b border-slate-200/70 text-left">
                 <th className="px-4 py-3 font-medium text-slate-600">Employee</th>
                 <th className="px-4 py-3 font-medium text-slate-600">Department</th>
                 <th className="px-4 py-3 font-medium text-slate-600">Breaks Taken</th>
@@ -151,7 +151,7 @@ export default function AttendanceBreaksPage() {
             </thead>
             <tbody>
               {MOCK_BREAK_COMPLIANCE.map(row => (
-                <tr key={row.id} className="border-b border-[#efefef] hover:bg-[#f8fafc]">
+                <tr key={row.id} className="border-b border-slate-100 hover:bg-slate-50/60">
                   <td className="px-4 py-3 font-medium">{row.employee}</td>
                   <td className="px-4 py-3 text-slate-600">{row.department}</td>
                   <td className="px-4 py-3">{row.breaksTaken}</td>

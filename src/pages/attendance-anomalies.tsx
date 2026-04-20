@@ -99,7 +99,7 @@ export default function AttendanceAnomalies() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#f8fafc] text-left">
+              <tr className="border-b border-slate-200/70 text-left">
                 <th className="px-4 py-3 font-medium text-slate-600">Employee</th>
                 <th className="px-4 py-3 font-medium text-slate-600">Department</th>
                 <th className="px-4 py-3 font-medium text-slate-600">Date</th>
@@ -114,7 +114,7 @@ export default function AttendanceAnomalies() {
               {filtered.map((a) => {
                 const sevStyle = ANOMALY_SEVERITY_STYLES[a.severity];
                 return (
-                  <tr key={a.id} className="border-b border-[#efefef] hover:bg-[#f8fafc]">
+                  <tr key={a.id} className="border-b border-slate-100 hover:bg-slate-50/60">
                     <td className="px-4 py-3 font-medium">{a.employeeName}</td>
                     <td className="px-4 py-3 text-slate-600">{a.department}</td>
                     <td className="px-4 py-3 text-slate-600">{a.date}</td>

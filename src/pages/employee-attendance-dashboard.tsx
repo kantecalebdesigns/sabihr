@@ -42,7 +42,7 @@ export default function EmployeeAttendanceDashboardPage() {
       </div>
 
       {/* Today's Status Card */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-6 flex flex-col sm:flex-row items-center gap-6">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 flex flex-col sm:flex-row items-center gap-6">
         <div className="flex-1 text-center sm:text-left space-y-1">
           <p className="text-sm text-slate-500">Today</p>
           <p className="text-3xl font-bold tabular-nums">{formatTime(now)}</p>
@@ -63,7 +63,7 @@ export default function EmployeeAttendanceDashboardPage() {
           { label: "Attendance Rate", value: `${MY_SUMMARY.attendanceRate}%`, icon: TrendingUp, color: "text-blue-600" },
           { label: "Overtime Hours", value: `${MY_SUMMARY.overtimeHours}h`, icon: Clock, color: "text-violet-600" },
         ].map((stat) => (
-          <div key={stat.label} className="rounded-xl border border-[#efefef] bg-white p-4 space-y-2">
+          <div key={stat.label} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs text-slate-500">{stat.label}</span>
               <stat.icon className={cn("w-4 h-4", stat.color)} />
@@ -74,7 +74,7 @@ export default function EmployeeAttendanceDashboardPage() {
       </div>
 
       {/* Attendance Streak */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center">
             <Flame className="w-5 h-5 text-orange-500" />
@@ -92,7 +92,7 @@ export default function EmployeeAttendanceDashboardPage() {
       </div>
 
       {/* This Week */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h2 className="text-sm font-semibold mb-4">This Week</h2>
         <div className="flex items-center justify-between gap-2">
           {WEEK_DAYS.map((d) => (

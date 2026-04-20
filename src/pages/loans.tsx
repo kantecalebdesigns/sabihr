@@ -184,10 +184,10 @@ function ProductsTab() {
   return (
     <>
       <p className="text-sm text-slate-500">Configure loan products available to employees.</p>
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Product</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Description</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Interest Rate</th>
@@ -198,7 +198,7 @@ function ProductsTab() {
           </thead>
           <tbody>
             {MOCK_LOAN_PRODUCTS.map((p) => (
-              <tr key={p.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+              <tr key={p.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                 <td className="p-3 font-medium">{p.name}</td>
                 <td className="p-3 text-slate-500 text-xs max-w-[250px]">{p.description}</td>
                 <td className="p-3 text-right font-medium">{p.interestRate}%</td>
@@ -232,10 +232,10 @@ function ActiveLoansTab({ search, setSearch, navigate }: { search: string; setSe
         <Input placeholder="Search by employee or product..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Product</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Amount</th>
@@ -251,7 +251,7 @@ function ActiveLoansTab({ search, setSearch, navigate }: { search: string; setSe
               const style = LOAN_STATUS_STYLES[loan.status];
               const progress = loan.tenureMonths > 0 ? Math.round((loan.monthsPaid / loan.tenureMonths) * 100) : 0;
               return (
-                <tr key={loan.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors cursor-pointer" onClick={() => navigate(`/loans/${loan.id}`)}>
+                <tr key={loan.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer" onClick={() => navigate(`/loans/${loan.id}`)}>
                   <td className="p-3">
                     <p className="font-medium">{loan.employeeName}</p>
                     <p className="text-xs text-slate-500">{loan.department}</p>
@@ -315,10 +315,10 @@ function ApplicationsTab({ search, setSearch }: { search: string; setSearch: (v:
         <Input placeholder="Search applications..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Product</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Amount</th>
@@ -333,7 +333,7 @@ function ApplicationsTab({ search, setSearch }: { search: string; setSearch: (v:
             {filtered.map((app) => {
               const style = APPLICATION_STATUS_STYLES[app.status];
               return (
-                <tr key={app.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={app.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3">
                     <p className="font-medium">{app.employeeName}</p>
                     <p className="text-xs text-slate-500">{app.department}</p>
@@ -391,10 +391,10 @@ function AdvancesTab({ search, setSearch }: { search: string; setSearch: (v: str
         <Input placeholder="Search advances..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Employee</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Amount</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Reason</th>
@@ -407,7 +407,7 @@ function AdvancesTab({ search, setSearch }: { search: string; setSearch: (v: str
             {filtered.map((adv) => {
               const style = ADVANCE_STATUS_STYLES[adv.status];
               return (
-                <tr key={adv.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={adv.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3">
                     <p className="font-medium">{adv.employeeName}</p>
                     <p className="text-xs text-slate-500">{adv.department}</p>

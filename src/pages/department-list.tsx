@@ -6,8 +6,13 @@ import {
   Users,
   MapPin,
   Building2,
-  TrendingUp,
+  Wallet,
+  Filter,
+  Download,
+  ChevronDown,
+  MoreHorizontal,
   ArrowRightLeft,
+  TrendingUp,
   X,
   Check,
 } from "lucide-react";
@@ -24,7 +29,36 @@ import { cn } from "@/lib/utils";
 import { MOCK_DEPARTMENTS, formatBudget } from "@/lib/department-mock-data";
 import { MOCK_EMPLOYEE_LIST } from "@/lib/employee-list-mock-data";
 
-// Reassign modal
+// ── Avatar palette for HOD initials ─────────────────────────────────────
+const AVATAR_PALETTE = [
+  "bg-blue-500",
+  "bg-violet-500",
+  "bg-teal-500",
+  "bg-amber-500",
+  "bg-rose-500",
+  "bg-emerald-500",
+  "bg-indigo-500",
+  "bg-pink-500",
+  "bg-orange-500",
+  "bg-cyan-500",
+];
+
+function avatarColor(id: string): string {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  return AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+}
+
+function initials(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+// ── Reassign modal ──────────────────────────────────────────────────────
 function ReassignModal({
   departmentName,
   onClose,
@@ -51,15 +85,11 @@ function ReassignModal({
   }
 
   function toggleAll() {
-    if (selected.size === employees.length) {
-      setSelected(new Set());
-    } else {
-      setSelected(new Set(employees.map((e) => e.id)));
-    }
+    if (selected.size === employees.length) setSelected(new Set());
+    else setSelected(new Set(employees.map((e) => e.id)));
   }
 
   function handleReassign() {
-    // Mock — in real app this would call an API
     setDone(true);
     setTimeout(onClose, 1500);
   }
@@ -67,24 +97,23 @@ function ReassignModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
       <div
-        className="bg-white rounded-xl border border-[#efefef] w-full max-w-[520px] max-h-[80vh] flex flex-col"
+        className="bg-white rounded-2xl border border-slate-200/70 w-full max-w-[520px] max-h-[80vh] flex flex-col shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[#efefef]">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/70">
           <div>
             <h3 className="text-sm font-semibold text-slate-900">Reassign Employees</h3>
             <p className="text-xs text-slate-500">From {departmentName}</p>
           </div>
-          <button onClick={onClose} className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-[#f8fafc] transition-colors">
+          <button onClick={onClose} className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {done ? (
           <div className="flex flex-col items-center justify-center py-12 gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#ecfdf5] flex items-center justify-center">
-              <Check className="w-5 h-5 text-[#007a55]" />
+            <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center">
+              <Check className="w-5 h-5 text-emerald-600" />
             </div>
             <p className="text-sm font-medium text-slate-900">
               {selected.size} employee{selected.size !== 1 ? "s" : ""} reassigned
@@ -92,8 +121,7 @@ function ReassignModal({
           </div>
         ) : (
           <>
-            {/* Target department */}
-            <div className="px-5 py-3 border-b border-[#efefef]">
+            <div className="px-5 py-3 border-b border-slate-200/70">
               <label className="text-xs font-medium text-slate-500 mb-1.5 block">Move to</label>
               <Select value={targetDept} onValueChange={setTargetDept}>
                 <SelectTrigger className="w-full">
@@ -107,7 +135,6 @@ function ReassignModal({
               </Select>
             </div>
 
-            {/* Employee list */}
             <div className="flex-1 overflow-y-auto px-5 py-3">
               {employees.length === 0 ? (
                 <p className="text-sm text-slate-400 text-center py-8">No active employees in this department</p>
@@ -122,7 +149,7 @@ function ReassignModal({
                   {employees.map((emp) => (
                     <label
                       key={emp.id}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-[#f8fafc] transition-colors cursor-pointer"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-slate-50 transition-colors cursor-pointer"
                     >
                       <input
                         type="checkbox"
@@ -130,10 +157,11 @@ function ReassignModal({
                         onChange={() => toggleEmployee(emp.id)}
                         className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600"
                       />
-                      <div className="w-7 h-7 rounded-full bg-[#f8fafc] flex items-center justify-center shrink-0">
-                        <span className="text-[10px] font-medium text-slate-500">
-                          {emp.firstName[0]}{emp.lastName[0]}
-                        </span>
+                      <div className={cn(
+                        "w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[11px] font-semibold text-white",
+                        avatarColor(emp.id)
+                      )}>
+                        {emp.firstName[0]}{emp.lastName[0]}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-900 truncate">
@@ -147,13 +175,10 @@ function ReassignModal({
               )}
             </div>
 
-            {/* Footer */}
-            <div className="flex items-center justify-between px-5 py-3 border-t border-[#efefef]">
-              <p className="text-xs text-slate-500">
-                {selected.size} selected
-              </p>
+            <div className="flex items-center justify-between px-5 py-3 border-t border-slate-200/70">
+              <p className="text-xs text-slate-500">{selected.size} selected</p>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={onClose} className="border-[#efefef]">
+                <Button variant="outline" size="sm" onClick={onClose} className="border-slate-200">
                   Cancel
                 </Button>
                 <Button
@@ -173,39 +198,67 @@ function ReassignModal({
   );
 }
 
+const STATUS_PILL = {
+  active: { dot: "bg-emerald-500", pill: "bg-emerald-50 text-emerald-700" },
+  inactive: { dot: "bg-slate-400", pill: "bg-slate-100 text-slate-600" },
+} as const;
+
 export default function DepartmentListPage() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const [view, setView] = useState<"grid" | "table">("grid");
+  const [locationFilter, setLocationFilter] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<"name" | "employees" | "budget">("name");
   const [reassignDept, setReassignDept] = useState<string | null>(null);
+  const [rowMenuId, setRowMenuId] = useState<string | null>(null);
+
+  const locationCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    MOCK_DEPARTMENTS.forEach((d) => {
+      counts[d.location] = (counts[d.location] || 0) + 1;
+    });
+    return counts;
+  }, []);
+
+  const locations = useMemo(() => Object.keys(locationCounts).sort(), [locationCounts]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    if (!q) return MOCK_DEPARTMENTS;
-    return MOCK_DEPARTMENTS.filter(
-      (d) =>
+    const rows = MOCK_DEPARTMENTS.filter((d) => {
+      const matchesSearch =
+        !q ||
         d.name.toLowerCase().includes(q) ||
         d.code.toLowerCase().includes(q) ||
-        d.headOfDepartment.toLowerCase().includes(q)
-    );
-  }, [search]);
+        d.headOfDepartment.toLowerCase().includes(q);
+      const matchesLocation = locationFilter === "all" || d.location === locationFilter;
+      return matchesSearch && matchesLocation;
+    });
 
-  const totalEmployees = MOCK_DEPARTMENTS.reduce(
-    (sum, d) => sum + d.employeeCount,
-    0
-  );
+    rows.sort((a, b) => {
+      if (sortBy === "name") return a.name.localeCompare(b.name);
+      if (sortBy === "employees") return b.employeeCount - a.employeeCount;
+      return b.budget - a.budget;
+    });
+    return rows;
+  }, [search, locationFilter, sortBy]);
+
+  const totalEmployees = MOCK_DEPARTMENTS.reduce((sum, d) => sum + d.employeeCount, 0);
   const totalBudget = MOCK_DEPARTMENTS.reduce((sum, d) => sum + d.budget, 0);
+  const uniqueLocations = new Set(MOCK_DEPARTMENTS.map((d) => d.location)).size;
 
-  const summaryCards = [
-    { label: "Total Departments", value: MOCK_DEPARTMENTS.length, icon: Building2 },
-    { label: "Total Employees", value: totalEmployees, icon: Users },
-    { label: "Total Budget", value: formatBudget(totalBudget), icon: TrendingUp },
-    { label: "Locations", value: new Set(MOCK_DEPARTMENTS.map((d) => d.location)).size, icon: MapPin },
+  const kpis = [
+    { value: MOCK_DEPARTMENTS.length, label: "Total departments", icon: Building2, wellBg: "bg-blue-50", iconColor: "text-blue-600", trend: 2 },
+    { value: totalEmployees, label: "Total employees", icon: Users, wellBg: "bg-blue-50", iconColor: "text-blue-600", trend: 6 },
+    { value: formatBudget(totalBudget), label: "Total budget", icon: Wallet, wellBg: "bg-blue-50", iconColor: "text-blue-600", trend: 4 },
+    { value: uniqueLocations, label: "Locations", icon: MapPin, wellBg: "bg-blue-50", iconColor: "text-blue-600", trend: 1 },
+  ];
+
+  const chipData: Array<{ key: string; label: string; count?: number }> = [
+    { key: "all", label: "All" },
+    ...locations.map((l) => ({ key: l, label: l, count: locationCounts[l] })),
   ];
 
   return (
-    <div className="max-w-[1400px] mx-auto space-y-6">
-      {/* Reassign Modal */}
+    <div className="max-w-[1500px] space-y-5">
       {reassignDept && (
         <ReassignModal
           departmentName={reassignDept}
@@ -213,199 +266,245 @@ export default function DepartmentListPage() {
         />
       )}
 
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-slate-900">
-            Department Management
-          </h1>
-          <p className="text-sm text-slate-500">
-            {MOCK_DEPARTMENTS.length} departments &middot; {totalEmployees} employees
-          </p>
-        </div>
-        <Button
-          onClick={() => navigate("/departments/create")}
-          className="bg-blue-600 hover:bg-blue-700 text-white h-9 text-sm font-medium"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add Department
-        </Button>
+      {/* Breadcrumb + title */}
+      <div>
+        <p className="text-sm text-slate-500">Organization · Northwind Studio</p>
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900 mt-1">Departments</h1>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {summaryCards.map((card) => (
-          <div
-            key={card.label}
-            className="rounded-xl border border-[#efefef] bg-white px-[21px] pt-[21px] pb-4 flex gap-[14px] items-start"
-          >
-            <div className="w-8 h-8 rounded-full bg-[#f8fafc] flex items-center justify-center shrink-0">
-              <card.icon className="w-4 h-4 text-slate-500" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <p className="text-xs font-medium text-slate-500">{card.label}</p>
-              <p className="text-2xl font-bold tracking-[-0.6px] text-slate-900">{card.value}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="h-px bg-[#efefef]" />
-
-      {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-          <Input
-            placeholder="Search departments..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
-          />
+      {/* Chips + actions */}
+      <div className="flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-4 justify-between">
+        <div className="flex flex-wrap items-center gap-2">
+          {chipData.map((chip) => {
+            const active = locationFilter === chip.key;
+            return (
+              <button
+                key={chip.key}
+                onClick={() => setLocationFilter(chip.key)}
+                className={cn(
+                  "inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-sm font-medium transition-colors",
+                  active
+                    ? "bg-blue-600 text-white"
+                    : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+                )}
+              >
+                {chip.label}
+                {chip.count !== undefined && (
+                  <span className={cn("text-xs", active ? "text-white/80" : "text-slate-400")}>
+                    {chip.count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
-        <div className="flex items-center border border-[#efefef] rounded-lg overflow-hidden">
-          <button
-            onClick={() => setView("grid")}
-            className={cn(
-              "px-3 py-1.5 text-xs font-medium transition-colors",
-              view === "grid" ? "bg-blue-600 text-white" : "hover:bg-[#f8fafc] text-slate-500"
-            )}
+        <div className="flex items-center gap-2">
+          <Button variant="outline" className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white">
+            <Filter className="w-4 h-4 mr-1" />
+            Filters
+          </Button>
+          <Button variant="outline" className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white">
+            <Download className="w-4 h-4 mr-1" />
+            Export
+          </Button>
+          <Button
+            onClick={() => navigate("/departments/create")}
+            className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4"
           >
-            Grid
-          </button>
-          <button
-            onClick={() => setView("table")}
-            className={cn(
-              "px-3 py-1.5 text-xs font-medium transition-colors",
-              view === "table" ? "bg-blue-600 text-white" : "hover:bg-[#f8fafc] text-slate-500"
-            )}
-          >
-            Table
-          </button>
+            <Plus className="w-4 h-4 mr-1" />
+            Add department
+          </Button>
         </div>
       </div>
 
-      {/* Grid View */}
-      {view === "grid" && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((dept) => (
+      {/* KPI cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
             <div
-              key={dept.id}
-              className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4 hover:border-slate-300 transition-colors cursor-pointer"
-              onClick={() => navigate(`/departments/${dept.id}`)}
+              key={kpi.label}
+              className="rounded-2xl border border-slate-200/70 bg-white px-5 pt-5 pb-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] flex flex-col gap-7"
             >
               <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="font-semibold text-slate-900">{dept.name}</h3>
-                  <p className="text-xs text-slate-500">{dept.code}</p>
+                <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", kpi.wellBg)}>
+                  <Icon className={cn("w-[18px] h-[18px]", kpi.iconColor)} />
                 </div>
-                <span className={cn("text-xs font-medium", dept.status === "active" ? "text-[#007a55]" : "text-gray-500")}>
-                  {dept.status === "active" ? "Active" : "Inactive"}
-                </span>
-              </div>
-
-              <p className="text-xs text-[#62748e] line-clamp-2">{dept.description}</p>
-
-              <div className="flex items-center justify-between pt-3 border-t border-[#efefef]">
-                <div className="flex items-center gap-3 text-xs text-slate-500">
-                  <span className="flex items-center gap-1">
-                    <Users className="w-3.5 h-3.5" />
-                    {dept.employeeCount} employees
-                  </span>
-                  {dept.onLeaveCount > 0 && (
-                    <span className="text-[#e17100]">{dept.onLeaveCount} on leave</span>
-                  )}
+                <div className="inline-flex items-center gap-0.5 text-xs font-semibold text-emerald-600">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span>+{kpi.trend}</span>
                 </div>
-                <span className="text-xs font-medium text-slate-900">{formatBudget(dept.budget)}</span>
               </div>
-
-              <div className="pt-1" onClick={(e) => e.stopPropagation()}>
-                <button
-                  onClick={() => setReassignDept(dept.name)}
-                  className="flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
-                >
-                  <ArrowRightLeft className="w-3.5 h-3.5" />
-                  Reassign Employees
-                </button>
+              <div>
+                <p className="text-3xl font-bold tracking-tight text-slate-900 leading-none">{kpi.value}</p>
+                <p className="text-sm text-slate-500 mt-2">{kpi.label}</p>
               </div>
             </div>
-          ))}
-          {filtered.length === 0 && (
-            <div className="col-span-full text-center p-12 text-slate-400">
-              <Building2 className="w-10 h-10 mx-auto mb-3 opacity-30" />
-              <p className="font-medium text-slate-900">No departments found</p>
-              <p className="text-xs mt-1 text-slate-500">Try adjusting your search</p>
+          );
+        })}
+      </div>
+
+      {/* Table card */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between px-5 py-4 border-b border-slate-200/70">
+          <div className="flex items-center gap-3 flex-1 max-w-md">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by name, code, head..."
+                className="pl-9 bg-white border-slate-200 h-10 rounded-lg"
+              />
             </div>
-          )}
+            <p className="text-sm text-slate-500 whitespace-nowrap">{filtered.length} departments</p>
+          </div>
+          <div className="relative">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as "name" | "employees" | "budget")}
+              className="appearance-none h-10 pl-3 pr-9 rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-700 cursor-pointer"
+            >
+              <option value="name">Sort: Name</option>
+              <option value="employees">Sort: Employees</option>
+              <option value="budget">Sort: Budget</option>
+            </select>
+            <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          </div>
         </div>
-      )}
 
-      {/* Table View */}
-      {view === "table" && (
-        <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+        <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
-                <th className="p-3 text-left text-xs font-medium text-slate-500">Department</th>
-                <th className="p-3 text-left text-xs font-medium text-slate-500">Code</th>
-                <th className="p-3 text-left text-xs font-medium text-slate-500">Head of Department</th>
-                <th className="p-3 text-left text-xs font-medium text-slate-500">Employees</th>
-                <th className="p-3 text-left text-xs font-medium text-slate-500">Location</th>
-                <th className="p-3 text-right text-xs font-medium text-slate-500">Budget</th>
-                <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
-                <th className="p-3 w-20"></th>
+              <tr className="border-b border-slate-200/70">
+                <th className="w-12 pl-5 py-3">
+                  <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
+                </th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Department</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Head</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Employees</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Location</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Status</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Budget</th>
+                <th className="w-10 px-2" aria-label="Actions" />
               </tr>
             </thead>
             <tbody>
-              {filtered.map((dept) => (
-                <tr
-                  key={dept.id}
-                  className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors cursor-pointer"
-                  onClick={() => navigate(`/departments/${dept.id}`)}
-                >
-                  <td className="p-3"><span className="font-medium text-slate-900">{dept.name}</span></td>
-                  <td className="p-3 font-mono text-xs text-slate-500">{dept.code}</td>
-                  <td className="p-3">
-                    <p className="font-medium text-slate-900">{dept.headOfDepartment || "—"}</p>
-                    {dept.headTitle && <p className="text-xs text-slate-500">{dept.headTitle}</p>}
-                  </td>
-                  <td className="p-3">
-                    <span className="font-medium text-slate-900">{dept.employeeCount}</span>
-                    {dept.onLeaveCount > 0 && (
-                      <span className="text-xs text-[#e17100] ml-1">({dept.onLeaveCount} on leave)</span>
-                    )}
-                  </td>
-                  <td className="p-3 text-slate-500">{dept.location}</td>
-                  <td className="p-3 text-right font-medium text-slate-900">{formatBudget(dept.budget)}</td>
-                  <td className="p-3">
-                    <span className={cn("text-xs font-medium", dept.status === "active" ? "text-[#007a55]" : "text-gray-500")}>
-                      {dept.status === "active" ? "Active" : "Inactive"}
-                    </span>
-                  </td>
-                  <td className="p-3" onClick={(e) => e.stopPropagation()}>
-                    <button
-                      onClick={() => setReassignDept(dept.name)}
-                      className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
-                    >
-                      <ArrowRightLeft className="w-3.5 h-3.5" />
-                      Reassign
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {filtered.map((dept) => {
+                const status = STATUS_PILL[dept.status];
+                return (
+                  <tr
+                    key={dept.id}
+                    onClick={() => navigate(`/departments/${dept.id}`)}
+                    className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer"
+                  >
+                    <td className="pl-5 py-4" onClick={(e) => e.stopPropagation()}>
+                      <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
+                    </td>
+                    <td className="py-4 pr-5">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white font-semibold text-sm"
+                          style={{ backgroundColor: dept.color }}
+                        >
+                          {dept.code.slice(0, 2)}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-slate-900 leading-tight">{dept.name}</p>
+                          <p className="text-xs text-slate-500 leading-tight mt-0.5 font-mono">{dept.code}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 pr-5">
+                      {dept.headOfDepartment ? (
+                        <div className="flex items-center gap-2.5">
+                          <div className={cn(
+                            "w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[11px] font-semibold text-white",
+                            avatarColor(dept.id)
+                          )}>
+                            {initials(dept.headOfDepartment)}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-medium text-slate-900 leading-tight truncate">{dept.headOfDepartment}</p>
+                            {dept.headTitle && (
+                              <p className="text-xs text-slate-500 leading-tight mt-0.5 truncate">{dept.headTitle}</p>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <span className="text-slate-400">—</span>
+                      )}
+                    </td>
+                    <td className="py-4 pr-5">
+                      <span className="font-semibold text-slate-900">{dept.employeeCount}</span>
+                      {dept.onLeaveCount > 0 && (
+                        <span className="text-xs text-slate-500 ml-1">({dept.onLeaveCount} on leave)</span>
+                      )}
+                    </td>
+                    <td className="py-4 pr-5">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium">
+                        {dept.location}
+                      </span>
+                    </td>
+                    <td className="py-4 pr-5">
+                      <span className={cn(
+                        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium",
+                        status.pill
+                      )}>
+                        <span className={cn("w-1.5 h-1.5 rounded-full", status.dot)} />
+                        {dept.status === "active" ? "Active" : "Inactive"}
+                      </span>
+                    </td>
+                    <td className="py-4 pr-5 font-semibold text-slate-900 tabular-nums">{formatBudget(dept.budget)}</td>
+                    <td className="px-2 py-4 text-right relative" onClick={(e) => e.stopPropagation()}>
+                      <button
+                        type="button"
+                        onClick={() => setRowMenuId(rowMenuId === dept.id ? null : dept.id)}
+                        className="w-8 h-8 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 inline-flex items-center justify-center"
+                        aria-label="More actions"
+                      >
+                        <MoreHorizontal className="w-4 h-4" />
+                      </button>
+                      {rowMenuId === dept.id && (
+                        <div className="absolute right-2 top-11 w-48 rounded-xl border border-slate-200/80 bg-white shadow-lg z-10 py-1">
+                          <button
+                            onClick={() => {
+                              setRowMenuId(null);
+                              navigate(`/departments/${dept.id}`);
+                            }}
+                            className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                          >
+                            View details
+                          </button>
+                          <button
+                            onClick={() => {
+                              setRowMenuId(null);
+                              setReassignDept(dept.name);
+                            }}
+                            className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2"
+                          >
+                            <ArrowRightLeft className="w-3.5 h-3.5" />
+                            Reassign employees
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="p-12 text-center text-slate-400">
+                  <td colSpan={8} className="py-16 text-center text-slate-400">
                     <Building2 className="w-10 h-10 mx-auto mb-3 opacity-30" />
                     <p className="font-medium text-slate-900">No departments found</p>
-                    <p className="text-xs mt-1 text-slate-500">Try adjusting your search</p>
+                    <p className="text-xs mt-1 text-slate-500">Try adjusting your search or filters</p>
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
-      )}
+      </div>
     </div>
   );
 }

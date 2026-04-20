@@ -307,7 +307,7 @@ export default function EmployeeDocumentsPage() {
           {myDocuments.map((doc) => (
             <div
               key={doc.id}
-              className="rounded-xl border border-[#efefef] bg-white p-4 space-y-3"
+              className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-3"
             >
               {/* Top row: icon + name */}
               <div className="flex items-start gap-3">
@@ -367,7 +367,7 @@ export default function EmployeeDocumentsPage() {
           {companyDocuments.map((doc) => (
             <div
               key={doc.id}
-              className="rounded-xl border border-[#efefef] bg-white p-4 space-y-3"
+              className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-3"
             >
               {/* Top */}
               <div className="flex items-start gap-3">
@@ -424,7 +424,7 @@ export default function EmployeeDocumentsPage() {
           {pendingDocuments.map((doc) => (
             <div
               key={doc.id}
-              className="rounded-xl border border-[#efefef] bg-white p-5 space-y-3"
+              className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-3"
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div className="space-y-1 min-w-0 flex-1">

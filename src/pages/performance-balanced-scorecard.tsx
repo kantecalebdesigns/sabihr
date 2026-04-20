@@ -180,7 +180,7 @@ export default function PerformanceBalancedScorecardPage() {
         {PERSPECTIVES.map((perspective) => {
           const Icon = perspective.icon;
           return (
-            <div key={perspective.name} className="rounded-xl border border-[#efefef] bg-white overflow-hidden">
+            <div key={perspective.name} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
               {/* Perspective Header */}
               <div className={cn("flex items-center justify-between px-5 py-4 border-b", perspective.borderColor, perspective.bgColor)}>
                 <div className="flex items-center gap-2.5">
@@ -196,7 +196,7 @@ export default function PerformanceBalancedScorecardPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+                    <tr className="border-b border-slate-200/70">
                       <th className="p-3 text-left text-xs font-medium text-slate-500">Measure</th>
                       <th className="p-3 text-right text-xs font-medium text-slate-500">Target</th>
                       <th className="p-3 text-right text-xs font-medium text-slate-500">Actual</th>
@@ -209,7 +209,7 @@ export default function PerformanceBalancedScorecardPage() {
                       const statusCfg = STATUS_CONFIG[obj.status];
                       const StatusIcon = statusCfg.icon;
                       return (
-                        <tr key={obj.measure} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                        <tr key={obj.measure} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                           <td className="p-3 font-medium text-slate-900">{obj.measure}</td>
                           <td className="p-3 text-right text-slate-500">{obj.target}</td>
                           <td className="p-3 text-right text-slate-900">{obj.actual}</td>

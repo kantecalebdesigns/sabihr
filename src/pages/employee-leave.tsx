@@ -129,7 +129,7 @@ export default function EmployeeLeavePage() {
           return (
             <div
               key={type}
-              className="rounded-xl border border-[#efefef] bg-white p-4 flex flex-col gap-3"
+              className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 flex flex-col gap-3"
             >
               <span className="text-xs font-medium text-slate-500">
                 {LEAVE_POLICY_SUMMARY[type].label}
@@ -178,7 +178,7 @@ export default function EmployeeLeavePage() {
       </div>
 
       {/* Leave Requests Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -226,7 +226,7 @@ export default function EmployeeLeavePage() {
                   return (
                     <tr
                       key={req.id}
-                      className="border-b border-[#efefef] hover:bg-[#f8fafc]"
+                      className="border-b border-slate-100 hover:bg-slate-50/60"
                     >
                       <td className="px-4 py-3 text-sm text-slate-900">
                         {LEAVE_TYPE_LABELS[req.leaveType]}
@@ -268,7 +268,7 @@ export default function EmployeeLeavePage() {
             className="absolute inset-0 bg-black/40"
             onClick={() => setShowModal(false)}
           />
-          <div className="relative w-full max-w-md rounded-xl border border-[#efefef] bg-white p-6 shadow-xl">
+          <div className="relative w-full max-w-md rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-6 shadow-xl">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-lg font-semibold text-slate-900">
                 Request Leave

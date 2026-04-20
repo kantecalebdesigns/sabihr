@@ -25,13 +25,13 @@ export default function EmployeeMobilePayslipPage() {
           <ArrowLeft className="w-4 h-4" />Back to Payslips
         </button>
 
-        <div className="rounded-xl border border-[#efefef] bg-white p-4 text-center">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 text-center">
           <p className="text-sm text-slate-500">{selected.period}</p>
           <p className="text-3xl font-bold mt-1">{formatNaira(selected.netPay)}</p>
           <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border mt-2", style?.bg, style?.color)}>{style?.label}</span>
         </div>
 
-        <div className="rounded-xl border border-[#efefef] bg-white divide-y divide-[#efefef]">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] divide-y divide-[#efefef]">
           <div className="p-3">
             <p className="text-xs font-medium text-emerald-700 mb-2">Earnings</p>
             {selected.earnings.map((e, i) => (
@@ -117,7 +117,7 @@ export default function EmployeeMobilePayslipPage() {
             <button
               key={p.id}
               onClick={() => setSelectedPayslip(p.id)}
-              className="w-full rounded-xl border border-[#efefef] bg-white p-4 flex items-center justify-between hover:bg-[#f8fafc] transition-colors text-left"
+              className="w-full rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 flex items-center justify-between hover:bg-[#f8fafc] transition-colors text-left"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-[#f8fafc] flex items-center justify-center">

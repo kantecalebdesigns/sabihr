@@ -106,7 +106,7 @@ export default function EmployeeAttendanceHistoryPage() {
       </div>
 
       {/* Month Navigation */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <div className="flex items-center justify-between mb-4">
           <Button variant="outline" size="sm" onClick={() => setMonthOffset(monthOffset - 1)}>
             <ChevronLeft className="w-4 h-4" />

@@ -112,13 +112,13 @@ function PAYETab() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
-        <div className="p-3 border-b border-[#efefef] bg-[#f8fafc]">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
+        <div className="p-3 border-b border-slate-200/70">
           <h3 className="font-medium text-sm">Tax Bands</h3>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Band</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Income Range</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Rate</th>
@@ -126,7 +126,7 @@ function PAYETab() {
           </thead>
           <tbody>
             {config.taxBands.map((band) => (
-              <tr key={band.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+              <tr key={band.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                 <td className="p-3 font-medium">{band.description}</td>
                 <td className="p-3 text-slate-500">
                   {formatNaira(band.min)} — {band.max ? formatNaira(band.max) : "Above"}
@@ -151,10 +151,10 @@ function PensionTab() {
         <SummaryCard icon={CheckCircle2} label="Active" value={String(MOCK_PENSION_CONFIGS.filter((p) => p.status === "active").length)} />
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">PFA</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">PFA Code</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Employee %</th>
@@ -167,7 +167,7 @@ function PensionTab() {
           </thead>
           <tbody>
             {MOCK_PENSION_CONFIGS.map((p) => (
-              <tr key={p.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+              <tr key={p.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                 <td className="p-3 font-medium">{p.pfa}</td>
                 <td className="p-3 text-slate-500">{p.pfaCode}</td>
                 <td className="p-3">{p.employeeRate}%</td>
@@ -209,10 +209,10 @@ function StatutoryBodiesTab() {
         })}
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Body</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Code</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Rate</th>
@@ -227,7 +227,7 @@ function StatutoryBodiesTab() {
             {MOCK_STATUTORY_BODIES.map((body) => {
               const style = COMPLIANCE_STATUS_STYLES[body.complianceStatus];
               return (
-                <tr key={body.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={body.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{body.name}</td>
                   <td className="p-3 text-slate-500">{body.code}</td>
                   <td className="p-3">{body.rate}%</td>
@@ -291,10 +291,10 @@ function ComplianceOverviewTab() {
         </Select>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Body</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Period</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Amount Due</th>
@@ -309,7 +309,7 @@ function ComplianceOverviewTab() {
             {filtered.map((item) => {
               const style = PAYMENT_STATUS_STYLES[item.status];
               return (
-                <tr key={item.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+                <tr key={item.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                   <td className="p-3 font-medium">{item.body}</td>
                   <td className="p-3 text-slate-500">{item.period}</td>
                   <td className="p-3">{formatNaira(item.amountDue)}</td>

@@ -136,7 +136,7 @@ export default function AttendanceOvertime() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#f8fafc] text-left">
+              <tr className="border-b border-slate-200/70 text-left">
                 <th className="px-4 py-3 font-medium text-slate-600">Employee</th>
                 <th className="px-4 py-3 font-medium text-slate-600">Department</th>
                 <th className="px-4 py-3 font-medium text-slate-600">Date</th>
@@ -157,7 +157,7 @@ export default function AttendanceOvertime() {
                 const workflow = MOCK_OVERTIME_WORKFLOWS[r.id];
                 return (
                   <React.Fragment key={r.id}>
-                  <tr className="border-b border-[#efefef] hover:bg-[#f8fafc] cursor-pointer" onClick={() => workflow && setExpandedRow(expandedRow === r.id ? null : r.id)}>
+                  <tr className="border-b border-slate-100 hover:bg-slate-50/60 cursor-pointer" onClick={() => workflow && setExpandedRow(expandedRow === r.id ? null : r.id)}>
                     <td className="px-4 py-3 font-medium">{r.employeeName}</td>
                     <td className="px-4 py-3 text-slate-600">{r.department}</td>
                     <td className="px-4 py-3 text-slate-600">{r.date}</td>

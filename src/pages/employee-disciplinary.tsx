@@ -99,7 +99,7 @@ export default function EmployeeDisciplinaryPage() {
   const myCases = allCases.filter((c) => c.employeeId === EMPLOYEE_ID);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] p-6 space-y-6">
+    <div className="min-h-screen bg-[#eff6ff] p-6 space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-semibold text-slate-900">
@@ -124,7 +124,7 @@ export default function EmployeeDisciplinaryPage() {
           {myCases.map((c) => (
             <div
               key={c.id}
-              className="rounded-xl border border-[#efefef] bg-white p-5 space-y-3"
+              className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-3"
             >
               {/* Top row: offence + badges */}
               <div className="flex flex-wrap items-center gap-2">

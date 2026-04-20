@@ -109,7 +109,7 @@ export default function EmployeeAssetReportIssuePage() {
                     key={asset.id}
                     onClick={() => setSelectedAssetId(asset.id)}
                     className={cn(
-                      "flex items-center gap-3 rounded-xl border border-[#efefef] bg-white p-4 text-left transition-colors hover:bg-[#f8fafc]",
+                      "flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 text-left transition-colors hover:bg-[#f8fafc]",
                       selected && "border-primary bg-primary/5 ring-1 ring-primary"
                     )}
                   >
@@ -137,7 +137,7 @@ export default function EmployeeAssetReportIssuePage() {
                     key={it.value}
                     onClick={() => setIssueType(it.value)}
                     className={cn(
-                      "flex flex-col items-center gap-2 rounded-xl border border-[#efefef] bg-white p-4 text-sm transition-colors hover:bg-[#f8fafc]",
+                      "flex flex-col items-center gap-2 rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 text-sm transition-colors hover:bg-[#f8fafc]",
                       selected && "border-primary bg-primary/5 ring-1 ring-primary"
                     )}
                   >
@@ -163,7 +163,7 @@ export default function EmployeeAssetReportIssuePage() {
               placeholder="Describe what happened..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="flex w-full rounded-xl border border-[#efefef] bg-white px-3 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring resize-none"
+              className="flex w-full rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-3 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-ring resize-none"
             />
           </div>
 

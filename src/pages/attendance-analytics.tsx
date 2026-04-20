@@ -103,7 +103,7 @@ export default function AttendanceAnalytics() {
           <h2 className="mb-4 text-sm font-semibold">Lateness Trends by Day of Week</h2>
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#f8fafc] text-left">
+              <tr className="border-b border-slate-200/70 text-left">
                 <th className="px-4 py-2 font-medium text-slate-600">Day</th>
                 <th className="px-4 py-2 font-medium text-slate-600 text-center">Late Count</th>
                 <th className="px-4 py-2 font-medium text-slate-600 text-right">% of Employees</th>
@@ -130,7 +130,7 @@ export default function AttendanceAnalytics() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#f8fafc] text-left">
+              <tr className="border-b border-slate-200/70 text-left">
                 <th className="px-4 py-3 font-medium text-slate-600">Department</th>
                 <th className="px-4 py-3 font-medium text-slate-600 text-center">Total Employees</th>
                 <th className="px-4 py-3 font-medium text-slate-600 text-right">Absence Rate</th>
@@ -144,7 +144,7 @@ export default function AttendanceAnalytics() {
                 const lateRate = ((dept.late / dept.totalEmployees) * 100).toFixed(1);
                 const trend = trendIndicator(parseFloat(absenceRate) + parseFloat(lateRate));
                 return (
-                  <tr key={dept.department} className="border-b border-[#efefef] hover:bg-[#f8fafc]">
+                  <tr key={dept.department} className="border-b border-slate-100 hover:bg-slate-50/60">
                     <td className="px-4 py-3 font-medium">{dept.department}</td>
                     <td className="px-4 py-3 text-center text-slate-600">{dept.totalEmployees}</td>
                     <td className="px-4 py-3 text-right text-slate-600">{absenceRate}%</td>

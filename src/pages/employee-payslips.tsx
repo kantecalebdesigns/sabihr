@@ -72,25 +72,25 @@ function CurrentPayslip() {
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Banknote className="w-4 h-4" /><span className="text-xs font-medium">Gross Pay</span></div>
           <p className="text-xl font-semibold">{formatNaira(payslip.grossPay)}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><DollarSign className="w-4 h-4" /><span className="text-xs font-medium">Net Pay</span></div>
           <p className="text-xl font-semibold">{formatNaira(payslip.netPay)}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><TrendingUp className="w-4 h-4" /><span className="text-xs font-medium">Deductions</span></div>
           <p className="text-xl font-semibold text-red-600">{formatNaira(payslip.totalDeductions)}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Calendar className="w-4 h-4" /><span className="text-xs font-medium">Pay Date</span></div>
           <p className="text-xl font-semibold">{payslip.payDate}</p>
         </div>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
         <div className="p-4 border-b border-[#efefef] flex items-center justify-between">
           <div>
             <h3 className="font-medium">{payslip.period} Payslip</h3>
@@ -177,7 +177,7 @@ function PayslipHistory() {
         {filtered.map((p) => {
           const style = PAYSLIP_STATUS_STYLES[p.status];
           return (
-            <div key={p.id} className="rounded-xl border border-[#efefef] bg-white p-4 hover:shadow-sm transition-shadow">
+            <div key={p.id} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4 hover:shadow-sm transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-[#f8fafc] flex items-center justify-center">
@@ -226,7 +226,7 @@ function SalaryBreakdown() {
 
   return (
     <>
-      <div className="rounded-xl border border-[#efefef] bg-white p-4">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
         <div className="grid grid-cols-3 gap-4 text-sm">
           <div><span className="text-slate-500">Pay Grade:</span><br /><span className="font-medium">{b.payGrade}</span></div>
           <div><span className="text-slate-500">Structure:</span><br /><span className="font-medium">{b.salaryStructure}</span></div>
@@ -235,7 +235,7 @@ function SalaryBreakdown() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="rounded-xl border border-[#efefef] bg-white p-5">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
           <h3 className="text-sm font-medium text-slate-900 mb-4">Earnings Breakdown</h3>
           <div className="space-y-3">
             {earningsItems.map((item, i) => (
@@ -256,7 +256,7 @@ function SalaryBreakdown() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-[#efefef] bg-white p-5">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
           <h3 className="text-sm font-medium text-red-700 mb-4">Deductions Breakdown</h3>
           <div className="space-y-3">
             {deductionItems.map((item, i) => (
@@ -278,7 +278,7 @@ function SalaryBreakdown() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white p-5 text-center">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 text-center">
         <p className="text-sm text-slate-500 mb-1">Monthly Net Pay</p>
         <p className="text-3xl font-bold text-slate-900">{formatNaira(b.netPay)}</p>
       </div>
@@ -293,7 +293,7 @@ function RevisionHistory() {
 
       <div className="space-y-4">
         {MOCK_SALARY_REVISIONS.map((rev) => (
-          <div key={rev.id} className="rounded-xl border border-[#efefef] bg-white p-5">
+          <div key={rev.id} className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
             <div className="flex items-center justify-between mb-3">
               <div>
                 <h4 className="font-medium">Effective: {rev.effectiveDate}</h4>

@@ -268,10 +268,10 @@ function RolesPermissionsTab() {
         <Button size="sm"><Plus className="w-4 h-4 mr-1" /> Create Role</Button>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Role Name</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Description</th>
               <th className="p-3 text-center text-xs font-medium text-slate-500">Users</th>
@@ -281,7 +281,7 @@ function RolesPermissionsTab() {
           </thead>
           <tbody>
             {filtered.map((role) => (
-              <tr key={role.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+              <tr key={role.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                 <td className="p-3 font-medium text-slate-900">{role.name}</td>
                 <td className="p-3 text-slate-500">{role.description}</td>
                 <td className="p-3 text-center">
@@ -588,7 +588,7 @@ function BillingTab() {
         <div className="rounded-xl border border-[#efefef] overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+              <tr className="border-b border-slate-200/70">
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Date</th>
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Description</th>
                 <th className="p-3 text-right text-xs font-medium text-slate-500">Amount</th>
@@ -601,7 +601,7 @@ function BillingTab() {
                 { date: "Mar 1, 2026", desc: "Professional Plan — Monthly", amount: "₦15,000", status: "Paid" },
                 { date: "Feb 1, 2026", desc: "Professional Plan — Monthly", amount: "₦15,000", status: "Paid" },
               ].map((inv, i) => (
-                <tr key={i} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc]">
+                <tr key={i} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60">
                   <td className="p-3 text-slate-600">{inv.date}</td>
                   <td className="p-3 text-slate-900">{inv.desc}</td>
                   <td className="p-3 text-right font-medium text-slate-900">{inv.amount}</td>
@@ -681,10 +681,10 @@ function AuditLogsTab() {
         </select>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">User</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Action</th>
               <th className="p-3 text-left text-xs font-medium text-slate-500">Module</th>
@@ -694,7 +694,7 @@ function AuditLogsTab() {
           </thead>
           <tbody>
             {filtered.map((log) => (
-              <tr key={log.id} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+              <tr key={log.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                 <td className="p-3 font-medium text-slate-900">{log.user}</td>
                 <td className="p-3 text-slate-600">{log.action}</td>
                 <td className="p-3">

@@ -44,6 +44,7 @@ export interface RecentActivity {
   description: string;
   employee: string;
   timestamp: string;
+  photo?: string;
 }
 
 export type AlertSeverity = "warning" | "info" | "urgent";
@@ -53,6 +54,44 @@ export interface DashboardAlert {
   severity: AlertSeverity;
   title: string;
   description: string;
+}
+
+export type QuickActionKey =
+  | "add_employee"
+  | "approve_leave"
+  | "run_payroll"
+  | "post_announcement"
+  | "new_asset";
+
+export interface QuickAction {
+  key: QuickActionKey;
+  label: string;
+  icon: LucideIcon;
+  count?: number;
+  countLabel?: string;
+  path: string;
+  iconBg: string;
+  iconColor: string;
+}
+
+export type PendingApprovalType = "leave" | "expense" | "document" | "loan";
+
+export interface PendingApproval {
+  id: string;
+  employeeName: string;
+  initials: string;
+  avatarColor: string;
+  type: PendingApprovalType;
+  summary: string;
+  submittedAt: string;
+}
+
+export interface OnLeaveToday {
+  id: string;
+  name: string;
+  initials: string;
+  avatarColor: string;
+  returns: string;
 }
 
 export interface NavItem {

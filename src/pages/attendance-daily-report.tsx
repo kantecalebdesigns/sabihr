@@ -1,11 +1,56 @@
 import { useState, useMemo } from "react";
-import { Download, Users, Clock, AlertTriangle, CalendarDays } from "lucide-react";
+import {
+  Download,
+  Users,
+  Clock,
+  AlertTriangle,
+  Filter,
+  ChevronDown,
+  MoreHorizontal,
+  BarChart3,
+  TrendingUp,
+  TrendingDown,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  MOCK_ATTENDANCE_RECORDS,
-  ATTENDANCE_STATUS_STYLES,
-} from "@/lib/attendance-mock-data";
+import { MOCK_ATTENDANCE_RECORDS } from "@/lib/attendance-mock-data";
+import type { AttendanceStatus } from "@/lib/attendance-mock-data";
+
+const AVATAR_PALETTE = [
+  "bg-blue-500",
+  "bg-violet-500",
+  "bg-teal-500",
+  "bg-amber-500",
+  "bg-rose-500",
+  "bg-emerald-500",
+  "bg-indigo-500",
+  "bg-pink-500",
+  "bg-orange-500",
+  "bg-cyan-500",
+];
+
+function avatarColor(id: string): string {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  return AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+}
+
+function initialsOf(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+const STATUS_PILL: Record<AttendanceStatus, { dot: string; pill: string; label: string }> = {
+  present: { dot: "bg-emerald-500", pill: "bg-emerald-50 text-emerald-700", label: "Present" },
+  late: { dot: "bg-amber-500", pill: "bg-amber-50 text-amber-700", label: "Late" },
+  absent: { dot: "bg-rose-500", pill: "bg-rose-50 text-rose-700", label: "Absent" },
+  "on-leave": { dot: "bg-blue-500", pill: "bg-blue-50 text-blue-700", label: "On leave" },
+  "half-day": { dot: "bg-violet-500", pill: "bg-violet-50 text-violet-700", label: "Half day" },
+};
 
 export default function AttendanceDailyReport() {
   const [selectedDate, setSelectedDate] = useState("2026-03-24");
@@ -18,117 +63,208 @@ export default function AttendanceDailyReport() {
 
   const filtered = useMemo(() => {
     return MOCK_ATTENDANCE_RECORDS.filter((r) => {
-      const matchesDept = departmentFilter === "all" || r.department === departmentFilter;
-      return matchesDept;
+      return departmentFilter === "all" || r.department === departmentFilter;
     });
   }, [departmentFilter]);
 
   const presentCount = filtered.filter((r) => r.status === "present").length;
   const lateCount = filtered.filter((r) => r.status === "late").length;
   const absentCount = filtered.filter((r) => r.status === "absent").length;
-  const onLeaveCount = filtered.filter((r) => r.status === "on-leave").length;
   const attendanceRate =
     filtered.length > 0
       ? (((presentCount + lateCount) / filtered.length) * 100).toFixed(1)
       : "0";
 
-  const summaryCards = [
-    { label: "Present", value: presentCount, icon: Users, color: "text-emerald-600", bg: "bg-emerald-50" },
-    { label: "Late", value: lateCount, icon: Clock, color: "text-amber-600", bg: "bg-amber-50" },
-    { label: "Absent", value: absentCount, icon: AlertTriangle, color: "text-red-600", bg: "bg-red-50" },
-    { label: "On Leave", value: onLeaveCount, icon: CalendarDays, color: "text-blue-600", bg: "bg-blue-50" },
-    { label: "Attendance Rate", value: `${attendanceRate}%`, icon: Users, color: "text-violet-600", bg: "bg-violet-50" },
+  const kpis = [
+    { value: `${attendanceRate}%`, label: "Attendance rate", icon: Users, trend: 1.2, trendDirection: "up" as const },
+    { value: presentCount, label: "Present", icon: Users, trend: 4, trendDirection: "up" as const },
+    { value: lateCount, label: "Late", icon: Clock, trend: 2, trendDirection: "down" as const },
+    { value: absentCount, label: "Absent", icon: AlertTriangle, trend: 1, trendDirection: "down" as const },
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">Daily Attendance Report</h1>
-          <p className="text-sm text-slate-500">View attendance records for a specific date</p>
-        </div>
-        <Button variant="outline" className="gap-2">
-          <Download className="h-4 w-4" />
-          Export Report
-        </Button>
-      </div>
+    <div className="max-w-[1500px] space-y-5">
+      {/* Banner */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#1d4ed8] text-white">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-6 px-6 py-7 sm:px-8 sm:py-8">
+          <div className="flex-1 min-w-0 space-y-3">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[11px] font-medium">
+              <BarChart3 className="w-3 h-3" />
+              Reports · Northwind Studio
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Daily attendance report</h1>
+            <p className="text-sm text-white/85 max-w-xl leading-relaxed">
+              A point-in-time snapshot of who was in, late, or absent. Use the{" "}
+              <span className="font-semibold text-white">date and department filters</span> to drill
+              in, then export as CSV for finance or compliance review.
+            </p>
+          </div>
 
-      {/* Filters */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <input
-          type="date"
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-          className="rounded-lg border border-[#efefef] bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200"
-        />
-        <select
-          value={departmentFilter}
-          onChange={(e) => setDepartmentFilter(e.target.value)}
-          className="rounded-lg border border-[#efefef] bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200"
-        >
-          <option value="all">All Departments</option>
-          {departments.map((d) => (
-            <option key={d} value={d}>{d}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Summary Row */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        {summaryCards.map((card) => (
-          <div key={card.label} className="rounded-xl border border-[#efefef] bg-white p-4">
-            <div className="flex items-center gap-3">
-              <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg", card.bg)}>
-                <card.icon className={cn("h-5 w-5", card.color)} />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500">{card.label}</p>
-                <p className="text-lg font-semibold">{card.value}</p>
+          <div className="hidden sm:flex shrink-0 w-48 h-36 relative">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute top-0 right-4 w-24 h-24 rounded-2xl bg-white/15 backdrop-blur rotate-6" />
+              <div className="absolute bottom-0 right-14 w-20 h-20 rounded-2xl bg-white/20 backdrop-blur -rotate-12" />
+              <div className="absolute top-4 right-16 w-16 h-16 rounded-xl bg-white/25 backdrop-blur rotate-12 flex items-center justify-center">
+                <BarChart3 className="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
-        ))}
+        </div>
+
+        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
+        <div className="absolute -bottom-20 left-1/3 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
       </div>
 
-      {/* Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white">
+      {/* Actions */}
+      <div className="flex items-center justify-end gap-2">
+        <Button variant="outline" className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white">
+          <Filter className="w-4 h-4 mr-1" />
+          Filters
+        </Button>
+        <Button variant="outline" className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white">
+          <Download className="w-4 h-4 mr-1" />
+          Export
+        </Button>
+      </div>
+
+      {/* KPI cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          const up = kpi.trendDirection === "up";
+          return (
+            <div
+              key={kpi.label}
+              className="rounded-2xl border border-slate-200/70 bg-white px-5 pt-5 pb-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] flex flex-col gap-7"
+            >
+              <div className="flex items-start justify-between">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                  <Icon className="w-[18px] h-[18px] text-blue-600" />
+                </div>
+                <div className={cn("inline-flex items-center gap-0.5 text-xs font-semibold", up ? "text-emerald-600" : "text-rose-600")}>
+                  {up ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
+                  <span>
+                    {up ? "+" : "-"}
+                    {kpi.trend}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <p className="text-3xl font-bold tracking-tight text-slate-900 leading-none">{kpi.value}</p>
+                <p className="text-sm text-slate-500 mt-2">{kpi.label}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Table card */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between px-5 py-4 border-b border-slate-200/70">
+          <div className="flex items-center gap-3">
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700"
+            />
+            <div className="relative">
+              <select
+                value={departmentFilter}
+                onChange={(e) => setDepartmentFilter(e.target.value)}
+                className="appearance-none h-10 pl-3 pr-9 rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-700 cursor-pointer"
+              >
+                <option value="all">All departments</option>
+                {departments.map((d) => (
+                  <option key={d} value={d}>{d}</option>
+                ))}
+              </select>
+              <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+          </div>
+          <p className="text-sm text-slate-500 whitespace-nowrap">{filtered.length} records</p>
+        </div>
+
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#f8fafc] text-left">
-                <th className="px-4 py-3 font-medium text-slate-600">Employee</th>
-                <th className="px-4 py-3 font-medium text-slate-600">Department</th>
-                <th className="px-4 py-3 font-medium text-slate-600">Clock In</th>
-                <th className="px-4 py-3 font-medium text-slate-600">Clock Out</th>
-                <th className="px-4 py-3 font-medium text-slate-600">Hours Worked</th>
-                <th className="px-4 py-3 font-medium text-slate-600">Status</th>
-                <th className="px-4 py-3 font-medium text-slate-600">Location</th>
+              <tr className="border-b border-slate-200/70">
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pl-5 pr-5">Employee</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Department</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Clock in</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Clock out</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Hours</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Status</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Location</th>
+                <th className="w-10 px-2" aria-label="Actions" />
               </tr>
             </thead>
             <tbody>
               {filtered.map((r) => {
-                const style = ATTENDANCE_STATUS_STYLES[r.status];
+                const status = STATUS_PILL[r.status];
                 return (
-                  <tr key={r.id} className="border-b border-[#efefef] hover:bg-[#f8fafc]">
-                    <td className="px-4 py-3 font-medium">{r.employeeName}</td>
-                    <td className="px-4 py-3 text-slate-600">{r.department}</td>
-                    <td className="px-4 py-3 text-slate-600">{r.clockIn ?? "—"}</td>
-                    <td className="px-4 py-3 text-slate-600">{r.clockOut ?? "—"}</td>
-                    <td className="px-4 py-3 text-slate-600">{r.hoursWorked != null ? `${r.hoursWorked}h` : "—"}</td>
-                    <td className="px-4 py-3">
-                      <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium", style.bg, style.color)}>
-                        {style.label}
+                  <tr
+                    key={r.id}
+                    className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors"
+                  >
+                    <td className="py-4 pl-5 pr-5">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={cn(
+                            "w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-white font-semibold text-sm",
+                            avatarColor(r.id)
+                          )}
+                        >
+                          {initialsOf(r.employeeName)}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-slate-900 leading-tight">{r.employeeName}</p>
+                          <p className="text-xs text-slate-500 leading-tight mt-0.5">{r.employeeId}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 pr-5">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium">
+                        {r.department}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">{r.location}</td>
+                    <td className="py-4 pr-5 font-mono text-xs text-slate-700">
+                      {r.clockIn ?? <span className="text-slate-400">—</span>}
+                    </td>
+                    <td className="py-4 pr-5 font-mono text-xs text-slate-700">
+                      {r.clockOut ?? <span className="text-slate-400">—</span>}
+                    </td>
+                    <td className="py-4 pr-5">
+                      {r.hoursWorked != null ? (
+                        <span className="font-semibold text-slate-900 tabular-nums">{r.hoursWorked.toFixed(1)}h</span>
+                      ) : (
+                        <span className="text-slate-400">—</span>
+                      )}
+                    </td>
+                    <td className="py-4 pr-5">
+                      <span className={cn("inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium", status.pill)}>
+                        <span className={cn("w-1.5 h-1.5 rounded-full", status.dot)} />
+                        {status.label}
+                      </span>
+                    </td>
+                    <td className="py-4 pr-5 text-slate-600 text-xs">{r.location}</td>
+                    <td className="px-2 py-4 text-right">
+                      <button
+                        type="button"
+                        className="w-8 h-8 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 inline-flex items-center justify-center"
+                      >
+                        <MoreHorizontal className="w-4 h-4" />
+                      </button>
+                    </td>
                   </tr>
                 );
               })}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-slate-400">
-                    No records found.
+                  <td colSpan={8} className="py-16 text-center text-slate-400">
+                    <Clock className="w-10 h-10 mx-auto mb-3 opacity-30" />
+                    <p className="font-medium text-slate-900">No records found</p>
+                    <p className="text-xs mt-1 text-slate-500">Try a different date or department</p>
                   </td>
                 </tr>
               )}

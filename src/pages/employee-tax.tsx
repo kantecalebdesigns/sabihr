@@ -57,26 +57,26 @@ function TaxSummaryTab() {
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><DollarSign className="w-4 h-4" /><span className="text-xs font-medium">Taxable Income (YTD)</span></div>
           <p className="text-xl font-semibold">{formatNaira(tax.totalTaxableIncome)}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Landmark className="w-4 h-4" /><span className="text-xs font-medium">Tax Paid (YTD)</span></div>
           <p className="text-xl font-semibold text-red-600">{formatNaira(tax.totalTaxPaid)}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Percent className="w-4 h-4" /><span className="text-xs font-medium">Effective Tax Rate</span></div>
           <p className="text-xl font-semibold">{tax.effectiveTaxRate}%</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><FileText className="w-4 h-4" /><span className="text-xs font-medium">Tax Certificate</span></div>
           <p className="text-sm font-medium">{tax.certificateAvailable ? "Available" : "Not yet available"}</p>
           <p className="text-[10px] text-slate-500">Generated after year-end</p>
         </div>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h3 className="font-medium mb-4">Tax Relief Summary ({tax.year})</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
           <div><span className="text-slate-500">Consolidated Relief</span><br /><span className="font-medium">{formatNaira(tax.consolidatedRelief)}</span></div>
@@ -86,13 +86,13 @@ function TaxSummaryTab() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
-        <div className="p-3 border-b border-[#efefef] bg-[#f8fafc]">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
+        <div className="p-3 border-b border-slate-200/70">
           <h3 className="font-medium text-sm">Monthly Tax Breakdown</h3>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Month</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Taxable Income</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Tax Paid</th>
@@ -100,7 +100,7 @@ function TaxSummaryTab() {
           </thead>
           <tbody>
             {tax.monthlyBreakdown.map((m, i) => (
-              <tr key={i} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+              <tr key={i} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                 <td className="p-3 font-medium">{m.month}</td>
                 <td className="p-3 text-right">{formatNaira(m.taxableIncome)}</td>
                 <td className="p-3 text-right text-red-600">-{formatNaira(m.taxPaid)}</td>
@@ -123,32 +123,32 @@ function PensionTab() {
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Building2 className="w-4 h-4" /><span className="text-xs font-medium">PFA</span></div>
           <p className="text-sm font-semibold">{pen.pfa}</p>
           <p className="text-[10px] text-slate-500">RSA: {pen.rsaNumber}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><DollarSign className="w-4 h-4" /><span className="text-xs font-medium">Total Balance</span></div>
           <p className="text-xl font-semibold">{formatNaira(pen.totalBalance)}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Shield className="w-4 h-4" /><span className="text-xs font-medium">YTD Employee</span></div>
           <p className="text-xl font-semibold">{formatNaira(pen.ytdEmployee)}</p>
         </div>
-        <div className="rounded-xl border border-[#efefef] bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-4">
           <div className="flex items-center gap-2 text-slate-500 mb-1"><Shield className="w-4 h-4" /><span className="text-xs font-medium">YTD Employer</span></div>
           <p className="text-xl font-semibold">{formatNaira(pen.ytdEmployer)}</p>
         </div>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white overflow-x-auto">
-        <div className="p-3 border-b border-[#efefef] bg-[#f8fafc]">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
+        <div className="p-3 border-b border-slate-200/70">
           <h3 className="font-medium text-sm">Monthly Pension Contributions</h3>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#efefef] bg-[#f8fafc]">
+            <tr className="border-b border-slate-200/70">
               <th className="p-3 text-left text-xs font-medium text-slate-500">Month</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Employee (8%)</th>
               <th className="p-3 text-right text-xs font-medium text-slate-500">Employer (10%)</th>
@@ -157,7 +157,7 @@ function PensionTab() {
           </thead>
           <tbody>
             {pen.monthlyBreakdown.map((m, i) => (
-              <tr key={i} className="border-b border-[#efefef] last:border-0 hover:bg-[#f8fafc] transition-colors">
+              <tr key={i} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                 <td className="p-3 font-medium">{m.month}</td>
                 <td className="p-3 text-right">{formatNaira(m.employee)}</td>
                 <td className="p-3 text-right">{formatNaira(m.employer)}</td>
@@ -168,7 +168,7 @@ function PensionTab() {
         </table>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
         <h3 className="font-medium mb-4">Other Statutory Deductions</h3>
         <div className="space-y-3">
           {MOCK_STATUTORY_DEDUCTIONS.map((d, i) => (

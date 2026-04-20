@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AlertTriangle, MapPin, X } from "lucide-react";
+import { AlertTriangle, MapPin, X, Sparkles } from "lucide-react";
 import { MOCK_EMPLOYEE_PROFILE } from "@/lib/employee-mock-data";
 
 function getGreeting(): string {
@@ -26,33 +26,41 @@ export function WelcomeBanner() {
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-4">
-        <div className="flex-1 min-w-0">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            {getGreeting()}, {employee.basicDetails.firstName}
-          </h1>
-          <div className="flex items-center gap-3 mt-1">
-            <p className="text-sm text-slate-500">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#1d4ed8] text-white">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-6 px-6 py-7 sm:px-8 sm:py-8">
+          <div className="flex-1 min-w-0 space-y-3">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[11px] font-medium">
+              <Sparkles className="w-3 h-3" />
+              {employee.employment.employeeId} · {new Date().toLocaleDateString("en-NG", { weekday: "long", day: "numeric", month: "long" })}
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+              {getGreeting()}, {employee.basicDetails.firstName}
+            </h1>
+            <p className="text-sm text-white/85 max-w-xl leading-relaxed">
               {employee.employment.jobTitle} · {employee.employment.department}
+              <span className="hidden sm:inline">
+                {" · "}
+                <span className="inline-flex items-center gap-1">
+                  <MapPin className="w-3 h-3" />
+                  {employee.employment.workLocation}
+                </span>
+              </span>
             </p>
-            <span className="hidden sm:flex items-center gap-1 text-xs text-slate-400">
-              <MapPin className="w-3 h-3" />
-              {employee.employment.workLocation}
-            </span>
+          </div>
+
+          <div className="hidden sm:flex shrink-0 w-48 h-36 relative">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute top-0 right-4 w-24 h-24 rounded-2xl bg-white/15 backdrop-blur rotate-6" />
+              <div className="absolute bottom-0 right-14 w-20 h-20 rounded-2xl bg-white/20 backdrop-blur -rotate-12" />
+              <div className="absolute top-4 right-16 w-16 h-16 rounded-xl bg-white/25 backdrop-blur rotate-12 flex items-center justify-center">
+                <Sparkles className="w-7 h-7 text-white" />
+              </div>
+            </div>
           </div>
         </div>
-        <div className="hidden sm:block text-right">
-          <p className="text-sm font-medium text-slate-900">
-            {new Date().toLocaleDateString("en-NG", {
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-            })}
-          </p>
-          <p className="text-xs text-slate-500">
-            {employee.employment.employeeId}
-          </p>
-        </div>
+
+        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
+        <div className="absolute -bottom-20 left-1/3 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
       </div>
 
       {expiringDocs > 0 && !bannerDismissed && (
