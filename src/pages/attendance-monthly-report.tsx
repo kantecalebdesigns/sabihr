@@ -1,8 +1,45 @@
 import { useState } from "react";
-import { Download, TrendingUp, Calendar, Clock, Award } from "lucide-react";
+import {
+  Download,
+  TrendingUp,
+  Calendar,
+  Clock,
+  Award,
+  BarChart3,
+  Filter,
+  MoreHorizontal,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { MOCK_MONTHLY_SUMMARY } from "@/lib/attendance-extended-mock-data";
+
+const AVATAR_PALETTE = [
+  "bg-blue-500",
+  "bg-violet-500",
+  "bg-teal-500",
+  "bg-amber-500",
+  "bg-rose-500",
+  "bg-emerald-500",
+  "bg-indigo-500",
+  "bg-pink-500",
+  "bg-orange-500",
+  "bg-cyan-500",
+];
+
+function avatarColor(id: string): string {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  return AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+}
+
+function initialsOf(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
 
 export default function AttendanceMonthlyReport() {
   const [selectedMonth, setSelectedMonth] = useState("2026-03");
@@ -20,96 +57,162 @@ export default function AttendanceMonthlyReport() {
     data[0]
   );
 
-  const summaryCards = [
-    { label: "Avg Attendance Rate", value: `${avgAttendance}%`, icon: TrendingUp, color: "text-emerald-600", bg: "bg-emerald-50" },
-    { label: "Total Work Days", value: totalWorkDays, icon: Calendar, color: "text-blue-600", bg: "bg-blue-50" },
-    { label: "Total Overtime Hours", value: `${totalOvertime}h`, icon: Clock, color: "text-amber-600", bg: "bg-amber-50" },
-    { label: "Top Performer", value: topPerformer?.employeeName ?? "—", icon: Award, color: "text-violet-600", bg: "bg-violet-50" },
+  const kpis = [
+    { value: `${avgAttendance}%`, label: "Avg attendance rate", icon: TrendingUp },
+    { value: totalWorkDays, label: "Work days", icon: Calendar },
+    { value: `${totalOvertime}h`, label: "Total overtime", icon: Clock },
+    { value: topPerformer?.employeeName.split(" ")[0] ?? "—", label: "Top performer", icon: Award },
   ];
 
-  function rateColor(rate: number) {
-    if (rate >= 95) return "text-emerald-700 bg-emerald-50";
-    if (rate >= 85) return "text-amber-700 bg-amber-50";
-    return "text-red-700 bg-red-50";
+  function ratePill(rate: number): string {
+    if (rate >= 95) return "bg-emerald-50 text-emerald-700";
+    if (rate >= 85) return "bg-amber-50 text-amber-700";
+    return "bg-rose-50 text-rose-700";
+  }
+  function rateDot(rate: number): string {
+    if (rate >= 95) return "bg-emerald-500";
+    if (rate >= 85) return "bg-amber-500";
+    return "bg-rose-500";
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">Monthly Attendance Summary</h1>
-          <p className="text-sm text-slate-500">Attendance overview for the selected month</p>
-        </div>
-        <Button variant="outline" className="gap-2">
-          <Download className="h-4 w-4" />
-          Export Report
-        </Button>
-      </div>
+    <div className="max-w-[1500px] space-y-5">
+      {/* Banner */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#1d4ed8] text-white">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-6 px-6 py-7 sm:px-8 sm:py-8">
+          <div className="flex-1 min-w-0 space-y-3">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[11px] font-medium">
+              <BarChart3 className="w-3 h-3" />
+              Reports · Northwind Studio
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Monthly summary</h1>
+            <p className="text-sm text-white/85 max-w-xl leading-relaxed">
+              A roll-up of <span className="font-semibold text-white">attendance, hours, and
+              overtime</span> per employee for the selected month — perfect for performance reviews
+              or payroll reconciliation.
+            </p>
+          </div>
 
-      {/* Month Selector */}
-      <div>
-        <input
-          type="month"
-          value={selectedMonth}
-          onChange={(e) => setSelectedMonth(e.target.value)}
-          className="rounded-lg border border-[#efefef] bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200"
-        />
-      </div>
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {summaryCards.map((card) => (
-          <div key={card.label} className="rounded-xl border border-[#efefef] bg-white p-4">
-            <div className="flex items-center gap-3">
-              <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg", card.bg)}>
-                <card.icon className={cn("h-5 w-5", card.color)} />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500">{card.label}</p>
-                <p className="text-lg font-semibold truncate max-w-[140px]">{card.value}</p>
+          <div className="hidden sm:flex shrink-0 w-48 h-36 relative">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute top-0 right-4 w-24 h-24 rounded-2xl bg-white/15 backdrop-blur rotate-6" />
+              <div className="absolute bottom-0 right-14 w-20 h-20 rounded-2xl bg-white/20 backdrop-blur -rotate-12" />
+              <div className="absolute top-4 right-16 w-16 h-16 rounded-xl bg-white/25 backdrop-blur rotate-12 flex items-center justify-center">
+                <BarChart3 className="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
-        ))}
+        </div>
+
+        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
+        <div className="absolute -bottom-20 left-1/3 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
       </div>
 
-      {/* Table */}
-      <div className="rounded-xl border border-[#efefef] bg-white">
+      {/* Actions */}
+      <div className="flex items-center justify-end gap-2">
+        <Button variant="outline" className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white">
+          <Filter className="w-4 h-4 mr-1" />
+          Filters
+        </Button>
+        <Button variant="outline" className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white">
+          <Download className="w-4 h-4 mr-1" />
+          Export
+        </Button>
+      </div>
+
+      {/* KPI cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
+            <div
+              key={kpi.label}
+              className="rounded-2xl border border-slate-200/70 bg-white px-5 pt-5 pb-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] flex flex-col gap-7"
+            >
+              <div className="flex items-start justify-between">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                  <Icon className="w-[18px] h-[18px] text-blue-600" />
+                </div>
+              </div>
+              <div>
+                <p className="text-3xl font-bold tracking-tight text-slate-900 leading-none truncate">{kpi.value}</p>
+                <p className="text-sm text-slate-500 mt-2">{kpi.label}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Table card */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-200/70">
+          <input
+            type="month"
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700"
+          />
+          <p className="text-sm text-slate-500">{data.length} employees</p>
+        </div>
+
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-200/70 text-left">
-                <th className="px-4 py-3 font-medium text-slate-600">Employee</th>
-                <th className="px-4 py-3 font-medium text-slate-600">Department</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-center">Work Days</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-center">Present</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-center">Late</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-center">Absent</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-center">Leave</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-center">Half Day</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-right">Hours</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-right">Overtime</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-right">Rate</th>
+              <tr className="border-b border-slate-200/70">
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pl-5 pr-5">Employee</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Department</th>
+                <th className="text-center font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-3">Days</th>
+                <th className="text-center font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-3">Present</th>
+                <th className="text-center font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-3">Late</th>
+                <th className="text-center font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-3">Absent</th>
+                <th className="text-center font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-3">Leave</th>
+                <th className="text-center font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-3">Half</th>
+                <th className="text-right font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-3">Hours</th>
+                <th className="text-right font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-3">Overtime</th>
+                <th className="text-right font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Rate</th>
+                <th className="w-10 px-2" aria-label="Actions" />
               </tr>
             </thead>
             <tbody>
               {data.map((r) => (
-                <tr key={r.employeeId} className="border-b border-slate-100 hover:bg-slate-50/60">
-                  <td className="px-4 py-3 font-medium">{r.employeeName}</td>
-                  <td className="px-4 py-3 text-slate-600">{r.department}</td>
-                  <td className="px-4 py-3 text-center text-slate-600">{r.totalWorkingDays}</td>
-                  <td className="px-4 py-3 text-center text-slate-600">{r.daysPresent}</td>
-                  <td className="px-4 py-3 text-center text-slate-600">{r.daysLate}</td>
-                  <td className="px-4 py-3 text-center text-slate-600">{r.daysAbsent}</td>
-                  <td className="px-4 py-3 text-center text-slate-600">{r.daysOnLeave}</td>
-                  <td className="px-4 py-3 text-center text-slate-600">{r.daysHalfDay}</td>
-                  <td className="px-4 py-3 text-right text-slate-600">{r.totalHoursWorked}h</td>
-                  <td className="px-4 py-3 text-right text-slate-600">{r.overtimeHours}h</td>
-                  <td className="px-4 py-3 text-right">
-                    <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", rateColor(r.attendanceRate))}>
+                <tr
+                  key={r.employeeId}
+                  className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors"
+                >
+                  <td className="py-4 pl-5 pr-5">
+                    <div className="flex items-center gap-3">
+                      <div className={cn("w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-white font-semibold text-sm", avatarColor(r.employeeId))}>
+                        {initialsOf(r.employeeName)}
+                      </div>
+                      <p className="font-semibold text-slate-900 leading-tight">{r.employeeName}</p>
+                    </div>
+                  </td>
+                  <td className="py-4 pr-5">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium">
+                      {r.department}
+                    </span>
+                  </td>
+                  <td className="py-4 pr-3 text-center text-slate-700 tabular-nums">{r.totalWorkingDays}</td>
+                  <td className="py-4 pr-3 text-center text-slate-700 tabular-nums">{r.daysPresent}</td>
+                  <td className="py-4 pr-3 text-center text-slate-700 tabular-nums">{r.daysLate}</td>
+                  <td className="py-4 pr-3 text-center text-slate-700 tabular-nums">{r.daysAbsent}</td>
+                  <td className="py-4 pr-3 text-center text-slate-700 tabular-nums">{r.daysOnLeave}</td>
+                  <td className="py-4 pr-3 text-center text-slate-700 tabular-nums">{r.daysHalfDay}</td>
+                  <td className="py-4 pr-3 text-right font-semibold text-slate-900 tabular-nums">{r.totalHoursWorked}h</td>
+                  <td className="py-4 pr-3 text-right text-slate-700 tabular-nums">{r.overtimeHours}h</td>
+                  <td className="py-4 pr-5 text-right">
+                    <span className={cn("inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium", ratePill(r.attendanceRate))}>
+                      <span className={cn("w-1.5 h-1.5 rounded-full", rateDot(r.attendanceRate))} />
                       {r.attendanceRate}%
                     </span>
+                  </td>
+                  <td className="px-2 py-4 text-right">
+                    <button
+                      type="button"
+                      className="w-8 h-8 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 inline-flex items-center justify-center"
+                    >
+                      <MoreHorizontal className="w-4 h-4" />
+                    </button>
                   </td>
                 </tr>
               ))}

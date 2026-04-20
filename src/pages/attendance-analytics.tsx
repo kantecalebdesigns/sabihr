@@ -1,10 +1,47 @@
 import { useMemo } from "react";
-import { AlertTriangle, Clock, Users, TrendingDown } from "lucide-react";
+import {
+  AlertTriangle,
+  Clock,
+  Users,
+  TrendingDown,
+  BarChart3,
+  Filter,
+  Download,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   MOCK_MONTHLY_SUMMARY,
   MOCK_DEPT_ATTENDANCE,
 } from "@/lib/attendance-extended-mock-data";
+
+const AVATAR_PALETTE = [
+  "bg-blue-500",
+  "bg-violet-500",
+  "bg-teal-500",
+  "bg-amber-500",
+  "bg-rose-500",
+  "bg-emerald-500",
+  "bg-indigo-500",
+  "bg-pink-500",
+  "bg-orange-500",
+  "bg-cyan-500",
+];
+
+function avatarColor(id: string): string {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  return AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+}
+
+function initialsOf(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
 
 export default function AttendanceAnalytics() {
   const data = MOCK_MONTHLY_SUMMARY;
@@ -15,15 +52,18 @@ export default function AttendanceAnalytics() {
   const repeatOffenders = data.filter((r) => r.daysAbsent >= 2).length;
   const latenessRate =
     data.length > 0
-      ? ((data.reduce((sum, r) => sum + r.daysLate, 0) / data.reduce((sum, r) => sum + r.totalWorkingDays, 0)) * 100).toFixed(1)
+      ? (
+          (data.reduce((sum, r) => sum + r.daysLate, 0) /
+            data.reduce((sum, r) => sum + r.totalWorkingDays, 0)) *
+          100
+        ).toFixed(1)
       : "0";
 
   const topAbsentees = useMemo(
     () => [...data].sort((a, b) => b.daysAbsent - a.daysAbsent).slice(0, 5),
-    []
+    [data]
   );
 
-  // Simulated lateness by day of week
   const latenessByDay = [
     { day: "Monday", count: 8, pct: "4.5%" },
     { day: "Tuesday", count: 4, pct: "2.3%" },
@@ -32,125 +72,175 @@ export default function AttendanceAnalytics() {
     { day: "Friday", count: 7, pct: "4.0%" },
   ];
 
-  const summaryCards = [
-    { label: "Total Absences (Month)", value: totalAbsences, icon: AlertTriangle, color: "text-red-600", bg: "bg-red-50" },
-    { label: "Avg Absences/Employee", value: avgAbsences, icon: Users, color: "text-amber-600", bg: "bg-amber-50" },
-    { label: "Repeat Offenders", value: repeatOffenders, icon: TrendingDown, color: "text-violet-600", bg: "bg-violet-50" },
-    { label: "Lateness Rate", value: `${latenessRate}%`, icon: Clock, color: "text-blue-600", bg: "bg-blue-50" },
+  const kpis = [
+    { value: totalAbsences, label: "Total absences", icon: AlertTriangle },
+    { value: avgAbsences, label: "Avg per employee", icon: Users },
+    { value: repeatOffenders, label: "Repeat offenders", icon: TrendingDown },
+    { value: `${latenessRate}%`, label: "Lateness rate", icon: Clock },
   ];
 
-  function trendIndicator(rate: number) {
-    if (rate <= 5) return { label: "Low", className: "text-emerald-700 bg-emerald-50" };
-    if (rate <= 10) return { label: "Medium", className: "text-amber-700 bg-amber-50" };
-    return { label: "High", className: "text-red-700 bg-red-50" };
+  function trendPill(rate: number) {
+    if (rate <= 5) return { label: "Low", pill: "bg-emerald-50 text-emerald-700", dot: "bg-emerald-500" };
+    if (rate <= 10) return { label: "Medium", pill: "bg-amber-50 text-amber-700", dot: "bg-amber-500" };
+    return { label: "High", pill: "bg-rose-50 text-rose-700", dot: "bg-rose-500" };
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-xl font-semibold tracking-tight">Absenteeism & Lateness Analytics</h1>
-        <p className="text-sm text-slate-500">Identify attendance patterns and repeat offenders</p>
-      </div>
+    <div className="max-w-[1500px] space-y-5">
+      {/* Banner */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#1d4ed8] text-white">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-6 px-6 py-7 sm:px-8 sm:py-8">
+          <div className="flex-1 min-w-0 space-y-3">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[11px] font-medium">
+              <BarChart3 className="w-3 h-3" />
+              Reports · Northwind Studio
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Attendance analytics</h1>
+            <p className="text-sm text-white/85 max-w-xl leading-relaxed">
+              Spot patterns in <span className="font-semibold text-white">absenteeism, lateness,
+              and department performance</span> — surface repeat offenders and pinpoint days where
+              teams need extra support.
+            </p>
+          </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {summaryCards.map((card) => (
-          <div key={card.label} className="rounded-xl border border-[#efefef] bg-white p-4">
-            <div className="flex items-center gap-3">
-              <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg", card.bg)}>
-                <card.icon className={cn("h-5 w-5", card.color)} />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500">{card.label}</p>
-                <p className="text-lg font-semibold">{card.value}</p>
+          <div className="hidden sm:flex shrink-0 w-48 h-36 relative">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute top-0 right-4 w-24 h-24 rounded-2xl bg-white/15 backdrop-blur rotate-6" />
+              <div className="absolute bottom-0 right-14 w-20 h-20 rounded-2xl bg-white/20 backdrop-blur -rotate-12" />
+              <div className="absolute top-4 right-16 w-16 h-16 rounded-xl bg-white/25 backdrop-blur rotate-12 flex items-center justify-center">
+                <BarChart3 className="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
-        ))}
+        </div>
+
+        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
+        <div className="absolute -bottom-20 left-1/3 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Top Absentees */}
-        <div className="rounded-xl border border-[#efefef] bg-white p-5">
-          <h2 className="mb-4 text-sm font-semibold">Top Absentees</h2>
-          <div className="space-y-3">
+      {/* Actions */}
+      <div className="flex items-center justify-end gap-2">
+        <Button variant="outline" className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white">
+          <Filter className="w-4 h-4 mr-1" />
+          Filters
+        </Button>
+        <Button variant="outline" className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white">
+          <Download className="w-4 h-4 mr-1" />
+          Export
+        </Button>
+      </div>
+
+      {/* KPI cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
+            <div
+              key={kpi.label}
+              className="rounded-2xl border border-slate-200/70 bg-white px-5 pt-5 pb-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] flex flex-col gap-7"
+            >
+              <div className="flex items-start justify-between">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                  <Icon className="w-[18px] h-[18px] text-blue-600" />
+                </div>
+              </div>
+              <div>
+                <p className="text-3xl font-bold tracking-tight text-slate-900 leading-none">{kpi.value}</p>
+                <p className="text-sm text-slate-500 mt-2">{kpi.label}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Top absentees + Lateness by day */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
+          <div className="mb-4">
+            <h3 className="text-base font-bold text-slate-900 tracking-tight">Top absentees</h3>
+            <p className="text-xs text-slate-500 mt-0.5">Employees with the most absences this month</p>
+          </div>
+          <div className="space-y-2">
             {topAbsentees.map((emp, i) => (
               <div
                 key={emp.employeeId}
-                className="flex items-center justify-between rounded-lg border border-[#efefef] px-4 py-3 hover:bg-[#f8fafc]"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-slate-50/60 transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-red-50 text-xs font-semibold text-red-600">
-                    #{i + 1}
-                  </span>
-                  <div>
-                    <p className="text-sm font-medium">{emp.employeeName}</p>
-                    <p className="text-xs text-slate-500">{emp.department}</p>
-                  </div>
+                <span className="text-sm font-semibold text-slate-400 w-5 tabular-nums">#{i + 1}</span>
+                <div className={cn("w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-white font-semibold text-[11px]", avatarColor(emp.employeeId))}>
+                  {initialsOf(emp.employeeName)}
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-semibold text-red-600">{emp.daysAbsent} days</p>
-                  <p className="text-xs text-slate-500">{emp.attendanceRate}% rate</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-slate-900 truncate leading-tight">{emp.employeeName}</p>
+                  <p className="text-xs text-slate-500 truncate leading-tight mt-0.5">{emp.department}</p>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className="text-sm font-semibold text-rose-600 tabular-nums">{emp.daysAbsent} days</p>
+                  <p className="text-[11px] text-slate-500 tabular-nums">{emp.attendanceRate}% rate</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Lateness Trends */}
-        <div className="rounded-xl border border-[#efefef] bg-white p-5">
-          <h2 className="mb-4 text-sm font-semibold">Lateness Trends by Day of Week</h2>
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-slate-200/70 text-left">
-                <th className="px-4 py-2 font-medium text-slate-600">Day</th>
-                <th className="px-4 py-2 font-medium text-slate-600 text-center">Late Count</th>
-                <th className="px-4 py-2 font-medium text-slate-600 text-right">% of Employees</th>
-              </tr>
-            </thead>
-            <tbody>
-              {latenessByDay.map((row) => (
-                <tr key={row.day} className="border-b border-[#efefef]">
-                  <td className="px-4 py-2 font-medium">{row.day}</td>
-                  <td className="px-4 py-2 text-center text-slate-600">{row.count}</td>
-                  <td className="px-4 py-2 text-right text-slate-600">{row.pct}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
+          <div className="mb-4">
+            <h3 className="text-base font-bold text-slate-900 tracking-tight">Lateness by day</h3>
+            <p className="text-xs text-slate-500 mt-0.5">Which weekdays see the most late arrivals</p>
+          </div>
+          <div className="space-y-3">
+            {latenessByDay.map((row) => {
+              const pctNum = parseFloat(row.pct);
+              const barWidth = Math.min(100, pctNum * 18);
+              return (
+                <div key={row.day} className="flex items-center gap-3">
+                  <span className="text-sm font-medium text-slate-700 w-20 shrink-0">{row.day}</span>
+                  <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                    <div className="h-full bg-blue-500 rounded-full" style={{ width: `${barWidth}%` }} />
+                  </div>
+                  <span className="text-sm text-slate-600 tabular-nums w-10 text-right">{row.count}</span>
+                  <span className="text-xs text-slate-400 tabular-nums w-12 text-right">{row.pct}</span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Department Comparison */}
-      <div className="rounded-xl border border-[#efefef] bg-white">
-        <div className="border-b border-[#efefef] px-5 py-4">
-          <h2 className="text-sm font-semibold">Department Comparison</h2>
+      {/* Department comparison */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+        <div className="px-5 py-4 border-b border-slate-200/70">
+          <h3 className="text-sm font-semibold text-slate-900">Department comparison</h3>
+          <p className="text-xs text-slate-500 mt-0.5">Absence and lateness rates per department</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-200/70 text-left">
-                <th className="px-4 py-3 font-medium text-slate-600">Department</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-center">Total Employees</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-right">Absence Rate</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-right">Lateness Rate</th>
-                <th className="px-4 py-3 font-medium text-slate-600 text-right">Trend</th>
+              <tr className="border-b border-slate-200/70">
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pl-5 pr-5">Department</th>
+                <th className="text-center font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Employees</th>
+                <th className="text-right font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Absence rate</th>
+                <th className="text-right font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Lateness rate</th>
+                <th className="text-right font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Trend</th>
               </tr>
             </thead>
             <tbody>
               {deptData.map((dept) => {
                 const absenceRate = ((dept.absent / dept.totalEmployees) * 100).toFixed(1);
                 const lateRate = ((dept.late / dept.totalEmployees) * 100).toFixed(1);
-                const trend = trendIndicator(parseFloat(absenceRate) + parseFloat(lateRate));
+                const trend = trendPill(parseFloat(absenceRate) + parseFloat(lateRate));
                 return (
-                  <tr key={dept.department} className="border-b border-slate-100 hover:bg-slate-50/60">
-                    <td className="px-4 py-3 font-medium">{dept.department}</td>
-                    <td className="px-4 py-3 text-center text-slate-600">{dept.totalEmployees}</td>
-                    <td className="px-4 py-3 text-right text-slate-600">{absenceRate}%</td>
-                    <td className="px-4 py-3 text-right text-slate-600">{lateRate}%</td>
-                    <td className="px-4 py-3 text-right">
-                      <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", trend.className)}>
+                  <tr
+                    key={dept.department}
+                    className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors"
+                  >
+                    <td className="py-4 pl-5 pr-5 font-semibold text-slate-900">{dept.department}</td>
+                    <td className="py-4 pr-5 text-center text-slate-700 tabular-nums">{dept.totalEmployees}</td>
+                    <td className="py-4 pr-5 text-right text-slate-700 tabular-nums">{absenceRate}%</td>
+                    <td className="py-4 pr-5 text-right text-slate-700 tabular-nums">{lateRate}%</td>
+                    <td className="py-4 pr-5 text-right">
+                      <span className={cn("inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium", trend.pill)}>
+                        <span className={cn("w-1.5 h-1.5 rounded-full", trend.dot)} />
                         {trend.label}
                       </span>
                     </td>
