@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
 import {
   Search,
-  Filter,
-  Download,
   Clock,
   Users,
   CheckCircle2,
@@ -15,7 +13,6 @@ import {
   TrendingUp,
   TrendingDown,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { MOCK_ATTENDANCE_RECORDS } from "@/lib/attendance-mock-data";
@@ -143,53 +140,13 @@ export default function AttendancePage() {
 
   return (
     <div className="max-w-[1500px] space-y-5">
-      {/* Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#1d4ed8] text-white">
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-6 px-6 py-7 sm:px-8 sm:py-8">
-          <div className="flex-1 min-w-0 space-y-3">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[11px] font-medium">
-              <Clock className="w-3 h-3" />
-              Time · Northwind Studio
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Attendance</h1>
-            <p className="text-sm text-white/85 max-w-xl leading-relaxed">
-              See who's in today at a glance —{" "}
-              <span className="font-semibold text-white">review clock-ins</span>, flag late
-              arrivals, approve corrections, and export daily attendance reports.
-            </p>
-          </div>
-
-          <div className="hidden sm:flex shrink-0 w-48 h-36 relative">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="absolute top-0 right-4 w-24 h-24 rounded-2xl bg-white/15 backdrop-blur rotate-6" />
-              <div className="absolute bottom-0 right-14 w-20 h-20 rounded-2xl bg-white/20 backdrop-blur -rotate-12" />
-              <div className="absolute top-4 right-16 w-16 h-16 rounded-xl bg-white/25 backdrop-blur rotate-12 flex items-center justify-center">
-                <Clock className="w-7 h-7 text-white" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
-        <div className="absolute -bottom-20 left-1/3 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
-      </div>
-
-      {/* Action buttons */}
-      <div className="flex items-center justify-end gap-2">
-        <Button
-          variant="outline"
-          className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
-        >
-          <Filter className="w-4 h-4 mr-1" />
-          Filters
-        </Button>
-        <Button
-          variant="outline"
-          className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
-        >
-          <Download className="w-4 h-4 mr-1" />
-          Export
-        </Button>
+      {/* Header */}
+      <div className="space-y-1">
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Attendance</h1>
+        <p className="text-sm text-slate-500 leading-relaxed">
+          See who's in today at a glance — review clock-ins, flag late arrivals, approve
+          corrections, and export daily attendance reports.
+        </p>
       </div>
 
       {/* KPI cards */}

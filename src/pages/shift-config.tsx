@@ -1,10 +1,38 @@
 import { useState } from "react";
-import { Plus, Moon, X, Clock, CheckCircle2, FileText, TrendingUp } from "lucide-react";
+import { Plus, Moon, X, Clock, CheckCircle2, FileText, TrendingUp, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { MOCK_SHIFTS, formatNaira } from "@/lib/attendance-extended-mock-data";
 import type { ShiftDefinition } from "@/lib/attendance-extended-mock-data";
+
+const HOUR_TICKS = [0, 3, 6, 9, 12, 15, 18, 21, 24];
+
+function timeToPct(time: string): number {
+  const [h, m] = time.split(":").map(Number);
+  return ((h * 60 + m) / 1440) * 100;
+}
+
+function shiftSegments(start: string, end: string): { left: number; width: number }[] {
+  const s = timeToPct(start);
+  const e = timeToPct(end);
+  if (e > s) return [{ left: s, width: e - s }];
+  return [
+    { left: s, width: 100 - s },
+    { left: 0, width: e },
+  ];
+}
+
+function shiftHours(start: string, end: string, breakMinutes: number): string {
+  const [sh, sm] = start.split(":").map(Number);
+  const [eh, em] = end.split(":").map(Number);
+  let mins = (eh * 60 + em) - (sh * 60 + sm);
+  if (mins <= 0) mins += 1440;
+  mins -= breakMinutes;
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return m === 0 ? `${h}h` : `${h}h ${m}m`;
+}
 
 export default function ShiftConfigPage() {
   const [shifts, setShifts] = useState<ShiftDefinition[]>(MOCK_SHIFTS);
@@ -43,42 +71,23 @@ export default function ShiftConfigPage() {
     setForm({ name: "", code: "", startTime: "09:00", endTime: "17:00", breakMinutes: 60, allowance: 0, isNight: false, status: "active" });
   };
 
+  const sortedForTimeline = [...shifts].sort((a, b) => timeToPct(a.startTime) - timeToPct(b.startTime));
+
   return (
     <div className="max-w-[1500px] space-y-5">
-      {/* Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#1d4ed8] text-white">
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-6 px-6 py-7 sm:px-8 sm:py-8">
-          <div className="flex-1 min-w-0 space-y-3">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[11px] font-medium">
-              <Clock className="w-3 h-3" />
-              Time · Northwind Studio
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Shifts</h1>
-            <p className="text-sm text-white/85 max-w-xl leading-relaxed">
-              Define <span className="font-semibold text-white">shift patterns</span> with start/end
-              times, break durations, and allowances — then roster teams and track night shifts
-              across the organization.
-            </p>
-          </div>
-
-          <div className="hidden sm:flex shrink-0 w-48 h-36 relative">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="absolute top-0 right-4 w-24 h-24 rounded-2xl bg-white/15 backdrop-blur rotate-6" />
-              <div className="absolute bottom-0 right-14 w-20 h-20 rounded-2xl bg-white/20 backdrop-blur -rotate-12" />
-              <div className="absolute top-4 right-16 w-16 h-16 rounded-xl bg-white/25 backdrop-blur rotate-12 flex items-center justify-center">
-                <Clock className="w-7 h-7 text-white" />
-              </div>
-            </div>
-          </div>
+      {/* Header */}
+      <div className="flex items-center justify-between gap-4">
+        <div className="space-y-1 flex-1 min-w-0">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Shifts</h1>
+          <p className="text-sm text-slate-500 leading-relaxed">
+            Define shift patterns with start/end times, break durations, and allowances — then
+            roster teams and track night shifts across the organization.
+          </p>
         </div>
-
-        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
-        <div className="absolute -bottom-20 left-1/3 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
-      </div>
-
-      {/* Actions */}
-      <div className="flex items-center justify-end">
-        <Button onClick={() => setShowForm(true)} className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4">
+        <Button
+          onClick={() => setShowForm(true)}
+          className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 shrink-0"
+        >
           <Plus className="w-4 h-4 mr-1" />
           Create shift
         </Button>
@@ -175,63 +184,165 @@ export default function ShiftConfigPage() {
         </div>
       )}
 
-      {/* Shift cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {shifts.map((shift) => (
-          <div
-            key={shift.id}
-            className="rounded-2xl border border-slate-200/70 bg-white p-5 space-y-4 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]"
-          >
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-semibold text-sm shrink-0"
-                  style={{ backgroundColor: shift.color }}
-                >
-                  {shift.code.slice(0, 2).toUpperCase()}
-                </div>
-                <div>
-                  <h3 className="font-semibold text-slate-900 leading-tight">{shift.name}</h3>
-                  <p className="text-xs text-slate-500 font-mono leading-tight mt-0.5">{shift.code}</p>
-                </div>
-              </div>
-              <div className="flex flex-col items-end gap-1">
-                {shift.isNight && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700">
-                    <Moon className="h-3 w-3" /> Night
-                  </span>
-                )}
-                <span
-                  className={cn(
-                    "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium",
-                    shift.status === "active" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
-                  )}
-                >
-                  <span className={cn("w-1.5 h-1.5 rounded-full", shift.status === "active" ? "bg-emerald-500" : "bg-amber-500")} />
-                  {shift.status === "active" ? "Active" : "Draft"}
-                </span>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-3 text-sm">
-              <div>
-                <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Time</p>
-                <p className="font-semibold text-slate-900 mt-0.5">
-                  {shift.startTime}–{shift.endTime}
-                </p>
-              </div>
-              <div>
-                <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Break</p>
-                <p className="font-semibold text-slate-900 mt-0.5">{shift.breakMinutes}m</p>
-              </div>
-              <div>
-                <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Allowance</p>
-                <p className="font-semibold text-slate-900 mt-0.5">
-                  {shift.allowance > 0 ? formatNaira(shift.allowance) : "—"}
-                </p>
-              </div>
-            </div>
+      {/* 24-hour coverage timeline */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/70">
+          <div>
+            <h3 className="text-sm font-semibold text-slate-900">24-hour coverage</h3>
+            <p className="text-xs text-slate-500 mt-0.5">How your shifts cover the day — spot overlaps and gaps at a glance</p>
           </div>
-        ))}
+        </div>
+        <div className="px-5 py-5 space-y-3">
+          {/* Hour scale */}
+          <div className="relative h-5 ml-[140px] mr-4">
+            {HOUR_TICKS.map((h) => (
+              <div
+                key={h}
+                className="absolute top-0 -translate-x-1/2 text-[10px] font-medium text-slate-400 tabular-nums"
+                style={{ left: `${(h / 24) * 100}%` }}
+              >
+                {h.toString().padStart(2, "0")}:00
+              </div>
+            ))}
+          </div>
+
+          {/* Rows */}
+          <div className="space-y-2">
+            {sortedForTimeline.map((shift) => {
+              const segments = shiftSegments(shift.startTime, shift.endTime);
+              return (
+                <div key={shift.id} className="flex items-center gap-3">
+                  <div className="w-[130px] shrink-0 flex items-center gap-2 min-w-0">
+                    <div
+                      className="w-6 h-6 rounded-md shrink-0 flex items-center justify-center text-white text-[10px] font-bold"
+                      style={{ backgroundColor: shift.color }}
+                    >
+                      {shift.code.slice(0, 2).toUpperCase()}
+                    </div>
+                    <span className="text-xs font-semibold text-slate-900 truncate">{shift.name}</span>
+                  </div>
+                  <div className="relative flex-1 h-8 rounded-md bg-slate-50 overflow-hidden mr-4">
+                    {/* Hour gridlines */}
+                    {HOUR_TICKS.slice(1, -1).map((h) => (
+                      <div
+                        key={h}
+                        className="absolute top-0 bottom-0 w-px bg-slate-200/80"
+                        style={{ left: `${(h / 24) * 100}%` }}
+                      />
+                    ))}
+                    {/* Shift segments */}
+                    {segments.map((seg, i) => (
+                      <div
+                        key={i}
+                        className="absolute top-0 bottom-0 flex items-center px-2"
+                        style={{
+                          left: `${seg.left}%`,
+                          width: `${seg.width}%`,
+                          backgroundColor: shift.color,
+                          opacity: shift.status === "active" ? 1 : 0.45,
+                        }}
+                      >
+                        {seg.width > 14 && i === 0 && (
+                          <span className="text-[10px] font-semibold text-white tabular-nums whitespace-nowrap">
+                            {shift.startTime}–{shift.endTime}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Shift table */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/70">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold text-slate-900">All shifts</span>
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-xs font-semibold">
+              {shifts.length}
+            </span>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-200/70">
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pl-5 pr-5">Shift</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Schedule</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Duration</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Break</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Allowance</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Status</th>
+                <th className="w-10 px-2" aria-label="Actions" />
+              </tr>
+            </thead>
+            <tbody>
+              {shifts.map((shift) => (
+                <tr
+                  key={shift.id}
+                  className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors"
+                >
+                  <td className="py-4 pl-5 pr-5">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white font-semibold text-sm"
+                        style={{ backgroundColor: shift.color }}
+                      >
+                        {shift.code.slice(0, 2).toUpperCase()}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className="font-semibold text-slate-900 leading-tight">{shift.name}</p>
+                          {shift.isNight && (
+                            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-semibold bg-indigo-50 text-indigo-700">
+                              <Moon className="h-3 w-3" />
+                              Night
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-slate-500 leading-tight mt-0.5 font-mono">{shift.code}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="py-4 pr-5 text-slate-700 tabular-nums">
+                    {shift.startTime}–{shift.endTime}
+                  </td>
+                  <td className="py-4 pr-5 font-semibold text-slate-900 tabular-nums">
+                    {shiftHours(shift.startTime, shift.endTime, shift.breakMinutes)}
+                  </td>
+                  <td className="py-4 pr-5 text-slate-700 tabular-nums">{shift.breakMinutes}m</td>
+                  <td className="py-4 pr-5 text-slate-700 tabular-nums">
+                    {shift.allowance > 0 ? formatNaira(shift.allowance) : "—"}
+                  </td>
+                  <td className="py-4 pr-5">
+                    <span
+                      className={cn(
+                        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium",
+                        shift.status === "active" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
+                      )}
+                    >
+                      <span className={cn("w-1.5 h-1.5 rounded-full", shift.status === "active" ? "bg-emerald-500" : "bg-amber-500")} />
+                      {shift.status === "active" ? "Active" : "Draft"}
+                    </span>
+                  </td>
+                  <td className="px-2 py-4 text-right">
+                    <button
+                      type="button"
+                      className="w-8 h-8 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 inline-flex items-center justify-center"
+                      aria-label="More actions"
+                    >
+                      <MoreHorizontal className="w-4 h-4" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

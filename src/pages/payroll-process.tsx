@@ -24,10 +24,37 @@ type Step = "review" | "payslips" | "process";
 type SortKey = "name" | "department" | "gross" | "tax" | "deductions" | "net";
 type SortDir = "asc" | "desc";
 
+const AVATAR_PALETTE = [
+  "bg-blue-500",
+  "bg-violet-500",
+  "bg-teal-500",
+  "bg-amber-500",
+  "bg-rose-500",
+  "bg-emerald-500",
+  "bg-indigo-500",
+  "bg-pink-500",
+  "bg-orange-500",
+  "bg-cyan-500",
+];
+
+function avatarColor(id: string): string {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  return AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+}
+
+function initialsOf(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
 export default function PayrollProcessPage() {
   const navigate = useNavigate();
 
-  // Use the first draft run, fall back to the latest run
   const run = useMemo(() => {
     return MOCK_PAYROLL_RUNS.find((r) => r.status === "draft") ?? MOCK_PAYROLL_RUNS[0];
   }, []);
@@ -53,6 +80,10 @@ export default function PayrollProcessPage() {
     () =>
       previewSlips.reduce(
         (acc, p) => ({
+          basic: acc.basic + p.basicSalary,
+          housing: acc.housing + p.housingAllowance,
+          transport: acc.transport + p.transportAllowance,
+          otherAllowances: acc.otherAllowances + p.otherAllowances,
           gross: acc.gross + p.grossPay,
           tax: acc.tax + p.tax,
           pension: acc.pension + p.pension,
@@ -60,7 +91,7 @@ export default function PayrollProcessPage() {
           totalDeductions: acc.totalDeductions + p.totalDeductions,
           net: acc.net + p.netPay,
         }),
-        { gross: 0, tax: 0, pension: 0, otherDeductions: 0, totalDeductions: 0, net: 0 }
+        { basic: 0, housing: 0, transport: 0, otherAllowances: 0, gross: 0, tax: 0, pension: 0, otherDeductions: 0, totalDeductions: 0, net: 0 }
       ),
     [previewSlips]
   );
@@ -117,7 +148,6 @@ export default function PayrollProcessPage() {
   const handleProcess = () => {
     setBusy(true);
     setTimeout(() => {
-      // Mutate mock data in place so the payroll list reflects the update on return
       const idx = MOCK_PAYROLL_RUNS.findIndex((r) => r.id === run.id);
       if (idx >= 0) {
         MOCK_PAYROLL_RUNS[idx] = {
@@ -134,7 +164,6 @@ export default function PayrollProcessPage() {
     }, 1500);
   };
 
-  // ── Employee detail sub-view ──
   if (selectedSlip) {
     return (
       <EmployeeDetailView
@@ -146,24 +175,28 @@ export default function PayrollProcessPage() {
   }
 
   return (
-    <div className="max-w-[1400px] mx-auto space-y-6">
+    <div className="max-w-[1500px] space-y-5">
       {/* Breadcrumb + Header */}
       <div className="space-y-3">
         <nav className="flex items-center gap-1.5 text-xs text-slate-500">
           <Link to="/payroll" className="hover:text-slate-900 transition-colors">Payroll</Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-slate-900 font-medium">Process Payroll</span>
+          <span className="text-slate-900 font-semibold">Process payroll</span>
         </nav>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div>
-            <h1 className="text-xl font-semibold tracking-tight">Process Payroll — {run.period}</h1>
-            <p className="text-sm text-slate-500">
+        <div className="flex items-center justify-between gap-4">
+          <div className="space-y-1 flex-1 min-w-0">
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900">Process payroll · {run.period}</h1>
+            <p className="text-sm text-slate-500 leading-relaxed">
               Review each employee's breakdown, send payslips, then finalize disbursement.
             </p>
           </div>
-          <Button variant="outline" size="sm" asChild>
+          <Button
+            variant="outline"
+            asChild
+            className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white shrink-0"
+          >
             <Link to="/payroll">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-4 h-4 mr-1" />
               Back to Payroll
             </Link>
           </Button>
@@ -171,144 +204,240 @@ export default function PayrollProcessPage() {
       </div>
 
       {/* Stepper */}
-      <div className="rounded-xl border border-[#efefef] bg-white">
-        <div className="flex items-center p-5">
+      <div className="rounded-2xl border border-slate-200/70 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
+        <div className="flex items-center">
           {steps.map((s, i) => (
             <div key={s.key} className={cn("flex items-center gap-2", i < steps.length - 1 && "flex-1")}>
-              <div className={cn(
-                "w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0",
-                i < stepIndex ? "bg-emerald-500 text-white" :
-                i === stepIndex ? "bg-blue-600 text-white" :
-                "bg-slate-200 text-slate-500"
-              )}>
+              <div
+                className={cn(
+                  "w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0",
+                  i < stepIndex
+                    ? "bg-emerald-500 text-white"
+                    : i === stepIndex
+                    ? "bg-blue-600 text-white"
+                    : "bg-slate-200 text-slate-500"
+                )}
+              >
                 {i < stepIndex ? <Check className="w-3.5 h-3.5" strokeWidth={3} /> : i + 1}
               </div>
-              <span className={cn("text-sm font-medium whitespace-nowrap", i === stepIndex ? "text-slate-900" : "text-slate-500")}>
+              <span
+                className={cn(
+                  "text-sm font-semibold whitespace-nowrap",
+                  i === stepIndex ? "text-slate-900" : "text-slate-500"
+                )}
+              >
                 {s.label}
               </span>
-              {i < steps.length - 1 && <div className={cn("flex-1 h-px mx-3", i < stepIndex ? "bg-emerald-400" : "bg-slate-200")} />}
+              {i < steps.length - 1 && (
+                <div className={cn("flex-1 h-px mx-3", i < stepIndex ? "bg-emerald-400" : "bg-slate-200")} />
+              )}
             </div>
           ))}
         </div>
       </div>
 
-      {/* ── Step: Review ── */}
+      {/* Step: Review */}
       {step === "review" && (
-        <div className="space-y-4">
-          <p className="text-sm text-slate-500">
-            Review the pay breakdown for <span className="font-medium text-slate-900">{run.employeeCount} employees</span>. Click an employee to see full details.
-          </p>
+        <div className="space-y-5">
+          {/* Payslip-style run totals */}
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200/70">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 tracking-tight">Run summary · {run.period}</h3>
+                <p className="text-xs text-slate-500 mt-0.5">Combined earnings and deductions across {run.employeeCount} employees</p>
+              </div>
+              <span className="text-xs text-slate-500 font-mono tabular-nums">{run.id.toUpperCase()}</span>
+            </div>
 
-          {/* Totals */}
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-            <SummaryTile label="Gross" value={formatNaira(totals.gross)} />
-            <SummaryTile label="Tax (PAYE)" value={`-${formatNaira(totals.tax)}`} valueClass="text-slate-700" />
-            <SummaryTile label="Pension" value={`-${formatNaira(totals.pension)}`} valueClass="text-slate-700" />
-            <SummaryTile label="Other Ded." value={`-${formatNaira(totals.otherDeductions)}`} valueClass="text-slate-700" />
-            <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
-              <p className="text-[11px] text-blue-700 font-medium">Net Pay</p>
-              <p className="text-sm font-semibold text-blue-900 mt-0.5">{formatNaira(totals.net)}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200/70">
+              {/* Earnings side */}
+              <div className="px-6 py-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  <h4 className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Earnings</h4>
+                </div>
+                <dl className="space-y-2.5 text-sm">
+                  <LedgerRow label="Basic salary" value={formatNaira(totals.basic)} />
+                  <LedgerRow label="Housing allowance" value={formatNaira(totals.housing)} />
+                  <LedgerRow label="Transport allowance" value={formatNaira(totals.transport)} />
+                  <LedgerRow label="Other allowances" value={formatNaira(totals.otherAllowances)} />
+                </dl>
+                <div className="mt-4 pt-3 border-t border-slate-100 space-y-2">
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs text-slate-500">Total allowances</span>
+                    <span className="text-sm font-semibold text-slate-700 tabular-nums">
+                      {formatNaira(totals.housing + totals.transport + totals.otherAllowances)}
+                    </span>
+                  </div>
+                  <div className="flex items-baseline justify-between pt-2 border-t border-slate-100">
+                    <span className="text-sm font-bold text-slate-900">Gross pay</span>
+                    <span className="text-base font-bold text-slate-900 tabular-nums">{formatNaira(totals.gross)}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Deductions side */}
+              <div className="px-6 py-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                  <h4 className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Deductions</h4>
+                </div>
+                <dl className="space-y-2.5 text-sm">
+                  <LedgerRow label="PAYE tax" value={`-${formatNaira(totals.tax)}`} negative />
+                  <LedgerRow label="Pension" value={`-${formatNaira(totals.pension)}`} negative />
+                  <LedgerRow label="Other deductions" value={`-${formatNaira(totals.otherDeductions)}`} negative />
+                  <LedgerRow label="—" value="" blank />
+                </dl>
+                <div className="mt-4 pt-3 border-t border-slate-100 space-y-2">
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs text-slate-500">Total deductions</span>
+                    <span className="text-sm font-semibold text-rose-700 tabular-nums">-{formatNaira(totals.totalDeductions)}</span>
+                  </div>
+                  <div className="flex items-baseline justify-between pt-2 border-t border-slate-100">
+                    <span className="text-sm font-bold text-slate-900">After deductions</span>
+                    <span className="text-base font-bold text-slate-700 tabular-nums">-{formatNaira(totals.totalDeductions)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Net pay footer */}
+            <div className="px-6 py-4 bg-blue-50 border-t border-blue-100 flex items-center justify-between">
+              <div>
+                <p className="text-[11px] font-semibold text-blue-700 uppercase tracking-wider">Total net pay</p>
+                <p className="text-xs text-blue-700/80 mt-0.5">Disbursement across {run.employeeCount} employees</p>
+              </div>
+              <p className="text-2xl font-bold text-blue-900 tabular-nums leading-none">{formatNaira(totals.net)}</p>
             </div>
           </div>
 
-          {/* Search */}
-          <div className="relative max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-            <Input
-              placeholder="Search employee or department..."
-              value={reviewSearch}
-              onChange={(e) => setReviewSearch(e.target.value)}
-              className="pl-9"
-            />
-          </div>
+          {/* Table card */}
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between px-5 py-4 border-b border-slate-200/70">
+              <div className="flex items-center gap-3 flex-1 max-w-md">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Input
+                    placeholder="Search employee or department..."
+                    value={reviewSearch}
+                    onChange={(e) => setReviewSearch(e.target.value)}
+                    className="pl-9 bg-white border-slate-200 h-10 rounded-lg"
+                  />
+                </div>
+                <p className="text-sm text-slate-500 whitespace-nowrap">{filteredSorted.length} employees</p>
+              </div>
+            </div>
 
-          {/* Employees table */}
-          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-slate-200/70">
-                  <SortableHeader label="Employee" sortKey="name" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="left" />
-                  <SortableHeader label="Department" sortKey="department" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="left" />
-                  <SortableHeader label="Gross" sortKey="gross" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="right" />
-                  <SortableHeader label="Tax" sortKey="tax" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="right" />
-                  <SortableHeader label="Deductions" sortKey="deductions" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="right" />
-                  <SortableHeader label="Net Pay" sortKey="net" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="right" />
-                  <th className="p-3 w-10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredSorted.map((slip) => (
-                  <Fragment key={slip.id}>
-                    <tr
-                      onClick={() => setSelectedEmployeeId(slip.id)}
-                      className="border-b border-[#efefef] cursor-pointer hover:bg-[#f8fafc] transition-colors"
-                    >
-                      <td className="p-3 font-medium">{slip.employeeName}</td>
-                      <td className="p-3 text-slate-500">{slip.department}</td>
-                      <td className="p-3 text-right font-medium">{formatNaira(slip.grossPay)}</td>
-                      <td className="p-3 text-right text-slate-700">-{formatNaira(slip.tax)}</td>
-                      <td className="p-3 text-right text-slate-700">-{formatNaira(slip.totalDeductions)}</td>
-                      <td className="p-3 text-right font-semibold">{formatNaira(slip.netPay)}</td>
-                      <td className="p-3 text-slate-500">
-                        <ChevronRight className="w-4 h-4" />
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-slate-200/70">
+                    <SortableHeader label="Employee" sortKey="name" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="left" />
+                    <SortableHeader label="Gross" sortKey="gross" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="right" />
+                    <SortableHeader label="Tax" sortKey="tax" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="right" />
+                    <SortableHeader label="Deductions" sortKey="deductions" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="right" />
+                    <SortableHeader label="Net pay" sortKey="net" currentKey={sortKey} dir={sortDir} onSort={toggleSort} align="right" />
+                    <th className="w-10 px-2" aria-label="Actions" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredSorted.map((slip) => (
+                    <Fragment key={slip.id}>
+                      <tr
+                        onClick={() => setSelectedEmployeeId(slip.id)}
+                        className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer"
+                      >
+                        <td className="py-4 pl-5 pr-5">
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={cn(
+                                "w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm shrink-0",
+                                avatarColor(slip.employeeId)
+                              )}
+                            >
+                              {initialsOf(slip.employeeName)}
+                            </div>
+                            <div className="min-w-0">
+                              <p className="font-semibold text-slate-900 leading-tight">{slip.employeeName}</p>
+                              <p className="text-xs text-slate-500 leading-tight mt-0.5 truncate">{slip.department}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-4 pr-5 text-right font-semibold text-slate-900 tabular-nums">{formatNaira(slip.grossPay)}</td>
+                        <td className="py-4 pr-5 text-right text-slate-600 tabular-nums">-{formatNaira(slip.tax)}</td>
+                        <td className="py-4 pr-5 text-right text-slate-600 tabular-nums">-{formatNaira(slip.totalDeductions)}</td>
+                        <td className="py-4 pr-5 text-right font-bold text-slate-900 tabular-nums">{formatNaira(slip.netPay)}</td>
+                        <td className="px-2 py-4 text-right text-slate-400">
+                          <ChevronRight className="w-4 h-4 inline" />
+                        </td>
+                      </tr>
+                    </Fragment>
+                  ))}
+                  {filteredSorted.length === 0 && (
+                    <tr>
+                      <td colSpan={6} className="py-16 text-center text-slate-400 text-sm">
+                        No employees match your search.
                       </td>
                     </tr>
-                  </Fragment>
-                ))}
-                {filteredSorted.length === 0 && (
-                  <tr>
-                    <td colSpan={7} className="p-8 text-center text-slate-500 text-sm">
-                      No employees match your search.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
 
-      {/* ── Step: Send Payslips ── */}
+      {/* Step: Send Payslips */}
       {step === "payslips" && (
-        <div className="rounded-xl border border-[#efefef] bg-white p-8 max-w-2xl mx-auto w-full">
+        <div className="rounded-2xl border border-slate-200/70 bg-white p-8 max-w-2xl mx-auto w-full shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
           <div className="text-center">
-            <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 mx-auto flex items-center justify-center mb-3">
+            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 mx-auto flex items-center justify-center mb-3">
               <Mail className="w-6 h-6" />
             </div>
-            <h3 className="font-medium text-slate-900">Send Payslips to Employees</h3>
-            <p className="text-sm text-slate-500 mt-1 max-w-sm mx-auto">
+            <h3 className="text-base font-bold text-slate-900 tracking-tight">Send payslips to employees</h3>
+            <p className="text-sm text-slate-500 mt-1 max-w-sm mx-auto leading-relaxed">
               Payslips for {run.employeeCount} employees will be generated and delivered.
             </p>
           </div>
-          <div className="space-y-2.5 rounded-lg border border-[#efefef] p-4 mt-5">
+          <div className="space-y-2.5 rounded-xl border border-slate-200/70 p-4 mt-5 bg-slate-50/40">
             <label className="flex items-center gap-2.5 text-sm cursor-pointer">
-              <input type="checkbox" checked={emailChecked} onChange={(e) => setEmailChecked(e.target.checked)} className="rounded border-slate-300" />
+              <input
+                type="checkbox"
+                checked={emailChecked}
+                onChange={(e) => setEmailChecked(e.target.checked)}
+                className="w-4 h-4 rounded border-slate-300"
+              />
               Email payslips to all {run.employeeCount} employees
             </label>
             <label className="flex items-center gap-2.5 text-sm cursor-pointer">
-              <input type="checkbox" checked={publishChecked} onChange={(e) => setPublishChecked(e.target.checked)} className="rounded border-slate-300" />
+              <input
+                type="checkbox"
+                checked={publishChecked}
+                onChange={(e) => setPublishChecked(e.target.checked)}
+                className="w-4 h-4 rounded border-slate-300"
+              />
               Publish to employee self-service portal
             </label>
           </div>
         </div>
       )}
 
-      {/* ── Step: Process ── */}
+      {/* Step: Process */}
       {step === "process" && (
-        <div className="rounded-xl border border-[#efefef] bg-white p-12 text-center max-w-2xl mx-auto w-full">
+        <div className="rounded-2xl border border-slate-200/70 bg-white p-12 text-center max-w-2xl mx-auto w-full shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
           {busy ? (
             <>
               <Loader2 className="w-10 h-10 text-blue-600 mx-auto mb-3 animate-spin" />
-              <h3 className="font-medium text-slate-900">Processing payroll...</h3>
+              <h3 className="text-base font-bold text-slate-900 tracking-tight">Processing payroll...</h3>
               <p className="text-sm text-slate-500 mt-1">Finalizing disbursement. This may take a moment.</p>
             </>
           ) : (
             <>
-              <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center mb-3">
+              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center mb-3">
                 <Play className="w-6 h-6" />
               </div>
-              <h3 className="font-medium text-slate-900">Ready to Process</h3>
-              <p className="text-sm text-slate-500 mt-1 max-w-sm mx-auto">
+              <h3 className="text-base font-bold text-slate-900 tracking-tight">Ready to process</h3>
+              <p className="text-sm text-slate-500 mt-1 max-w-sm mx-auto leading-relaxed">
                 {payslipsSent ? "Payslips sent. " : ""}Click process to finalize {run.period} payroll. This action cannot be undone.
               </p>
             </>
@@ -318,30 +447,61 @@ export default function PayrollProcessPage() {
 
       {/* Actions */}
       <div className="flex items-center justify-between gap-2 pt-2">
-        <Button variant="outline" size="sm" asChild disabled={busy}>
+        <Button
+          variant="outline"
+          asChild
+          disabled={busy}
+          className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+        >
           <Link to="/payroll">Cancel</Link>
         </Button>
         <div className="flex items-center gap-2">
           {step === "review" && (
-            <Button size="sm" onClick={() => setStep("payslips")}>
-              Continue <ArrowRight className="w-4 h-4 ml-2" />
+            <Button
+              onClick={() => setStep("payslips")}
+              className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           )}
           {step === "payslips" && (
             <>
-              <Button variant="outline" size="sm" onClick={() => setStep("review")} disabled={busy}>Back</Button>
-              <Button size="sm" onClick={handleSendPayslips} disabled={busy || (!emailChecked && !publishChecked)}>
-                {busy ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Mail className="w-4 h-4 mr-2" />}
-                {busy ? "Sending..." : "Send Payslips"}
+              <Button
+                variant="outline"
+                onClick={() => setStep("review")}
+                disabled={busy}
+                className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+              >
+                Back
+              </Button>
+              <Button
+                onClick={handleSendPayslips}
+                disabled={busy || (!emailChecked && !publishChecked)}
+                className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4"
+              >
+                {busy ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Mail className="w-4 h-4 mr-1" />}
+                {busy ? "Sending..." : "Send payslips"}
               </Button>
             </>
           )}
           {step === "process" && (
             <>
-              <Button variant="outline" size="sm" onClick={() => setStep("payslips")} disabled={busy}>Back</Button>
-              <Button size="sm" onClick={handleProcess} disabled={busy}>
-                {busy ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Play className="w-4 h-4 mr-2" />}
-                {busy ? "Processing..." : "Process Payroll"}
+              <Button
+                variant="outline"
+                onClick={() => setStep("payslips")}
+                disabled={busy}
+                className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+              >
+                Back
+              </Button>
+              <Button
+                onClick={handleProcess}
+                disabled={busy}
+                className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4"
+              >
+                {busy ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Play className="w-4 h-4 mr-1" />}
+                {busy ? "Processing..." : "Process payroll"}
               </Button>
             </>
           )}
@@ -351,7 +511,6 @@ export default function PayrollProcessPage() {
   );
 }
 
-/* ── Employee Detail View (drill-in) ── */
 function EmployeeDetailView({
   slip,
   run,
@@ -364,100 +523,139 @@ function EmployeeDetailView({
   const totalAllowances = slip.housingAllowance + slip.transportAllowance + slip.otherAllowances;
 
   return (
-    <div className="max-w-[1200px] mx-auto space-y-6">
-      {/* Breadcrumb */}
+    <div className="max-w-[1200px] mx-auto space-y-5">
+      {/* Breadcrumb + header */}
       <div className="space-y-3">
         <nav className="flex items-center gap-1.5 text-xs text-slate-500">
           <Link to="/payroll" className="hover:text-slate-900 transition-colors">Payroll</Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <button onClick={onBack} className="hover:text-slate-900 transition-colors">Process Payroll</button>
+          <button onClick={onBack} className="hover:text-slate-900 transition-colors">Process payroll</button>
           <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-slate-900 font-medium">{slip.employeeName}</span>
+          <span className="text-slate-900 font-semibold">{slip.employeeName}</span>
         </nav>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
-              {slip.employeeName.split(" ").map((n) => n[0]).slice(0, 2).join("")}
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div
+              className={cn(
+                "w-14 h-14 rounded-full flex items-center justify-center text-white font-semibold text-base shrink-0",
+                avatarColor(slip.employeeId)
+              )}
+            >
+              {initialsOf(slip.employeeName)}
             </div>
-            <div>
-              <h1 className="text-xl font-semibold tracking-tight">{slip.employeeName}</h1>
-              <p className="text-sm text-slate-500">{slip.department} · {run}</p>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 leading-tight">{slip.employeeName}</h1>
+              <p className="text-sm text-slate-500 leading-tight mt-0.5">
+                {slip.department} <span className="text-slate-400">·</span> {run}
+              </p>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={onBack}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Review
+          <Button
+            variant="outline"
+            onClick={onBack}
+            className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white shrink-0"
+          >
+            <ArrowLeft className="w-4 h-4 mr-1" />
+            Back to review
           </Button>
         </div>
       </div>
 
       {/* Top summary */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <SummaryTile label="Gross Pay" value={formatNaira(slip.grossPay)} />
-        <SummaryTile label="PAYE Tax" value={`-${formatNaira(slip.tax)}`} valueClass="text-slate-700" />
-        <SummaryTile label="Total Deductions" value={`-${formatNaira(slip.totalDeductions)}`} valueClass="text-slate-700" />
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
-          <p className="text-[11px] text-blue-700 font-medium">Net Pay</p>
-          <p className="text-lg font-semibold text-blue-900 mt-0.5">{formatNaira(slip.netPay)}</p>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <SummaryTile label="Gross pay" value={formatNaira(slip.grossPay)} />
+        <SummaryTile label="PAYE tax" value={`-${formatNaira(slip.tax)}`} />
+        <SummaryTile label="Total deductions" value={`-${formatNaira(slip.totalDeductions)}`} />
+        <div className="rounded-2xl border border-blue-200 bg-blue-50 px-5 py-4">
+          <p className="text-xs text-blue-700 font-semibold">Net pay</p>
+          <p className="text-xl font-bold text-blue-900 mt-1 tabular-nums leading-none">{formatNaira(slip.netPay)}</p>
         </div>
       </div>
 
-      {/* Breakdown */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="rounded-xl border border-[#efefef] bg-white p-5">
-          <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Earnings</h3>
-          <div className="space-y-2 text-sm">
-            <DetailRow label="Basic Salary" value={formatNaira(slip.basicSalary)} />
-            <DetailRow label="Housing Allowance" value={formatNaira(slip.housingAllowance)} />
-            <DetailRow label="Transport Allowance" value={formatNaira(slip.transportAllowance)} />
-            <DetailRow label="Other Allowances" value={formatNaira(slip.otherAllowances)} />
-            <div className="pt-2 mt-2 border-t border-[#efefef] flex items-center justify-between">
-              <span className="text-xs text-slate-500">Total Allowances</span>
-              <span className="font-medium">{formatNaira(totalAllowances)}</span>
+      {/* Payslip-style breakdown */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200/70">
+          <h3 className="text-sm font-bold text-slate-900 tracking-tight">Payslip · {run}</h3>
+          <span className="text-xs text-slate-500 font-mono tabular-nums">{slip.id.toUpperCase()}</span>
+        </div>
+
+        {/* Two-column ledger */}
+        <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200/70">
+          {/* Earnings side */}
+          <div className="px-6 py-5">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <h4 className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Earnings</h4>
             </div>
-            <div className="flex items-center justify-between pt-2 mt-2 border-t border-[#efefef]">
-              <span className="text-sm font-semibold">Gross Pay</span>
-              <span className="font-semibold">{formatNaira(slip.grossPay)}</span>
+            <dl className="space-y-2.5 text-sm">
+              <LedgerRow label="Basic salary" value={formatNaira(slip.basicSalary)} />
+              <LedgerRow label="Housing allowance" value={formatNaira(slip.housingAllowance)} />
+              <LedgerRow label="Transport allowance" value={formatNaira(slip.transportAllowance)} />
+              <LedgerRow label="Other allowances" value={formatNaira(slip.otherAllowances)} />
+            </dl>
+            <div className="mt-4 pt-3 border-t border-slate-100 space-y-2">
+              <div className="flex items-baseline justify-between">
+                <span className="text-xs text-slate-500">Total allowances</span>
+                <span className="text-sm font-semibold text-slate-700 tabular-nums">{formatNaira(totalAllowances)}</span>
+              </div>
+              <div className="flex items-baseline justify-between pt-2 border-t border-slate-100">
+                <span className="text-sm font-bold text-slate-900">Gross pay</span>
+                <span className="text-base font-bold text-slate-900 tabular-nums">{formatNaira(slip.grossPay)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Deductions side */}
+          <div className="px-6 py-5">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+              <h4 className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Deductions</h4>
+            </div>
+            <dl className="space-y-2.5 text-sm">
+              <LedgerRow label="PAYE tax" value={`-${formatNaira(slip.tax)}`} negative />
+              <LedgerRow label="Pension" value={`-${formatNaira(slip.pension)}`} negative />
+              <LedgerRow label="Other deductions" value={`-${formatNaira(slip.otherDeductions)}`} negative />
+              <LedgerRow label="—" value="" blank />
+            </dl>
+            <div className="mt-4 pt-3 border-t border-slate-100 space-y-2">
+              <div className="flex items-baseline justify-between">
+                <span className="text-xs text-slate-500">Total deductions</span>
+                <span className="text-sm font-semibold text-rose-700 tabular-nums">-{formatNaira(slip.totalDeductions)}</span>
+              </div>
+              <div className="flex items-baseline justify-between pt-2 border-t border-slate-100">
+                <span className="text-sm font-bold text-slate-900">After deductions</span>
+                <span className="text-base font-bold text-slate-700 tabular-nums">-{formatNaira(slip.totalDeductions)}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-[#efefef] bg-white p-5">
-          <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Deductions</h3>
-          <div className="space-y-2 text-sm">
-            <DetailRow label="PAYE Tax" value={`-${formatNaira(slip.tax)}`} valueClass="text-slate-700" />
-            <DetailRow label="Pension" value={`-${formatNaira(slip.pension)}`} valueClass="text-slate-700" />
-            <DetailRow label="Other Deductions" value={`-${formatNaira(slip.otherDeductions)}`} valueClass="text-slate-700" />
-            <div className="pt-2 mt-2 border-t border-[#efefef] flex items-center justify-between">
-              <span className="text-xs text-slate-500">Total Deductions</span>
-              <span className="font-medium text-slate-700">-{formatNaira(slip.totalDeductions)}</span>
-            </div>
-            <div className="flex items-center justify-between pt-2 mt-2 border-t border-[#efefef]">
-              <span className="text-sm font-semibold">Net Pay</span>
-              <span className="font-semibold text-blue-900">{formatNaira(slip.netPay)}</span>
-            </div>
+        {/* Net pay footer */}
+        <div className="px-6 py-4 bg-blue-50 border-t border-blue-100 flex items-center justify-between">
+          <div>
+            <p className="text-[11px] font-semibold text-blue-700 uppercase tracking-wider">Net pay</p>
+            <p className="text-xs text-blue-700/80 mt-0.5">Gross minus total deductions</p>
           </div>
+          <p className="text-2xl font-bold text-blue-900 tabular-nums leading-none">{formatNaira(slip.netPay)}</p>
         </div>
 
-        <div className="md:col-span-2 rounded-xl border border-[#efefef] bg-white p-5">
-          <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Disbursement</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <div>
-              <p className="text-xs text-slate-500">Bank</p>
-              <p className="font-medium mt-0.5">{slip.bankName}</p>
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">Account Number</p>
-              <p className="font-mono font-medium mt-0.5">{slip.accountNumber}</p>
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">Employee ID</p>
-              <p className="font-mono font-medium mt-0.5">{slip.employeeId}</p>
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">Department</p>
-              <p className="font-medium mt-0.5">{slip.department}</p>
-            </div>
+        {/* Disbursement footer */}
+        <div className="px-6 py-4 border-t border-slate-200/70 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div>
+            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Bank</p>
+            <p className="font-semibold text-slate-900 mt-1">{slip.bankName}</p>
+          </div>
+          <div>
+            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Account</p>
+            <p className="font-mono font-semibold text-slate-900 mt-1 tabular-nums">{slip.accountNumber}</p>
+          </div>
+          <div>
+            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Employee ID</p>
+            <p className="font-mono font-semibold text-slate-900 mt-1 tabular-nums">{slip.employeeId}</p>
+          </div>
+          <div>
+            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Department</p>
+            <p className="font-semibold text-slate-900 mt-1">{slip.department}</p>
           </div>
         </div>
       </div>
@@ -465,21 +663,33 @@ function EmployeeDetailView({
   );
 }
 
-/* ── Shared bits ── */
-function SummaryTile({ label, value, valueClass }: { label: string; value: string; valueClass?: string }) {
+function SummaryTile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-[#efefef] bg-white p-3">
-      <p className="text-[11px] text-slate-500">{label}</p>
-      <p className={cn("text-sm font-semibold mt-0.5", valueClass)}>{value}</p>
+    <div className="rounded-2xl border border-slate-200/70 bg-white px-5 py-4 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
+      <p className="text-xs text-slate-500">{label}</p>
+      <p className="text-xl font-bold text-slate-900 mt-1 tabular-nums leading-none">{value}</p>
     </div>
   );
 }
 
-function DetailRow({ label, value, valueClass }: { label: string; value: string; valueClass?: string }) {
+function LedgerRow({
+  label,
+  value,
+  negative,
+  blank,
+}: {
+  label: string;
+  value: string;
+  negative?: boolean;
+  blank?: boolean;
+}) {
+  if (blank) {
+    return <div className="flex items-baseline justify-between invisible">&nbsp;</div>;
+  }
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-xs text-slate-500">{label}</span>
-      <span className={cn("font-medium", valueClass)}>{value}</span>
+    <div className="flex items-baseline justify-between">
+      <dt className="text-slate-600">{label}</dt>
+      <dd className={cn("font-semibold tabular-nums", negative ? "text-rose-700" : "text-slate-900")}>{value}</dd>
     </div>
   );
 }
@@ -500,8 +710,15 @@ function SortableHeader({
   align: "left" | "right";
 }) {
   const active = currentKey === sortKey;
+  const isFirst = sortKey === "name";
   return (
-    <th className={cn("p-3 text-xs font-medium text-slate-500", align === "right" ? "text-right" : "text-left")}>
+    <th
+      className={cn(
+        "font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5",
+        align === "right" ? "text-right" : "text-left",
+        isFirst && "pl-5"
+      )}
+    >
       <button
         onClick={() => onSort(sortKey)}
         className={cn(

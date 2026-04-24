@@ -7,8 +7,6 @@ import {
   MapPin,
   Building2,
   Wallet,
-  Filter,
-  Download,
   ChevronDown,
   MoreHorizontal,
   ArrowRightLeft,
@@ -206,20 +204,9 @@ const STATUS_PILL = {
 export default function DepartmentListPage() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const [locationFilter, setLocationFilter] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"name" | "employees" | "budget">("name");
   const [reassignDept, setReassignDept] = useState<string | null>(null);
   const [rowMenuId, setRowMenuId] = useState<string | null>(null);
-
-  const locationCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    MOCK_DEPARTMENTS.forEach((d) => {
-      counts[d.location] = (counts[d.location] || 0) + 1;
-    });
-    return counts;
-  }, []);
-
-  const locations = useMemo(() => Object.keys(locationCounts).sort(), [locationCounts]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
@@ -229,8 +216,7 @@ export default function DepartmentListPage() {
         d.name.toLowerCase().includes(q) ||
         d.code.toLowerCase().includes(q) ||
         d.headOfDepartment.toLowerCase().includes(q);
-      const matchesLocation = locationFilter === "all" || d.location === locationFilter;
-      return matchesSearch && matchesLocation;
+      return matchesSearch;
     });
 
     rows.sort((a, b) => {
@@ -239,7 +225,7 @@ export default function DepartmentListPage() {
       return b.budget - a.budget;
     });
     return rows;
-  }, [search, locationFilter, sortBy]);
+  }, [search, sortBy]);
 
   const totalEmployees = MOCK_DEPARTMENTS.reduce((sum, d) => sum + d.employeeCount, 0);
   const totalBudget = MOCK_DEPARTMENTS.reduce((sum, d) => sum + d.budget, 0);
@@ -252,11 +238,6 @@ export default function DepartmentListPage() {
     { value: uniqueLocations, label: "Locations", icon: MapPin, wellBg: "bg-blue-50", iconColor: "text-blue-600", trend: 1 },
   ];
 
-  const chipData: Array<{ key: string; label: string; count?: number }> = [
-    { key: "all", label: "All" },
-    ...locations.map((l) => ({ key: l, label: l, count: locationCounts[l] })),
-  ];
-
   return (
     <div className="max-w-[1500px] space-y-5">
       {reassignDept && (
@@ -266,55 +247,22 @@ export default function DepartmentListPage() {
         />
       )}
 
-      {/* Breadcrumb + title */}
-      <div>
-        <p className="text-sm text-slate-500">Organization · Northwind Studio</p>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 mt-1">Departments</h1>
-      </div>
-
-      {/* Chips + actions */}
-      <div className="flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-4 justify-between">
-        <div className="flex flex-wrap items-center gap-2">
-          {chipData.map((chip) => {
-            const active = locationFilter === chip.key;
-            return (
-              <button
-                key={chip.key}
-                onClick={() => setLocationFilter(chip.key)}
-                className={cn(
-                  "inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-sm font-medium transition-colors",
-                  active
-                    ? "bg-blue-600 text-white"
-                    : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
-                )}
-              >
-                {chip.label}
-                {chip.count !== undefined && (
-                  <span className={cn("text-xs", active ? "text-white/80" : "text-slate-400")}>
-                    {chip.count}
-                  </span>
-                )}
-              </button>
-            );
-          })}
+      {/* Header */}
+      <div className="flex items-center justify-between gap-4">
+        <div className="space-y-1 flex-1 min-w-0">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Departments</h1>
+          <p className="text-sm text-slate-500 leading-relaxed">
+            Structure your organization — create departments, assign heads, and track headcount
+            and budgets across locations.
+          </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white">
-            <Filter className="w-4 h-4 mr-1" />
-            Filters
-          </Button>
-          <Button variant="outline" className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white">
-            <Download className="w-4 h-4 mr-1" />
-            Export
-          </Button>
-          <Button
-            onClick={() => navigate("/departments/create")}
-            className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4"
-          >
-            <Plus className="w-4 h-4 mr-1" />
-            Add department
-          </Button>
-        </div>
+        <Button
+          onClick={() => navigate("/departments/create")}
+          className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 shrink-0"
+        >
+          <Plus className="w-4 h-4 mr-1" />
+          Add department
+        </Button>
       </div>
 
       {/* KPI cards */}
@@ -377,10 +325,7 @@ export default function DepartmentListPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200/70">
-                <th className="w-12 pl-5 py-3">
-                  <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
-                </th>
-                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Department</th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pl-5 pr-5">Department</th>
                 <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Head</th>
                 <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Employees</th>
                 <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Location</th>
@@ -398,22 +343,9 @@ export default function DepartmentListPage() {
                     onClick={() => navigate(`/departments/${dept.id}`)}
                     className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer"
                   >
-                    <td className="pl-5 py-4" onClick={(e) => e.stopPropagation()}>
-                      <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
-                    </td>
-                    <td className="py-4 pr-5">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white font-semibold text-sm"
-                          style={{ backgroundColor: dept.color }}
-                        >
-                          {dept.code.slice(0, 2)}
-                        </div>
-                        <div className="min-w-0">
-                          <p className="font-semibold text-slate-900 leading-tight">{dept.name}</p>
-                          <p className="text-xs text-slate-500 leading-tight mt-0.5 font-mono">{dept.code}</p>
-                        </div>
-                      </div>
+                    <td className="py-4 pl-5 pr-5">
+                      <p className="font-semibold text-slate-900 leading-tight">{dept.name}</p>
+                      <p className="text-xs text-slate-500 leading-tight mt-0.5 font-mono">{dept.code}</p>
                     </td>
                     <td className="py-4 pr-5">
                       {dept.headOfDepartment ? (
@@ -494,7 +426,7 @@ export default function DepartmentListPage() {
               })}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="py-16 text-center text-slate-400">
+                  <td colSpan={7} className="py-16 text-center text-slate-400">
                     <Building2 className="w-10 h-10 mx-auto mb-3 opacity-30" />
                     <p className="font-medium text-slate-900">No departments found</p>
                     <p className="text-xs mt-1 text-slate-500">Try adjusting your search or filters</p>

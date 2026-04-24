@@ -1,5 +1,16 @@
 import { useMemo, useState } from "react";
-import { Plus, Trash2, X, Users, Check } from "lucide-react";
+import {
+  Plus,
+  Trash2,
+  X,
+  Users,
+  Check,
+  Search,
+  TrendingUp,
+  ClipboardCheck,
+  AlertCircle,
+  Clock,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,11 +24,45 @@ import { cn } from "@/lib/utils";
 import {
   MOCK_ENROLLMENTS,
   MOCK_BENEFIT_PLANS,
-  ENROLLMENT_STATUS_STYLES,
   type EnrollmentStatus,
   type Enrollment,
 } from "@/lib/benefits-mock-data";
 import { MOCK_EMPLOYEE_LIST } from "@/lib/employee-list-mock-data";
+
+const AVATAR_PALETTE = [
+  "bg-blue-500",
+  "bg-violet-500",
+  "bg-teal-500",
+  "bg-amber-500",
+  "bg-rose-500",
+  "bg-emerald-500",
+  "bg-indigo-500",
+  "bg-pink-500",
+  "bg-orange-500",
+  "bg-cyan-500",
+];
+
+function avatarColor(id: string): string {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  return AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+}
+
+function initialsOf(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+const STATUS_PILL: Record<EnrollmentStatus, { label: string; dot: string; pill: string }> = {
+  active: { label: "Active", dot: "bg-emerald-500", pill: "bg-emerald-50 text-emerald-700" },
+  pending: { label: "Pending", dot: "bg-amber-500", pill: "bg-amber-50 text-amber-700" },
+  cancelled: { label: "Cancelled", dot: "bg-slate-400", pill: "bg-slate-100 text-slate-600" },
+  expired: { label: "Expired", dot: "bg-rose-500", pill: "bg-rose-50 text-rose-700" },
+};
 
 export default function BenefitsEnrollmentsPage() {
   const [enrollments, setEnrollments] = useState<Enrollment[]>(MOCK_ENROLLMENTS);
@@ -40,8 +85,7 @@ export default function BenefitsEnrollmentsPage() {
         e.employeeName.toLowerCase().includes(search.toLowerCase()) ||
         e.department.toLowerCase().includes(search.toLowerCase());
       const matchesPlan = planFilter === "all" || e.planName === planFilter;
-      const matchesStatus =
-        statusFilter === "all" || e.status === statusFilter;
+      const matchesStatus = statusFilter === "all" || e.status === statusFilter;
       return matchesSearch && matchesPlan && matchesStatus;
     });
   }, [enrollments, search, planFilter, statusFilter]);
@@ -72,11 +116,11 @@ export default function BenefitsEnrollmentsPage() {
   const pendingCount = enrollments.filter((e) => e.status === "pending").length;
   const expiredCount = enrollments.filter((e) => e.status === "expired").length;
 
-  const summaryCards = [
-    { label: "Total Enrollments", value: totalCount },
-    { label: "Active", value: activeCount },
-    { label: "Pending", value: pendingCount },
-    { label: "Expired", value: expiredCount },
+  const kpis = [
+    { value: totalCount, label: "Total enrollments", icon: ClipboardCheck, trend: 3 },
+    { value: activeCount, label: "Active", icon: Check, trend: 2 },
+    { value: pendingCount, label: "Pending", icon: AlertCircle, trend: 1 },
+    { value: expiredCount, label: "Expired", icon: Clock, trend: 0 },
   ];
 
   const handleRemove = () => {
@@ -97,7 +141,7 @@ export default function BenefitsEnrollmentsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-[1500px] space-y-5">
       {/* Toast */}
       {toast && (
         <div className="flex items-center justify-between gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
@@ -112,105 +156,143 @@ export default function BenefitsEnrollmentsPage() {
       )}
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Benefits Enrollments
-          </h1>
-          <p className="text-sm text-slate-500">
-            Add or remove employees from benefit plans.
+      <div className="flex items-center justify-between gap-4">
+        <div className="space-y-1 flex-1 min-w-0">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Benefits enrollments</h1>
+          <p className="text-sm text-slate-500 leading-relaxed">
+            Add or remove employees from benefit plans and track each enrollment's status at a glance.
           </p>
         </div>
-        <Button size="sm" onClick={() => setShowAddModal(true)}>
-          <Plus className="w-4 h-4 mr-2" />
-          Add Employee
+        <Button
+          onClick={() => setShowAddModal(true)}
+          className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 shrink-0"
+        >
+          <Plus className="w-4 h-4 mr-1" />
+          Add employee
         </Button>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {summaryCards.map((card) => (
-          <div
-            key={card.label}
-            className="rounded-xl border border-[#efefef] bg-white p-4"
-          >
-            <p className="text-sm text-slate-500">{card.label}</p>
-            <p className="mt-1 text-2xl font-semibold">{card.value}</p>
+      {/* KPI cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
+            <div
+              key={kpi.label}
+              className="rounded-2xl border border-slate-200/70 bg-white px-5 pt-5 pb-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] flex flex-col gap-7"
+            >
+              <div className="flex items-start justify-between">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                  <Icon className="w-[18px] h-[18px] text-blue-600" />
+                </div>
+                <div className="inline-flex items-center gap-0.5 text-xs font-semibold text-emerald-600">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span>+{kpi.trend}</span>
+                </div>
+              </div>
+              <div>
+                <p className="text-3xl font-bold tracking-tight text-slate-900 leading-none tabular-nums">
+                  {kpi.value}
+                </p>
+                <p className="text-sm text-slate-500 mt-2">{kpi.label}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Table card */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+        {/* Toolbar */}
+        <div className="flex flex-col lg:flex-row lg:items-center gap-3 justify-between px-5 py-4 border-b border-slate-200/70">
+          <div className="flex items-center gap-3 flex-1 max-w-md">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Input
+                placeholder="Search by name or department..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-9 bg-white border-slate-200 h-10 rounded-lg"
+              />
+            </div>
+            <p className="text-sm text-slate-500 whitespace-nowrap">{groupedByEmployee.length} employees</p>
           </div>
-        ))}
-      </div>
+          <div className="flex items-center gap-2">
+            <Select value={planFilter} onValueChange={setPlanFilter}>
+              <SelectTrigger className="h-10 rounded-lg border-slate-200 font-medium w-48">
+                <SelectValue placeholder="All plans" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All plans</SelectItem>
+                {uniquePlanNames.map((name) => (
+                  <SelectItem key={name} value={name}>
+                    {name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="h-10 rounded-lg border-slate-200 font-medium w-40">
+                <SelectValue placeholder="All statuses" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All statuses</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="expired">Expired</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
 
-      {/* Filters */}
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <Input
-          placeholder="Search by name or department..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="sm:max-w-xs"
-        />
-        <Select value={planFilter} onValueChange={setPlanFilter}>
-          <SelectTrigger className="sm:w-56">
-            <SelectValue placeholder="All Plans" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Plans</SelectItem>
-            {uniquePlanNames.map((name) => (
-              <SelectItem key={name} value={name}>
-                {name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="sm:w-44">
-            <SelectValue placeholder="All Statuses" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="cancelled">Cancelled</SelectItem>
-            <SelectItem value="expired">Expired</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Table */}
-      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-slate-200/70 text-left">
-              <th className="px-4 py-3 text-xs font-medium text-slate-500">Employee</th>
-              <th className="px-4 py-3 text-xs font-medium text-slate-500">Department</th>
-              <th className="px-4 py-3 text-xs font-medium text-slate-500">Plans</th>
-            </tr>
-          </thead>
-          <tbody>
-            {groupedByEmployee.length === 0 ? (
-              <tr>
-                <td colSpan={3} className="px-4 py-12 text-center text-slate-500">
-                  No enrollments found.
-                </td>
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-200/70">
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pl-5 pr-5">
+                  Employee
+                </th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">
+                  Enrolled plans
+                </th>
               </tr>
-            ) : (
-              groupedByEmployee.map((group) => {
-                const initials = group.employeeName
-                  .split(" ")
-                  .map((n) => n[0])
-                  .slice(0, 2)
-                  .join("");
-                return (
-                  <tr key={group.employeeId} className="border-t border-[#efefef] hover:bg-[#f8fafc]/50 transition-colors">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-semibold shrink-0">
-                          {initials}
+            </thead>
+            <tbody>
+              {groupedByEmployee.length === 0 ? (
+                <tr>
+                  <td colSpan={2} className="py-16 text-center text-slate-400">
+                    <Users className="w-10 h-10 mx-auto mb-3 opacity-30" />
+                    <p className="font-semibold text-slate-900">No enrollments found</p>
+                    <p className="text-xs mt-1">Try adjusting your search or filters</p>
+                  </td>
+                </tr>
+              ) : (
+                groupedByEmployee.map((group) => (
+                  <tr
+                    key={group.employeeId}
+                    className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors"
+                  >
+                    <td className="py-4 pl-5 pr-5">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={cn(
+                            "w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm shrink-0",
+                            avatarColor(group.employeeId)
+                          )}
+                        >
+                          {initialsOf(group.employeeName)}
                         </div>
-                        <span className="font-medium">{group.employeeName}</span>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-slate-900 leading-tight">{group.employeeName}</p>
+                          <p className="text-xs text-slate-500 leading-tight mt-0.5 truncate">
+                            {group.department}
+                          </p>
+                        </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-500">{group.department}</td>
-                    <td className="px-4 py-3">
+                    <td className="py-4 pr-5">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         {group.enrollments.map((enrollment) => (
                           <PlanChip
@@ -222,11 +304,11 @@ export default function BenefitsEnrollmentsPage() {
                       </div>
                     </td>
                   </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Add modal */}
@@ -250,27 +332,13 @@ export default function BenefitsEnrollmentsPage() {
   );
 }
 
-/* ── Plan chip ── */
-const STATUS_DOT: Record<EnrollmentStatus, string> = {
-  active: "bg-slate-700",
-  pending: "bg-slate-700",
-  cancelled: "bg-slate-700",
-  expired: "bg-slate-700",
-};
-
-function PlanChip({
-  enrollment,
-  onRemove,
-}: {
-  enrollment: Enrollment;
-  onRemove: () => void;
-}) {
-  const statusLabel = ENROLLMENT_STATUS_STYLES[enrollment.status].label;
+function PlanChip({ enrollment, onRemove }: { enrollment: Enrollment; onRemove: () => void }) {
+  const style = STATUS_PILL[enrollment.status];
   const dateLabel = new Date(enrollment.startDate).toLocaleDateString("en-NG", {
     year: "numeric",
     month: "short",
   });
-  const tooltip = `${statusLabel} · Since ${dateLabel}${
+  const tooltip = `${style.label} · Since ${dateLabel}${
     enrollment.dependentsCovered > 0
       ? ` · ${enrollment.dependentsCovered} dependent${enrollment.dependentsCovered > 1 ? "s" : ""}`
       : ""
@@ -278,13 +346,16 @@ function PlanChip({
   return (
     <span
       title={tooltip}
-      className="group inline-flex items-center gap-1.5 rounded-full border border-[#efefef] bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:border-slate-300 transition-colors"
+      className={cn(
+        "group inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium",
+        style.pill
+      )}
     >
-      <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", STATUS_DOT[enrollment.status])} />
+      <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", style.dot)} />
       <span>{enrollment.planName}</span>
       <button
         onClick={onRemove}
-        className="ml-0.5 rounded-full p-0.5 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+        className="ml-0.5 rounded-full p-0.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-colors"
         title={`Remove ${enrollment.planName}`}
       >
         <X className="w-3 h-3" strokeWidth={2.5} />
@@ -293,7 +364,6 @@ function PlanChip({
   );
 }
 
-/* ── Add Enrollment Modal ── */
 function AddEnrollmentModal({
   existingEnrollments,
   onClose,
@@ -309,7 +379,6 @@ function AddEnrollmentModal({
 
   const selectedPlan = MOCK_BENEFIT_PLANS.find((p) => p.id === planId);
 
-  // Employees not already enrolled in the selected plan
   const availableEmployees = useMemo(() => {
     const enrolledIds = new Set(
       existingEnrollments
@@ -370,24 +439,35 @@ function AddEnrollmentModal({
     availableEmployees.length > 0 && selectedEmployees.size === availableEmployees.length;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[92vh] flex flex-col">
-        <div className="flex items-center justify-between p-5 border-b border-[#efefef]">
+    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
+      <div
+        className="bg-white rounded-2xl border border-slate-200/70 shadow-xl max-w-2xl w-full max-h-[92vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/70">
           <div>
-            <h2 className="font-semibold text-slate-900">Add Employee</h2>
+            <h2 className="text-sm font-bold text-slate-900 tracking-tight">Add employee</h2>
             <p className="text-xs text-slate-500 mt-0.5">Select a plan and the employees to enroll.</p>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-900">
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 inline-flex items-center justify-center"
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         <div className="p-5 space-y-4 overflow-y-auto flex-1">
-          {/* Plan selector */}
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-700">Benefit Plan</label>
-            <Select value={planId} onValueChange={(v) => { setPlanId(v); setSelectedEmployees(new Set()); }}>
-              <SelectTrigger>
+            <label className="text-xs font-medium text-slate-500">Benefit plan</label>
+            <Select
+              value={planId}
+              onValueChange={(v) => {
+                setPlanId(v);
+                setSelectedEmployees(new Set());
+              }}
+            >
+              <SelectTrigger className="h-10 rounded-lg border-slate-200">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -398,38 +478,36 @@ function AddEnrollmentModal({
                 ))}
               </SelectContent>
             </Select>
-            {selectedPlan && (
-              <p className="text-xs text-slate-500">{selectedPlan.coverageSummary}</p>
-            )}
+            {selectedPlan && <p className="text-xs text-slate-500">{selectedPlan.coverageSummary}</p>}
           </div>
 
-          {/* Employee search */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-medium text-slate-700">
-                Employees to Enroll
-                <span className="ml-1 text-slate-500 font-normal">
-                  ({selectedEmployees.size} selected)
-                </span>
+              <label className="text-xs font-medium text-slate-500">
+                Employees to enroll
+                <span className="ml-1 text-slate-400 font-normal">({selectedEmployees.size} selected)</span>
               </label>
               {availableEmployees.length > 0 && (
                 <button
                   onClick={toggleAll}
-                  className="text-xs font-medium text-blue-600 hover:text-blue-700"
+                  className="text-xs font-semibold text-blue-600 hover:text-blue-700"
                 >
                   {allSelected ? "Clear all" : "Select all"}
                 </button>
               )}
             </div>
-            <Input
-              placeholder="Search by name or department..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Input
+                placeholder="Search by name or department..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-9 h-10 rounded-lg border-slate-200"
+              />
+            </div>
           </div>
 
-          {/* Employee list */}
-          <div className="rounded-lg border border-[#efefef] divide-y divide-[#efefef] max-h-80 overflow-y-auto">
+          <div className="rounded-xl border border-slate-200/70 divide-y divide-slate-100 max-h-80 overflow-y-auto">
             {availableEmployees.length === 0 ? (
               <div className="p-8 text-center text-sm text-slate-500">
                 <Users className="w-8 h-8 mx-auto mb-2 opacity-30" />
@@ -442,7 +520,7 @@ function AddEnrollmentModal({
                   <label
                     key={emp.id}
                     className={cn(
-                      "flex items-center gap-3 p-3 cursor-pointer hover:bg-[#f8fafc] transition-colors",
+                      "flex items-center gap-3 p-3 cursor-pointer hover:bg-slate-50/60 transition-colors",
                       isSelected && "bg-blue-50/50"
                     )}
                   >
@@ -450,14 +528,23 @@ function AddEnrollmentModal({
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => toggleEmployee(emp.id)}
-                      className="rounded border-slate-300"
+                      className="w-4 h-4 rounded border-slate-300"
                     />
+                    <div
+                      className={cn(
+                        "w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold text-[11px] shrink-0",
+                        avatarColor(emp.id)
+                      )}
+                    >
+                      {emp.firstName[0]}
+                      {emp.lastName[0]}
+                    </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-slate-900">
+                      <p className="text-sm font-semibold text-slate-900">
                         {emp.firstName} {emp.lastName}
                       </p>
-                      <p className="text-xs text-slate-500">
-                        {emp.jobTitle} · {emp.department}
+                      <p className="text-xs text-slate-500 truncate">
+                        {emp.jobTitle} <span className="text-slate-400">·</span> {emp.department}
                       </p>
                     </div>
                   </label>
@@ -467,9 +554,19 @@ function AddEnrollmentModal({
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 p-4 border-t border-[#efefef] bg-[#f8fafc]">
-          <Button variant="outline" size="sm" onClick={onClose}>Cancel</Button>
-          <Button size="sm" onClick={handleSubmit} disabled={selectedEmployees.size === 0}>
+        <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-slate-200/70">
+          <Button
+            variant="outline"
+            onClick={onClose}
+            className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            disabled={selectedEmployees.size === 0}
+            className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4"
+          >
             Add {selectedEmployees.size > 0 && `(${selectedEmployees.size})`}
           </Button>
         </div>
@@ -478,7 +575,6 @@ function AddEnrollmentModal({
   );
 }
 
-/* ── Confirm Remove Modal ── */
 function ConfirmRemoveModal({
   enrollment,
   onCancel,
@@ -489,17 +585,31 @@ function ConfirmRemoveModal({
   onConfirm: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-5">
-        <h3 className="font-semibold text-slate-900">Remove enrollment?</h3>
-        <p className="text-sm text-slate-500 mt-1">
-          This will remove <span className="font-medium text-slate-900">{enrollment.employeeName}</span> from{" "}
-          <span className="font-medium text-slate-900">{enrollment.planName}</span>. They will lose coverage immediately.
+    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onCancel}>
+      <div
+        className="bg-white rounded-2xl border border-slate-200/70 shadow-xl max-w-md w-full p-5"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h3 className="text-base font-bold text-slate-900 tracking-tight">Remove enrollment?</h3>
+        <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+          This will remove{" "}
+          <span className="font-semibold text-slate-900">{enrollment.employeeName}</span> from{" "}
+          <span className="font-semibold text-slate-900">{enrollment.planName}</span>. They will lose
+          coverage immediately.
         </p>
         <div className="flex items-center justify-end gap-2 mt-5">
-          <Button variant="outline" size="sm" onClick={onCancel}>Cancel</Button>
-          <Button variant="destructive" size="sm" onClick={onConfirm}>
-            <Trash2 className="w-4 h-4 mr-2" />
+          <Button
+            variant="outline"
+            onClick={onCancel}
+            className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={onConfirm}
+            className="h-10 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-semibold px-4"
+          >
+            <Trash2 className="w-4 h-4 mr-1" />
             Remove
           </Button>
         </div>

@@ -12,11 +12,8 @@ import {
   FileText,
   FolderOpen,
   Package,
-  BarChart3,
   Megaphone,
   Settings,
-  Settings2,
-  Shield,
   Home,
   Briefcase,
   Wallet,
@@ -361,18 +358,7 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: "Attendance", icon: CalendarDays, path: "/attendance" },
       { label: "Shifts", icon: Timer, path: "/shifts" },
-      {
-        label: "Reports",
-        icon: BarChart3,
-        path: "/attendance/daily-report",
-        children: [
-          { label: "Daily Report", path: "/attendance/daily-report" },
-          { label: "Monthly Summary", path: "/attendance/monthly-report" },
-          { label: "Analytics", path: "/attendance/analytics" },
-        ],
-      },
       { label: "Leave", icon: Palmtree, path: "/leave" },
-      { label: "Work Schedules", icon: Clock, path: "/schedules" },
     ],
   },
   {
@@ -380,11 +366,7 @@ export const NAV_SECTIONS: NavSection[] = [
     icon: Wallet,
     items: [
       { label: "Processing", icon: DollarSign, path: "/payroll" },
-      { label: "Configuration", icon: Settings2, path: "/payroll/config" },
       { label: "Pay Grades & Groups", icon: Banknote, path: "/payroll/pay-grades" },
-      { label: "Payroll Roster", icon: UserCheck, path: "/payroll/roster" },
-      { label: "Shift Allowance & Payroll", icon: Timer, path: "/shifts/allowance" },
-      { label: "Compliance", icon: Shield, path: "/payroll/compliance" },
     ],
   },
   {

@@ -1,15 +1,21 @@
 export type PayrollStatus = "draft" | "processing" | "completed" | "failed";
 export type PayslipStatus = "pending" | "paid" | "on-hold";
 
+export type PayrollRunType = "regular" | "off-cycle" | "bonus" | "13th-month";
+
 export interface PayrollRun {
   id: string;
   period: string;
   month: string;
   year: number;
   status: PayrollStatus;
+  runType: PayrollRunType;
+  payDate: string;
   totalGross: number;
   totalNet: number;
   totalDeductions: number;
+  totalTax: number;
+  totalPension: number;
   employeeCount: number;
   processedDate: string | null;
   approvedBy: string | null;
@@ -60,8 +66,16 @@ export function formatNaira(amount: number): string {
 }
 
 export const MOCK_PAYROLL_RUNS: PayrollRun[] = [
-  { id: "pr-001", period: "April 2026", month: "April", year: 2026, status: "draft", totalGross: 0, totalNet: 0, totalDeductions: 0, employeeCount: 20, processedDate: null, approvedBy: null },
-  { id: "pr-002", period: "March 2026", month: "March", year: 2026, status: "completed", totalGross: 8450000, totalNet: 5980000, totalDeductions: 2470000, employeeCount: 20, processedDate: "2026-03-25", approvedBy: "Chibueze Okoro" },
+  { id: "pr-001", period: "April 2026", month: "April", year: 2026, status: "draft", runType: "regular", payDate: "2026-04-25", totalGross: 0, totalNet: 0, totalDeductions: 0, totalTax: 0, totalPension: 0, employeeCount: 22, processedDate: null, approvedBy: null },
+  { id: "pr-002", period: "March 2026", month: "March", year: 2026, status: "completed", runType: "regular", payDate: "2026-03-25", totalGross: 8450000, totalNet: 5980000, totalDeductions: 2470000, totalTax: 1620000, totalPension: 710000, employeeCount: 20, processedDate: "2026-03-25", approvedBy: "Chibueze Okoro" },
+  { id: "pr-003", period: "March 2026 · Bonus", month: "March", year: 2026, status: "completed", runType: "bonus", payDate: "2026-03-18", totalGross: 1250000, totalNet: 1062500, totalDeductions: 187500, totalTax: 125000, totalPension: 62500, employeeCount: 12, processedDate: "2026-03-18", approvedBy: "Chibueze Okoro" },
+  { id: "pr-004", period: "February 2026", month: "February", year: 2026, status: "completed", runType: "regular", payDate: "2026-02-25", totalGross: 8185000, totalNet: 5789650, totalDeductions: 2395350, totalTax: 1570000, totalPension: 687850, employeeCount: 19, processedDate: "2026-02-25", approvedBy: "Chibueze Okoro" },
+  { id: "pr-005", period: "January 2026", month: "January", year: 2026, status: "completed", runType: "regular", payDate: "2026-01-25", totalGross: 8010000, totalNet: 5665100, totalDeductions: 2344900, totalTax: 1540000, totalPension: 672450, employeeCount: 19, processedDate: "2026-01-25", approvedBy: "Fatima Abdullahi" },
+  { id: "pr-006", period: "December 2025 · 13th Month", month: "December", year: 2025, status: "completed", runType: "13th-month", payDate: "2025-12-20", totalGross: 7920000, totalNet: 7326000, totalDeductions: 594000, totalTax: 396000, totalPension: 198000, employeeCount: 18, processedDate: "2025-12-20", approvedBy: "Chibueze Okoro" },
+  { id: "pr-007", period: "December 2025", month: "December", year: 2025, status: "completed", runType: "regular", payDate: "2025-12-22", totalGross: 7920000, totalNet: 5605350, totalDeductions: 2314650, totalTax: 1520000, totalPension: 664650, employeeCount: 18, processedDate: "2025-12-22", approvedBy: "Fatima Abdullahi" },
+  { id: "pr-008", period: "November 2025 · Off-cycle", month: "November", year: 2025, status: "failed", runType: "off-cycle", payDate: "2025-11-10", totalGross: 450000, totalNet: 382500, totalDeductions: 67500, totalTax: 45000, totalPension: 22500, employeeCount: 3, processedDate: "2025-11-10", approvedBy: null },
+  { id: "pr-009", period: "November 2025", month: "November", year: 2025, status: "completed", runType: "regular", payDate: "2025-11-25", totalGross: 7755000, totalNet: 5488850, totalDeductions: 2266150, totalTax: 1488000, totalPension: 651150, employeeCount: 18, processedDate: "2025-11-25", approvedBy: "Chibueze Okoro" },
+  { id: "pr-010", period: "October 2025", month: "October", year: 2025, status: "completed", runType: "regular", payDate: "2025-10-25", totalGross: 7590000, totalNet: 5372250, totalDeductions: 2217750, totalTax: 1456000, totalPension: 637350, employeeCount: 18, processedDate: "2025-10-25", approvedBy: "Chibueze Okoro" },
 ];
 
 export const MOCK_PAYSLIPS: EmployeePayslip[] = [

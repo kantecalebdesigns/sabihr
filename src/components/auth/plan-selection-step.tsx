@@ -1,6 +1,5 @@
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { SUBSCRIPTION_PLANS, BILLING_CYCLES } from "@/lib/mock-data";
 import type { PlanSelectionData, BillingCycle } from "@/types/auth";
 import type { ValidationErrors } from "@/lib/validators";
@@ -11,11 +10,12 @@ interface PlanSelectionStepProps {
   onChange: (field: keyof PlanSelectionData, value: string) => void;
 }
 
-function formatCurrency(amount: number): string {
+function formatPerMonth(amount: number): string {
   return new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
     minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(amount);
 }
 
@@ -23,43 +23,49 @@ function getCyclePrice(monthlyPrice: number, cycle: BillingCycle) {
   const config = BILLING_CYCLES.find((c) => c.value === cycle)!;
   const subtotal = monthlyPrice * config.months;
   const discounted = subtotal * (1 - config.discount / 100);
-  return { total: Math.round(discounted), perMonth: Math.round(discounted / config.months) };
+  return {
+    total: Math.round(discounted),
+    perMonth: Math.round(discounted / config.months),
+    months: config.months,
+  };
 }
 
 export function PlanSelectionStep({ data, errors, onChange }: PlanSelectionStepProps) {
-
   return (
     <div className="space-y-5">
-      <div className="space-y-1">
-        <h2 className="text-lg font-semibold">Choose a Plan</h2>
-        <p className="text-sm text-muted-foreground">
-          Select your billing cycle and plan. You can upgrade anytime.
+      {/* Header */}
+      <div className="space-y-1 text-center">
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+          Simple, transparent pricing
+        </h2>
+        <p className="text-sm text-slate-500 leading-relaxed">
+          No contracts. No surprise fees.
         </p>
       </div>
 
       {/* Billing cycle toggle */}
       <div className="flex items-center justify-center">
-        <div className="inline-flex items-center rounded-lg bg-muted p-1 gap-0.5">
+        <div className="inline-flex items-center rounded-full bg-slate-100 p-1 gap-0.5">
           {BILLING_CYCLES.map((cycle) => (
             <button
               key={cycle.value}
               type="button"
               onClick={() => onChange("billingCycle", cycle.value)}
               className={cn(
-                "relative px-4 py-2 text-sm font-medium rounded-md transition-all duration-150",
+                "relative h-8 px-3.5 text-xs font-semibold rounded-full transition-colors inline-flex items-center gap-1",
                 data.billingCycle === cycle.value
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-blue-600 text-white shadow-sm"
+                  : "text-slate-500 hover:text-slate-700"
               )}
             >
               {cycle.label}
               {cycle.discount > 0 && (
                 <span
                   className={cn(
-                    "ml-1.5 text-[10px] font-semibold px-1.5 py-0.5 rounded-full",
+                    "text-[9px] font-bold px-1 py-px rounded",
                     data.billingCycle === cycle.value
-                      ? "bg-primary/10 text-primary"
-                      : "bg-muted-foreground/10 text-muted-foreground"
+                      ? "bg-white/20 text-white"
+                      : "bg-emerald-50 text-emerald-700"
                   )}
                 >
                   -{cycle.discount}%
@@ -71,14 +77,16 @@ export function PlanSelectionStep({ data, errors, onChange }: PlanSelectionStepP
       </div>
 
       {errors.planId && (
-        <p className="text-xs text-destructive text-center">{errors.planId}</p>
+        <p className="text-xs text-rose-600 text-center">{errors.planId}</p>
       )}
 
-      {/* Plan cards */}
-      <div className="grid grid-cols-1 gap-3">
+      {/* Plan cards — 3 columns, middle card elevated */}
+      <div className="grid grid-cols-3 gap-5 pt-6 items-stretch">
         {SUBSCRIPTION_PLANS.map((plan) => {
           const isSelected = data.planId === plan.id;
           const pricing = getCyclePrice(plan.monthlyPrice, data.billingCycle);
+          const isPopular = !!plan.popular;
+          const visibleFeatures = plan.features.slice(0, 6);
 
           return (
             <button
@@ -86,57 +94,131 @@ export function PlanSelectionStep({ data, errors, onChange }: PlanSelectionStepP
               type="button"
               onClick={() => onChange("planId", plan.id)}
               className={cn(
-                "relative overflow-visible w-full text-left rounded-lg border p-5 pl-10 transition-all duration-150",
-                "hover:border-primary/50 hover:shadow-sm",
-                isSelected
-                  ? "border-primary bg-background shadow-sm"
-                  : "border-border bg-card"
+                "group relative w-full text-left rounded-2xl px-6 py-7 flex flex-col transition-all",
+                isPopular
+                  ? cn(
+                      "-mt-6 bg-gradient-to-br from-[#3b82f6] via-[#2563eb] to-[#1d4ed8] text-white",
+                      "shadow-[0_16px_40px_-12px_rgba(37,99,235,0.55),0_6px_16px_-6px_rgba(37,99,235,0.35)]",
+                      isSelected
+                        ? "ring-4 ring-blue-300/50"
+                        : "hover:shadow-[0_20px_48px_-12px_rgba(37,99,235,0.65),0_6px_16px_-6px_rgba(37,99,235,0.4)]"
+                    )
+                  : cn(
+                      "bg-white border",
+                      "shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]",
+                      isSelected
+                        ? "border-blue-600 ring-2 ring-blue-100"
+                        : "border-slate-200/70 hover:border-slate-300"
+                    )
               )}
             >
-              {plan.popular && (
-                <Badge className="absolute -top-2.5 right-4 bg-primary text-primary-foreground text-[10px] px-2 py-0.5">
+              {/* Most popular ribbon */}
+              {isPopular && (
+                <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-white/20 backdrop-blur px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                   Most Popular
-                </Badge>
+                </span>
               )}
 
-              {/* Radio indicator */}
-              <div
-                className={cn(
-                  "absolute top-5 left-4 w-4 h-4 rounded-full border transition-all flex items-center justify-center",
-                  isSelected
-                    ? "border-primary bg-primary"
-                    : "border-border bg-background"
-                )}
-              >
-                {isSelected && (
-                  <Check className="w-2.5 h-2.5 text-primary-foreground" />
-                )}
+              {/* Price */}
+              <div className="flex items-baseline gap-1">
+                <span
+                  className={cn(
+                    "text-[32px] font-bold tracking-tight tabular-nums leading-none",
+                    isPopular ? "text-white" : "text-slate-900"
+                  )}
+                >
+                  {formatPerMonth(pricing.perMonth)}
+                </span>
+                <span
+                  className={cn(
+                    "text-sm font-medium",
+                    isPopular ? "text-white/80" : "text-slate-500"
+                  )}
+                >
+                  /month
+                </span>
               </div>
 
-              <div className="space-y-3">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-0.5">
-                    <h3 className="text-base font-semibold">{plan.name}</h3>
-                    <p className="text-xs text-muted-foreground">{plan.description}</p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <div className="text-xl font-bold">{formatCurrency(pricing.total)}</div>
-                  </div>
-                </div>
+              {/* Plan name */}
+              <h3
+                className={cn(
+                  "mt-6 text-2xl font-bold tracking-tight",
+                  isPopular ? "text-white" : "text-slate-900"
+                )}
+              >
+                {plan.name}
+              </h3>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5">
-                  {plan.features.map((feature) => (
-                    <div key={feature} className="flex items-start gap-2">
-                      <Check className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
-                      <span className="text-xs text-muted-foreground">{feature}</span>
+              {/* Description */}
+              <p
+                className={cn(
+                  "mt-2 text-sm leading-relaxed",
+                  isPopular ? "text-white/80" : "text-slate-500"
+                )}
+              >
+                {plan.description}
+              </p>
+
+              {/* Features */}
+              <ul className="mt-6 space-y-2.5 flex-1">
+                {visibleFeatures.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2.5">
+                    <div
+                      className={cn(
+                        "w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5",
+                        isPopular ? "bg-white/25" : "bg-blue-50"
+                      )}
+                    >
+                      <Check
+                        className={cn(
+                          "w-3 h-3",
+                          isPopular ? "text-white" : "text-blue-600"
+                        )}
+                        strokeWidth={3}
+                      />
                     </div>
-                  ))}
-                </div>
+                    <span
+                      className={cn(
+                        "text-sm leading-snug",
+                        isPopular ? "text-white/90" : "text-slate-700"
+                      )}
+                    >
+                      {feature}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* CTA / Select button */}
+              <div
+                className={cn(
+                  "mt-7 w-full h-11 rounded-full inline-flex items-center justify-center text-sm font-semibold transition-colors",
+                  isPopular
+                    ? "bg-white text-blue-700 group-hover:bg-white/95"
+                    : isSelected
+                    ? "bg-blue-600 text-white"
+                    : "bg-slate-100 text-slate-700 group-hover:bg-slate-200"
+                )}
+              >
+                {isSelected ? (
+                  <span className="inline-flex items-center gap-1.5">
+                    <Check className="w-4 h-4" strokeWidth={3} />
+                    Selected
+                  </span>
+                ) : isPopular ? (
+                  "Choose Professional"
+                ) : (
+                  "Select"
+                )}
               </div>
             </button>
           );
         })}
       </div>
+
+      <p className="text-[11px] text-slate-400 text-center pt-1">
+        All plans include a free 14-day trial. Cancel anytime.
+      </p>
     </div>
   );
 }

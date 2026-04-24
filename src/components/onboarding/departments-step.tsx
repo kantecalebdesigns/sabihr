@@ -1,10 +1,29 @@
-import { Plus, X, Settings } from "lucide-react";
+import { Plus, X, Building2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { PRESET_DEPARTMENTS } from "@/lib/mock-data";
 import type { Department, DepartmentsData } from "@/types/onboarding";
 import type { ValidationErrors } from "@/lib/validators";
+
+const AVATAR_PALETTE = [
+  "bg-blue-500",
+  "bg-violet-500",
+  "bg-teal-500",
+  "bg-amber-500",
+  "bg-rose-500",
+  "bg-emerald-500",
+  "bg-indigo-500",
+  "bg-pink-500",
+  "bg-orange-500",
+  "bg-cyan-500",
+];
+
+function avatarColor(id: string): string {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  return AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+}
 
 interface DepartmentsStepProps {
   data: DepartmentsData;
@@ -20,22 +39,22 @@ export function DepartmentsStep({ data, errors, onAdd, onRemove, onUpdate }: Dep
   return (
     <div className="flex flex-col gap-6">
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-[#f8fafc] flex items-center justify-center shrink-0">
-          <Settings className="w-4 h-4 text-slate-500" />
+      <div className="flex items-start gap-3">
+        <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+          <Building2 className="w-[18px] h-[18px] text-blue-600" />
         </div>
         <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-semibold text-slate-900">Set Up Departments</h2>
-          <p className="text-sm text-slate-500">
-            Structure your organization by adding departments. Pick from suggestions or create your own.
+          <h2 className="text-xl font-bold tracking-tight text-slate-900">Set up departments</h2>
+          <p className="text-sm text-slate-500 leading-relaxed">
+            Structure your organization. Pick from suggestions or create your own.
           </p>
         </div>
       </div>
 
-      {/* Quick Add */}
-      <div className="rounded-xl bg-[#f8fafc]/40 border border-slate-200/50 p-4 flex flex-col gap-2">
-        <p className="text-xs font-bold text-neutral-600 uppercase tracking-[0.6px]">Quick Add</p>
-        <div className="flex flex-wrap gap-3">
+      {/* Quick add chips */}
+      <div className="rounded-xl bg-slate-50 p-4 flex flex-col gap-3">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Quick add</p>
+        <div className="flex flex-wrap gap-2">
           {PRESET_DEPARTMENTS.map((name) => {
             const isAdded = addedNames.includes(name.toLowerCase());
             return (
@@ -45,10 +64,10 @@ export function DepartmentsStep({ data, errors, onAdd, onRemove, onUpdate }: Dep
                 disabled={isAdded}
                 onClick={() => onAdd(name)}
                 className={cn(
-                  "px-2 py-2 text-xs font-medium rounded-lg border transition-all duration-150",
+                  "inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-sm font-medium transition-colors",
                   isAdded
-                    ? "bg-blue-600 text-white border-blue-600 cursor-default"
-                    : "bg-white text-slate-900 border-slate-200 hover:border-blue-400"
+                    ? "bg-blue-600 text-white cursor-default"
+                    : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-100"
                 )}
               >
                 {name}
@@ -62,8 +81,8 @@ export function DepartmentsStep({ data, errors, onAdd, onRemove, onUpdate }: Dep
       {data.departments.length > 0 && (
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-slate-900">Your Departments</span>
-            <span className="text-xs bg-blue-600/10 text-blue-600 font-semibold px-2 py-0.5 rounded-full">
+            <span className="text-sm font-semibold text-slate-900">Your departments</span>
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-xs font-semibold">
               {data.departments.length}
             </span>
           </div>
@@ -71,14 +90,22 @@ export function DepartmentsStep({ data, errors, onAdd, onRemove, onUpdate }: Dep
             {data.departments.map((dept, index) => (
               <div
                 key={dept.id}
-                className="group flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 transition-all hover:border-slate-300"
+                className="group flex items-start gap-3 rounded-2xl border border-slate-200/70 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] transition-colors hover:border-slate-300"
               >
+                <div
+                  className={cn(
+                    "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white font-semibold text-sm",
+                    avatarColor(dept.id)
+                  )}
+                >
+                  {(dept.name?.[0] ?? "?").toUpperCase()}
+                </div>
                 <div className="flex-1 flex flex-col gap-2.5">
                   <Input
                     placeholder="Department name"
                     value={dept.name}
                     onChange={(e) => onUpdate(dept.id, "name", e.target.value)}
-                    className="font-medium h-9"
+                    className="font-semibold h-9"
                     autoFocus={!dept.name && index === data.departments.length - 1}
                   />
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -99,7 +126,8 @@ export function DepartmentsStep({ data, errors, onAdd, onRemove, onUpdate }: Dep
                 <button
                   type="button"
                   onClick={() => onRemove(dept.id)}
-                  className="mt-2 w-7 h-7 rounded-md flex items-center justify-center text-slate-400 opacity-0 group-hover:opacity-100 hover:text-red-500 hover:bg-red-50 transition-all"
+                  className="mt-1 w-8 h-8 rounded-md flex items-center justify-center text-slate-400 opacity-0 group-hover:opacity-100 hover:text-rose-600 hover:bg-rose-50 transition-all"
+                  aria-label="Remove department"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -110,19 +138,18 @@ export function DepartmentsStep({ data, errors, onAdd, onRemove, onUpdate }: Dep
       )}
 
       {errors.departments && (
-        <p className="text-xs text-destructive">{errors.departments}</p>
+        <p className="text-xs text-rose-600">{errors.departments}</p>
       )}
 
       {/* Add custom */}
       <Button
         type="button"
         variant="outline"
-        size="sm"
         onClick={() => onAdd("")}
-        className="w-full border-dashed border-slate-200 text-slate-900 h-8 rounded-md"
+        className="w-full h-10 rounded-lg border-2 border-dashed border-slate-200 text-slate-700 font-semibold bg-white hover:bg-slate-50"
       >
-        <Plus className="w-4 h-4 mr-2" />
-        Add Custom Department
+        <Plus className="w-4 h-4 mr-1" />
+        Add custom department
       </Button>
     </div>
   );
