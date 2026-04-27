@@ -31,192 +31,125 @@ function getCyclePrice(monthlyPrice: number, cycle: BillingCycle) {
 }
 
 export function PlanSelectionStep({ data, errors, onChange }: PlanSelectionStepProps) {
+  const cycleConfig = BILLING_CYCLES.find((c) => c.value === data.billingCycle);
+  const cycleCaption =
+    cycleConfig && cycleConfig.months > 1
+      ? `paid ${cycleConfig.label.toLowerCase()}`
+      : "billed monthly";
+
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="space-y-1 text-center">
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-          Simple, transparent pricing
-        </h2>
-        <p className="text-sm text-slate-500 leading-relaxed">
-          No contracts. No surprise fees.
+      <div className="space-y-1">
+        <h2 className="text-lg font-semibold">Pricing</h2>
+        <p className="text-sm text-muted-foreground">
+          Pick the plan that fits your team — switch or cancel any time
         </p>
       </div>
 
-      {/* Billing cycle toggle */}
-      <div className="flex items-center justify-center">
-        <div className="inline-flex items-center rounded-full bg-slate-100 p-1 gap-0.5">
-          {BILLING_CYCLES.map((cycle) => (
+      {/* Billing cycle toggle — minimal underline tabs */}
+      <div className="flex items-center justify-center gap-8 border-b border-slate-200">
+        {BILLING_CYCLES.map((cycle) => {
+          const isActive = data.billingCycle === cycle.value;
+          return (
             <button
               key={cycle.value}
               type="button"
               onClick={() => onChange("billingCycle", cycle.value)}
               className={cn(
-                "relative h-8 px-3.5 text-xs font-semibold rounded-full transition-colors inline-flex items-center gap-1",
-                data.billingCycle === cycle.value
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                "relative pb-3 text-sm font-medium transition-colors inline-flex items-center gap-1.5",
+                isActive ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
               )}
             >
               {cycle.label}
               {cycle.discount > 0 && (
                 <span
                   className={cn(
-                    "text-[9px] font-bold px-1 py-px rounded",
-                    data.billingCycle === cycle.value
-                      ? "bg-white/20 text-white"
-                      : "bg-emerald-50 text-emerald-700"
+                    "text-[10px] font-semibold",
+                    isActive ? "text-blue-600" : "text-slate-400"
                   )}
                 >
-                  -{cycle.discount}%
+                  Save {cycle.discount}%
                 </span>
               )}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {errors.planId && (
-        <p className="text-xs text-rose-600 text-center">{errors.planId}</p>
-      )}
-
-      {/* Plan cards — 3 columns, middle card elevated */}
-      <div className="grid grid-cols-3 gap-5 pt-6 items-stretch">
-        {SUBSCRIPTION_PLANS.map((plan) => {
-          const isSelected = data.planId === plan.id;
-          const pricing = getCyclePrice(plan.monthlyPrice, data.billingCycle);
-          const isPopular = !!plan.popular;
-          const visibleFeatures = plan.features.slice(0, 6);
-
-          return (
-            <button
-              key={plan.id}
-              type="button"
-              onClick={() => onChange("planId", plan.id)}
-              className={cn(
-                "group relative w-full text-left rounded-2xl px-6 py-7 flex flex-col transition-all",
-                isPopular
-                  ? cn(
-                      "-mt-6 bg-gradient-to-br from-[#3b82f6] via-[#2563eb] to-[#1d4ed8] text-white",
-                      "shadow-[0_16px_40px_-12px_rgba(37,99,235,0.55),0_6px_16px_-6px_rgba(37,99,235,0.35)]",
-                      isSelected
-                        ? "ring-4 ring-blue-300/50"
-                        : "hover:shadow-[0_20px_48px_-12px_rgba(37,99,235,0.65),0_6px_16px_-6px_rgba(37,99,235,0.4)]"
-                    )
-                  : cn(
-                      "bg-white border",
-                      "shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]",
-                      isSelected
-                        ? "border-blue-600 ring-2 ring-blue-100"
-                        : "border-slate-200/70 hover:border-slate-300"
-                    )
+              {isActive && (
+                <span className="absolute -bottom-px left-0 right-0 h-0.5 bg-blue-600" />
               )}
-            >
-              {/* Most popular ribbon */}
-              {isPopular && (
-                <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-white/20 backdrop-blur px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-                  Most Popular
-                </span>
-              )}
-
-              {/* Price */}
-              <div className="flex items-baseline gap-1">
-                <span
-                  className={cn(
-                    "text-[32px] font-bold tracking-tight tabular-nums leading-none",
-                    isPopular ? "text-white" : "text-slate-900"
-                  )}
-                >
-                  {formatPerMonth(pricing.perMonth)}
-                </span>
-                <span
-                  className={cn(
-                    "text-sm font-medium",
-                    isPopular ? "text-white/80" : "text-slate-500"
-                  )}
-                >
-                  /month
-                </span>
-              </div>
-
-              {/* Plan name */}
-              <h3
-                className={cn(
-                  "mt-6 text-2xl font-bold tracking-tight",
-                  isPopular ? "text-white" : "text-slate-900"
-                )}
-              >
-                {plan.name}
-              </h3>
-
-              {/* Description */}
-              <p
-                className={cn(
-                  "mt-2 text-sm leading-relaxed",
-                  isPopular ? "text-white/80" : "text-slate-500"
-                )}
-              >
-                {plan.description}
-              </p>
-
-              {/* Features */}
-              <ul className="mt-6 space-y-2.5 flex-1">
-                {visibleFeatures.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2.5">
-                    <div
-                      className={cn(
-                        "w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5",
-                        isPopular ? "bg-white/25" : "bg-blue-50"
-                      )}
-                    >
-                      <Check
-                        className={cn(
-                          "w-3 h-3",
-                          isPopular ? "text-white" : "text-blue-600"
-                        )}
-                        strokeWidth={3}
-                      />
-                    </div>
-                    <span
-                      className={cn(
-                        "text-sm leading-snug",
-                        isPopular ? "text-white/90" : "text-slate-700"
-                      )}
-                    >
-                      {feature}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* CTA / Select button */}
-              <div
-                className={cn(
-                  "mt-7 w-full h-11 rounded-full inline-flex items-center justify-center text-sm font-semibold transition-colors",
-                  isPopular
-                    ? "bg-white text-blue-700 group-hover:bg-white/95"
-                    : isSelected
-                    ? "bg-blue-600 text-white"
-                    : "bg-slate-100 text-slate-700 group-hover:bg-slate-200"
-                )}
-              >
-                {isSelected ? (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Check className="w-4 h-4" strokeWidth={3} />
-                    Selected
-                  </span>
-                ) : isPopular ? (
-                  "Choose Professional"
-                ) : (
-                  "Select"
-                )}
-              </div>
             </button>
           );
         })}
       </div>
 
-      <p className="text-[11px] text-slate-400 text-center pt-1">
+      {errors.planId && (
+        <p className="text-xs text-rose-600">{errors.planId}</p>
+      )}
+
+      {/* Plan columns */}
+      <div className="grid grid-cols-3 divide-x divide-slate-200">
+        {SUBSCRIPTION_PLANS.map((plan) => {
+          const isSelected = data.planId === plan.id;
+          const pricing = getCyclePrice(plan.monthlyPrice, data.billingCycle);
+
+          return (
+            <div key={plan.id} className="px-4 first:pl-0 last:pr-0 flex flex-col">
+              {/* Plan name */}
+              <div className="text-[11px] font-bold uppercase tracking-[0.15em] text-blue-600 inline-flex items-center gap-1.5">
+                {plan.name}
+                {plan.popular && (
+                  <span className="w-1 h-1 rounded-full bg-blue-600" />
+                )}
+              </div>
+
+              {/* Price */}
+              <div className="mt-3 flex items-baseline gap-1.5">
+                <span className="text-3xl font-bold tracking-tight tabular-nums text-slate-900 leading-none">
+                  {formatPerMonth(pricing.perMonth)}
+                </span>
+                <span className="text-[11px] text-slate-500 leading-tight">
+                  per month
+                  <br />
+                  {cycleCaption}
+                </span>
+              </div>
+
+              {/* CTA */}
+              <button
+                type="button"
+                onClick={() => onChange("planId", plan.id)}
+                className={cn(
+                  "mt-5 h-10 w-full rounded-full text-sm font-semibold inline-flex items-center justify-center gap-1.5 transition-colors",
+                  isSelected
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "border border-blue-600 text-blue-600 hover:bg-blue-50"
+                )}
+              >
+                {isSelected ? (
+                  <>
+                    <Check className="w-4 h-4" strokeWidth={3} />
+                    Selected
+                  </>
+                ) : (
+                  "Select"
+                )}
+              </button>
+
+              {/* Features — plain rows separated by hairlines */}
+              <ul className="mt-6 divide-y divide-slate-100 border-y border-slate-100">
+                {plan.features.map((feature) => (
+                  <li
+                    key={feature}
+                    className="py-3 text-[13px] text-slate-700 leading-snug"
+                  >
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+
+      <p className="text-[11px] text-slate-400 text-center">
         All plans include a free 14-day trial. Cancel anytime.
       </p>
     </div>

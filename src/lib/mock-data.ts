@@ -48,16 +48,29 @@ export const EMPLOYEE_COUNT_RANGES = [
 
 export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
   {
+    id: "free",
+    name: "Free",
+    monthlyPrice: 0,
+    description: "Try SabiHR with a small team — no card required",
+    features: [
+      "Up to 5 employees",
+      "Employee records management",
+      "Leave management",
+      "Basic attendance tracking",
+      "Community support",
+    ],
+  },
+  {
     id: "starter",
     name: "Starter",
     monthlyPrice: 2500,
     description: "For small teams getting started with HR management",
     features: [
       "Up to 25 employees",
-      "Employee records management",
-      "Leave management",
-      "Basic attendance tracking",
+      "Everything in Free",
       "Employee self-service portal",
+      "Document management",
+      "Onboarding workflows",
       "Email support",
     ],
   },
@@ -71,29 +84,11 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
       "Everything in Starter",
       "Payroll processing with PAYE",
       "Performance management",
-      "Document management",
-      "Onboarding workflows",
       "Multi-branch support",
+      "Advanced analytics & reports",
       "Priority support",
     ],
     popular: true,
-  },
-  {
-    id: "enterprise",
-    name: "Enterprise",
-    monthlyPrice: 7500,
-    description: "For large organizations with complex HR needs",
-    features: [
-      "Unlimited employees",
-      "Everything in Professional",
-      "Multi-subsidiary support",
-      "Custom approval workflows",
-      "Advanced analytics & reports",
-      "Biometric integration",
-      "API access",
-      "Dedicated account manager",
-      "Custom integrations",
-    ],
   },
 ];
 

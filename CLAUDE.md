@@ -4,7 +4,7 @@ This file documents the visual language we've converged on for the SabiHR app. A
 
 ## Background
 
-- **All page-level backgrounds**: `bg-[#eff6ff]` (Tailwind `blue-50` shade — soft light blue).
+- **All page-level backgrounds**: `bg-[#f7fbff]` (Tailwind `blue-50` shade — soft light blue).
 - Applied in: `src/components/layout/app-layout.tsx`, `src/components/layout/employee-layout.tsx`, and any standalone page that sets its own `min-h-screen bg-*`.
 - Internal element tints (table hover, nested cards, chip backgrounds): use `bg-slate-50` or `bg-slate-100`, not a second blue shade — reserve blue for brand/primary use.
 
@@ -159,7 +159,7 @@ When building a new page under AppLayout:
 
 ## Things to avoid
 
-- `bg-[#f8fafc]` as a **page** background (use `bg-[#eff6ff]`). Keep it only for inner element tints.
+- `bg-[#f8fafc]` as a **page** background (use `bg-[#f7fbff]`). Keep it only for inner element tints.
 - `border-[#efefef]` — replaced with `border-slate-200/70` (outer) and `border-slate-100` (inner).
 - Pastel-100 + colored-text avatars (`bg-blue-100 text-blue-700`). Use solid `bg-{color}-500` + white text instead.
 - Per-card rainbow of icon well colors on one page. Uniform well color, let numbers speak.

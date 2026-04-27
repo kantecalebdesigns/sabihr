@@ -7,7 +7,10 @@ import {
   Shield,
   ShieldOff,
   BarChart3,
-  Star,
+  ClipboardList,
+  Users,
+  Settings2,
+  TrendingUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -62,6 +65,27 @@ const MOCK_COMPETENCY_MATRIX: CompetencyRating[] = [
   { competency: "Problem Solving", selfRating: 4, managerRating: 3, peerAvg: 3.7 },
 ];
 
+const AVATAR_PALETTE = [
+  "bg-blue-500", "bg-violet-500", "bg-teal-500", "bg-amber-500", "bg-rose-500",
+  "bg-emerald-500", "bg-indigo-500", "bg-pink-500", "bg-orange-500", "bg-cyan-500",
+];
+
+function paletteFor(id: string): string {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) | 0;
+  return AVATAR_PALETTE[Math.abs(h) % AVATAR_PALETTE.length];
+}
+
+function initials(name: string): string {
+  return name.split(/\s+/).slice(0, 2).map((p) => p[0] ?? "").join("").toUpperCase();
+}
+
+function ratingPill(r: number) {
+  if (r >= 4) return "bg-emerald-50 text-emerald-700";
+  if (r >= 3) return "bg-amber-50 text-amber-700";
+  return "bg-rose-50 text-rose-700";
+}
+
 // ── Component ──
 
 export default function Performance360Page() {
@@ -73,17 +97,21 @@ export default function Performance360Page() {
   const [anonymous, setAnonymous] = useState(true);
   const appraisal = MOCK_APPRAISALS.find((a) => a.id === id);
 
-  // If no ID param, show the enhanced overview
+  // If no ID param, show overview
   if (!id) {
     return <Performance360Overview />;
   }
 
   if (!appraisal) {
     return (
-      <div className="max-w-[1400px] mx-auto py-20 text-center">
-        <p className="font-medium text-slate-900">Review not found</p>
-        <Button variant="outline" size="sm" className="mt-4" onClick={() => navigate("/performance/reviews")}>
-          Back to Reviews
+      <div className="max-w-[1500px] py-20 text-center">
+        <p className="text-base font-bold text-slate-900 tracking-tight">Review not found</p>
+        <Button
+          variant="outline"
+          className="mt-4 h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+          onClick={() => navigate("/performance/reviews")}
+        >
+          Back to reviews
         </Button>
       </div>
     );
@@ -103,46 +131,65 @@ export default function Performance360Page() {
   if (submitted) {
     return (
       <div className="max-w-[600px] mx-auto py-20 text-center space-y-4">
-        <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mx-auto">
-          <Check className="w-6 h-6 text-emerald-600" />
+        <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto">
+          <Check className="w-7 h-7 text-emerald-600" />
         </div>
-        <h2 className="text-lg font-semibold">Feedback Submitted</h2>
-        <p className="text-sm text-slate-500">
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900">Feedback submitted</h2>
+        <p className="text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
           Thank you for providing feedback for {appraisal.employeeName}. Your responses are anonymous.
         </p>
-        <Button variant="outline" size="sm" onClick={() => navigate("/performance/reviews")}>
-          Back to Reviews
+        <Button
+          variant="outline"
+          onClick={() => navigate("/performance/reviews")}
+          className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+        >
+          Back to reviews
         </Button>
       </div>
     );
   }
 
   return (
-    <div className="max-w-[700px] mx-auto space-y-6">
+    <div className="max-w-[800px] mx-auto space-y-5">
       {/* Back */}
       <button
         onClick={() => navigate("/performance/reviews")}
-        className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
-        Back to Reviews
+        Back to reviews
       </button>
 
       {/* Header */}
-      <div>
-        <h1 className="text-xl font-semibold tracking-tight">360 Feedback</h1>
-        <p className="text-sm text-slate-500 mt-0.5">
-          Provide anonymous feedback for <span className="font-medium text-slate-900">{appraisal.employeeName}</span> &middot; {appraisal.department}
-        </p>
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5">
+        <div className="flex items-start gap-4">
+          <div className={cn("w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold shrink-0", paletteFor(appraisal.id))}>
+            {initials(appraisal.employeeName)}
+          </div>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">360° feedback</h1>
+            <p className="text-sm text-slate-500 mt-1">
+              Provide anonymous feedback for{" "}
+              <span className="font-semibold text-slate-900">{appraisal.employeeName}</span>
+              <span className="text-slate-400"> · </span>
+              {appraisal.department}
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* Anonymity Toggle */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-4 flex items-center justify-between">
+      {/* Anonymity toggle */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {anonymous ? <Shield className="w-5 h-5 text-emerald-600" /> : <ShieldOff className="w-5 h-5 text-amber-600" />}
+          <div className={cn(
+            "w-10 h-10 rounded-xl flex items-center justify-center",
+            anonymous ? "bg-emerald-50" : "bg-amber-50"
+          )}>
+            {anonymous ? <Shield className="w-[18px] h-[18px] text-emerald-600" /> : <ShieldOff className="w-[18px] h-[18px] text-amber-600" />}
+          </div>
           <div>
-            <p className="text-sm font-medium text-slate-900">{anonymous ? "Anonymous Mode" : "Identified Mode"}</p>
-            <p className="text-xs text-slate-500">{anonymous ? "Your identity will be hidden from the reviewee" : "Your name will be visible on this feedback"}</p>
+            <p className="text-sm font-semibold text-slate-900">{anonymous ? "Anonymous mode" : "Identified mode"}</p>
+            <p className="text-xs text-slate-500 mt-0.5">{anonymous ? "Your identity will be hidden from the reviewee" : "Your name will be visible on this feedback"}</p>
           </div>
         </div>
         <button
@@ -159,31 +206,30 @@ export default function Performance360Page() {
         </button>
       </div>
 
-      <div className="rounded-xl border border-[#efefef] bg-white p-4 text-sm text-slate-500">
-        Your feedback is completely anonymous. Rate each competency honestly and provide constructive comments to help your colleague grow.
-      </div>
-
-      {/* Competency Ratings */}
-      <div className="space-y-4">
-        <h2 className="text-sm font-semibold">Competency Ratings</h2>
-        <div className="space-y-3">
+      {/* Competency ratings */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+        <div className="px-5 py-4 border-b border-slate-200/70">
+          <p className="text-sm font-semibold text-slate-900">Competency ratings</p>
+          <p className="text-xs text-slate-500 mt-0.5">Rate each competency on a scale of 1 (lowest) to 5 (highest).</p>
+        </div>
+        <div className="divide-y divide-slate-100">
           {MOCK_COMPETENCIES.map((comp) => {
             const selected = ratings[comp.id] ?? null;
             return (
-              <div key={comp.id} className="rounded-xl border border-[#efefef] bg-white p-4 space-y-3">
+              <div key={comp.id} className="px-5 py-4 space-y-3">
                 <div>
-                  <p className="text-sm font-medium">{comp.name}</p>
-                  <p className="text-xs text-slate-500">{comp.description}</p>
+                  <p className="text-sm font-semibold text-slate-900">{comp.name}</p>
+                  <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{comp.description}</p>
                 </div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   {([1, 2, 3, 4, 5] as RatingValue[]).map((r) => (
                     <button
                       key={r}
                       onClick={() => setRating(comp.id, r)}
                       className={cn(
-                        "flex-1 py-2 rounded-md text-xs font-medium transition-colors",
+                        "flex-1 h-10 rounded-lg text-sm font-semibold transition-colors tabular-nums",
                         selected === r
-                          ? "bg-slate-900 text-white"
+                          ? "bg-blue-600 text-white"
                           : "bg-slate-50 text-slate-500 hover:bg-slate-100"
                       )}
                     >
@@ -192,7 +238,10 @@ export default function Performance360Page() {
                   ))}
                 </div>
                 {selected && (
-                  <p className="text-xs text-slate-500">{RATING_LABELS[selected].label}</p>
+                  <p className="text-xs text-slate-500">
+                    <span className="font-medium text-slate-700">{RATING_LABELS[selected].label}</span>
+                    {" — "}{RATING_LABELS[selected].description}
+                  </p>
                 )}
               </div>
             );
@@ -201,29 +250,35 @@ export default function Performance360Page() {
       </div>
 
       {/* Comments */}
-      <div className="space-y-2">
-        <h2 className="text-sm font-semibold">Additional Comments</h2>
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-3">
+        <p className="text-sm font-semibold text-slate-900">Additional comments</p>
         <textarea
           value={comments}
           onChange={(e) => setComments(e.target.value)}
           placeholder="Share specific examples of strengths, areas for improvement, or suggestions for development..."
-          className="w-full rounded-xl border border-[#efefef] bg-white p-4 text-sm min-h-[120px] resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          className="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm min-h-[140px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400"
         />
       </div>
 
-      {/* Progress + Submit */}
-      <div className="flex items-center justify-between pt-2">
-        <p className="text-xs text-slate-500">{filledCount} of {MOCK_COMPETENCIES.length} competencies rated</p>
-        <Button size="sm" onClick={handleSubmit} disabled={!canSubmit}>
-          <Send className="w-4 h-4 mr-2" />
-          Submit Feedback
+      {/* Submit bar */}
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-slate-500 tabular-nums">
+          {filledCount} of {MOCK_COMPETENCIES.length} competencies rated
+        </p>
+        <Button
+          onClick={handleSubmit}
+          disabled={!canSubmit}
+          className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 disabled:opacity-50"
+        >
+          <Send className="w-4 h-4 mr-1" />
+          Submit feedback
         </Button>
       </div>
     </div>
   );
 }
 
-// ── Enhanced 360 Overview (no id param) ──
+// ── Overview (no id param) ──
 
 function Performance360Overview() {
   const navigate = useNavigate();
@@ -237,61 +292,91 @@ function Performance360Overview() {
     );
   };
 
+  const completed = MOCK_PENDING_REVIEWS.filter((r) => r.status === "submitted").length;
+  const pending = MOCK_PENDING_REVIEWS.filter((r) => r.status === "pending").length;
+
+  const kpis = [
+    { label: "Feedback requests", value: MOCK_PENDING_REVIEWS.length, icon: ClipboardList, trend: 0 },
+    { label: "Submitted", value: completed, icon: Check, trend: 2 },
+    { label: "Pending", value: pending, icon: Send, trend: 0 },
+    { label: "Nominated peers", value: nominees.filter((n) => n.nominated).length, icon: Users, trend: 1 },
+  ];
+
   const sections = [
-    { key: "requests" as const, label: "Feedback Requests" },
-    { key: "nominations" as const, label: "Peer Nominations" },
-    { key: "matrix" as const, label: "Competency Matrix" },
+    { key: "requests" as const, label: "Feedback requests", count: MOCK_PENDING_REVIEWS.length },
+    { key: "nominations" as const, label: "Peer nominations", count: nominees.length },
+    { key: "matrix" as const, label: "Competency matrix", count: MOCK_COMPETENCY_MATRIX.length },
   ];
 
   return (
-    <div className="max-w-[1400px] mx-auto space-y-6">
+    <div className="max-w-[1500px] space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-xl font-semibold tracking-tight text-slate-900">360-Degree Feedback</h1>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#f0f4f8] text-xs font-medium text-slate-500">
-              <Star className="w-3.5 h-3.5" />
-              360°
-            </span>
-          </div>
-          <p className="text-sm text-slate-500 mt-1">Manage peer reviews, nominations, and competency analysis</p>
+      <div className="flex items-center justify-between gap-4">
+        <div className="space-y-1 flex-1 min-w-0">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">360° feedback</h1>
+          <p className="text-sm text-slate-500 leading-relaxed">
+            Manage peer reviews, nominations, and competency analysis — gather a multi-rater view of
+            performance from peers, managers, and direct reports.
+          </p>
         </div>
-        <button
-          onClick={() => { localStorage.removeItem("sabi-hr-performance-system"); navigate("/performance"); }}
-          className="h-8 rounded-lg border border-[#efefef] bg-white px-3 text-xs font-medium text-slate-700 hover:bg-[#f8fafc] transition-colors"
-        >
-          Change System
-        </button>
-      </div>
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-[#efefef] bg-white px-[21px] pt-[21px] pb-4 flex flex-col gap-2">
-          <p className="text-xs font-medium text-slate-500">Feedback Requests</p>
-          <p className="text-2xl font-bold tracking-[-0.6px] text-slate-900">{MOCK_PENDING_REVIEWS.length}</p>
-        </div>
-        <div className="rounded-xl border border-[#efefef] bg-white px-[21px] pt-[21px] pb-4 flex flex-col gap-2">
-          <p className="text-xs font-medium text-slate-500">Completed</p>
-          <p className="text-2xl font-bold tracking-[-0.6px] text-emerald-700">{MOCK_PENDING_REVIEWS.filter((r) => r.status === "submitted").length}</p>
-        </div>
-        <div className="rounded-xl border border-[#efefef] bg-white px-[21px] pt-[21px] pb-4 flex flex-col gap-2">
-          <p className="text-xs font-medium text-slate-500">Pending</p>
-          <p className="text-2xl font-bold tracking-[-0.6px] text-amber-700">{MOCK_PENDING_REVIEWS.filter((r) => r.status === "pending").length}</p>
-        </div>
-        <div className="rounded-xl border border-[#efefef] bg-white px-[21px] pt-[21px] pb-4 flex flex-col gap-2">
-          <p className="text-xs font-medium text-slate-500">Nominated Peers</p>
-          <p className="text-2xl font-bold tracking-[-0.6px] text-slate-900">{nominees.filter((n) => n.nominated).length}</p>
+        <div className="flex items-center gap-2 shrink-0">
+          <Button
+            variant="outline"
+            onClick={() => {
+              localStorage.removeItem("sabi-hr-performance-system");
+              navigate("/performance");
+            }}
+            className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+          >
+            <Settings2 className="w-4 h-4 mr-1" />
+            Change system
+          </Button>
         </div>
       </div>
 
-      {/* Anonymity Setting */}
-      <div className="rounded-xl border border-[#efefef] bg-white p-4 flex items-center justify-between">
+      {/* KPI cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
+            <div
+              key={kpi.label}
+              className="rounded-2xl border border-slate-200/70 bg-white px-5 pt-5 pb-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] flex flex-col gap-7"
+            >
+              <div className="flex items-start justify-between">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                  <Icon className="w-[18px] h-[18px] text-blue-600" />
+                </div>
+                {kpi.trend > 0 && (
+                  <div className="inline-flex items-center gap-0.5 text-xs font-semibold text-emerald-600">
+                    <TrendingUp className="w-3.5 h-3.5" />
+                    <span>+{kpi.trend}</span>
+                  </div>
+                )}
+              </div>
+              <div>
+                <p className="text-3xl font-bold tracking-tight text-slate-900 leading-none tabular-nums">{kpi.value}</p>
+                <p className="text-sm text-slate-500 mt-2">{kpi.label}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Anonymity setting */}
+      <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {anonymous ? <Shield className="w-5 h-5 text-emerald-600" /> : <ShieldOff className="w-5 h-5 text-amber-600" />}
+          <div className={cn(
+            "w-10 h-10 rounded-xl flex items-center justify-center",
+            anonymous ? "bg-emerald-50" : "bg-amber-50"
+          )}>
+            {anonymous ? <Shield className="w-[18px] h-[18px] text-emerald-600" /> : <ShieldOff className="w-[18px] h-[18px] text-amber-600" />}
+          </div>
           <div>
-            <p className="text-sm font-medium text-slate-900">Anonymity: {anonymous ? "Enabled" : "Disabled"}</p>
-            <p className="text-xs text-slate-500">{anonymous ? "All peer feedback is anonymous" : "Reviewer names are visible to the reviewee"}</p>
+            <p className="text-sm font-semibold text-slate-900">Anonymity {anonymous ? "enabled" : "disabled"}</p>
+            <p className="text-xs text-slate-500 mt-0.5">
+              {anonymous ? "All peer feedback is anonymous." : "Reviewer names are visible to the reviewee."}
+            </p>
           </div>
         </div>
         <button
@@ -308,76 +393,108 @@ function Performance360Overview() {
         </button>
       </div>
 
-      {/* Section Tabs */}
-      <div className="flex gap-1 border-b border-[#efefef]">
-        {sections.map((s) => (
-          <button
-            key={s.key}
-            onClick={() => setActiveSection(s.key)}
-            className={cn(
-              "px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px",
-              activeSection === s.key
-                ? "border-slate-900 text-slate-900"
-                : "border-transparent text-slate-500 hover:text-slate-700"
-            )}
-          >
-            {s.label}
-          </button>
-        ))}
+      {/* Section chips */}
+      <div className="flex items-center gap-2 flex-wrap">
+        {sections.map((s) => {
+          const active = activeSection === s.key;
+          return (
+            <button
+              key={s.key}
+              onClick={() => setActiveSection(s.key)}
+              className={cn(
+                "h-9 px-4 rounded-full text-sm font-medium inline-flex items-center gap-1.5 transition-colors",
+                active
+                  ? "bg-blue-600 text-white"
+                  : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+              )}
+            >
+              {s.label}
+              <span className={cn("text-xs", active ? "text-white/80" : "text-slate-400")}>{s.count}</span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* ── Feedback Requests ── */}
+      {/* Feedback requests */}
       {activeSection === "requests" && (
-        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-slate-200/70">
-                <th className="p-3 text-left text-xs font-medium text-slate-500">Reviewer</th>
-                <th className="p-3 text-left text-xs font-medium text-slate-500">Status</th>
-                <th className="p-3 text-left text-xs font-medium text-slate-500">Submitted At</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_PENDING_REVIEWS.map((req) => (
-                <tr key={req.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
-                  <td className="p-3 font-medium text-slate-900">{req.reviewerName}</td>
-                  <td className="p-3">
-                    <span className={cn(
-                      "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border",
-                      req.status === "submitted"
-                        ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                        : "bg-amber-50 text-amber-700 border-amber-200"
-                    )}>
-                      {req.status === "submitted" ? "Submitted" : "Pending"}
-                    </span>
-                  </td>
-                  <td className="p-3 text-slate-500">{req.submittedAt ?? "---"}</td>
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/70">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-slate-900">Feedback requests</span>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-xs font-semibold">
+                {MOCK_PENDING_REVIEWS.length}
+              </span>
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-slate-200/70">
+                  <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pl-5 pr-5">Reviewer</th>
+                  <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Status</th>
+                  <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Submitted</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {MOCK_PENDING_REVIEWS.map((req) => {
+                  const isSubmitted = req.status === "submitted";
+                  return (
+                    <tr key={req.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
+                      <td className="py-4 pl-5 pr-5">
+                        <div className="flex items-center gap-3">
+                          <div className={cn("w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold shrink-0", paletteFor(req.id))}>
+                            {initials(req.reviewerName)}
+                          </div>
+                          <p className="font-semibold text-slate-900 leading-tight">{req.reviewerName}</p>
+                        </div>
+                      </td>
+                      <td className="py-4 pr-5">
+                        <span className={cn(
+                          "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium",
+                          isSubmitted ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
+                        )}>
+                          <span className={cn("w-1.5 h-1.5 rounded-full", isSubmitted ? "bg-emerald-500" : "bg-amber-500")} />
+                          {isSubmitted ? "Submitted" : "Pending"}
+                        </span>
+                      </td>
+                      <td className="py-4 pr-5 text-slate-600 text-xs tabular-nums">{req.submittedAt ?? "—"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
-      {/* ── Peer Nominations ── */}
+      {/* Peer nominations */}
       {activeSection === "nominations" && (
-        <div className="space-y-4">
-          <p className="text-sm text-slate-500">Select colleagues to nominate as reviewers for your 360-degree feedback.</p>
-          <div className="rounded-xl border border-[#efefef] bg-white divide-y divide-[#efefef]">
+        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/70">
+            <div>
+              <p className="text-sm font-semibold text-slate-900">Peer nominations</p>
+              <p className="text-xs text-slate-500 mt-0.5">Select colleagues to review your performance.</p>
+            </div>
+          </div>
+          <div className="divide-y divide-slate-100">
             {nominees.map((peer) => (
-              <label key={peer.id} className="flex items-center gap-4 p-4 hover:bg-[#f8fafc] transition-colors cursor-pointer">
+              <label key={peer.id} className="flex items-center gap-4 px-5 py-4 hover:bg-slate-50/60 transition-colors cursor-pointer">
                 <input
                   type="checkbox"
                   checked={peer.nominated}
                   onChange={() => toggleNomination(peer.id)}
-                  className="rounded"
+                  className="w-4 h-4 rounded border-slate-300"
                 />
+                <div className={cn("w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold shrink-0", paletteFor(peer.id))}>
+                  {initials(peer.name)}
+                </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-900">{peer.name}</p>
-                  <p className="text-xs text-slate-500">{peer.department}</p>
+                  <p className="font-semibold text-slate-900 leading-tight">{peer.name}</p>
+                  <p className="text-xs text-slate-500 leading-tight mt-0.5">{peer.department}</p>
                 </div>
                 {peer.nominated && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border bg-blue-50 text-blue-700 border-blue-200">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                     Nominated
                   </span>
                 )}
@@ -387,64 +504,91 @@ function Performance360Overview() {
         </div>
       )}
 
-      {/* ── Competency Matrix ── */}
+      {/* Competency matrix */}
       {activeSection === "matrix" && (
-        <div className="space-y-6">
-          {/* Table */}
-          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-slate-200/70">
-                  <th className="p-3 text-left text-xs font-medium text-slate-500">Competency</th>
-                  <th className="p-3 text-center text-xs font-medium text-slate-500">Self</th>
-                  <th className="p-3 text-center text-xs font-medium text-slate-500">Manager</th>
-                  <th className="p-3 text-center text-xs font-medium text-slate-500">Peer Avg</th>
-                </tr>
-              </thead>
-              <tbody>
-                {MOCK_COMPETENCY_MATRIX.map((row) => (
-                  <tr key={row.competency} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
-                    <td className="p-3 font-medium text-slate-900">{row.competency}</td>
-                    <td className="p-3 text-center text-slate-700">{row.selfRating}/5</td>
-                    <td className="p-3 text-center text-slate-700">{row.managerRating}/5</td>
-                    <td className="p-3 text-center text-slate-700">{row.peerAvg.toFixed(1)}/5</td>
+        <div className="space-y-5">
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/70">
+              <div>
+                <p className="text-sm font-semibold text-slate-900">Competency ratings</p>
+                <p className="text-xs text-slate-500 mt-0.5">Self, manager, and peer averages side-by-side.</p>
+              </div>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-slate-200/70">
+                    <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pl-5 pr-5">Competency</th>
+                    <th className="text-center font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Self</th>
+                    <th className="text-center font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Manager</th>
+                    <th className="text-center font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Peer avg</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {MOCK_COMPETENCY_MATRIX.map((row) => (
+                    <tr key={row.competency} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
+                      <td className="py-4 pl-5 pr-5 font-semibold text-slate-900">{row.competency}</td>
+                      <td className="py-4 pr-5 text-center">
+                        <span className={cn("inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold tabular-nums", ratingPill(row.selfRating))}>
+                          {row.selfRating}/5
+                        </span>
+                      </td>
+                      <td className="py-4 pr-5 text-center">
+                        <span className={cn("inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold tabular-nums", ratingPill(row.managerRating))}>
+                          {row.managerRating}/5
+                        </span>
+                      </td>
+                      <td className="py-4 pr-5 text-center">
+                        <span className={cn("inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold tabular-nums", ratingPill(row.peerAvg))}>
+                          {row.peerAvg.toFixed(1)}/5
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          {/* Bar Comparison */}
-          <div className="rounded-xl border border-[#efefef] bg-white p-5 space-y-4">
-            <div className="flex items-center gap-2 mb-2">
-              <BarChart3 className="w-4 h-4 text-slate-400" />
-              <h3 className="text-sm font-semibold text-slate-900">Self-Assessment vs Peer Average</h3>
-            </div>
-            <div className="flex items-center gap-6 text-xs text-slate-500 mb-2">
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded bg-blue-500" />
-                <span>Self Rating</span>
+          {/* Bar comparison */}
+          <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
+            <div className="px-5 py-4 border-b border-slate-200/70 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-slate-400" />
+                <p className="text-sm font-semibold text-slate-900">Self-assessment vs peer average</p>
               </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded bg-emerald-500" />
-                <span>Peer Average</span>
-              </div>
-            </div>
-            {MOCK_COMPETENCY_MATRIX.map((row) => (
-              <div key={row.competency} className="space-y-1">
-                <p className="text-xs font-medium text-slate-700">{row.competency}</p>
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 rounded bg-blue-500" style={{ width: `${(row.selfRating / 5) * 100}%` }} />
-                    <span className="text-xs text-slate-500 w-8">{row.selfRating}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 rounded bg-emerald-500" style={{ width: `${(row.peerAvg / 5) * 100}%` }} />
-                    <span className="text-xs text-slate-500 w-8">{row.peerAvg.toFixed(1)}</span>
-                  </div>
+              <div className="flex items-center gap-4 text-xs text-slate-500">
+                <div className="inline-flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-sm bg-blue-500" />
+                  Self
+                </div>
+                <div className="inline-flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500" />
+                  Peer avg
                 </div>
               </div>
-            ))}
+            </div>
+            <div className="px-5 py-5 space-y-4">
+              {MOCK_COMPETENCY_MATRIX.map((row) => (
+                <div key={row.competency} className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-medium text-slate-700">{row.competency}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2.5 rounded-full bg-slate-100 overflow-hidden">
+                      <div className="h-full rounded-full bg-blue-500 transition-all" style={{ width: `${(row.selfRating / 5) * 100}%` }} />
+                    </div>
+                    <span className="text-xs font-semibold text-slate-700 w-8 text-right tabular-nums">{row.selfRating}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2.5 rounded-full bg-slate-100 overflow-hidden">
+                      <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: `${(row.peerAvg / 5) * 100}%` }} />
+                    </div>
+                    <span className="text-xs font-semibold text-slate-700 w-8 text-right tabular-nums">{row.peerAvg.toFixed(1)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

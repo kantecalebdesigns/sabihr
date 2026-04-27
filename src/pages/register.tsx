@@ -1,44 +1,60 @@
+import { Link } from "react-router-dom";
 import { RegisterWizard } from "@/components/auth/register-wizard";
+import { Logo } from "@/components/shared/logo";
 
 export default function RegisterPage() {
   return (
-    <div className="relative flex h-screen items-center justify-center p-3">
+    <div className="relative flex h-screen items-stretch">
       {/* Background image */}
       <img
-        src="/login-bg.jpg"
+        src="/onboarding-bg.png"
         alt=""
         className="absolute inset-0 h-full w-full object-cover pointer-events-none"
       />
 
-      {/* White card */}
-      <div className="relative z-10 flex w-[960px] max-h-[calc(100vh-24px)] flex-col gap-[34px] items-start rounded-[20px] bg-white py-10 overflow-y-auto scrollbar-hide">
-        {/* Logo + subtitle */}
-        <div className="flex flex-col items-center gap-2 w-full">
-          <h2 className="text-[30px] font-semibold tracking-[-0.75px] leading-9">
-            <span className="text-slate-900">Sabi</span>
-            <span className="text-blue-600">HR</span>
-          </h2>
-          <p className="text-sm text-slate-500 leading-5">
-            Create your company account
-          </p>
+      {/* Left side — branding over the background */}
+      <div className="relative z-10 flex h-full flex-1 flex-col">
+        {/* Top row: logo */}
+        <div className="flex items-center w-full p-10">
+          <Logo size="lg" />
         </div>
 
-        {/* Card content */}
-        <div className="w-full border border-[#efefef] rounded-xl px-[33px] py-[14px]">
-          <RegisterWizard />
-        </div>
+        <div className="flex-1" />
 
-        {/* Terms */}
-        <p className="w-full text-center text-xs text-slate-500 leading-4">
-          By creating an account, you agree to our{" "}
-          <a href="#" className="underline hover:text-slate-700 transition-colors">
-            Terms of Service
-          </a>{" "}
-          and{" "}
-          <a href="#" className="underline hover:text-slate-700 transition-colors">
-            Privacy Policy
-          </a>
-        </p>
+        {/* Bottom: full-width blurred band with heading */}
+        <div className="relative w-full px-10 py-8">
+          {/* Blur backdrop with softened top edge */}
+          <div className="absolute inset-0 bg-black/20 backdrop-blur-sm [mask-image:linear-gradient(to_bottom,transparent_0%,black_50%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_50%)]" />
+
+          <div className="relative space-y-1">
+            <h1 className="text-4xl font-semibold text-white leading-[56px]">
+              Create your company account
+            </h1>
+            <p className="text-sm text-white">
+              A few quick steps and your workspace is ready
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right side — white form panel */}
+      <div className="relative z-10 flex flex-1 bg-white overflow-y-auto scrollbar-hide">
+        <div className="m-auto w-full px-8 py-10">
+          <div className="mx-auto w-full max-w-[640px] flex flex-col gap-8">
+            <RegisterWizard />
+
+            <p className="text-center text-xs text-slate-500 leading-4">
+              By creating an account, you agree to our{" "}
+              <Link to="#" className="underline hover:text-slate-700 transition-colors">
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link to="#" className="underline hover:text-slate-700 transition-colors">
+                Privacy Policy
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

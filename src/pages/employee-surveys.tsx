@@ -56,7 +56,7 @@ export default function EmployeeSurveysPage() {
   // --- Success state after submission ---
   if (activeSurvey && submitted) {
     return (
-      <div className="min-h-screen bg-[#eff6ff] p-6">
+      <div className="min-h-screen bg-[#f7fbff] p-6">
         <div className="mx-auto max-w-3xl">
           <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] p-10 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50">
@@ -84,7 +84,7 @@ export default function EmployeeSurveysPage() {
   // --- Survey form ---
   if (activeSurvey) {
     return (
-      <div className="min-h-screen bg-[#eff6ff] p-6">
+      <div className="min-h-screen bg-[#f7fbff] p-6">
         <div className="mx-auto max-w-3xl">
           <button
             onClick={handleBack}
@@ -136,7 +136,7 @@ export default function EmployeeSurveysPage() {
 
   // --- Survey list ---
   return (
-    <div className="min-h-screen bg-[#eff6ff] p-6">
+    <div className="min-h-screen bg-[#f7fbff] p-6">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-6">

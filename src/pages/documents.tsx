@@ -1,15 +1,7 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -34,7 +26,9 @@ import {
   Archive,
   RotateCcw,
   FileSignature,
-  Filter,
+  Files,
+  CheckCircle2,
+  PenLine,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -57,40 +51,85 @@ import type {
 
 type TabType = "templates" | "generated" | "activity";
 
+const CARD_SHELL =
+  "rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]";
+
+const AVATAR_PALETTE = [
+  "bg-blue-500",
+  "bg-violet-500",
+  "bg-teal-500",
+  "bg-amber-500",
+  "bg-rose-500",
+  "bg-emerald-500",
+  "bg-indigo-500",
+  "bg-pink-500",
+  "bg-orange-500",
+  "bg-cyan-500",
+];
+
+function avatarColor(id: string): string {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  return AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+}
+
+function initials(name: string): string {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
+
 const ACTIVITY_ICON_MAP: Record<
   StorageActivityType,
   { icon: LucideIcon; color: string; bg: string }
 > = {
-  upload: { icon: Upload, color: "text-blue-600", bg: "bg-blue-100" },
-  download: { icon: Download, color: "text-cyan-600", bg: "bg-cyan-100" },
-  delete: { icon: Trash2, color: "text-red-600", bg: "bg-red-100" },
-  generate: { icon: FileText, color: "text-emerald-600", bg: "bg-emerald-100" },
-  sign: { icon: FileSignature, color: "text-violet-600", bg: "bg-violet-100" },
-  deliver: { icon: Send, color: "text-blue-600", bg: "bg-blue-100" },
-  archive: { icon: Archive, color: "text-amber-600", bg: "bg-amber-100" },
-  restore: { icon: RotateCcw, color: "text-green-600", bg: "bg-green-100" },
+  upload: { icon: Upload, color: "text-blue-600", bg: "bg-blue-50" },
+  download: { icon: Download, color: "text-cyan-600", bg: "bg-cyan-50" },
+  delete: { icon: Trash2, color: "text-rose-600", bg: "bg-rose-50" },
+  generate: { icon: FileText, color: "text-emerald-600", bg: "bg-emerald-50" },
+  sign: { icon: FileSignature, color: "text-violet-600", bg: "bg-violet-50" },
+  deliver: { icon: Send, color: "text-blue-600", bg: "bg-blue-50" },
+  archive: { icon: Archive, color: "text-amber-600", bg: "bg-amber-50" },
+  restore: { icon: RotateCcw, color: "text-emerald-600", bg: "bg-emerald-50" },
 };
 
-const DOC_STATUS_STYLES: Record<
+const DOC_STATUS_PILL: Record<
   GeneratedDocumentStatus,
-  { label: string; className: string }
+  { label: string; cls: string; dot: string }
 > = {
-  draft: { label: "Draft", className: "bg-gray-100 text-gray-700" },
+  draft: { label: "Draft", cls: "bg-slate-100 text-slate-600", dot: "bg-slate-400" },
   pending_signature: {
-    label: "Pending Signature",
-    className: "bg-amber-50 text-amber-700",
+    label: "Pending signature",
+    cls: "bg-amber-50 text-amber-700",
+    dot: "bg-amber-500",
   },
-  signed: { label: "Signed", className: "bg-blue-50 text-blue-700" },
-  delivered: { label: "Delivered", className: "bg-emerald-50 text-emerald-700" },
+  signed: { label: "Signed", cls: "bg-blue-50 text-blue-700", dot: "bg-blue-500" },
+  delivered: {
+    label: "Delivered",
+    cls: "bg-emerald-50 text-emerald-700",
+    dot: "bg-emerald-500",
+  },
 };
 
-const TEMPLATE_STATUS_STYLES: Record<
+const TEMPLATE_STATUS_PILL: Record<
   TemplateStatus,
-  { label: string; className: string }
+  { label: string; cls: string; dot: string }
 > = {
-  draft: { label: "Draft", className: "bg-gray-100 text-gray-700" },
-  active: { label: "Active", className: "bg-emerald-50 text-emerald-700" },
-  archived: { label: "Archived", className: "bg-amber-50 text-amber-700" },
+  draft: { label: "Draft", cls: "bg-slate-100 text-slate-600", dot: "bg-slate-400" },
+  active: {
+    label: "Active",
+    cls: "bg-emerald-50 text-emerald-700",
+    dot: "bg-emerald-500",
+  },
+  archived: {
+    label: "Archived",
+    cls: "bg-amber-50 text-amber-700",
+    dot: "bg-amber-500",
+  },
 };
 
 export default function DocumentsPage() {
@@ -127,9 +166,7 @@ export default function DocumentsPage() {
 
   const filteredActivities = useMemo(() => {
     if (activityTypeFilter === "all") return MOCK_STORAGE_ACTIVITIES;
-    return MOCK_STORAGE_ACTIVITIES.filter(
-      (a) => a.type === activityTypeFilter
-    );
+    return MOCK_STORAGE_ACTIVITIES.filter((a) => a.type === activityTypeFilter);
   }, [activityTypeFilter]);
 
   function getTemplateTypeConfig(type: DocumentTemplateType) {
@@ -157,52 +194,114 @@ export default function DocumentsPage() {
     })}`;
   }
 
-  const tabs: { key: TabType; label: string }[] = [
-    { key: "templates", label: "Templates" },
-    { key: "generated", label: "Generated Documents" },
-    { key: "activity", label: "Activity Log" },
+  // KPI metrics
+  const totalTemplates = MOCK_TEMPLATES.length;
+  const activeTemplates = MOCK_TEMPLATES.filter((t) => t.status === "active").length;
+  const generatedThisMonth = MOCK_GENERATED_DOCUMENTS.filter((d) => {
+    const ts = new Date(d.generatedAt);
+    const now = new Date();
+    return (
+      ts.getFullYear() === now.getFullYear() && ts.getMonth() === now.getMonth()
+    );
+  }).length;
+  const pendingSignatures = MOCK_GENERATED_DOCUMENTS.filter(
+    (d) => d.status === "pending_signature"
+  ).length;
+
+  const kpis = [
+    { label: "Total Templates", value: totalTemplates, icon: Files },
+    { label: "Active Templates", value: activeTemplates, icon: CheckCircle2 },
+    { label: "Generated This Month", value: generatedThisMonth, icon: FileText },
+    { label: "Pending Signatures", value: pendingSignatures, icon: PenLine },
+  ];
+
+  const tabs: { key: TabType; label: string; count: number }[] = [
+    { key: "templates", label: "Templates", count: MOCK_TEMPLATES.length },
+    {
+      key: "generated",
+      label: "Generated documents",
+      count: MOCK_GENERATED_DOCUMENTS.length,
+    },
+    {
+      key: "activity",
+      label: "Activity log",
+      count: MOCK_STORAGE_ACTIVITIES.length,
+    },
   ];
 
   return (
-    <div className="max-w-[1400px] mx-auto space-y-6">
+    <div className="max-w-[1500px] space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
             Document Management
           </h1>
-          <p className="text-sm text-slate-500">
-            Manage templates, generate documents, and track activity
+          <p className="text-sm text-slate-500 mt-1">
+            Manage templates, generate documents, and track activity across your
+            organization.
           </p>
         </div>
         {activeTab === "templates" && (
           <Button
-            size="sm"
-            className="gap-1.5"
             onClick={() => navigate("/documents/templates/new")}
+            className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4"
           >
-            <Plus className="w-4 h-4" />
-            Create Template
+            <Plus className="w-4 h-4 mr-1" />
+            Create template
           </Button>
         )}
       </div>
 
-      {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-[#efefef]">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={cn(
-              "flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors -mb-px",
-              activeTab === tab.key
-                ? "border-blue-600 text-blue-600"
-                : "border-transparent text-slate-500 hover:text-slate-900"
-            )}
-          >
-            {tab.label}
-          </button>
-        ))}
+      {/* KPI row */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {kpis.map((c) => {
+          const Icon = c.icon;
+          return (
+            <div
+              key={c.label}
+              className={cn(CARD_SHELL, "px-5 pt-5 pb-5 flex flex-col gap-7")}
+            >
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                  <Icon className="text-blue-600 w-[18px] h-[18px]" />
+                </div>
+              </div>
+              <div>
+                <p className="text-3xl font-bold tracking-tight text-slate-900 leading-none tabular-nums">
+                  {c.value}
+                </p>
+                <p className="text-sm text-slate-500 mt-2">{c.label}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Chip filter tabs */}
+      <div className="flex flex-wrap gap-2">
+        {tabs.map((t) => {
+          const active = activeTab === t.key;
+          return (
+            <button
+              key={t.key}
+              onClick={() => setActiveTab(t.key)}
+              className={cn(
+                "h-9 px-4 rounded-full text-sm font-medium inline-flex items-center gap-1.5 transition-colors",
+                active
+                  ? "bg-blue-600 text-white"
+                  : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+              )}
+            >
+              {t.label}
+              <span
+                className={cn("text-xs", active ? "text-white/80" : "text-slate-400")}
+              >
+                {t.count}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       {/* Tab Content */}
@@ -262,16 +361,16 @@ function TemplatesTab({
   navigate: ReturnType<typeof useNavigate>;
 }) {
   return (
-    <div className="space-y-4">
-      {/* Filters row */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-        <div className="relative flex-1 w-full sm:max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+    <div className={cn(CARD_SHELL, "overflow-hidden")}>
+      {/* Toolbar */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 px-5 py-4 border-b border-slate-200/70">
+        <div className="relative flex-1 sm:max-w-xs">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <Input
             placeholder="Search templates..."
             value={filter.search}
             onChange={(e) => setFilter({ ...filter, search: e.target.value })}
-            className="pl-9"
+            className="pl-9 h-10"
           />
         </div>
 
@@ -284,11 +383,11 @@ function TemplatesTab({
             })
           }
         >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="All Types" />
+          <SelectTrigger className="w-[180px] h-10">
+            <SelectValue placeholder="All types" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="all">All types</SelectItem>
             {TEMPLATE_TYPE_CONFIGS.map((cfg) => (
               <SelectItem key={cfg.type} value={cfg.type}>
                 {cfg.label}
@@ -303,234 +402,220 @@ function TemplatesTab({
             setFilter({ ...filter, status: val as TemplateStatus | "all" })
           }
         >
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="All Status" />
+          <SelectTrigger className="w-[140px] h-10">
+            <SelectValue placeholder="All status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="all">All status</SelectItem>
             <SelectItem value="active">Active</SelectItem>
             <SelectItem value="draft">Draft</SelectItem>
             <SelectItem value="archived">Archived</SelectItem>
           </SelectContent>
         </Select>
 
-        <div className="flex items-center gap-1 ml-auto border border-[#efefef] rounded-lg p-0.5">
-          <button
-            onClick={() => setViewMode("grid")}
-            className={cn(
-              "p-1.5 rounded-md transition-colors",
-              viewMode === "grid"
-                ? "bg-primary text-primary-foreground"
-                : "text-slate-500 hover:text-slate-900"
-            )}
-          >
-            <Grid3X3 className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => setViewMode("list")}
-            className={cn(
-              "p-1.5 rounded-md transition-colors",
-              viewMode === "list"
-                ? "bg-primary text-primary-foreground"
-                : "text-slate-500 hover:text-slate-900"
-            )}
-          >
-            <List className="w-4 h-4" />
-          </button>
+        <div className="flex items-center gap-1 sm:ml-auto">
+          <span className="text-sm text-slate-500 mr-2">
+            {templates.length} template{templates.length !== 1 ? "s" : ""}
+          </span>
+          <div className="inline-flex items-center gap-0.5 border border-slate-200 rounded-lg p-0.5 bg-white">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={cn(
+                "w-8 h-8 rounded-md transition-colors inline-flex items-center justify-center",
+                viewMode === "grid"
+                  ? "bg-blue-600 text-white"
+                  : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+              )}
+              aria-label="Grid view"
+            >
+              <Grid3X3 className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode("list")}
+              className={cn(
+                "w-8 h-8 rounded-md transition-colors inline-flex items-center justify-center",
+                viewMode === "list"
+                  ? "bg-blue-600 text-white"
+                  : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+              )}
+              aria-label="List view"
+            >
+              <List className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Results count */}
-      <p className="text-sm text-slate-500">
-        {templates.length} template{templates.length !== 1 ? "s" : ""} found
-      </p>
-
-      {/* Grid View */}
-      {viewMode === "grid" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      {/* Empty state */}
+      {templates.length === 0 ? (
+        <div className="p-12 text-center">
+          <div className="mx-auto w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center">
+            <FileText className="w-5 h-5 text-slate-400" />
+          </div>
+          <p className="mt-3 text-sm text-slate-500">
+            No templates match your filters
+          </p>
+        </div>
+      ) : viewMode === "grid" ? (
+        <div className="p-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {templates.map((tpl) => {
             const typeConfig = getTemplateTypeConfig(tpl.type);
-            const statusStyle = TEMPLATE_STATUS_STYLES[tpl.status];
+            const statusPill = TEMPLATE_STATUS_PILL[tpl.status];
             const TypeIcon = typeConfig?.icon ?? FileText;
 
             return (
-              <Card
+              <button
                 key={tpl.id}
-                className="cursor-pointer hover:shadow-md transition-shadow"
+                type="button"
                 onClick={() => navigate(`/documents/templates/${tpl.id}`)}
+                className="text-left rounded-xl border border-slate-200/70 bg-white px-5 py-5 transition-colors hover:border-slate-300 flex flex-col gap-4"
               >
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <div
-                      className={cn(
-                        "w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
-                        typeConfig?.bgColor ?? "bg-gray-100"
-                      )}
-                    >
-                      <TypeIcon
-                        className={cn(
-                          "w-5 h-5",
-                          typeConfig?.color ?? "text-gray-600"
-                        )}
-                      />
-                    </div>
-                    <Badge
-                      variant="secondary"
-                      className={cn("text-[11px]", statusStyle.className)}
-                    >
-                      {statusStyle.label}
-                    </Badge>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                    <TypeIcon className="w-[18px] h-[18px] text-blue-600" />
                   </div>
-                  <CardTitle className="text-sm font-semibold mt-3">
+                  <span
+                    className={cn(
+                      "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium",
+                      statusPill.cls
+                    )}
+                  >
+                    <span
+                      className={cn("w-1.5 h-1.5 rounded-full", statusPill.dot)}
+                    />
+                    {statusPill.label}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-900 tracking-tight">
                     {tpl.name}
-                  </CardTitle>
-                  <CardDescription className="text-xs line-clamp-2">
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
                     {tpl.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0 space-y-3">
-                  <div className="flex items-center justify-between text-xs text-slate-500">
-                    <span>v{tpl.version}</span>
-                    <span className="flex items-center gap-1">
-                      <FileText className="w-3 h-3" />
-                      {tpl.usageCount} uses
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1 text-[11px] text-slate-500">
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between text-xs text-slate-500 pt-3 border-t border-slate-100">
+                  <span className="font-medium text-slate-700">v{tpl.version}</span>
+                  <span className="inline-flex items-center gap-1">
+                    <FileText className="w-3 h-3" />
+                    {tpl.usageCount} uses
+                  </span>
+                  <span className="inline-flex items-center gap-1">
                     <Clock className="w-3 h-3" />
-                    Last used: {formatDate(tpl.lastUsed)}
+                    {formatDate(tpl.lastUsed)}
+                  </span>
+                </div>
+
+                {tpl.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {tpl.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[10px] font-medium"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
-                  {tpl.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {tpl.tags.map((tag) => (
-                        <Badge
-                          key={tag}
-                          variant="outline"
-                          className="text-[10px] px-1.5 py-0"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                )}
+              </button>
             );
           })}
         </div>
-      )}
-
-      {/* List View */}
-      {viewMode === "list" && (
-        <div className="border border-[#efefef] rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-slate-200/70 text-left">
-                <th className="px-4 py-3 text-xs font-medium text-slate-500">
+              <tr className="border-b border-slate-200/70">
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pl-5 pr-5">
                   Name
                 </th>
-                <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden md:table-cell">
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5 hidden md:table-cell">
                   Type
                 </th>
-                <th className="px-4 py-3 text-xs font-medium text-slate-500">
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">
                   Status
                 </th>
-                <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden lg:table-cell">
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5 hidden lg:table-cell">
                   Version
                 </th>
-                <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden lg:table-cell">
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5 hidden lg:table-cell">
                   Usage
                 </th>
-                <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden xl:table-cell">
-                  Last Used
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5 hidden xl:table-cell">
+                  Last used
                 </th>
-                <th className="px-4 py-3 text-xs font-medium text-slate-500 text-right">
-                  Actions
-                </th>
+                <th className="w-12 py-3 pr-5" />
               </tr>
             </thead>
             <tbody>
               {templates.map((tpl) => {
                 const typeConfig = getTemplateTypeConfig(tpl.type);
-                const statusStyle = TEMPLATE_STATUS_STYLES[tpl.status];
+                const statusPill = TEMPLATE_STATUS_PILL[tpl.status];
                 const TypeIcon = typeConfig?.icon ?? FileText;
 
                 return (
                   <tr
                     key={tpl.id}
-                    className="border-t border-[#efefef] hover:bg-[#f8fafc] cursor-pointer transition-colors"
+                    className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 cursor-pointer transition-colors"
                     onClick={() => navigate(`/documents/templates/${tpl.id}`)}
                   >
-                    <td className="px-4 py-3">
+                    <td className="py-4 pl-5 pr-5">
                       <div className="flex items-center gap-3">
-                        <div
-                          className={cn(
-                            "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                            typeConfig?.bgColor ?? "bg-gray-100"
-                          )}
-                        >
-                          <TypeIcon
-                            className={cn(
-                              "w-4 h-4",
-                              typeConfig?.color ?? "text-gray-600"
-                            )}
-                          />
+                        <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                          <TypeIcon className="w-[18px] h-[18px] text-blue-600" />
                         </div>
                         <div>
-                          <p className="font-medium text-sm">{tpl.name}</p>
-                          <p className="text-xs text-slate-500 line-clamp-1">
+                          <p className="font-semibold text-slate-900 leading-tight">
+                            {tpl.name}
+                          </p>
+                          <p className="text-xs text-slate-500 line-clamp-1 leading-tight mt-0.5">
                             {tpl.description}
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 hidden md:table-cell text-sm text-slate-500">
+                    <td className="py-4 pr-5 hidden md:table-cell text-sm text-slate-700">
                       {typeConfig?.label ?? tpl.type}
                     </td>
-                    <td className="px-4 py-3">
-                      <Badge
-                        variant="secondary"
-                        className={cn("text-[11px]", statusStyle.className)}
+                    <td className="py-4 pr-5">
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium",
+                          statusPill.cls
+                        )}
                       >
-                        {statusStyle.label}
-                      </Badge>
+                        <span
+                          className={cn("w-1.5 h-1.5 rounded-full", statusPill.dot)}
+                        />
+                        {statusPill.label}
+                      </span>
                     </td>
-                    <td className="px-4 py-3 hidden lg:table-cell text-sm text-slate-500">
+                    <td className="py-4 pr-5 hidden lg:table-cell text-sm text-slate-700 tabular-nums">
                       v{tpl.version}
                     </td>
-                    <td className="px-4 py-3 hidden lg:table-cell text-sm text-slate-500">
+                    <td className="py-4 pr-5 hidden lg:table-cell text-sm text-slate-700 tabular-nums">
                       {tpl.usageCount}
                     </td>
-                    <td className="px-4 py-3 hidden xl:table-cell text-sm text-slate-500">
+                    <td className="py-4 pr-5 hidden xl:table-cell text-sm text-slate-500">
                       {formatDate(tpl.lastUsed)}
                     </td>
-                    <td className="px-4 py-3 text-right">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
+                    <td className="py-4 pr-5 text-right">
+                      <button
+                        type="button"
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-8 h-8 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 inline-flex items-center justify-center"
+                        aria-label="More actions"
                       >
                         <MoreHorizontal className="w-4 h-4" />
-                      </Button>
+                      </button>
                     </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
-        </div>
-      )}
-
-      {/* Empty state */}
-      {templates.length === 0 && (
-        <div className="flex flex-col items-center py-16">
-          <FileText className="w-10 h-10 text-slate-500/30 mb-3" />
-          <p className="text-sm text-slate-500">
-            No templates match your filters
-          </p>
         </div>
       )}
     </div>
@@ -547,119 +632,142 @@ function GeneratedDocumentsTab({
   formatDate: (d: string | null) => string;
 }) {
   return (
-    <div className="space-y-4">
-      <p className="text-sm text-slate-500">
-        {documents.length} generated document
-        {documents.length !== 1 ? "s" : ""}
-      </p>
-
-      <div className="border border-[#efefef] rounded-xl overflow-hidden">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-slate-200/70 text-left">
-              <th className="px-4 py-3 text-xs font-medium text-slate-500">
-                Employee
-              </th>
-              <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden md:table-cell">
-                Template
-              </th>
-              <th className="px-4 py-3 text-xs font-medium text-slate-500">
-                Status
-              </th>
-              <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden lg:table-cell">
-                Generated By
-              </th>
-              <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden lg:table-cell">
-                Date
-              </th>
-              <th className="px-4 py-3 text-xs font-medium text-slate-500 hidden xl:table-cell">
-                File Size
-              </th>
-              <th className="px-4 py-3 text-xs font-medium text-slate-500 text-right">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {documents.map((doc) => {
-              const statusStyle = DOC_STATUS_STYLES[doc.status];
-
-              return (
-                <tr
-                  key={doc.id}
-                  className="border-t border-[#efefef] hover:bg-[#f8fafc] transition-colors"
-                >
-                  <td className="px-4 py-3">
-                    <div>
-                      <p className="font-medium text-sm">{doc.employeeName}</p>
-                      <p className="text-xs text-slate-500 md:hidden">
-                        {doc.templateName}
-                      </p>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 hidden md:table-cell text-sm text-slate-500">
-                    {doc.templateName}
-                  </td>
-                  <td className="px-4 py-3">
-                    <Badge
-                      variant="secondary"
-                      className={cn("text-[11px]", statusStyle.className)}
-                    >
-                      {statusStyle.label}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-3 hidden lg:table-cell text-sm text-slate-500">
-                    {doc.generatedBy}
-                  </td>
-                  <td className="px-4 py-3 hidden lg:table-cell text-sm text-slate-500">
-                    {formatDate(doc.generatedAt)}
-                  </td>
-                  <td className="px-4 py-3 hidden xl:table-cell text-sm text-slate-500">
-                    {doc.fileSize}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        title="View"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        title="Download"
-                      >
-                        <Download className="w-4 h-4" />
-                      </Button>
-                      {doc.status === "signed" && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          title="Deliver"
-                        >
-                          <Send className="w-4 h-4" />
-                        </Button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+    <div className={cn(CARD_SHELL, "overflow-hidden")}>
+      <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/70">
+        <div>
+          <h2 className="text-base font-bold text-slate-900 tracking-tight">
+            Generated documents
+          </h2>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Letters and contracts generated from your templates.
+          </p>
+        </div>
+        <span className="text-sm text-slate-500">
+          {documents.length} document{documents.length !== 1 ? "s" : ""}
+        </span>
       </div>
 
-      {documents.length === 0 && (
-        <div className="flex flex-col items-center py-16">
-          <FileText className="w-10 h-10 text-slate-500/30 mb-3" />
-          <p className="text-sm text-slate-500">
-            No documents generated yet
-          </p>
+      {documents.length === 0 ? (
+        <div className="p-12 text-center">
+          <div className="mx-auto w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center">
+            <FileText className="w-5 h-5 text-slate-400" />
+          </div>
+          <p className="mt-3 text-sm text-slate-500">No documents generated yet</p>
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-slate-200/70">
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pl-5 pr-5">
+                  Employee
+                </th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5 hidden md:table-cell">
+                  Template
+                </th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">
+                  Status
+                </th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5 hidden lg:table-cell">
+                  Generated by
+                </th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5 hidden lg:table-cell">
+                  Date
+                </th>
+                <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5 hidden xl:table-cell">
+                  File size
+                </th>
+                <th className="text-right font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {documents.map((doc) => {
+                const statusPill = DOC_STATUS_PILL[doc.status];
+
+                return (
+                  <tr
+                    key={doc.id}
+                    className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors"
+                  >
+                    <td className="py-4 pl-5 pr-5">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={cn(
+                            "w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-xs shrink-0",
+                            avatarColor(doc.id)
+                          )}
+                        >
+                          {initials(doc.employeeName)}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-slate-900 leading-tight">
+                            {doc.employeeName}
+                          </p>
+                          <p className="text-xs text-slate-500 leading-tight mt-0.5 md:hidden">
+                            {doc.templateName}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 pr-5 hidden md:table-cell text-sm text-slate-700">
+                      {doc.templateName}
+                    </td>
+                    <td className="py-4 pr-5">
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium",
+                          statusPill.cls
+                        )}
+                      >
+                        <span
+                          className={cn("w-1.5 h-1.5 rounded-full", statusPill.dot)}
+                        />
+                        {statusPill.label}
+                      </span>
+                    </td>
+                    <td className="py-4 pr-5 hidden lg:table-cell text-sm text-slate-700">
+                      {doc.generatedBy}
+                    </td>
+                    <td className="py-4 pr-5 hidden lg:table-cell text-sm text-slate-500">
+                      {formatDate(doc.generatedAt)}
+                    </td>
+                    <td className="py-4 pr-5 hidden xl:table-cell text-sm text-slate-500">
+                      {doc.fileSize}
+                    </td>
+                    <td className="py-4 pr-5">
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          type="button"
+                          className="w-8 h-8 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 inline-flex items-center justify-center"
+                          aria-label="View"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                        <button
+                          type="button"
+                          className="w-8 h-8 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 inline-flex items-center justify-center"
+                          aria-label="Download"
+                        >
+                          <Download className="w-4 h-4" />
+                        </button>
+                        {doc.status === "signed" && (
+                          <button
+                            type="button"
+                            className="w-8 h-8 rounded-md text-blue-600 hover:bg-blue-50 inline-flex items-center justify-center"
+                            aria-label="Deliver"
+                          >
+                            <Send className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
@@ -679,99 +787,105 @@ function ActivityLogTab({
   setActivityTypeFilter: (v: StorageActivityType | "all") => void;
   formatDateTime: (d: string) => string;
 }) {
-  const activityTypes: { value: StorageActivityType | "all"; label: string }[] =
-    [
-      { value: "all", label: "All Activities" },
-      { value: "upload", label: "Upload" },
-      { value: "download", label: "Download" },
-      { value: "delete", label: "Delete" },
-      { value: "generate", label: "Generate" },
-      { value: "sign", label: "Sign" },
-      { value: "deliver", label: "Deliver" },
-      { value: "archive", label: "Archive" },
-      { value: "restore", label: "Restore" },
-    ];
+  const activityTypes: { value: StorageActivityType | "all"; label: string }[] = [
+    { value: "all", label: "All activities" },
+    { value: "upload", label: "Upload" },
+    { value: "download", label: "Download" },
+    { value: "delete", label: "Delete" },
+    { value: "generate", label: "Generate" },
+    { value: "sign", label: "Sign" },
+    { value: "deliver", label: "Deliver" },
+    { value: "archive", label: "Archive" },
+    { value: "restore", label: "Restore" },
+  ];
 
   return (
-    <div className="space-y-4">
-      {/* Filter */}
-      <div className="flex items-center gap-3">
-        <Filter className="w-4 h-4 text-slate-500" />
-        <Select
-          value={activityTypeFilter}
-          onValueChange={(val) =>
-            setActivityTypeFilter(val as StorageActivityType | "all")
-          }
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="All Activities" />
-          </SelectTrigger>
-          <SelectContent>
-            {activityTypes.map((at) => (
-              <SelectItem key={at.value} value={at.value}>
-                {at.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <p className="text-sm text-slate-500 ml-auto">
-          {activities.length} activit{activities.length !== 1 ? "ies" : "y"}
-        </p>
+    <div className={cn(CARD_SHELL, "overflow-hidden")}>
+      {/* Toolbar */}
+      <div className="flex items-center gap-3 justify-between px-5 py-4 border-b border-slate-200/70">
+        <div>
+          <h2 className="text-base font-bold text-slate-900 tracking-tight">
+            Activity log
+          </h2>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Audit trail of every action across your document storage.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Select
+            value={activityTypeFilter}
+            onValueChange={(val) =>
+              setActivityTypeFilter(val as StorageActivityType | "all")
+            }
+          >
+            <SelectTrigger className="w-[180px] h-10">
+              <SelectValue placeholder="All activities" />
+            </SelectTrigger>
+            <SelectContent>
+              {activityTypes.map((at) => (
+                <SelectItem key={at.value} value={at.value}>
+                  {at.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <span className="text-sm text-slate-500 shrink-0">
+            {activities.length} record{activities.length !== 1 ? "s" : ""}
+          </span>
+        </div>
       </div>
 
       {/* Timeline */}
-      <div className="space-y-2">
-        {activities.map((activity) => {
-          const config = ACTIVITY_ICON_MAP[activity.type];
-          const Icon = config.icon;
+      {activities.length === 0 ? (
+        <div className="p-12 text-center">
+          <div className="mx-auto w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center">
+            <Clock className="w-5 h-5 text-slate-400" />
+          </div>
+          <p className="mt-3 text-sm text-slate-500">No activity to show</p>
+        </div>
+      ) : (
+        <div>
+          {activities.map((activity) => {
+            const config = ACTIVITY_ICON_MAP[activity.type];
+            const Icon = config.icon;
 
-          return (
-            <div
-              key={activity.id}
-              className="flex items-start gap-4 p-4 rounded-xl border border-[#efefef] hover:shadow-sm transition-all"
-            >
+            return (
               <div
-                className={cn(
-                  "w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
-                  config.bg
-                )}
+                key={activity.id}
+                className="flex items-start gap-4 px-5 py-4 border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors"
               >
-                <Icon className={cn("w-5 h-5", config.color)} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium">{activity.description}</p>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  {activity.fileName}
-                </p>
-                <div className="flex items-center gap-3 mt-1.5">
-                  <p className="text-[11px] text-slate-500/60">
-                    {activity.performedBy}
+                <div
+                  className={cn(
+                    "w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
+                    config.bg
+                  )}
+                >
+                  <Icon className={cn("w-[18px] h-[18px]", config.color)} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-slate-900 leading-tight">
+                    {activity.description}
                   </p>
-                  <span className="text-[11px] text-slate-500/40">
-                    |
-                  </span>
-                  <p className="text-[11px] text-slate-500/60">
-                    {formatDateTime(activity.performedAt)}
+                  <p className="text-xs text-slate-500 mt-1 leading-tight">
+                    {activity.fileName}
                   </p>
-                  <span className="text-[11px] text-slate-500/40">
-                    |
-                  </span>
-                  <p className="text-[11px] text-slate-500/60">
-                    {activity.fileSize}
-                  </p>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2">
+                    <span className="text-[11px] text-slate-500">
+                      {activity.performedBy}
+                    </span>
+                    <span className="text-[11px] text-slate-300">·</span>
+                    <span className="text-[11px] text-slate-500">
+                      {formatDateTime(activity.performedAt)}
+                    </span>
+                    <span className="text-[11px] text-slate-300">·</span>
+                    <span className="text-[11px] text-slate-500">
+                      {activity.fileSize}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {activities.length === 0 && (
-        <div className="flex flex-col items-center py-16">
-          <Clock className="w-10 h-10 text-slate-500/30 mb-3" />
-          <p className="text-sm text-slate-500">
-            No activity to show
-          </p>
+            );
+          })}
         </div>
       )}
     </div>

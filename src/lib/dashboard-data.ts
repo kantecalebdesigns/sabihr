@@ -29,11 +29,12 @@ import {
   Receipt,
   Timer,
   PieChart,
-  Network,
-  Building,
-  ScrollText,
-  GitBranch,
-  Workflow,
+  // Branches section icons — restore when re-enabling /branches nav
+  // Network,
+  // Building,
+  // ScrollText,
+  // GitBranch,
+  // Workflow,
 } from "lucide-react";
 import type {
   KpiCardData,
@@ -400,16 +401,17 @@ export const NAV_SECTIONS: NavSection[] = [
       { label: "Assets", icon: Package, path: "/assets" },
     ],
   },
-  {
-    title: "Branches",
-    icon: Network,
-    items: [
-      { label: "Branches", icon: Building, path: "/branches" },
-      { label: "Branch Policies", icon: ScrollText, path: "/branches/policies" },
-      { label: "Branch Hierarchy", icon: GitBranch, path: "/branches/hierarchy" },
-      { label: "Organogram", icon: Workflow, path: "/branches/organogram" },
-    ],
-  },
+  // Branches section — temporarily hidden, to revisit
+  // {
+  //   title: "Branches",
+  //   icon: Network,
+  //   items: [
+  //     { label: "Branches", icon: Building, path: "/branches" },
+  //     { label: "Branch Policies", icon: ScrollText, path: "/branches/policies" },
+  //     { label: "Branch Hierarchy", icon: GitBranch, path: "/branches/hierarchy" },
+  //     { label: "Organogram", icon: Workflow, path: "/branches/organogram" },
+  //   ],
+  // },
   {
     title: "Engagement",
     icon: MessageSquare,

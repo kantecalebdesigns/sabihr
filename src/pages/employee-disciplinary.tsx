@@ -99,7 +99,7 @@ export default function EmployeeDisciplinaryPage() {
   const myCases = allCases.filter((c) => c.employeeId === EMPLOYEE_ID);
 
   return (
-    <div className="min-h-screen bg-[#eff6ff] p-6 space-y-6">
+    <div className="min-h-screen bg-[#f7fbff] p-6 space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-semibold text-slate-900">

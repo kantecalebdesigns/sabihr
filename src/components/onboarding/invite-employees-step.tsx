@@ -72,10 +72,9 @@ export function InviteEmployeesStep({
           <Users className="w-[18px] h-[18px] text-blue-600" />
         </div>
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-bold tracking-tight text-slate-900">Add your employees</h2>
+          <h2 className="text-xl font-bold tracking-tight text-slate-900">Add your first employee</h2>
           <p className="text-sm text-slate-500 leading-relaxed">
-            Start with HR staff first, then add the rest of your team. They'll receive an invitation
-            to join your workspace.
+            Invite teammates to join your workspace. They'll receive an email to set up their account.
           </p>
         </div>
       </div>
@@ -92,9 +91,9 @@ export function InviteEmployeesStep({
             </div>
           </div>
           <div className="text-center space-y-1.5">
-            <p className="text-sm font-bold text-slate-900">Start with your HR staff</p>
+            <p className="text-sm font-bold text-slate-900">Invite your first employee</p>
             <p className="text-xs text-slate-500 max-w-[280px]">
-              Add your HR administrator first, then invite the rest of your team.
+              Add a teammate's email to send them an invitation to your workspace.
             </p>
           </div>
           <div className="flex gap-2">
@@ -220,18 +219,14 @@ export function InviteEmployeesStep({
                     onValueChange={(v) => onUpdate(invite.id, "role", v)}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder={index === 0 ? "HR Staff" : "Role (optional)"} />
+                      <SelectValue placeholder="Role (optional)" />
                     </SelectTrigger>
                     <SelectContent>
-                      {index === 0 ? (
-                        <SelectItem value="HR Staff">HR Staff</SelectItem>
-                      ) : (
-                        EMPLOYEE_ROLES.map((role) => (
-                          <SelectItem key={role} value={role}>
-                            {role}
-                          </SelectItem>
-                        ))
-                      )}
+                      {EMPLOYEE_ROLES.map((role) => (
+                        <SelectItem key={role} value={role}>
+                          {role}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

@@ -1,23 +1,47 @@
 import { SetupWizard } from "@/components/onboarding/setup-wizard";
+import { Logo } from "@/components/shared/logo";
 
 export default function OnboardingPage() {
   return (
-    <div className="min-h-screen bg-[#eff6ff] flex items-start justify-center py-10 px-4">
-      <div className="w-full max-w-[1052px] flex flex-col gap-5">
-        {/* Header */}
-        <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-            Welcome to Sabi<span className="text-slate-500">HR</span>
-          </h1>
-          <p className="text-sm text-slate-500 leading-relaxed">
-            Let's get your workspace ready in two quick steps — add your departments, then invite
-            your first teammates.
-          </p>
+    <div className="relative flex h-screen items-stretch">
+      {/* Background image */}
+      <img
+        src="/onboarding-bg.png"
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+      />
+
+      {/* Left side — branding over the background */}
+      <div className="relative z-10 flex h-full flex-1 flex-col">
+        {/* Top row: logo */}
+        <div className="flex items-center w-full p-10">
+          <Logo size="lg" />
         </div>
 
-        {/* Wizard card */}
-        <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] px-6 sm:px-10 py-7 flex flex-col gap-6">
-          <SetupWizard />
+        <div className="flex-1" />
+
+        {/* Bottom: full-width blurred band with heading */}
+        <div className="relative w-full px-10 py-8">
+          {/* Blur backdrop with softened top edge */}
+          <div className="absolute inset-0 bg-black/20 backdrop-blur-sm [mask-image:linear-gradient(to_bottom,transparent_0%,black_50%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_50%)]" />
+
+          <div className="relative space-y-1">
+            <h1 className="text-4xl font-semibold text-white leading-[56px]">
+              Set up your workspace
+            </h1>
+            <p className="text-sm text-white">
+              Let's get your workspace ready in two quick steps
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right side — white wizard panel */}
+      <div className="relative z-10 flex flex-1 bg-white overflow-y-auto scrollbar-hide">
+        <div className="m-auto w-full px-8 py-12">
+          <div className="mx-auto w-full max-w-[640px]">
+            <SetupWizard />
+          </div>
         </div>
       </div>
     </div>

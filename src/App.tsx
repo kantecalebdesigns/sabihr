@@ -81,6 +81,8 @@ import BenefitsEnrollmentsPage from "@/pages/benefits-enrollments";
 import EmployeeBenefitsPage from "@/pages/employee-benefits";
 // Pay Grades & Payroll Roster
 import PayGradesPage from "@/pages/pay-grades";
+import PayGroupCreatePage from "@/pages/pay-group-create";
+import PayGradeCreatePage from "@/pages/pay-grade-create";
 import PayrollRosterPage from "@/pages/payroll-roster";
 // Performance Management
 import PerformancePage from "@/pages/performance";
@@ -203,6 +205,8 @@ function App() {
           <Route path="/payroll/reports" element={<PayrollReportsPage />} />
           <Route path="/payroll/audit" element={<PayrollAuditPage />} />
           <Route path="/payroll/pay-grades" element={<PayGradesPage />} />
+          <Route path="/payroll/pay-groups/create" element={<PayGroupCreatePage />} />
+          <Route path="/payroll/pay-grades/create" element={<PayGradeCreatePage />} />
           <Route path="/payroll/roster" element={<PayrollRosterPage />} />
           {/* Loans */}
           <Route path="/loans" element={<LoansPage />} />
