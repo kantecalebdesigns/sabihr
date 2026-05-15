@@ -159,8 +159,8 @@ export default function AttendanceDepartmentPage() {
 
               {/* Expanded employee table */}
               {isExpanded && employees.length > 0 && (
-                <div className="border-t border-[#efefef]">
-                  <table className="w-full text-xs">
+                <div className="border-t border-[#efefef] overflow-x-auto">
+                  <table className="w-full text-xs min-w-[560px]">
                     <thead>
                       <tr className="border-b border-slate-200/70 text-left">
                         <th className="px-4 py-2 font-medium text-slate-500">Name</th>

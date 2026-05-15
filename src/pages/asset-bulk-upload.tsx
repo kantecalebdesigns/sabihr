@@ -291,8 +291,8 @@ export default function AssetBulkUploadPage() {
 
       {/* Confirmation Modal */}
       {confirmOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="rounded-xl border border-border bg-card p-6 w-full max-w-md space-y-4 shadow-xl mx-4">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-0 sm:p-4">
+          <div className="rounded-t-xl sm:rounded-xl border border-border bg-card p-5 sm:p-6 w-full sm:max-w-md space-y-4 shadow-xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold">Confirm Import</h3>
               <button

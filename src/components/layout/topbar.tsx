@@ -31,14 +31,14 @@ export function Topbar({ onMenuToggle, pageTitle = "Dashboard" }: TopbarProps) {
   return (
     <header className="h-[60px] border-b-2 border-slate-200 bg-white flex items-center justify-between px-4 lg:px-6 shrink-0">
       {/* Left */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 min-w-0 flex-1">
         <button
           onClick={onMenuToggle}
-          className="lg:hidden w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:bg-[#f8fafc] hover:text-slate-600 transition-colors"
+          className="lg:hidden shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:bg-[#f8fafc] hover:text-slate-600 transition-colors"
         >
           <Menu className="w-5 h-5" />
         </button>
-        <h1 className="text-base font-semibold text-slate-900">{pageTitle}</h1>
+        <h1 className="text-base font-semibold text-slate-900 truncate">{pageTitle}</h1>
       </div>
 
       {/* Right */}

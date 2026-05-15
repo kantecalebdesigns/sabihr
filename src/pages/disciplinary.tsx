@@ -142,7 +142,7 @@ export default function DisciplinaryPage() {
   return (
     <div className="max-w-[1500px] space-y-5">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
           Disciplinary Management
         </h1>
         <p className="text-sm text-slate-500 mt-1">

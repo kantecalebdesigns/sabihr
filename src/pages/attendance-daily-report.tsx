@@ -85,7 +85,7 @@ export default function AttendanceDailyReport() {
     <div className="max-w-[1500px] space-y-5">
       {/* Header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Daily attendance report</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Daily attendance report</h1>
         <p className="text-sm text-slate-500 leading-relaxed">
           A point-in-time snapshot of who was in, late, or absent. Use the date and department
           filters to drill in, then export as CSV for finance or compliance review.

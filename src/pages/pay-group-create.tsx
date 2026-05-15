@@ -55,7 +55,7 @@ export default function PayGroupCreatePage() {
           <ArrowLeft className="w-4 h-4" />
         </button>
         <div className="flex-1 min-w-0">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">New pay group</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">New pay group</h1>
           <p className="text-sm text-slate-500 leading-relaxed">
             Define a salary band that grades and employees can be assigned to.
           </p>

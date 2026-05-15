@@ -84,3 +84,99 @@ export const MOCK_PAYSLIPS: EmployeePayslip[] = [
   { id: "ps-003", payrollRunId: "pr-002", employeeId: "emp-005", employeeName: "Emeka Okafor", department: "Sales", basicSalary: 500000, housingAllowance: 100000, transportAllowance: 50000, otherAllowances: 50000, grossPay: 700000, tax: 95000, pension: 56000, otherDeductions: 49000, totalDeductions: 200000, netPay: 500000, status: "paid", bankName: "UBA", accountNumber: "****8901" },
   { id: "ps-004", payrollRunId: "pr-002", employeeId: "emp-006", employeeName: "Aisha Mohammed", department: "Finance", basicSalary: 550000, housingAllowance: 110000, transportAllowance: 55000, otherAllowances: 60000, grossPay: 775000, tax: 108000, pension: 62000, otherDeductions: 55000, totalDeductions: 225000, netPay: 550000, status: "pending", bankName: "Fidelity Bank", accountNumber: "****3456" },
 ];
+
+interface RosterEntry {
+  employeeId: string;
+  employeeName: string;
+  department: string;
+  bankName: string;
+  accountNumber: string;
+  weight: number;
+}
+
+const PAYROLL_ROSTER: RosterEntry[] = [
+  { employeeId: "emp-001", employeeName: "Adebayo Ogunlesi", department: "Engineering", bankName: "GTBank", accountNumber: "****4521", weight: 12 },
+  { employeeId: "emp-002", employeeName: "Chiamaka Eze", department: "Engineering", bankName: "Access Bank", accountNumber: "****7812", weight: 10 },
+  { employeeId: "emp-003", employeeName: "Tunde Bakare", department: "Engineering", bankName: "GTBank", accountNumber: "****2245", weight: 11 },
+  { employeeId: "emp-004", employeeName: "Fatima Abdullahi", department: "Human Resources", bankName: "Zenith Bank", accountNumber: "****5643", weight: 10 },
+  { employeeId: "emp-005", employeeName: "Emeka Okafor", department: "Sales", bankName: "UBA", accountNumber: "****8901", weight: 7 },
+  { employeeId: "emp-006", employeeName: "Aisha Mohammed", department: "Finance", bankName: "Fidelity Bank", accountNumber: "****3456", weight: 8 },
+  { employeeId: "emp-007", employeeName: "Olumide Adeyemi", department: "Marketing", bankName: "First Bank", accountNumber: "****9087", weight: 7 },
+  { employeeId: "emp-008", employeeName: "Ngozi Iweala", department: "Finance", bankName: "GTBank", accountNumber: "****4412", weight: 9 },
+  { employeeId: "emp-009", employeeName: "Chinedu Okonkwo", department: "Sales", bankName: "Stanbic IBTC", accountNumber: "****6671", weight: 7 },
+  { employeeId: "emp-010", employeeName: "Yetunde Adesanya", department: "Operations", bankName: "Access Bank", accountNumber: "****3019", weight: 8 },
+  { employeeId: "emp-011", employeeName: "Kunle Afolabi", department: "Engineering", bankName: "Zenith Bank", accountNumber: "****8855", weight: 9 },
+  { employeeId: "emp-012", employeeName: "Bisi Akinwande", department: "Customer Support", bankName: "UBA", accountNumber: "****2287", weight: 6 },
+  { employeeId: "emp-013", employeeName: "Ibrahim Musa", department: "Operations", bankName: "First Bank", accountNumber: "****5503", weight: 7 },
+  { employeeId: "emp-014", employeeName: "Folake Adeyinka", department: "Marketing", bankName: "Fidelity Bank", accountNumber: "****9912", weight: 6 },
+  { employeeId: "emp-015", employeeName: "Segun Adebanjo", department: "Human Resources", bankName: "Access Bank", accountNumber: "****4458", weight: 5 },
+  { employeeId: "emp-016", employeeName: "Halima Suleiman", department: "Finance", bankName: "Zenith Bank", accountNumber: "****7733", weight: 8 },
+  { employeeId: "emp-017", employeeName: "Obinna Nwosu", department: "Engineering", bankName: "GTBank", accountNumber: "****1190", weight: 10 },
+  { employeeId: "emp-018", employeeName: "Amaka Onuoha", department: "Sales", bankName: "Stanbic IBTC", accountNumber: "****6502", weight: 7 },
+  { employeeId: "emp-019", employeeName: "Babatunde Falade", department: "Operations", bankName: "UBA", accountNumber: "****3344", weight: 7 },
+  { employeeId: "emp-020", employeeName: "Zainab Yusuf", department: "Customer Support", bankName: "First Bank", accountNumber: "****8821", weight: 5 },
+  { employeeId: "emp-021", employeeName: "Chibueze Okoro", department: "Finance", bankName: "Zenith Bank", accountNumber: "****2107", weight: 9 },
+  { employeeId: "emp-022", employeeName: "Damilola Adetunji", department: "Marketing", bankName: "GTBank", accountNumber: "****5588", weight: 6 },
+];
+
+function payslipStatusForRun(status: PayrollStatus): PayslipStatus {
+  switch (status) {
+    case "completed":
+      return "paid";
+    case "failed":
+      return "on-hold";
+    default:
+      return "pending";
+  }
+}
+
+export function getPayslipsForRun(run: PayrollRun): EmployeePayslip[] {
+  const native = MOCK_PAYSLIPS.filter((p) => p.payrollRunId === run.id);
+  if (native.length > 0 && native.length >= run.employeeCount) return native;
+  if (run.totalGross <= 0) return native;
+
+  const headcount = Math.min(run.employeeCount, PAYROLL_ROSTER.length);
+  const roster = PAYROLL_ROSTER.slice(0, headcount);
+  const totalWeight = roster.reduce((sum, r) => sum + r.weight, 0);
+
+  const payslipStatus = payslipStatusForRun(run.status);
+
+  const generated = roster.map<EmployeePayslip>((entry, idx) => {
+    const share = entry.weight / totalWeight;
+    const grossPay = Math.round(run.totalGross * share);
+    const tax = Math.round(run.totalTax * share);
+    const pension = Math.round(run.totalPension * share);
+    const totalDeductions = Math.round(run.totalDeductions * share);
+    const otherDeductions = Math.max(0, totalDeductions - tax - pension);
+    const netPay = grossPay - totalDeductions;
+    const basicSalary = Math.round(grossPay * 0.7);
+    const housingAllowance = Math.round(grossPay * 0.14);
+    const transportAllowance = Math.round(grossPay * 0.07);
+    const otherAllowances = Math.max(0, grossPay - basicSalary - housingAllowance - transportAllowance);
+
+    return {
+      id: `ps-${run.id}-${String(idx + 1).padStart(2, "0")}`,
+      payrollRunId: run.id,
+      employeeId: entry.employeeId,
+      employeeName: entry.employeeName,
+      department: entry.department,
+      basicSalary,
+      housingAllowance,
+      transportAllowance,
+      otherAllowances,
+      grossPay,
+      tax,
+      pension,
+      otherDeductions,
+      totalDeductions,
+      netPay,
+      status: payslipStatus,
+      bankName: entry.bankName,
+      accountNumber: entry.accountNumber,
+    };
+  });
+
+  const nativeIds = new Set(native.map((p) => p.employeeId));
+  const merged = [...native, ...generated.filter((g) => !nativeIds.has(g.employeeId))];
+  return merged.slice(0, run.employeeCount);
+}

@@ -168,6 +168,55 @@ When building a new page under AppLayout:
 - `text-white` on gradient hero without providing a non-`text-` visual fallback for small screens — check banner still reads when the decorative shapes are hidden.
 - Nesting a card inside another card without visually quieter internal styling. If you must, use `bg-slate-50 rounded-xl` on the inner to avoid a double-shadow look.
 
+## Responsiveness
+
+Target the layout to work at three sizes: **mobile 390×844 (iPhone 14/15)**, **tablet 768–1024**, **desktop ≥1024**. Use stock Tailwind breakpoints — `sm:640`, `md:768`, `lg:1024`, `xl:1280`. The sidebar is mobile-drawer below `lg`, fixed-rail at and above.
+
+### Page-level patterns
+
+- **Page wrapper**: always `max-w-[1500px] space-y-5` (or `space-y-6`). `AppLayout` handles horizontal padding (`p-4 lg:p-6`), so individual pages do NOT add their own.
+- **Page header row** (title + action buttons): `flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4`. Action buttons sit below the title on mobile, beside it from `sm:` up. Keep the action button(s) full-width on mobile (`w-full sm:w-auto`) when there is only one CTA.
+- **Page H1**: `text-2xl sm:text-3xl font-bold tracking-tight text-slate-900`. Never use bare `text-3xl` for an `<h1>`.
+- **Section / card titles**: keep as-is (`text-base font-bold` / `text-sm font-semibold`) — they already read well at small sizes.
+
+### KPI rows
+
+- 4-up KPI cards: `grid grid-cols-2 lg:grid-cols-4 gap-4`. **2 across on mobile, 4 across from `lg:`** — never single-column (KPIs are short numbers and look lonely at full width).
+- 3-up KPI cards: `grid grid-cols-1 sm:grid-cols-3 gap-4` (or `sm:grid-cols-2 lg:grid-cols-3` if you have detailed sub-content per card).
+- KPI value (`text-3xl`): leave as-is — fits at 2-col mobile.
+
+### Tables
+
+- **Always** wrap `<table>` in `<div className="overflow-x-auto">`. Add `min-w-[Xpx]` on the table itself sized to the natural total column width (typically 720–960px) so columns don't squish before the user scrolls.
+- Toolbar row above the table: `flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between`. Search input goes full-width on mobile (`flex-1` already does it inside the col).
+- **Card-stack alternative** (only for tables that are the *primary* artifact of a page — Employees, Dashboard Activity, Payroll Runs): hide the table with `hidden md:block` on the scroll wrapper, and render a `md:hidden space-y-3 p-4` list of `rounded-xl border border-slate-200/70 bg-white p-4` cards next to it. Each card shows the primary cell (avatar + name + secondary), the status pill, and a row of `text-xs text-slate-500` meta lines. The remaining cells (department/location/joined) become inline `<dt>/<dd>` rows inside the card.
+- Inline overflow buttons stay; row-click navigation still works via the card's `onClick`.
+
+### Hero / banner
+
+- Stack on mobile: outer flex is already `flex-col sm:flex-row`. Title `text-2xl sm:text-3xl`. Decorative right-hand shapes use `hidden sm:flex`.
+- CTA row inside the banner: `flex flex-wrap gap-2` so two buttons wrap rather than overflow. Optionally make the primary `w-full sm:w-auto` if only one CTA.
+
+### Modals / overlays
+
+- Container: `fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/40 backdrop-blur-[2px]`.
+- Modal card: `w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl bg-white shadow-xl max-h-[90vh] overflow-y-auto`. Bottom-sheet on mobile, centered card on `sm:` and up.
+- Inner padding: `p-5 sm:p-6`. Footer actions: `flex flex-col-reverse sm:flex-row sm:justify-end gap-2` so Save sits on top on mobile (thumb-reach) but right on desktop.
+
+### Forms
+
+- Field pairs: `grid grid-cols-1 sm:grid-cols-2 gap-4`. Don't try to keep 3+ columns on mobile.
+- Multi-step / wide forms: section-card wrappers stay `rounded-2xl border border-slate-200/70`, but their inner grid stacks at `<sm`.
+
+### Chip filters and tab rows
+
+- Wrap and allow horizontal scroll: `flex gap-2 overflow-x-auto -mx-1 px-1 scrollbar-thin` (or `flex flex-wrap gap-2` if the set is small and stable). Chips themselves keep `whitespace-nowrap`.
+
+### Sidebar / topbar
+
+- `AppLayout` and `EmployeeLayout` already handle the drawer + topbar hamburger correctly. Don't reintroduce a fixed left-pad on `<lg` — the `lg:pl-16` / `lg:pl-[260px]` is gated correctly.
+- Topbar page title may need truncation on mobile (`truncate`) when long.
+
 ## Open items / future cleanup
 
 - `kpi-cards.tsx`, `attendance-overview.tsx`, `alerts-panel.tsx`, `recent-activity.tsx` are unused dashboard components left in the tree — delete on next cleanup pass if still orphaned.

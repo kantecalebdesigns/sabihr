@@ -1,4 +1,4 @@
-import { useState, useMemo, Fragment } from "react";
+import { useState, useMemo, useEffect, useRef, Fragment } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -7,8 +7,11 @@ import {
   ChevronRight,
   Loader2,
   Mail,
+  MoreHorizontal,
   Play,
+  RotateCcw,
   Search,
+  UserMinus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +23,21 @@ import {
 } from "@/lib/payroll-mock-data";
 import type { EmployeePayslip } from "@/lib/payroll-mock-data";
 
-type Step = "review" | "payslips" | "process";
+type Step = "review" | "approvals" | "payslips" | "process";
+
+const ACCOUNTANT_NAME = "Funmi Adebayo";
+const ACCOUNTANT_ROLE = "Senior Accountant";
+const CEO_NAME = "Chinedu Okafor";
+const CEO_ROLE = "Chief Executive Officer";
+
+function formatNow(): string {
+  return new Date().toLocaleString("en-NG", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
 type SortKey = "name" | "department" | "gross" | "tax" | "deductions" | "net";
 type SortDir = "asc" | "desc";
 
@@ -64,13 +81,55 @@ export default function PayrollProcessPage() {
   const [payslipsSent, setPayslipsSent] = useState(false);
   const [emailChecked, setEmailChecked] = useState(true);
   const [publishChecked, setPublishChecked] = useState(true);
+  const [accountantSentAt, setAccountantSentAt] = useState<string | null>(null);
+  const [accountantReviewedAt, setAccountantReviewedAt] = useState<string | null>(null);
+  const [ceoSentAt, setCeoSentAt] = useState<string | null>(null);
+  const [ceoApprovedAt, setCeoApprovedAt] = useState<string | null>(null);
 
   const [reviewSearch, setReviewSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string | null>(null);
+  const [excludedIds, setExcludedIds] = useState<Set<string>>(() => new Set());
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
-  const previewSlips = MOCK_PAYSLIPS;
+  useEffect(() => {
+    if (!openMenuId) return;
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setOpenMenuId(null);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [openMenuId]);
+
+  const previewSlips = useMemo(
+    () => MOCK_PAYSLIPS.filter((p) => !excludedIds.has(p.id)),
+    [excludedIds]
+  );
+  const excludedSlips = useMemo(
+    () => MOCK_PAYSLIPS.filter((p) => excludedIds.has(p.id)),
+    [excludedIds]
+  );
+
+  const removeEmployee = (id: string) => {
+    setExcludedIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+    setOpenMenuId(null);
+  };
+  const restoreEmployee = (id: string) => {
+    setExcludedIds((prev) => {
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+  };
+  const restoreAll = () => setExcludedIds(new Set());
   const selectedSlip = useMemo(
     () => previewSlips.find((p) => p.id === selectedEmployeeId) ?? null,
     [previewSlips, selectedEmployeeId]
@@ -131,10 +190,29 @@ export default function PayrollProcessPage() {
 
   const steps: { key: Step; label: string }[] = [
     { key: "review", label: "Review" },
+    { key: "approvals", label: "Approvals" },
     { key: "payslips", label: "Send Payslips" },
     { key: "process", label: "Process" },
   ];
   const stepIndex = steps.findIndex((s) => s.key === step);
+
+  const handleSendToAccountant = () => {
+    setBusy(true);
+    setAccountantSentAt(formatNow());
+    setTimeout(() => {
+      setAccountantReviewedAt(formatNow());
+      setBusy(false);
+    }, 1400);
+  };
+
+  const handleSendToCeo = () => {
+    setBusy(true);
+    setCeoSentAt(formatNow());
+    setTimeout(() => {
+      setCeoApprovedAt(formatNow());
+      setBusy(false);
+    }, 1400);
+  };
 
   const handleSendPayslips = () => {
     setBusy(true);
@@ -183,9 +261,9 @@ export default function PayrollProcessPage() {
           <ChevronRight className="w-3.5 h-3.5" />
           <span className="text-slate-900 font-semibold">Process payroll</span>
         </nav>
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div className="space-y-1 flex-1 min-w-0">
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900">Process payroll · {run.period}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Process payroll · {run.period}</h1>
             <p className="text-sm text-slate-500 leading-relaxed">
               Review each employee's breakdown, send payslips, then finalize disbursement.
             </p>
@@ -204,8 +282,8 @@ export default function PayrollProcessPage() {
       </div>
 
       {/* Stepper */}
-      <div className="rounded-2xl border border-slate-200/70 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)]">
-        <div className="flex items-center">
+      <div className="rounded-2xl border border-slate-200/70 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-x-auto">
+        <div className="flex items-center min-w-[640px]">
           {steps.map((s, i) => (
             <div key={s.key} className={cn("flex items-center gap-2", i < steps.length - 1 && "flex-1")}>
               <div
@@ -324,8 +402,19 @@ export default function PayrollProcessPage() {
                     className="pl-9 bg-white border-slate-200 h-10 rounded-lg"
                   />
                 </div>
-                <p className="text-sm text-slate-500 whitespace-nowrap">{filteredSorted.length} employees</p>
+                <p className="text-sm text-slate-500 whitespace-nowrap">
+                  {filteredSorted.length} employees
+                </p>
               </div>
+              {excludedSlips.length > 0 && (
+                <button
+                  onClick={restoreAll}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 whitespace-nowrap"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  {excludedSlips.length} excluded · restore all
+                </button>
+              )}
             </div>
 
             <div className="overflow-x-auto">
@@ -367,8 +456,37 @@ export default function PayrollProcessPage() {
                         <td className="py-4 pr-5 text-right text-slate-600 tabular-nums">-{formatNaira(slip.tax)}</td>
                         <td className="py-4 pr-5 text-right text-slate-600 tabular-nums">-{formatNaira(slip.totalDeductions)}</td>
                         <td className="py-4 pr-5 text-right font-bold text-slate-900 tabular-nums">{formatNaira(slip.netPay)}</td>
-                        <td className="px-2 py-4 text-right text-slate-400">
-                          <ChevronRight className="w-4 h-4 inline" />
+                        <td className="px-2 py-4 text-right">
+                          <div
+                            className="relative inline-block"
+                            ref={openMenuId === slip.id ? menuRef : undefined}
+                          >
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenMenuId(openMenuId === slip.id ? null : slip.id);
+                              }}
+                              className="w-8 h-8 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 inline-flex items-center justify-center transition-colors"
+                              aria-label="More actions"
+                            >
+                              <MoreHorizontal className="w-4 h-4" />
+                            </button>
+                            {openMenuId === slip.id && (
+                              <div
+                                onClick={(e) => e.stopPropagation()}
+                                className="absolute right-0 top-full mt-1 bg-white rounded-lg border border-slate-200 shadow-lg py-1 z-20 w-52 text-left"
+                              >
+                                <button
+                                  onClick={() => removeEmployee(slip.id)}
+                                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-rose-600 hover:bg-rose-50 transition-colors"
+                                >
+                                  <UserMinus className="w-3.5 h-3.5" />
+                                  Remove from payroll
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     </Fragment>
@@ -376,13 +494,103 @@ export default function PayrollProcessPage() {
                   {filteredSorted.length === 0 && (
                     <tr>
                       <td colSpan={6} className="py-16 text-center text-slate-400 text-sm">
-                        No employees match your search.
+                        {excludedSlips.length > 0
+                          ? "No employees match your search. Restore excluded employees above."
+                          : "No employees match your search."}
                       </td>
                     </tr>
                   )}
                 </tbody>
               </table>
             </div>
+          </div>
+
+          {/* Excluded employees */}
+          {excludedSlips.length > 0 && (
+            <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+              <div className="px-5 py-4 border-b border-slate-200/70 flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 tracking-tight">Excluded from this run</h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    {excludedSlips.length} employee{excludedSlips.length === 1 ? "" : "s"} won't be paid in {run.period}
+                  </p>
+                </div>
+                <button
+                  onClick={restoreAll}
+                  className="text-xs font-semibold text-blue-600 hover:text-blue-700"
+                >
+                  Restore all
+                </button>
+              </div>
+              <ul className="divide-y divide-slate-100">
+                {excludedSlips.map((slip) => (
+                  <li key={slip.id} className="flex items-center gap-3 px-5 py-3">
+                    <div
+                      className={cn(
+                        "w-9 h-9 rounded-full flex items-center justify-center text-white font-semibold text-sm shrink-0",
+                        avatarColor(slip.employeeId)
+                      )}
+                    >
+                      {initialsOf(slip.employeeName)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-slate-900 leading-tight text-sm">{slip.employeeName}</p>
+                      <p className="text-xs text-slate-500 leading-tight mt-0.5 truncate">
+                        {slip.department} · {formatNaira(slip.netPay)} net
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => restoreEmployee(slip.id)}
+                      className="h-8 px-3 rounded-md text-xs font-semibold text-blue-600 hover:bg-blue-50 inline-flex items-center gap-1 shrink-0"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      Restore
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Step: Approvals */}
+      {step === "approvals" && (
+        <div className="rounded-2xl border border-slate-200/70 bg-white max-w-2xl mx-auto w-full shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+          <div className="px-6 py-5 border-b border-slate-200/70">
+            <h3 className="text-base font-bold text-slate-900 tracking-tight">Approvals</h3>
+            <p className="text-sm text-slate-500 mt-1">
+              Two sign-offs required before payslips go out · {run.employeeCount} payslips · {formatNaira(totals.net)} net
+            </p>
+          </div>
+
+          <div className="divide-y divide-slate-100">
+            <ApprovalRow
+              reviewer={{ id: "approver-accountant", name: ACCOUNTANT_NAME, role: ACCOUNTANT_ROLE }}
+              sentAt={accountantSentAt}
+              approvedAt={accountantReviewedAt}
+              approvedLabel="Reviewed"
+              pendingLabel="Awaiting review"
+              busy={busy && !accountantReviewedAt && !!accountantSentAt}
+              onSend={handleSendToAccountant}
+              sendLabel="Send for review"
+              sendDisabled={busy || !!accountantSentAt}
+              locked={false}
+              lockedNote={null}
+            />
+            <ApprovalRow
+              reviewer={{ id: "approver-ceo", name: CEO_NAME, role: CEO_ROLE }}
+              sentAt={ceoSentAt}
+              approvedAt={ceoApprovedAt}
+              approvedLabel="Approved"
+              pendingLabel="Awaiting approval"
+              busy={busy && !ceoApprovedAt && !!ceoSentAt}
+              onSend={handleSendToCeo}
+              sendLabel="Send for approval"
+              sendDisabled={busy || !accountantReviewedAt || !!ceoSentAt}
+              locked={!accountantReviewedAt}
+              lockedNote="Unlocks after accountant review"
+            />
           </div>
         </div>
       )}
@@ -458,18 +666,38 @@ export default function PayrollProcessPage() {
         <div className="flex items-center gap-2">
           {step === "review" && (
             <Button
-              onClick={() => setStep("payslips")}
+              onClick={() => setStep("approvals")}
               className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4"
             >
               Continue
               <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           )}
-          {step === "payslips" && (
+          {step === "approvals" && (
             <>
               <Button
                 variant="outline"
                 onClick={() => setStep("review")}
+                disabled={busy}
+                className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
+              >
+                Back
+              </Button>
+              <Button
+                onClick={() => setStep("payslips")}
+                disabled={busy || !accountantReviewedAt || !ceoApprovedAt}
+                className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4"
+              >
+                Continue to payslips
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </Button>
+            </>
+          )}
+          {step === "payslips" && (
+            <>
+              <Button
+                variant="outline"
+                onClick={() => setStep("approvals")}
                 disabled={busy}
                 className="h-10 rounded-lg border-slate-200 text-slate-700 font-semibold bg-white"
               >
@@ -533,7 +761,7 @@ function EmployeeDetailView({
           <ChevronRight className="w-3.5 h-3.5" />
           <span className="text-slate-900 font-semibold">{slip.employeeName}</span>
         </nav>
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <div
               className={cn(
@@ -658,6 +886,79 @@ function EmployeeDetailView({
             <p className="font-semibold text-slate-900 mt-1">{slip.department}</p>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function ApprovalRow({
+  reviewer,
+  sentAt,
+  approvedAt,
+  approvedLabel,
+  pendingLabel,
+  busy,
+  onSend,
+  sendLabel,
+  sendDisabled,
+  locked,
+  lockedNote,
+}: {
+  reviewer: { id: string; name: string; role: string };
+  sentAt: string | null;
+  approvedAt: string | null;
+  approvedLabel: string;
+  pendingLabel: string;
+  busy: boolean;
+  onSend: () => void;
+  sendLabel: string;
+  sendDisabled: boolean;
+  locked: boolean;
+  lockedNote: string | null;
+}) {
+  return (
+    <div className={cn("px-6 py-4 flex items-center gap-4", locked && "opacity-50")}>
+      <div
+        className={cn(
+          "w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm shrink-0",
+          avatarColor(reviewer.id)
+        )}
+      >
+        {initialsOf(reviewer.name)}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="font-semibold text-slate-900 leading-tight">{reviewer.name}</p>
+        <p className="text-xs text-slate-500 leading-tight mt-0.5">
+          {reviewer.role}
+          {locked && lockedNote && <> · {lockedNote}</>}
+        </p>
+      </div>
+      <div className="text-right shrink-0">
+        {approvedAt ? (
+          <>
+            <p className="text-sm font-semibold text-slate-900 inline-flex items-center gap-1.5">
+              <Check className="w-4 h-4 text-emerald-600" strokeWidth={3} />
+              {approvedLabel}
+            </p>
+            <p className="text-xs text-slate-500 mt-0.5">{approvedAt}</p>
+          </>
+        ) : sentAt ? (
+          <>
+            <p className="text-sm text-slate-700 inline-flex items-center gap-1.5">
+              {busy && <Loader2 className="w-3.5 h-3.5 animate-spin text-slate-400" />}
+              {pendingLabel}
+            </p>
+            <p className="text-xs text-slate-500 mt-0.5">Sent {sentAt}</p>
+          </>
+        ) : (
+          <Button
+            onClick={onSend}
+            disabled={sendDisabled || locked}
+            className="h-9 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3 text-sm"
+          >
+            {sendLabel}
+          </Button>
+        )}
       </div>
     </div>
   );

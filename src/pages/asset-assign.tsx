@@ -318,8 +318,8 @@ export default function AssetAssignPage() {
 
       {/* Confirmation Modal */}
       {showModal && selectedAsset && selectedEmployee && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-card border border-border rounded-xl w-full max-w-md p-6 space-y-5 shadow-lg relative">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 p-0 sm:p-4">
+          <div className="bg-card border border-border rounded-t-xl sm:rounded-xl w-full sm:max-w-md p-5 sm:p-6 space-y-5 shadow-lg relative max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setShowModal(false)}
               className="absolute top-4 right-4 text-muted-foreground hover:text-foreground"

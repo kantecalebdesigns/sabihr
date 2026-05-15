@@ -112,9 +112,9 @@ export default function EmployeeRequisitionsPage() {
   return (
     <div className="max-w-[1500px] space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
             My Requisitions
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -123,7 +123,7 @@ export default function EmployeeRequisitionsPage() {
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="inline-flex items-center gap-1 rounded-lg bg-blue-600 px-4 text-white h-10 text-sm font-semibold hover:bg-blue-700 transition-colors"
+          className="inline-flex items-center justify-center gap-1 rounded-lg bg-blue-600 px-4 text-white h-10 text-sm font-semibold hover:bg-blue-700 transition-colors w-full sm:w-auto"
         >
           <Plus className="h-4 w-4" />
           New request

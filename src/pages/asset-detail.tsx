@@ -685,8 +685,8 @@ export default function AssetDetailPage() {
 
       {/* Action Modals */}
       {activeModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setActiveModal(null)}>
-          <div className="w-full max-w-md rounded-xl border border-[#efefef] bg-white p-6 shadow-xl mx-4 space-y-5" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-0 sm:p-4" onClick={() => setActiveModal(null)}>
+          <div className="w-full sm:max-w-md rounded-t-xl sm:rounded-xl border border-[#efefef] bg-white p-5 sm:p-6 shadow-xl space-y-5 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             {/* Assign Modal */}
             {activeModal === "assign" && (
               <AssignModal

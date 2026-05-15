@@ -245,7 +245,7 @@ export default function LeavePage() {
 
       {/* Header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Leave</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Leave</h1>
         <p className="text-sm text-slate-500 leading-relaxed">
           Review, approve, or reject leave requests across the company, submit leave on behalf of
           an employee, and keep balances up to date by type and policy.

@@ -105,9 +105,9 @@ export default function EmployeeListPage() {
   return (
     <div className="max-w-[1500px] space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div className="space-y-1 flex-1 min-w-0">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Employees</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Employees</h1>
           <p className="text-sm text-slate-500 leading-relaxed">
             Manage your whole workforce in one place — onboard new hires, update roles and
             departments, track statuses and leave, and export directory reports.
@@ -179,12 +179,12 @@ export default function EmployeeListPage() {
           </div>
         </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+        {/* Table — desktop & tablet */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-sm min-w-[900px]">
             <thead>
               <tr className="border-b border-slate-200/70">
-                <th className="w-12 pl-5 py-3">
+                <th className="hidden sm:table-cell w-12 pl-5 py-3">
                   <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
                 </th>
                 <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Name</th>
@@ -203,7 +203,7 @@ export default function EmployeeListPage() {
                   onClick={() => navigate(`/employees/${emp.id}`)}
                   className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer"
                 >
-                  <td className="pl-5 py-4" onClick={(e) => e.stopPropagation()}>
+                  <td className="hidden sm:table-cell pl-5 py-4" onClick={(e) => e.stopPropagation()}>
                     <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
                   </td>
                   <td className="py-4 pr-5">
@@ -266,6 +266,61 @@ export default function EmployeeListPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Card list — mobile */}
+        <ul className="md:hidden divide-y divide-slate-100">
+          {filtered.map((emp) => (
+            <li
+              key={emp.id}
+              onClick={() => navigate(`/employees/${emp.id}`)}
+              className="px-4 py-3.5 hover:bg-slate-50/60 transition-colors cursor-pointer"
+            >
+              <div className="flex items-start gap-3">
+                <div
+                  className={cn(
+                    "w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm shrink-0",
+                    avatarColor(emp.id)
+                  )}
+                >
+                  {initials(emp.firstName, emp.lastName)}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-slate-900 leading-tight truncate">
+                        {emp.firstName} {emp.lastName}
+                      </p>
+                      <p className="text-xs text-slate-500 leading-tight mt-0.5 truncate">{emp.jobTitle}</p>
+                    </div>
+                    <span
+                      className={cn(
+                        "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium shrink-0",
+                        STATUS_PILL[emp.employmentStatus]
+                      )}
+                    >
+                      <span className={cn("w-1.5 h-1.5 rounded-full", STATUS_DOT[emp.employmentStatus])} />
+                      {EMPLOYEE_STATUS_STYLES[emp.employmentStatus]?.label}
+                    </span>
+                  </div>
+                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium">
+                      {emp.department}
+                    </span>
+                    <span>{emp.location}</span>
+                    <span>· Joined {formatJoined(emp.startDate)}</span>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))}
+          {filtered.length === 0 && (
+            <li className="py-16 text-center text-slate-400">
+              <UserCircle className="w-10 h-10 mx-auto mb-3 opacity-30" />
+              <p className="font-medium text-slate-900">No employees found</p>
+              <p className="text-xs mt-1 text-slate-500">Try adjusting your search or filters</p>
+            </li>
+          )}
+        </ul>
       </div>
     </div>
   );

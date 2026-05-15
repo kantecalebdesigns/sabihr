@@ -93,9 +93,9 @@ function ReassignModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 p-0 sm:p-4" onClick={onClose}>
       <div
-        className="bg-white rounded-2xl border border-slate-200/70 w-full max-w-[520px] max-h-[80vh] flex flex-col shadow-xl"
+        className="bg-white rounded-t-2xl sm:rounded-2xl border border-slate-200/70 w-full sm:max-w-[520px] max-h-[90vh] sm:max-h-[80vh] flex flex-col shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/70">
@@ -248,9 +248,9 @@ export default function DepartmentListPage() {
       )}
 
       {/* Header */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div className="space-y-1 flex-1 min-w-0">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Departments</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Departments</h1>
           <p className="text-sm text-slate-500 leading-relaxed">
             Structure your organization — create departments, assign heads, and track headcount
             and budgets across locations.

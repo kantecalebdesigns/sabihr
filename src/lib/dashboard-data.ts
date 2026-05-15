@@ -23,6 +23,7 @@ import {
   Heart,
   CreditCard,
   ClipboardList,
+  Landmark,
   ShieldAlert,
   LogOut,
   MessageSquare,
@@ -351,6 +352,7 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: "Employees", icon: UserCircle, path: "/employees" },
       { label: "Departments", icon: Building2, path: "/departments" },
+      { label: "Documents", icon: FileText, path: "/documents" },
     ],
   },
   {
@@ -368,6 +370,8 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: "Processing", icon: DollarSign, path: "/payroll" },
       { label: "Pay Grades & Groups", icon: Banknote, path: "/payroll/pay-grades" },
+      { label: "Salary Breakdown", icon: PieChart, path: "/payroll/salary-breakdown" },
+      { label: "Statutory Remittance", icon: Landmark, path: "/payroll/remittance" },
     ],
   },
   {
@@ -396,7 +400,6 @@ export const NAV_SECTIONS: NavSection[] = [
     title: "Operations",
     icon: Briefcase,
     items: [
-      { label: "Documents", icon: FileText, path: "/documents" },
       { label: "Employee Documents", icon: FolderOpen, path: "/documents/library" },
       { label: "Assets", icon: Package, path: "/assets" },
     ],

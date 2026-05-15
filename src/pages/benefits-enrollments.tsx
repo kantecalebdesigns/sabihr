@@ -156,9 +156,9 @@ export default function BenefitsEnrollmentsPage() {
       )}
 
       {/* Header */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div className="space-y-1 flex-1 min-w-0">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Benefits enrollments</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Benefits enrollments</h1>
           <p className="text-sm text-slate-500 leading-relaxed">
             Add or remove employees from benefit plans and track each enrollment's status at a glance.
           </p>
@@ -439,9 +439,9 @@ function AddEnrollmentModal({
     availableEmployees.length > 0 && selectedEmployees.size === availableEmployees.length;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-0 sm:p-4" onClick={onClose}>
       <div
-        className="bg-white rounded-2xl border border-slate-200/70 shadow-xl max-w-2xl w-full max-h-[92vh] flex flex-col"
+        className="bg-white rounded-t-2xl sm:rounded-2xl border border-slate-200/70 shadow-xl sm:max-w-2xl w-full max-h-[92vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/70">
@@ -585,9 +585,9 @@ function ConfirmRemoveModal({
   onConfirm: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onCancel}>
+    <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-0 sm:p-4" onClick={onCancel}>
       <div
-        className="bg-white rounded-2xl border border-slate-200/70 shadow-xl max-w-md w-full p-5"
+        className="bg-white rounded-t-2xl sm:rounded-2xl border border-slate-200/70 shadow-xl sm:max-w-md w-full p-5 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-base font-bold text-slate-900 tracking-tight">Remove enrollment?</h3>

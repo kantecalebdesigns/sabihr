@@ -121,9 +121,9 @@ export default function PerformanceBalancedScorecardPage() {
   return (
     <div className="max-w-[1500px] space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div className="space-y-1 flex-1 min-w-0">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Balanced scorecard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Balanced scorecard</h1>
           <p className="text-sm text-slate-500 leading-relaxed">
             Measure strategic performance across the four classic perspectives — financial, customer,
             internal process, and learning & growth.

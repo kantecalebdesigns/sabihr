@@ -225,9 +225,9 @@ export default function RequisitionsPage() {
   return (
     <div className="max-w-[1500px] space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
             Requisitions
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -239,7 +239,7 @@ export default function RequisitionsPage() {
             setShowForm(true);
             setFormSaved(false);
           }}
-          className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4"
+          className="h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 w-full sm:w-auto"
         >
           <Plus className="w-4 h-4 mr-1" />
           New request

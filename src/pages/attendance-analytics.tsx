@@ -80,7 +80,7 @@ export default function AttendanceAnalytics() {
     <div className="max-w-[1500px] space-y-5">
       {/* Header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Attendance analytics</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Attendance analytics</h1>
         <p className="text-sm text-slate-500 leading-relaxed">
           Spot patterns in absenteeism, lateness, and department performance — surface repeat
           offenders and pinpoint days where teams need extra support.

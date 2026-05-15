@@ -46,7 +46,7 @@ export function AccessRequestModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) handleClose()
       }}
@@ -54,7 +54,7 @@ export function AccessRequestModal({
         if (e.key === "Escape") handleClose()
       }}
     >
-      <div className="w-full max-w-md rounded-lg border border-border bg-card shadow-lg">
+      <div className="w-full sm:max-w-md rounded-t-lg sm:rounded-lg border border-border bg-card shadow-lg max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
           <h2 className="text-sm font-semibold">Request Document Access</h2>

@@ -1024,8 +1024,8 @@ export default function DocumentTemplateBuilderPage() {
 
       {/* Preview Modal */}
       {showPreview && (
-        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-6">
-          <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6">
+          <div className="bg-white rounded-t-xl sm:rounded-xl w-full sm:max-w-4xl max-h-[90vh] flex flex-col shadow-2xl">
             {/* Modal Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b shrink-0">
               <div className="flex items-center gap-3">

@@ -11,8 +11,8 @@ export default function OnboardingPage() {
         className="absolute inset-0 h-full w-full object-cover pointer-events-none"
       />
 
-      {/* Left side — branding over the background */}
-      <div className="relative z-10 flex h-full flex-1 flex-col">
+      {/* Left side — branding over the background (desktop only) */}
+      <div className="relative z-10 hidden lg:flex h-full flex-1 flex-col">
         {/* Top row: logo */}
         <div className="flex items-center w-full p-10">
           <Logo size="lg" />
@@ -36,10 +36,13 @@ export default function OnboardingPage() {
         </div>
       </div>
 
-      {/* Right side — white wizard panel */}
-      <div className="relative z-10 flex flex-1 bg-white overflow-y-auto scrollbar-hide">
-        <div className="m-auto w-full px-8 py-12">
-          <div className="mx-auto w-full max-w-[640px]">
+      {/* Right side — white wizard panel (full-width on mobile) */}
+      <div className="relative z-10 flex w-full lg:flex-1 bg-white overflow-y-auto scrollbar-hide">
+        <div className="m-auto w-full px-6 sm:px-8 py-8 sm:py-12">
+          <div className="mx-auto w-full max-w-[640px] space-y-6">
+            <div className="lg:hidden flex justify-center">
+              <Logo size="md" />
+            </div>
             <SetupWizard />
           </div>
         </div>

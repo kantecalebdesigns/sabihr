@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useMemo } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
+  ChevronRight,
   DollarSign,
   Download,
   Play,
+  Search,
   Users,
   TrendingUp,
   Banknote,
@@ -13,6 +15,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import {
   MOCK_PAYROLL_RUNS as INITIAL_RUNS,
@@ -59,12 +62,55 @@ function Toast({ message, type = "success", onDismiss }: { message: string; type
   );
 }
 
+type StatusFilter = "all" | PayrollStatus;
+type TypeFilter = "all" | PayrollRunType;
+
 export default function PayrollPage() {
+  const navigate = useNavigate();
   const [runs] = useState<PayrollRun[]>(INITIAL_RUNS);
   const [toast, setToast] = useState<{ message: string; type: "success" | "info" } | null>(null);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
+  const [yearFilter, setYearFilter] = useState<"all" | number>("all");
+
+  const years = useMemo(() => {
+    const set = new Set<number>();
+    for (const r of runs) set.add(r.year);
+    return [...set].sort((a, b) => b - a);
+  }, [runs]);
+
+  const statusCounts = useMemo(() => {
+    const counts: Record<StatusFilter, number> = { all: runs.length, draft: 0, processing: 0, completed: 0, failed: 0 };
+    for (const r of runs) counts[r.status] += 1;
+    return counts;
+  }, [runs]);
+
+  const filteredRuns = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return runs.filter((r) => {
+      if (statusFilter !== "all" && r.status !== statusFilter) return false;
+      if (typeFilter !== "all" && r.runType !== typeFilter) return false;
+      if (yearFilter !== "all" && r.year !== yearFilter) return false;
+      if (!q) return true;
+      return (
+        r.period.toLowerCase().includes(q) ||
+        r.id.toLowerCase().includes(q) ||
+        (r.approvedBy?.toLowerCase().includes(q) ?? false)
+      );
+    });
+  }, [runs, search, statusFilter, typeFilter, yearFilter]);
 
   const completedRuns = runs.filter((r) => r.status === "completed");
   const lastCompletedRun = completedRuns.find((r) => MOCK_PAYSLIPS.some((p) => p.payrollRunId === r.id)) ?? completedRuns[0];
+
+  const clearFilters = () => {
+    setSearch("");
+    setStatusFilter("all");
+    setTypeFilter("all");
+    setYearFilter("all");
+  };
+  const filtersActive = !!search || statusFilter !== "all" || typeFilter !== "all" || yearFilter !== "all";
 
   const handleExport = () => {
     setToast({ message: "Payroll data exported to CSV.", type: "success" });
@@ -84,9 +130,9 @@ export default function PayrollPage() {
       {toast && <Toast message={toast.message} type={toast.type} onDismiss={() => setToast(null)} />}
 
       {/* Header */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div className="space-y-1 flex-1 min-w-0">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Payroll</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Payroll</h1>
           <p className="text-sm text-slate-500 leading-relaxed">
             Review, process, and disburse pay to your workforce — track runs, gross and net pay,
             deductions, and employees paid each cycle.
@@ -150,16 +196,86 @@ export default function PayrollPage() {
 
       {/* Payroll Runs table */}
       <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/70">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-slate-900">Payroll runs</span>
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-xs font-semibold">
-              {runs.length}
-            </span>
+        <div className="flex flex-col gap-3 px-5 py-4 border-b border-slate-200/70">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-sm font-semibold text-slate-900">Payroll runs</span>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-xs font-semibold">
+                {filteredRuns.length}
+                {filteredRuns.length !== runs.length && (
+                  <span className="text-blue-400 font-normal">/{runs.length}</span>
+                )}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 flex-1 sm:max-w-md sm:justify-end">
+              <div className="relative flex-1 sm:max-w-xs">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Input
+                  placeholder="Search period, ID, approver..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-9 bg-white border-slate-200 h-10 rounded-lg"
+                />
+              </div>
+              <select
+                value={yearFilter}
+                onChange={(e) => setYearFilter(e.target.value === "all" ? "all" : Number(e.target.value))}
+                className="h-10 rounded-lg border border-slate-200 bg-white text-sm text-slate-700 font-medium px-3 cursor-pointer"
+              >
+                <option value="all">All years</option>
+                {years.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+              <select
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value as TypeFilter)}
+                className="h-10 rounded-lg border border-slate-200 bg-white text-sm text-slate-700 font-medium px-3 cursor-pointer"
+              >
+                <option value="all">All types</option>
+                <option value="regular">Regular</option>
+                <option value="off-cycle">Off-cycle</option>
+                <option value="bonus">Bonus</option>
+                <option value="13th-month">13th month</option>
+              </select>
+            </div>
+          </div>
+          <div className="flex gap-2 overflow-x-auto -mx-1 px-1 scrollbar-thin">
+            {(["all", "completed", "draft", "processing", "failed"] as StatusFilter[]).map((s) => {
+              const active = statusFilter === s;
+              const label = s === "all" ? "All" : RUN_STATUS_PILL[s].label;
+              const count = statusCounts[s];
+              return (
+                <button
+                  key={s}
+                  onClick={() => setStatusFilter(s)}
+                  className={cn(
+                    "h-9 px-4 rounded-full text-sm font-medium inline-flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0",
+                    active
+                      ? "bg-blue-600 text-white"
+                      : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+                  )}
+                >
+                  {label}
+                  <span className={cn("text-xs", active ? "text-white/80" : "text-slate-400")}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+            {filtersActive && (
+              <button
+                onClick={clearFilters}
+                className="h-9 px-3 rounded-full text-sm font-medium inline-flex items-center gap-1 text-slate-500 hover:text-slate-900 whitespace-nowrap shrink-0"
+              >
+                <X className="w-3.5 h-3.5" />
+                Clear
+              </button>
+            )}
           </div>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-sm min-w-[1100px]">
             <thead>
               <tr className="border-b border-slate-200/70">
                 <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pl-5 pr-5">Period</th>
@@ -173,14 +289,19 @@ export default function PayrollPage() {
                 <th className="text-right font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Employees</th>
                 <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Pay date</th>
                 <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Approved by</th>
+                <th className="w-10 px-2" aria-label="Actions" />
               </tr>
             </thead>
             <tbody>
-              {runs.map((run) => {
+              {filteredRuns.map((run) => {
                 const style = RUN_STATUS_PILL[run.status];
                 const typePill = RUN_TYPE_PILL[run.runType];
                 return (
-                  <tr key={run.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
+                  <tr
+                    key={run.id}
+                    onClick={() => navigate(`/payroll/run/${run.id}`)}
+                    className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer"
+                  >
                     <td className="py-4 pl-5 pr-5">
                       <p className="font-semibold text-slate-900 leading-tight">{run.period}</p>
                       <p className="text-xs text-slate-500 leading-tight mt-0.5 font-mono">{run.id.toUpperCase()}</p>
@@ -218,12 +339,87 @@ export default function PayrollPage() {
                     <td className="py-4 pr-5 text-right text-slate-700 tabular-nums">{run.employeeCount}</td>
                     <td className="py-4 pr-5 text-slate-600 text-xs tabular-nums">{formatDateShort(run.payDate)}</td>
                     <td className="py-4 pr-5 text-slate-600 text-xs">{run.approvedBy ?? "—"}</td>
+                    <td className="px-2 py-4 text-right text-slate-400">
+                      <ChevronRight className="w-4 h-4 inline" />
+                    </td>
                   </tr>
                 );
               })}
+              {filteredRuns.length === 0 && (
+                <tr>
+                  <td colSpan={12} className="py-16 text-center text-slate-400 text-sm">
+                    No payroll runs match your filters.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
+
+        {/* Mobile card list */}
+        <ul className="md:hidden divide-y divide-slate-100">
+          {filteredRuns.length === 0 && (
+            <li className="px-4 py-12 text-center text-slate-400 text-sm">
+              No payroll runs match your filters.
+            </li>
+          )}
+          {filteredRuns.map((run) => {
+            const style = RUN_STATUS_PILL[run.status];
+            const typePill = RUN_TYPE_PILL[run.runType];
+            return (
+              <li
+                key={run.id}
+                onClick={() => navigate(`/payroll/run/${run.id}`)}
+                className="px-4 py-3.5 cursor-pointer hover:bg-slate-50/60 transition-colors"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-slate-900 leading-tight">{run.period}</p>
+                    <p className="text-[11px] text-slate-500 leading-tight mt-0.5 font-mono">{run.id.toUpperCase()}</p>
+                  </div>
+                  <span className={cn("inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium shrink-0", style.pill)}>
+                    {run.status === "processing" ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <span className={cn("w-1.5 h-1.5 rounded-full", style.dot)} />
+                    )}
+                    {style.label}
+                  </span>
+                </div>
+                <div className="mt-2 flex items-baseline justify-between">
+                  <span className={cn("inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium", typePill.pill)}>
+                    {typePill.label}
+                  </span>
+                  <span className="text-base font-bold text-slate-900 tabular-nums">
+                    {run.totalNet > 0 ? formatNaira(run.totalNet) : "—"}
+                  </span>
+                </div>
+                <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-500">
+                  <div className="flex justify-between gap-2">
+                    <dt>Gross</dt>
+                    <dd className="text-slate-700 tabular-nums">
+                      {run.totalGross > 0 ? formatNaira(run.totalGross) : "—"}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <dt>Employees</dt>
+                    <dd className="text-slate-700 tabular-nums">{run.employeeCount}</dd>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <dt>Tax</dt>
+                    <dd className="text-slate-700 tabular-nums">
+                      {run.totalTax > 0 ? `-${formatNaira(run.totalTax)}` : "—"}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <dt>Pay date</dt>
+                    <dd className="text-slate-700 tabular-nums">{formatDateShort(run.payDate)}</dd>
+                  </div>
+                </dl>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );

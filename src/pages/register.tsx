@@ -12,8 +12,8 @@ export default function RegisterPage() {
         className="absolute inset-0 h-full w-full object-cover pointer-events-none"
       />
 
-      {/* Left side — branding over the background */}
-      <div className="relative z-10 flex h-full flex-1 flex-col">
+      {/* Left side — branding over the background (desktop only) */}
+      <div className="relative z-10 hidden lg:flex h-full flex-1 flex-col">
         {/* Top row: logo */}
         <div className="flex items-center w-full p-10">
           <Logo size="lg" />
@@ -37,10 +37,13 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* Right side — white form panel */}
-      <div className="relative z-10 flex flex-1 bg-white overflow-y-auto scrollbar-hide">
-        <div className="m-auto w-full px-8 py-10">
-          <div className="mx-auto w-full max-w-[640px] flex flex-col gap-8">
+      {/* Right side — white form panel (full-width on mobile) */}
+      <div className="relative z-10 flex w-full lg:flex-1 bg-white overflow-y-auto scrollbar-hide">
+        <div className="m-auto w-full px-6 sm:px-8 py-8 sm:py-10">
+          <div className="mx-auto w-full max-w-[640px] flex flex-col gap-6 sm:gap-8">
+            <div className="lg:hidden flex justify-center">
+              <Logo size="md" />
+            </div>
             <RegisterWizard />
 
             <p className="text-center text-xs text-slate-500 leading-4">

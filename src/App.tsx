@@ -14,6 +14,8 @@ import AttendancePage from "@/pages/attendance";
 import LeavePage from "@/pages/leave";
 import PayrollPage from "@/pages/payroll";
 import PayrollProcessPage from "@/pages/payroll-process";
+import PayrollRunDetailPage from "@/pages/payroll-run-detail";
+import SalaryBreakdownPage from "@/pages/salary-breakdown";
 import PayrollConfigPage from "@/pages/payroll-config";
 import StatutoryCompliancePage from "@/pages/statutory-compliance";
 import PayslipManagementPage from "@/pages/payslip-management";
@@ -196,6 +198,8 @@ function App() {
           <Route path="/schedules" element={<WorkSchedulesPage />} />
           <Route path="/payroll" element={<PayrollPage />} />
           <Route path="/payroll/process" element={<PayrollProcessPage />} />
+          <Route path="/payroll/run/:id" element={<PayrollRunDetailPage />} />
+          <Route path="/payroll/salary-breakdown" element={<SalaryBreakdownPage />} />
           <Route path="/payroll/config" element={<PayrollConfigPage />} />
           <Route path="/payroll/compliance" element={<StatutoryCompliancePage />} />
           <Route path="/payroll/payslips" element={<PayslipManagementPage />} />

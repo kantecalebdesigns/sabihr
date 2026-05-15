@@ -142,7 +142,7 @@ export default function AttendancePage() {
     <div className="max-w-[1500px] space-y-5">
       {/* Header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Attendance</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Attendance</h1>
         <p className="text-sm text-slate-500 leading-relaxed">
           See who's in today at a glance — review clock-ins, flag late arrivals, approve
           corrections, and export daily attendance reports.
@@ -245,7 +245,7 @@ export default function AttendancePage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200/70">
-                <th className="w-12 pl-5 py-3">
+                <th className="hidden sm:table-cell w-12 pl-5 py-3">
                   <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
                 </th>
                 <th className="text-left font-medium text-[11px] uppercase tracking-wider text-slate-500 py-3 pr-5">Employee</th>
@@ -266,7 +266,7 @@ export default function AttendancePage() {
                     key={record.id}
                     className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer"
                   >
-                    <td className="pl-5 py-4" onClick={(e) => e.stopPropagation()}>
+                    <td className="hidden sm:table-cell pl-5 py-4" onClick={(e) => e.stopPropagation()}>
                       <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
                     </td>
                     <td className="py-4 pr-5">

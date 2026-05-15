@@ -304,7 +304,7 @@ export default function AssetListPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200/70">
-                <th className="p-3 text-left w-10">
+                <th className="hidden sm:table-cell p-3 text-left w-10">
                   <input
                     type="checkbox"
                     checked={
@@ -351,7 +351,7 @@ export default function AssetListPage() {
                     className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors cursor-pointer"
                     onClick={() => navigate(`/assets/${asset.id}`)}
                   >
-                    <td className="p-3" onClick={(e) => e.stopPropagation()}>
+                    <td className="hidden sm:table-cell p-3" onClick={(e) => e.stopPropagation()}>
                       <input
                         type="checkbox"
                         checked={selected.has(asset.id)}

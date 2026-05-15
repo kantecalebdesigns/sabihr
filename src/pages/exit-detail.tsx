@@ -114,7 +114,8 @@ export default function ExitDetailPage() {
               {exit.clearanceItems.filter((c) => c.status === "completed").length} of {exit.clearanceItems.length} completed
             </p>
           </div>
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[560px]">
             <thead>
               <tr className="border-b border-slate-200/70">
                 <th className="p-3 text-left text-xs font-medium text-slate-500">Activity</th>
@@ -144,6 +145,7 @@ export default function ExitDetailPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

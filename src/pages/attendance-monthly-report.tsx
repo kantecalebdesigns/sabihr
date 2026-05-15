@@ -78,7 +78,7 @@ export default function AttendanceMonthlyReport() {
     <div className="max-w-[1500px] space-y-5">
       {/* Header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Monthly summary</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Monthly summary</h1>
         <p className="text-sm text-slate-500 leading-relaxed">
           A roll-up of attendance, hours, and overtime per employee for the selected month —
           perfect for performance reviews or payroll reconciliation.

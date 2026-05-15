@@ -138,7 +138,8 @@ export default function AttendanceBreaksPage() {
       <div>
         <h2 className="text-base font-semibold mb-3">Today's Break Compliance</h2>
         <div className="rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[720px]">
             <thead>
               <tr className="border-b border-slate-200/70 text-left">
                 <th className="px-4 py-3 font-medium text-slate-600">Employee</th>
@@ -171,6 +172,7 @@ export default function AttendanceBreaksPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </div>

@@ -16,8 +16,8 @@ export default function LoginPage() {
         className="absolute inset-0 h-full w-full object-cover pointer-events-none"
       />
 
-      {/* Left side — branding over the background */}
-      <div className="relative z-10 flex h-full flex-1 flex-col">
+      {/* Left side — branding over the background (desktop only) */}
+      <div className="relative z-10 hidden lg:flex h-full flex-1 flex-col">
         {/* Top row: logo */}
         <div className="flex items-center w-full p-10">
           <Logo size="lg" />
@@ -41,16 +41,20 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right side — white form panel */}
-      <div className="relative z-10 flex flex-1 bg-white overflow-y-auto scrollbar-hide">
-        <div className="m-auto w-full px-8 py-12">
+      {/* Right side — white form panel (full-width on mobile) */}
+      <div className="relative z-10 flex w-full lg:flex-1 bg-white overflow-y-auto scrollbar-hide">
+        <div className="m-auto w-full px-6 sm:px-8 py-10 sm:py-12">
           <div className="mx-auto w-full max-w-[400px] space-y-8">
+            {/* Mobile logo */}
+            <div className="lg:hidden flex justify-center">
+              <Logo size="md" />
+            </div>
             {/* Heading */}
             <div className="space-y-1">
-              <h1 className="text-4xl font-semibold text-neutral-600 leading-[56px]">
+              <h1 className="text-3xl sm:text-4xl font-semibold text-neutral-600 leading-tight sm:leading-[56px]">
                 Sign In
               </h1>
-              <p className="text-base text-slate-500 leading-6">
+              <p className="text-sm sm:text-base text-slate-500 leading-6">
                 Enter your credentials to access your account
               </p>
             </div>
